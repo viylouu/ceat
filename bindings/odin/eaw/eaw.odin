@@ -12,14 +12,14 @@ when ODIN_OS == .Windows {
     // unsupported os!
 }
 
-KeyState :: enum{
+KeyState :: enum i32 {
     Released,
     Pressed,
     Held,
     Inactive,
 }
 
-Key :: enum{
+Key :: enum i32 {
     Escape,
     Caps,
     Space, Tab,
@@ -51,12 +51,12 @@ Key :: enum{
     Last,
 }
 
-Mouse :: enum{
+Mouse :: enum i32 {
     Left, Right, Middle,
     Last,
 }
 
-MouseMode :: enum{
+MouseMode :: enum i32 {
     Normal,
     Hiddle,
     Locked,

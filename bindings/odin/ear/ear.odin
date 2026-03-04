@@ -42,13 +42,13 @@ BufferDesc :: struct{
     stride: u32,
 }
 
-BufferType :: enum{
+BufferType :: enum i32 {
     Uniform,
     Storage,
     Vertex,
 }
 
-BufferUsage :: enum{
+BufferUsage :: enum i32 {
     Dynamic,
     Static,
 }
@@ -150,18 +150,18 @@ VertexAttribDesc :: struct{
     slot: u32,
 }
 
-PrimitiveType :: enum{
+PrimitiveType :: enum i32 {
     Float,
     Int,
 }
 
-CullMode :: enum{
+CullMode :: enum i32 {
     None,
     Front,
     Back
 }
 
-FrontFace :: enum{
+FrontFace :: enum i32 {
     CW,
     CCW,
 }
@@ -173,7 +173,7 @@ BlendState :: struct{
     alpha_op: BlendOp,
 }
 
-BlendFactor :: enum{
+BlendFactor :: enum i32 {
     Zero,
     One,
     SrcColor,
@@ -186,7 +186,7 @@ BlendFactor :: enum{
     InvDstAlpha,
 }
 
-BlendOp :: enum{
+BlendOp :: enum i32 {
     Add,
     Subtract,
     RevSubtract,
@@ -194,7 +194,7 @@ BlendOp :: enum{
     Max,
 }
 
-FillMode :: enum{
+FillMode :: enum i32 {
     Fill,
     Line,
 }
@@ -261,25 +261,25 @@ TextureDesc :: struct{
         wrap_color: [4]f32,
 }
 
-TextureFilter :: enum{
+TextureFilter :: enum i32 {
     Nearest,
     Linear,
 }
 
-TextureType :: enum{
+TextureType :: enum i32 {
     Repeat,
     Clamp,
     Color,
 }
 
-TextureWrap :: enum{
+TextureWrap :: enum i32 {
     Repeat,
     Clamp,
     Color,
 }
 
 
-DrawMode :: enum{
+DrawMode :: enum i32 {
     Triangles,
     Lines,
 }
