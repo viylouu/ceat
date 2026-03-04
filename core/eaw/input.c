@@ -72,9 +72,9 @@ eaw_set_mouse_mode(
     cur_mouse_mode = mode;
 
     switch (mode) {
-    case EAW_MOUSE_MODE_NORMAL: glfwSetInputMode(eaw_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-    case EAW_MOUSE_MODE_HIDDEN: glfwSetInputMode(eaw_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-    case EAW_MOUSE_MODE_LOCKED: glfwSetInputMode(eaw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    case EAW_MOUSE_MODE_NORMAL: glfwSetInputMode(eaw_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); break;
+    case EAW_MOUSE_MODE_HIDDEN: glfwSetInputMode(eaw_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN); break;
+    case EAW_MOUSE_MODE_LOCKED: glfwSetInputMode(eaw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); break;
     }
 }
 

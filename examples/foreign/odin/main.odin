@@ -3,6 +3,7 @@ package main
 import "core:fmt"
 
 import "../../../bindings/odin/eat"
+import "../../../bindings/odin/eaw"
 import "../../../bindings/odin/ear"
 
 main :: proc() {
@@ -12,6 +13,8 @@ main :: proc() {
         { vsync = false }
         )
     defer eat.stop()
+
+    eaw.set_mouse_mode(.Normal)
 
     for eat.frame() {
         ear.clear([3]f32{ .2,.4,.3 })

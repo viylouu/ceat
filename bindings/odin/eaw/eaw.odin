@@ -58,7 +58,7 @@ Mouse :: enum i32 {
 
 MouseMode :: enum i32 {
     Normal,
-    Hiddle,
+    Hidden,
     Locked,
 }
 
