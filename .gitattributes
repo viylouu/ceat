@@ -1,2 +1,4 @@
 *.c text diff=c
 *.h text diff=c
+*.vert text diff=glsl
+*.frag text diff=glsl
