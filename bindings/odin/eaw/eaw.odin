@@ -82,13 +82,13 @@ foreign ceat {
     @(link_name="eaw_mouse_scroll_x64") _mouse_scroll_x64: f64
     @(link_name="eaw_mouse_scroll_y64") _mouse_scroll_y64: f64
 
-    @(link_name="eaw_is_key")          is_key :: proc(key: Key) -> KeyState ---
-    @(link_name="eaw_is_key_pressed")  is_key_pressed :: proc(key: Key) -> KeyState ---
-    @(link_name="eaw_is_key_released") is_key_released :: proc(key: Key) -> KeyState ---
+    @(link_name="eaw_is_key")          is_key :: proc(key: Key) -> bool ---
+    @(link_name="eaw_is_key_pressed")  is_key_pressed :: proc(key: Key) -> bool ---
+    @(link_name="eaw_is_key_released") is_key_released :: proc(key: Key) -> bool ---
 
-    @(link_name="eaw_is_mouse")          is_mouse :: proc(mouse: Mouse) -> KeyState ---
-    @(link_name="eaw_is_mouse_pressed")  is_mouse_pressed :: proc(mouse: Mouse) -> KeyState ---
-    @(link_name="eaw_is_mouse_released") is_mouse_released :: proc(mouse: Mouse) -> KeyState ---
+    @(link_name="eaw_is_mouse")          is_mouse :: proc(mouse: Mouse) -> bool ---
+    @(link_name="eaw_is_mouse_pressed")  is_mouse_pressed :: proc(mouse: Mouse) -> bool ---
+    @(link_name="eaw_is_mouse_released") is_mouse_released :: proc(mouse: Mouse) -> bool ---
 
     @(link_name="eaw_set_mouse_mode") set_mouse_mode :: proc(mode: MouseMode) ---
 }
