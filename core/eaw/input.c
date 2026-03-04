@@ -114,7 +114,7 @@ eaw_input_frame(
 
 #define upm(key, glfw) do { \
     prev = mouses[EAW_MOUSE_##key]; \
-    mouses[EAW_MOUSE_##key] = glfwGetKey(eaw_window, GLFW_MOUSE_BUTTON_##glfw); \
+    mouses[EAW_MOUSE_##key] = glfwGetMouseButton(eaw_window, GLFW_MOUSE_BUTTON_##glfw); \
     if (mouses[EAW_MOUSE_##key] == EAW_STATE_PRESSED && ( prev == EAW_STATE_PRESSED || prev == EAW_STATE_HELD )) mouses[EAW_MOUSE_##key] = EAW_STATE_HELD; \
     if (mouses[EAW_MOUSE_##key] == EAW_STATE_RELEASED && ( prev == EAW_STATE_RELEASED || prev == EAW_STATE_INACTIVE )) mouses[EAW_MOUSE_##key] = EAW_STATE_INACTIVE; \
 } while(0)

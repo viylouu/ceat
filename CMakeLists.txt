@@ -127,3 +127,13 @@ target_compile_options(ex_text
     PRIVATE
         -std=c23
 )
+
+add_executable(ex_input)
+target_sources(ex_input
+        PRIVATE
+            examples/input/main.c
+    )
+target_link_libraries(ex_input
+    PRIVATE
+        ceat
+)
