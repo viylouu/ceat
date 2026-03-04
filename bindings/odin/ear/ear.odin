@@ -382,6 +382,15 @@ create_framebuffer :: proc(desc: FramebufferDesc, arena: ^eau.Arena = nil) -> ^F
     for col,i in desc.out_colors do out_colors[i] = col.texture
 
     fb := Framebuffer{
+        framebuffer = _create_framebuffer(
+            _framebuffer_desc{ 
+                out_colors = raw_data(out_colors),
+                out_color_amt = u32(len(out_colors)),
+                out_depth = desc.out_depth != nil? desc.out_depth.texture : nil,
+                width = desc.width, height = desc.height,
+                },
+            arena == nil? nil : arena),
+
         delete = delete_framebuffer,
         bind = bind_framebuffer,
         set_as_default = set_default_framebuffer,
@@ -390,15 +399,6 @@ create_framebuffer :: proc(desc: FramebufferDesc, arena: ^eau.Arena = nil) -> ^F
             out_colors = out_colors,
             },
         }
-
-    fb.framebuffer = _create_framebuffer(
-        _framebuffer_desc{ 
-            out_colors = raw_data(fb._alloc.out_colors),
-            out_color_amt = u32(len(fb._alloc.out_colors)),
-            out_depth = desc.out_depth.texture,
-            width = desc.width, height = desc.height,
-            },
-        arena == nil? nil : arena)
 
     return new_clone(fb)
 }
