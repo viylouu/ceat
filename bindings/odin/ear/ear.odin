@@ -411,11 +411,11 @@ delete_framebuffer :: proc(fb: ^Framebuffer) {
 }
 
 bind_framebuffer :: proc(fb: ^Framebuffer) {
-    _bind_framebuffer(fb.framebuffer)
+    _bind_framebuffer(fb == nil? fb : fb.framebuffer)
 }
 
 set_default_framebuffer :: proc(fb: ^Framebuffer) {
-    _set_default_framebuffer(fb.framebuffer)
+    _set_default_framebuffer(fb == nil? nil : fb.framebuffer)
 }
 
 
