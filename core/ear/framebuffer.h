@@ -1,9 +1,10 @@
 #pragma once
 
-#include "texture.h"
-
 #include <stdint.h>
 #include <stdbool.h>
+
+#include "../eau/arena.h"
+#include "texture.h"
 
 typedef struct ear_framebuffer ear_framebuffer;
 typedef struct ear_framebuffer_desc ear_framebuffer_desc;
@@ -11,7 +12,8 @@ typedef struct ear_framebuffer_desc ear_framebuffer_desc;
 
 ear_framebuffer*
 ear_create_framebuffer(
-    ear_framebuffer_desc desc
+    ear_framebuffer_desc desc,
+    eau_arena* arena
     );
 
 void
@@ -41,4 +43,6 @@ struct ear_framebuffer{
     uint32_t id;
 
     ear_framebuffer_desc desc;
+
+    eau_destructor* dest;
 };

@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "../eau/arena.h"
+
 typedef struct ear_pipeline ear_pipeline;
 typedef struct ear_pipeline_desc ear_pipeline_desc;
 
@@ -24,7 +26,8 @@ typedef struct ear_blend_state ear_blend_state;
 
 ear_pipeline*
 ear_create_pipeline(
-    ear_pipeline_desc desc
+    ear_pipeline_desc desc,
+    eau_arena* arena
     );
 
 void
@@ -124,4 +127,6 @@ struct ear_pipeline{
     uint32_t vao;
 
     ear_pipeline_desc desc;
+
+    eau_destructor* dest;
 };

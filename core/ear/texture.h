@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#include "../eau/arena.h"
+
 typedef struct ear_texture ear_texture;
 typedef struct ear_texture_desc ear_texture_desc;
 
@@ -16,13 +18,15 @@ ear_texture*
 ear_create_texture(
     ear_texture_desc desc,
     uint8_t pixels[],
-    uint32_t width, uint32_t height
+    uint32_t width, uint32_t height,
+    eau_arena* arena
     );
 
 ear_texture*
 ear_load_texture(
     ear_texture_desc desc,
-    const uint8_t* data, size_t data_size
+    const uint8_t* data, size_t data_size,
+    eau_arena* arena
     );
 
 void
@@ -49,7 +53,7 @@ ear_set_texture_color(
     ear_texture* texture,
     uint32_t x, uint32_t y,
     float col[4]
-    );;
+    );
 
 void
 ear_apply_texture_changes(
@@ -92,4 +96,6 @@ struct ear_texture{
     uint32_t height;
 
     ear_texture_desc desc;
+
+    eau_destructor* dest;
 };

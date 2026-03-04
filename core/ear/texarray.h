@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "../eau/arena.h"
 #include "texture.h"
 
 typedef struct ear_texarray ear_texarray;
@@ -11,7 +12,8 @@ typedef struct ear_texarray_desc ear_texarray_desc;
 
 ear_texarray*
 ear_create_texarray(
-    ear_texarray_desc desc
+    ear_texarray_desc desc,
+    eau_arena* arena
     );
 
 void
@@ -60,4 +62,6 @@ struct ear_texarray{
     ear_texture** texs;
 
     ear_texarray_desc desc;
+
+    eau_destructor* dest;
 };

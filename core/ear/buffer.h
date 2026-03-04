@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "../eau/arena.h"
+
 typedef struct ear_buffer ear_buffer;
 typedef struct ear_buffer_desc ear_buffer_desc;
 //typedef enum ear_buffer_type ear_buffer_type;
@@ -13,7 +15,8 @@ ear_buffer*
 ear_create_buffer(
     ear_buffer_desc desc,
     void* data,
-    uint32_t size
+    uint32_t size,
+    eau_arena* arena
     );
 
 void
@@ -58,4 +61,6 @@ struct ear_buffer{
     void* data;
 
     ear_buffer_desc desc;
+
+    eau_destructor* dest;
 };

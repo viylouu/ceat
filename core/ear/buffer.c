@@ -17,11 +17,19 @@ _TYPECONV_buffer_usage(
     );
 
 
+void
+_ear_arena_buffer_delete(
+    void* buf
+    ) { 
+    ear_delete_buffer(buf); 
+}
+
 ear_buffer*
 ear_create_buffer(
     ear_buffer_desc desc,
     void* data,
-    uint32_t size
+    uint32_t size,
+    eau_arena* arena
     ) {
     ear_buffer* buf = malloc(sizeof(ear_buffer));
     *buf = (ear_buffer){
@@ -43,6 +51,7 @@ ear_create_buffer(
         );
     gl.bindBuffer(targ, 0);
 
+    if (arena != NULL) eau_add_to_arena(arena, &buf->dest, buf, _ear_arena_buffer_delete);
     return buf;
 }
 
@@ -52,6 +61,7 @@ ear_delete_buffer(
     ) {
     gl.deleteBuffers(1, &buf->id);
 
+    if (buf->dest != NULL) buf->dest->data = NULL;
     free(buf);
 }
 

@@ -9,13 +9,13 @@ int main(void) {
             .filter = EAR_FILTER_NEAREST,
             .type = EAR_TEX_COLOR,
             .wrap = EAR_WRAP_REPEAT,
-        }, NULL, 128, 128);
+        }, NULL, 128, 128, NULL);
     ear_framebuffer* fb = ear_create_framebuffer((ear_framebuffer_desc){
             .out_colors = (ear_texture*[]){ fbtex },
             .out_color_amt = 1,
             .out_depth = NULL,
             .width = 128, .height = 128,
-        });
+        }, NULL);
 
     static const uint8_t tex_data[] = {
     #embed "tex.png"
@@ -25,7 +25,7 @@ int main(void) {
             .filter = EAR_FILTER_NEAREST,
             .type = EAR_TEX_COLOR,
             .wrap = EAR_WRAP_REPEAT,
-        }, tex_data, sizeof(tex_data));
+        }, tex_data, sizeof(tex_data), NULL);
 
     while (eat_frame()) {
         ear_bind_framebuffer(fb);

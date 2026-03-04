@@ -21,6 +21,7 @@ eau_delete_arena(
 eau_destructor*
 eau_add_to_arena(
     eau_arena* arena,
+    eau_destructor** user_dest,
     void* data,
     void (*delete)(void* data)
     );
@@ -35,6 +36,7 @@ struct eau_destructor{
     eau_arena* arena;
     void* data;
     void (*delete)(void*);
+    eau_destructor** user_dest;
 };
 
 struct eau_arena{

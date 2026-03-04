@@ -27,6 +27,7 @@ eau_delete_arena(
 eau_destructor*
 eau_add_to_arena(
     eau_arena* arena,
+    eau_destructor** user_dest,
     void* data,
     void (*delete)(void*)
     ) {
@@ -35,6 +36,7 @@ eau_add_to_arena(
         .arena = arena,
         .data = data,
         .delete = delete,
+        .user_dest = user_dest,
         };
 
     ++arena->dest_amt;
@@ -49,7 +51,10 @@ eau_clear_arena(
     ) {
     for (uint32_t i = 0; i < arena->dest_amt; ++i) {
         eau_destructor* dest = arena->dests[i];
-        if (dest->data != NULL) dest->delete(dest->data);
+        if (dest->data != NULL) {
+            dest->delete(dest->data);
+            *dest->user_dest = NULL;
+        }
         free(dest);
     }
     arena->dest_amt = 0;

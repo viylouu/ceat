@@ -1,11 +1,15 @@
 #include "data.h"
 //#include "../cutil.h"
 
+#include "../eau/arena.h"
+
 #include "pipeline.h"
 #include "buffer.h"
 #include "user.h"
 
 mat4 proj;
+
+eau_arena* arena;
 
 ear_rect_rend ear_rr;
 
@@ -30,29 +34,29 @@ ear_rect_rend_create(
                 .src_alpha = EAR_FAC_ONE,       .dst_alpha = EAR_FAC_INV_SRC_ALPHA,
                 .color_op = EAR_OP_ADD, .alpha_op = EAR_OP_ADD,
             }, },
-        });
+        }, arena);
 
     ear_rr.ubo = ear_create_buffer((ear_buffer_desc){
             .type = EAR_BUF_UNIFORM,
             .usage = EAR_USAGE_DYNAMIC,
             .stride = sizeof(ear_rr.ubo_d),
-        }, &ear_rr.ubo_d, sizeof(ear_rr.ubo_d));
+        }, &ear_rr.ubo_d, sizeof(ear_rr.ubo_d), arena);
 
     ear_rr.ssbo = ear_create_buffer((ear_buffer_desc){
             .type = EAR_BUF_STORAGE,
             .usage = EAR_USAGE_DYNAMIC,
             .stride = sizeof(ear_rr.ssbo_d[0]),
-        }, &ear_rr.ssbo_d, sizeof(ear_rr.ssbo_d));
+        }, &ear_rr.ssbo_d, sizeof(ear_rr.ssbo_d), arena);
 }
 
-void 
+/*void 
 ear_rect_rend_delete(
     void
     ) {
     ear_delete_buffer(ear_rr.ssbo);
     ear_delete_buffer(ear_rr.ubo);
     ear_delete_pipeline(ear_rr.pln);
-}
+}*/
 
 void
 ear_rect_rend_flush(
@@ -98,29 +102,29 @@ ear_tex_rend_create(
                 .src_alpha = EAR_FAC_ONE,       .dst_alpha = EAR_FAC_INV_SRC_ALPHA,
                 .color_op = EAR_OP_ADD, .alpha_op = EAR_OP_ADD,
             }, },
-        });
+        }, arena);
 
     ear_tr.ubo = ear_create_buffer((ear_buffer_desc){
             .type = EAR_BUF_UNIFORM,
             .usage = EAR_USAGE_DYNAMIC,
             .stride = sizeof(ear_tr.ubo_d),
-        }, &ear_tr.ubo_d, sizeof(ear_tr.ubo_d));
+        }, &ear_tr.ubo_d, sizeof(ear_tr.ubo_d), arena);
 
     ear_tr.ssbo = ear_create_buffer((ear_buffer_desc){
             .type = EAR_BUF_STORAGE,
             .usage = EAR_USAGE_DYNAMIC,
             .stride = sizeof(ear_tr.ssbo_d[0]),
-        }, &ear_tr.ssbo_d, sizeof(ear_tr.ssbo_d));
+        }, &ear_tr.ssbo_d, sizeof(ear_tr.ssbo_d), arena);
 }
 
-void
+/*void
 ear_tex_rend_delete(
     void
     ) {
     ear_delete_buffer(ear_tr.ssbo);
     ear_delete_buffer(ear_tr.ubo);
     ear_delete_pipeline(ear_tr.pln);
-}
+}*/
 
 void
 ear_tex_rend_flush(
@@ -148,6 +152,8 @@ void
 ear_user_init(
     void
     ) {
+    arena = eau_create_arena();
+
     ear_rect_rend_create();
     ear_tex_rend_create();
 }
@@ -156,6 +162,7 @@ void
 ear_user_stop(
     void
     ) {
-    ear_rect_rend_delete();
-    ear_tex_rend_delete();
+    eau_delete_arena(arena);
+    //ear_rect_rend_delete();
+    //ear_tex_rend_delete();
 }

@@ -13,7 +13,7 @@ int main(void) {
             .filter = EAR_FILTER_NEAREST,
             .type = EAR_TEX_COLOR,
             .wrap = EAR_WRAP_REPEAT,
-        }, tex_data, sizeof(tex_data));
+        }, tex_data, sizeof(tex_data), NULL);
 
     while (eat_frame()) {
         ear_clear((float[3]){ .2f, .4f, .3f });

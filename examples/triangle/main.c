@@ -12,7 +12,7 @@ int main(void) {
     ear_pipeline* pln = ear_create_pipeline((ear_pipeline_desc){
             .vertex = (ear_shader_desc){ .source = vertex },
             .fragment = (ear_shader_desc){ .source = fragment },
-        });
+        }, NULL);
 
     free(vertex);
     free(fragment);

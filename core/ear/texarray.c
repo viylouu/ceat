@@ -1,6 +1,7 @@
 #include "texarray.h"
 #include "../cutil.h"
 
+#include "core/eau/arena.h"
 #include "gl.h"
 
 #include <GL/gl.h>
@@ -32,9 +33,17 @@ _TYPECONV_texture_type_as_type(
     );
 
 
+void
+_ear_arena_texarray_delete(
+    void* arr
+    ) { 
+    ear_delete_texarray(arr); 
+}
+
 ear_texarray*
 ear_create_texarray(
-    ear_texarray_desc desc
+    ear_texarray_desc desc,
+    eau_arena* arena
     ) {
     ear_texarray* arr = malloc(sizeof(ear_texarray));
     *arr = (ear_texarray){
@@ -71,6 +80,7 @@ ear_create_texarray(
 
     gl.bindTexture(GL_TEXTURE_2D_ARRAY, 0);
 
+    if (arena != NULL) eau_add_to_arena(arena, &arr->dest, arr, _ear_arena_texarray_delete);
     return arr;
 }
 
@@ -81,6 +91,7 @@ ear_delete_texarray(
     gl.deleteTextures(1, &arr->id);
     free(arr->texs);
 
+    if (arr->dest != NULL) arr->dest->data = NULL;
     free(arr);
 }
 

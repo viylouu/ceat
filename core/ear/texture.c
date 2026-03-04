@@ -35,11 +35,19 @@ _TYPECONV_texture_type_as_type(
     );
 
 
+void
+_ear_arena_texture_delete(
+    void* tex
+    ) { 
+    ear_delete_texture(tex); 
+}
+
 ear_texture*
 ear_create_texture(
     ear_texture_desc desc,
     uint8_t pixels[],
-    uint32_t width, uint32_t height
+    uint32_t width, uint32_t height,
+    eau_arena* arena
     ) {
     ear_texture* tex = malloc(sizeof(ear_texture));
     *tex = (ear_texture){
@@ -75,13 +83,15 @@ ear_create_texture(
         pixels
         );
 
+    if (arena != NULL) eau_add_to_arena(arena, &tex->dest, tex, _ear_arena_texture_delete);
     return tex;
 }
 
 ear_texture*
 ear_load_texture(
     ear_texture_desc desc,
-    const uint8_t* data, size_t data_size
+    const uint8_t* data, size_t data_size,
+    eau_arena* arena
     ) {
     int32_t width;
     int32_t height;
@@ -90,7 +100,7 @@ ear_load_texture(
     uint8_t* pixels = stbi_load_from_memory(data, data_size, &width, &height, &chans, 4);
     eat_assert(pixels != NULL, "failed to load image data!");
 
-    ear_texture* tex = ear_create_texture(desc, pixels, width, height);
+    ear_texture* tex = ear_create_texture(desc, pixels, width, height, arena);
     tex->stbi_pixels = true;
     return tex;
 }
@@ -102,6 +112,7 @@ ear_delete_texture(
     gl.deleteTextures(1, &tex->id);
     if (tex->stbi_pixels) stbi_image_free(tex->pixels);
 
+    if (tex->dest != NULL) tex->dest->data = NULL;
     free(tex);
 }
 

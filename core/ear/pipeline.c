@@ -1,6 +1,7 @@
 #include "pipeline.h"
 #include "../cutil.h"
 
+#include "core/eau/arena.h"
 #include "gl.h"
 
 #include <GL/gl.h>
@@ -32,9 +33,17 @@ _TYPECONV_fill_mode(
     );
 
 
+void
+_ear_arena_pipeline_delete(
+    void* pln
+    ) { 
+    ear_delete_pipeline(pln); 
+}
+
 ear_pipeline*
 ear_create_pipeline(
-    ear_pipeline_desc desc
+    ear_pipeline_desc desc,
+    eau_arena* arena
     ) {
     ear_pipeline* pln = malloc(sizeof(ear_pipeline));
     *pln = (ear_pipeline){
@@ -125,6 +134,7 @@ ear_create_pipeline(
 
     gl.bindVertexArray(0);
 
+    if (arena != NULL) eau_add_to_arena(arena, &pln->dest, pln, _ear_arena_pipeline_delete);
     return pln;
 }
 
@@ -135,6 +145,7 @@ ear_delete_pipeline(
     gl.deleteVertexArrays(1, &pln->vao);
     gl.deleteProgram(pln->id);
 
+    if (pln->dest != NULL) pln->dest->data = NULL;
     free(pln);
 }
 

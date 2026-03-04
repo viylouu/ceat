@@ -12,9 +12,17 @@
 
 ear_framebuffer* default_fb;
 
+void
+_ear_arena_framebuffer_delete(
+    void* fb
+    ) { 
+    ear_delete_framebuffer(fb); 
+}
+
 ear_framebuffer*
 ear_create_framebuffer(
-    ear_framebuffer_desc desc
+    ear_framebuffer_desc desc,
+    eau_arena* arena
     ) {
     ear_framebuffer* fb = malloc(sizeof(ear_framebuffer));
     *fb = (ear_framebuffer){
@@ -53,6 +61,7 @@ ear_create_framebuffer(
 
     gl.bindFramebuffer(GL_FRAMEBUFFER, 0);
 
+    if (arena != NULL) eau_add_to_arena(arena, &fb->dest, fb, _ear_arena_framebuffer_delete);
     return fb;
 }
 
@@ -62,6 +71,7 @@ ear_delete_framebuffer(
     ) {
     gl.deleteFramebuffers(1, &fb->id);
 
+    if (fb->dest != NULL) fb->dest->data = NULL;
     free(fb);
 }
 
