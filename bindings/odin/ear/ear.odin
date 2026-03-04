@@ -562,14 +562,14 @@ bind_texture :: proc(tex: ^Texture, slot: u32) {
     _bind_texture(tex.texture, slot)
 }
 
-get_texture_color :: proc(tex: ^Texture, x,y: u32) -> [4]f32 {
+get_texture_color :: proc(tex: ^Texture, #any_int x,y: u32) -> [4]f32 {
     out: [4]f32
     outp := &out[0]
     _get_texture_color(tex.texture, x,y, &outp)
     return out
 }
 
-set_texture_color :: proc(tex: ^Texture, x,y: u32, col: [4]f32) {
+set_texture_color :: proc(tex: ^Texture, #any_int x,y: u32, col: [4]f32) {
     col := col
     _set_texture_color(tex.texture, x,y, &col[0])
 }
