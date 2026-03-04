@@ -621,7 +621,7 @@ apply_texture_changes :: proc(tex: ^Texture) {
 }
 
 
-draw :: proc(#any_int vertices: i32, #any_int instances: i32 = 0, draw_mode: DrawMode = .Triangles) {
+draw :: proc(#any_int vertices: i32, #any_int instances: i32 = 1, draw_mode: DrawMode = .Triangles) {
     _draw(vertices, instances, draw_mode)
 }
 
