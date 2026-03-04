@@ -7,7 +7,7 @@ find_package(glfw3 REQUIRED)
 
 option(BUILD_LINUX "do a linux build instead of windows" ON)
 
-add_library(ceat)
+add_library(ceat STATIC)
 target_sources(ceat
         PRIVATE
             core/eat.c
@@ -51,7 +51,7 @@ if(BUILD_LINUX)
     find_package(OpenGL REQUIRED)
     target_link_libraries(ceat
         PRIVATE
-            ${OPENGL_gl_LIBRARY}
+            GL
             GLX
             EGL
             m
