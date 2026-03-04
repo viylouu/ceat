@@ -205,9 +205,19 @@ _texarray :: struct{
 
     texs: [^]^_texture,
 
-    desc: TexArrayDesc,
+    desc: _texarray_desc,
 
     dest: ^eau.Destructor,
+}
+
+_texarray_desc :: struct{
+    filter: TextureFilter,
+    type: TextureType,
+    wrap: TextureWrap,
+        wrap_color: ^f32,
+
+    width, height: u32,
+    layers: u32,
 }
 
 TexArray :: struct{
@@ -239,9 +249,16 @@ _texture :: struct{
 
     width, height: u32,
 
-    desc: TextureDesc,
+    desc: _texture_desc,
 
     dest: ^eau.Destructor
+}
+
+_texture_desc :: struct{
+    filter: TextureFilter,
+    type: TextureType,
+    wrap: TextureWrap,
+        wrap_color: ^f32,
 }
 
 Texture :: struct{
@@ -303,7 +320,7 @@ foreign ceat {
     @(link_name="ear_bind_pipeline") _bind_pipeline :: proc(pipeline: ^_pipeline) ---
 
 
-    @(link_name="ear_create_texarray") _create_texarray :: proc(desc: TexArrayDesc, arena: ^eau._arena) -> ^_texarray ---
+    @(link_name="ear_create_texarray") _create_texarray :: proc(desc: _texarray_desc, arena: ^eau._arena) -> ^_texarray ---
     @(link_name="ear_delete_texarray") _delete_texarray :: proc(texarray: ^_texarray) ---
     @(link_name="ear_bind_texarray") _bind_texarray :: proc(texarray: ^_texarray, slot: u32) ---
     @(link_name="ear_add_to_texarray") _add_to_texarray :: proc(texarray: ^_texarray, tex: ^_texture, layer: u32) ---
@@ -314,8 +331,8 @@ foreign ceat {
     @(link_name="ear_text") _text :: proc(atlas: ^_texture, text: cstring, x,y: f32, scalex, scaley: f32, col: ^f32) ---
 
 
-    @(link_name="ear_create_texture") _create_texture :: proc(desc: TextureDesc, pixels: [^]u8, width, height: u32, arena: ^eau._arena) -> ^_texture ---
-    @(link_name="ear_load_texture") _load_texture :: proc(desc: TextureDesc, data: [^]u8, data_size: c.size_t, arena: ^eau._arena) -> ^_texture ---
+    @(link_name="ear_create_texture") _create_texture :: proc(desc: _texture_desc, pixels: [^]u8, width, height: u32, arena: ^eau._arena) -> ^_texture ---
+    @(link_name="ear_load_texture") _load_texture :: proc(desc: _texture_desc, data: [^]u8, data_size: c.size_t, arena: ^eau._arena) -> ^_texture ---
     @(link_name="ear_delete_texture") _delete_texture :: proc(texture: ^_texture) ---
     @(link_name="ear_bind_texture") _bind_texture :: proc(texture: ^_texture, slot: u32) ---
     @(link_name="ear_get_texture_color") _get_texture_color :: proc(texture: ^_texture, x,y: u32, out: ^^f32) ---
@@ -439,9 +456,19 @@ bind_pipeline :: proc(pln: ^Pipeline) {
 
 
 create_texarray :: proc(desc: TexArrayDesc, arena: ^eau.Arena = nil) -> ^TexArray {
+    desc := desc
+
     return new_clone(TexArray{
             texarray = _create_texarray(
-                desc,
+                _texarray_desc{
+                    filter = desc.filter,
+                    type = desc.type,
+                    wrap = desc.wrap,
+                    wrap_color = &desc.wrap_color[0],
+                    width = desc.width,
+                    height = desc.height,
+                    layers = desc.layers,
+                    },
                 arena == nil? nil : arena
                 ),
 
@@ -520,9 +547,16 @@ text_gray_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, col: f32) { t
 
 
 create_texture :: proc(desc: TextureDesc, pixels: [^]u8, width,height: u32, arena: ^eau.Arena = nil) -> ^Texture {
+    desc := desc
+
     return new_clone(Texture{
         texture = _create_texture(
-            desc,
+            _texture_desc{
+                filter = desc.filter,
+                type = desc.type,
+                wrap = desc.wrap,
+                wrap_color = &desc.wrap_color[0],
+                },
             pixels,
             width, height,
             arena == nil? nil : arena.arena,
@@ -537,9 +571,16 @@ create_texture :: proc(desc: TextureDesc, pixels: [^]u8, width,height: u32, aren
 }
 
 load_texture :: proc(desc: TextureDesc, data: []u8, arena: ^eau.Arena = nil) -> ^Texture {
+    desc := desc
+
     return new_clone(Texture{
         texture = _load_texture(
-            desc,
+            _texture_desc{
+                filter = desc.filter,
+                type = desc.type,
+                wrap = desc.wrap,
+                wrap_color = &desc.wrap_color[0],
+                },
             raw_data(data), len(data),
             arena == nil? nil : arena.arena,
             ),
