@@ -43,7 +43,6 @@ void
 eaw_window_stop(
     void
     ) {
-    glfwMakeContextCurrent(NULL);
     glfwDestroyWindow(eaw_window);
     glfwTerminate();
 }
