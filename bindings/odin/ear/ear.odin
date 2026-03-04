@@ -284,9 +284,10 @@ TextureFilter :: enum i32 {
 }
 
 TextureType :: enum i32 {
-    Repeat,
-    Clamp,
     Color,
+    Depth,
+    Hdr,
+    Hdr32,
 }
 
 TextureWrap :: enum i32 {

@@ -83,6 +83,8 @@ ear_create_texture(
         pixels
         );
 
+    gl.bindTexture(GL_TEXTURE_2D, 0);
+
     if (arena != NULL) eau_add_to_arena(arena, &tex->dest, tex, _ear_arena_texture_delete);
     return tex;
 }
@@ -134,10 +136,10 @@ ear_get_texture_color(
     float (*out)[4]
     ) {
     uint32_t i = (x + y * tex->width) * 4;
-    *out[0] = (float)tex->pixels[i + 0] / 255.f;
-    *out[1] = (float)tex->pixels[i + 1] / 255.f;
-    *out[2] = (float)tex->pixels[i + 2] / 255.f;
-    *out[3] = (float)tex->pixels[i + 3] / 255.f;
+    (*out)[0] = (float)tex->pixels[i + 0] / 255.f;
+    (*out)[1] = (float)tex->pixels[i + 1] / 255.f;
+    (*out)[2] = (float)tex->pixels[i + 2] / 255.f;
+    (*out)[3] = (float)tex->pixels[i + 3] / 255.f;
 }
 
 void

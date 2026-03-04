@@ -7,6 +7,8 @@
 #include <GL/gl.h>
 #include <GL/glext.h>
 
+#include <string.h>
+
 GLenum 
 _TYPECONV_texture_filter(
     ear_texture_filter filter
@@ -50,6 +52,8 @@ ear_create_texarray(
         .desc = desc,
         .texs = malloc(sizeof(ear_texture*) * desc.layers),
         };
+
+    memset(arr->texs, 0, sizeof(ear_texture*) * desc.layers);
 
     gl.genTextures(1, &arr->id);
     eat_assert(arr->id != 0, "failed to create opengl texture!");
