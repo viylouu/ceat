@@ -3,4 +3,4 @@
 *.vert text diff=glsl linguist-language=glsl
 *.frag text diff=glsl linguist-language=glsl
 
-includes/** linguist-detectable=false
+include/** linguist-detectable=false
