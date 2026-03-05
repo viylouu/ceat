@@ -3,9 +3,9 @@
 
 #include <GLFW/glfw3.h>
 
-float eaw_time;
-    float eaw_last_time;
-float eaw_delta;
+double eaw_time;
+    double eaw_last_time;
+double eaw_delta;
 
 void
 eaw_init(

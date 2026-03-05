@@ -23,7 +23,7 @@ int main(void) {
         ear_bind_pipeline(pln);
         ear_draw(3, 1, EAR_MODE_TRIANGLES);
 
-        printf("%.3f FPS\n", 1.f/eat_delta);
+        printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     ear_delete_pipeline(pln);

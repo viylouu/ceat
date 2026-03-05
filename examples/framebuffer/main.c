@@ -35,7 +35,7 @@ int main(void) {
         ear_bind_framebuffer(NULL);
         ear_tex(fbtex, 0,eat_height, eat_width,-eat_height, 0,0,128,128, (float[4]){ 1,1,1,1 });
 
-        printf("%.3f FPS\n", 1.f/eat_delta);
+        printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     ear_delete_texture(tex);

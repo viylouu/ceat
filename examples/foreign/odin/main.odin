@@ -21,6 +21,6 @@ main :: proc() {
 
         ear.rect(0,0, 64,64, [3]f32{ 1,0,0 })
 
-        fmt.printf("%.3f FPS\n", 1/eat.delta)
+        fmt.printf("%.3f FPS\n", 1./eat.delta64)
     }
 }

@@ -13,6 +13,8 @@ extern int32_t eat_height;
 
 extern float eat_time;
 extern float eat_delta;
+    extern double eat_time64;
+    extern double eat_delta64;
 
 
 typedef struct eat_init_opts {

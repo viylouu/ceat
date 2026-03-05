@@ -5,6 +5,8 @@ int32_t eat_height;
 
 float eat_time;
 float eat_delta;
+    double eat_time64;
+    double eat_delta64;
 
 void 
 eat_init(
@@ -33,6 +35,8 @@ eat_frame(
 
     eat_time = eaw_time;
     eat_delta = eaw_delta;
+    eat_time64 = eaw_time;
+    eat_delta64 = eaw_delta;
 
     eat_width = eaw_window_width;
     eat_height = eaw_window_height;

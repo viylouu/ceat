@@ -19,7 +19,7 @@ int main(void) {
 
         ear_rect(x,y, 64,64, eaw_is_mouse(EAW_MOUSE_LEFT)? (float[4]){ 0,1,0,1 } : (float[4]){ 1,0,0,1 });
 
-        printf("%.3f FPS\n", 1.f/eat_delta);
+        printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     eat_stop();

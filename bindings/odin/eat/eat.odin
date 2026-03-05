@@ -30,6 +30,8 @@ foreign ceat {
     @(link_name="eat_height") height: i32
     @(link_name="eat_time")  time: f32
     @(link_name="eat_delta") delta: f32
+    @(link_name="eat_time64")  time64: f64
+    @(link_name="eat_delta64") delta64: f64
 
     @(link_name="eat_init") _init :: proc(title: cstring, width,height: i32, opts: _init_opts) ---
     @(link_name="eat_stop") stop :: proc() ---

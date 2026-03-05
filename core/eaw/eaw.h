@@ -6,8 +6,8 @@
 #include "window.h"
 #include "input.h"
 
-extern float eaw_time;
-extern float eaw_delta;
+extern double eaw_time;
+extern double eaw_delta;
 
 void
 eaw_init(

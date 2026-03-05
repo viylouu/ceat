@@ -20,7 +20,7 @@ int main(void) {
 
         ear_text(font, "hello\n\tworld!!!!", 0,0, 16,16, (float[4]){ 1,1,1,1 });
 
-        printf("%.3f FPS\n", 1.f/eat_delta);
+        printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     ear_delete_texture(font);
