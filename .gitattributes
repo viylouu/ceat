@@ -1,4 +1,6 @@
-*.c text diff=c
-*.h text diff=c
-*.vert text diff=glsl
-*.frag text diff=glsl
+*.c text diff=c linguist-language=c
+*.h text diff=c linguist-language=c
+*.vert text diff=glsl linguist-language=glsl
+*.frag text diff=glsl linguist-language=glsl
+
+includes/** linguist-detectable=false
