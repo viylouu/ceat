@@ -7,7 +7,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-
 extern int32_t eat_width;
 extern int32_t eat_height;
 

@@ -6,3 +6,13 @@ heres a snipped from the eat-engine readme:
 eat is a game engine that stands for "End All To (be all)".  
 it is the (hopefully) final game engine i will have to make.
 ```
+
+## building
+to build ceat, you can use cmake.  
+```bash
+mkdir build
+cmake -B build
+cmake --build build
+```
+this will create either a `libceat.a` file or a `ceat.lib` file in the build folder  
+(and also build the examples)
