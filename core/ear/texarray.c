@@ -1,7 +1,7 @@
 #include "texarray.h"
 #include "../cutil.h"
 
-#include "core/eau/arena.h"
+#include "../eau/arena.h"
 #include "gl.h"
 
 #include <GL/gl.h>
