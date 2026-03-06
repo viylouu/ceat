@@ -67,6 +67,16 @@ else()
     )
 endif()
 
+add_library(ceat_cpp STATIC)
+target_sources(ceat_cpp
+    PRIVATE
+        bindings/cpp/eat.cpp
+)
+target_link_libraries(ceat_cpp
+    PRIVATE
+        ceat
+)
+
 add_executable(ex_window)
 target_sources(ex_window
         PRIVATE
