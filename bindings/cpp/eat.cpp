@@ -248,7 +248,7 @@ namespace ear{
                 .type = (ear_texture_type)desc.type,
                 .wrap = (ear_texture_wrap)desc.wrap,
             };
-        std::copy(_desc.wrap_color, desc.wrap_color, sizeof(float)*4);
+        std::copy(_desc.wrap_color, _desc.wrap_color + 4, desc.wrap_color);
 
         texture = ear_create_texture(
             _desc,
@@ -267,7 +267,7 @@ namespace ear{
                 .type = (ear_texture_type)desc.type,
                 .wrap = (ear_texture_wrap)desc.wrap,
             };
-        std::copy(_desc.wrap_color, desc.wrap_color, sizeof(float)*4);
+        std::copy(_desc.wrap_color, _desc.wrap_color + 4, desc.wrap_color);
 
         texture = ear_load_texture(
             _desc,
