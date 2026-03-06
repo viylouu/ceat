@@ -4,5 +4,6 @@
 *.hpp text diff=cpp linguist-language=cpp
 *.vert text diff=glsl linguist-language=glsl
 *.frag text diff=glsl linguist-language=glsl
+*.odin text diff=odin linguist-language=odin
 
 include/** linguist-detectable=false
