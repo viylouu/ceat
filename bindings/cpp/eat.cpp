@@ -235,6 +235,50 @@ namespace eau{
             out_size
             );
     }
+
+    Clock::Clock(
+        eau::Arena* arena
+        ) {
+        clock = eau_create_clock(arena == nullptr? nullptr : arena->arena);
+        arena = arena;
+    }
+    Clock::~Clock() {
+        if (!arena) eau_delete_clock(clock);
+    }
+
+    void
+    Clock::reset(
+        void
+        ) {
+        eau_reset_clock(clock);
+    }
+
+    void
+    Clock::set_speed(
+        float speed
+        ) {
+        eau_set_clock_speed(clock, speed);
+    }
+
+    void
+    Clock::set_time(
+        float time
+        ) {
+        eau_set_clock_time(clock, (double)time);
+    }
+    void
+    Clock::set_time(
+        double time
+        ) {
+        eau_set_clock_time(clock, time);
+    }
+
+    void
+    Clock::update(
+        void
+        ) {
+        eau_update_clock(clock);
+    }
 };
 namespace ear{
     Texture::Texture(
@@ -256,6 +300,7 @@ namespace ear{
             width, height,
             arena == nullptr? nullptr : arena->arena
             );
+        arena = arena;
     }
     Texture::Texture(
         TextureDesc desc,
@@ -274,9 +319,10 @@ namespace ear{
             (const uint8_t*)data, data_size,
             arena == nullptr? nullptr : arena->arena
             );
+        arena = arena;
     }
     Texture::~Texture() {
-        ear_delete_texture(texture);
+        if (!arena) ear_delete_texture(texture);
     }
 
     void
@@ -326,9 +372,10 @@ namespace ear{
             size,
             arena == nullptr? nullptr : arena->arena
             );
+        arena = arena;
     }
     Buffer::~Buffer() {
-        ear_delete_buffer(buffer);
+        if (!arena) ear_delete_buffer(buffer);
     }
     
     void
@@ -361,9 +408,10 @@ namespace ear{
                 },
             arena == nullptr? nullptr : arena->arena
             );
+        arena = arena;
     }
     Framebuffer::~Framebuffer() {
-        ear_delete_framebuffer(framebuffer);
+        if (!arena) ear_delete_framebuffer(framebuffer);
     }
 
     void
@@ -437,9 +485,10 @@ namespace ear{
                 },
             arena == nullptr? nullptr : arena->arena
             );
+        arena = arena;
     }
     Pipeline::~Pipeline() {
-        ear_delete_pipeline(pipeline);
+        if (!arena) ear_delete_pipeline(pipeline);
     }
 
     void
@@ -466,9 +515,10 @@ namespace ear{
             _desc,
             arena == nullptr? nullptr : arena->arena
             );
+        arena = arena;
     }
     Texarray::~Texarray() {
-        ear_delete_texarray(texarray);
+        if (!arena) ear_delete_texarray(texarray);
     }
 
     void

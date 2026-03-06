@@ -207,7 +207,9 @@ namespace eau{
         ~Arena();
 
         void
-        clear();
+        clear(
+            void
+            );
 
         void
         add(
@@ -265,6 +267,40 @@ namespace eau{
         std::string path,
         size_t* out_size
         );
+
+    struct Clock{
+        eau_clock* clock;
+        Arena* arena;
+
+        Clock(
+            Arena* arena = nullptr
+            );
+        ~Clock();
+
+        void
+        reset(
+            void
+            );
+
+        void
+        set_speed(
+            float speed
+            );
+
+        void
+        set_time(
+            float time
+            );
+        void
+        set_time(
+            double time
+            );
+
+        void
+        update(
+            void
+            );
+    };
 };
 namespace ear{
     enum class TextureFilter{
@@ -294,6 +330,7 @@ namespace ear{
 
     struct Texture{
         ear_texture* texture;
+        eau::Arena* arena;
 
         Texture(
             TextureDesc desc,
@@ -349,6 +386,7 @@ namespace ear{
 
     struct Buffer{
         ear_buffer* buffer;
+        eau::Arena* arena;
 
         Buffer(
             BufferDesc desc,
@@ -377,6 +415,7 @@ namespace ear{
 
     struct Framebuffer{
         ear_framebuffer* framebuffer;
+        eau::Arena* arena;
 
         Framebuffer(
             FramebufferDesc desc,
@@ -488,6 +527,7 @@ namespace ear{
 
     struct Pipeline{
         ear_pipeline* pipeline;
+        eau::Arena* arena;
 
         Pipeline(
             PipelineDesc desc,
@@ -513,6 +553,7 @@ namespace ear{
 
     struct Texarray{
         ear_texarray* texarray;
+        eau::Arena* arena;
 
         Texarray(
             TexarrayDesc desc,

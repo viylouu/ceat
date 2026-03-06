@@ -46,6 +46,28 @@ Arena :: struct{
     clear: proc(arena: ^Arena),
 }
 
+_clock :: struct{
+    time: f32,
+    delta: f32,
+    time64: f64,
+    delta64: f64,
+
+    speed: f32,
+
+    dest: ^Destructor,
+}
+
+Clock :: struct{
+    using clock: ^_clock,
+
+    delete: proc(clock: ^Clock),
+    reset: proc(clock: ^Clock),
+    set_speed: proc(clock: ^Clock, speed: f32),
+    set_time: proc(clock: ^Clock, time: f32),
+    set_time64: proc(clock: ^Clock, time: f64), // this just uses 64 bit for the time setting, it does not only set time64
+    update: proc(clock: ^Clock),
+}
+
 @(default_calling_convention="c")
 foreign ceat {
     @(link_name="eaw_mat4_identity") mat4_identity :: proc(mat: ^mat4) ---
@@ -70,6 +92,14 @@ foreign ceat {
     @(link_name="eau_delete_arena") _delete_arena :: proc(arena: ^_arena) ---
     @(link_name="eau_add_to_arena") _add_to_arena :: proc(arena: ^_arena, user_dest: ^^Destructor, data: rawptr, delete: proc "c" (rawptr)) ---
     @(link_name="eau_clear_arena") _clear_arena :: proc(arena: ^_arena) ---
+
+
+    @(link_name="eau_create_clock") _create_clock :: proc(arena: ^_arena) -> ^_clock ---
+    @(link_name="eau_delete_clock") _delete_clock :: proc(clock: ^_clock) ---
+    @(link_name="eau_reset_clock") _reset_clock :: proc(clock: ^_clock) ---
+    @(link_name="eau_set_clock_speed") _set_clock_speed :: proc(clock: ^_clock, speed: f32) ---
+    @(link_name="eau_set_clock_time") _set_clock_time :: proc(clock: ^_clock, time: f64) ---
+    @(link_name="eau_update_clock") _update_clock :: proc(clock: ^_clock) ---
 }
 
 point_aabb2d :: proc(point: [2]f32, rect: Rect) -> bool {
@@ -115,6 +145,45 @@ add_to_arena :: proc(arena: ^Arena, user_dest: ^^Destructor, data: rawptr, delet
 
 clear_arena :: proc(arena: ^Arena) {
     _clear_arena(arena.arena)
+}
+
+
+create_clock :: proc(arena: ^Arena = nil) -> ^Clock {
+    return new_clone(Clock{
+        clock = _create_clock(arena),
+
+        delete = delete_clock,
+        reset = reset_clock,
+        set_speed = set_clock_speed,
+        set_time = set_clock_time32,
+        set_time64 = set_clock_time64,
+        update = update_clock,
+        })
+}
+
+delete_clock :: proc(clock: ^Clock) {
+    _delete_clock(clock.clock)
+    free(clock)
+}
+
+reset_clock :: proc(clock: ^Clock) {
+    _reset_clock(clock.clock)
+}
+
+set_clock_speed :: proc(clock: ^Clock, speed: f32) {
+    _set_clock_speed(clock.clock, speed)
+}
+
+set_clock_time :: proc{
+    set_clock_time32,
+    set_clock_time64,
+}
+
+set_clock_time32 :: proc(clock: ^Clock, time: f32) { _set_clock_time(clock.clock, f64(time)) }
+set_clock_time64 :: proc(clock: ^Clock, time: f64) { _set_clock_time(clock.clock, time) }
+
+update_clock :: proc(clock: ^Clock) {
+    _update_clock(clock.clock)
 }
 
 
