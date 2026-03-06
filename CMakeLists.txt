@@ -141,10 +141,21 @@ target_compile_options(ex_text
 
 add_executable(ex_input)
 target_sources(ex_input
-        PRIVATE
-            examples/input/main.c
-    )
+    PRIVATE
+        examples/input/main.c
+)
 target_link_libraries(ex_input
     PRIVATE
         ceat
+)
+
+add_executable(ex_cpp)
+target_sources(ex_cpp
+    PRIVATE
+        examples/foreign/cpp/main.cpp
+)
+target_link_libraries(ex_cpp
+    PRIVATE
+        ceat
+        ceat_cpp
 )

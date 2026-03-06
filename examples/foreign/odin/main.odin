@@ -14,8 +14,6 @@ main :: proc() {
         )
     defer eat.stop()
 
-    eaw.set_mouse_mode(.Normal)
-
     for eat.frame() {
         ear.clear([3]f32{ .2,.4,.3 })
 
