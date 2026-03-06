@@ -241,7 +241,7 @@ namespace ear{
         TextureDesc desc,
         uint8_t pixels[],
         uint32_t width, uint32_t height,
-        eau::Arena* arena
+        std::optional<eau::Arena> arena
         ) {
         auto _desc = ear_texture_desc{
             .filter = (ear_texture_filter)desc.filter,
@@ -254,13 +254,13 @@ namespace ear{
             _desc,
             pixels,
             width, height,
-            arena == nullptr? nullptr : arena->arena
+            arena? arena->arena : nullptr
             );
     }
     Texture::Texture(
         TextureDesc desc,
         const char* data, size_t data_size,
-        eau::Arena* arena
+        std::optional<eau::Arena> arena
         ) {
         auto _desc = ear_texture_desc{
             .filter = (ear_texture_filter)desc.filter,
@@ -272,7 +272,7 @@ namespace ear{
         texture = ear_load_texture(
             _desc,
             (const uint8_t*)data, data_size,
-            arena == nullptr? nullptr : arena->arena
+            arena? arena->arena : nullptr
             );
     }
     Texture::~Texture() {
@@ -314,7 +314,7 @@ namespace ear{
         BufferDesc desc,
         void* data,
         uint32_t size,
-        eau::Arena* arena
+        std::optional<eau::Arena> arena
         ) {
         buffer = ear_create_buffer(
             ear_buffer_desc{
@@ -324,7 +324,7 @@ namespace ear{
                 },
             data,
             size,
-            arena == nullptr? nullptr : arena->arena
+            arena? arena->arena : nullptr
             );
     }
     Buffer::~Buffer() {
@@ -347,7 +347,7 @@ namespace ear{
 
     Framebuffer::Framebuffer(
         FramebufferDesc desc,
-        eau::Arena* arena
+        std::optional<eau::Arena> arena
         ) {
         std::vector<ear_texture*> out_colors;
         for (auto col : desc.out_colors) out_colors.push_back(col->texture);
@@ -359,7 +359,7 @@ namespace ear{
                 .out_depth = desc.out_depth == nullptr? nullptr : desc.out_depth->texture,
                 .width = desc.width, .height = desc.height,
                 },
-            arena == nullptr? nullptr : arena->arena
+            arena? arena->arena : nullptr
             );
     }
     Framebuffer::~Framebuffer() {
@@ -396,7 +396,7 @@ namespace ear{
 
     Pipeline::Pipeline(
         PipelineDesc desc,
-        eau::Arena* arena
+        std::optional<eau::Arena> arena
         ) {
         std::vector<ear_vertex_attrib_desc> vertex_attribs;
         for (auto attrib : desc.vertex_attribs) vertex_attribs.push_back(ear_vertex_attrib_desc{
@@ -435,7 +435,7 @@ namespace ear{
 
                 .fill_mode = (ear_fill_mode)desc.fill_mode,
                 },
-            arena == nullptr? nullptr : arena->arena
+            arena? arena->arena : nullptr
             );
     }
     Pipeline::~Pipeline() {
@@ -451,7 +451,7 @@ namespace ear{
 
     Texarray::Texarray(
         TexarrayDesc desc,
-        eau::Arena* arena
+        std::optional<eau::Arena> arena
         ) {
         auto _desc = ear_texarray_desc{
             .filter = (ear_texture_filter)desc.filter,
@@ -464,7 +464,7 @@ namespace ear{
 
         texarray = ear_create_texarray(
             _desc,
-            arena == nullptr? nullptr : arena->arena
+            arena? arena->arena : nullptr
             );
     }
     Texarray::~Texarray() {

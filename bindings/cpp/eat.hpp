@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <optional>
 
 template <typename T>
 struct vec2{
@@ -299,12 +300,12 @@ namespace ear{
             TextureDesc desc,
             uint8_t pixels[],
             uint32_t width, uint32_t height,
-            eau::Arena* arena = nullptr
+            std::optional<eau::Arena> arena = std::nullopt
             );
         Texture(
             TextureDesc desc,
             const char* data, size_t data_size,
-            eau::Arena* arena = nullptr
+            std::optional<eau::Arena> arena = std::nullopt
             );
         ~Texture();
 
@@ -354,7 +355,7 @@ namespace ear{
             BufferDesc desc,
             void* data,
             uint32_t size,
-            eau::Arena* arena = nullptr
+            std::optional<eau::Arena> arena = std::nullopt
             );
         ~Buffer();
 
@@ -380,7 +381,7 @@ namespace ear{
 
         Framebuffer(
             FramebufferDesc desc,
-            eau::Arena* arena = nullptr
+            std::optional<eau::Arena> arena = std::nullopt
             );
         ~Framebuffer();
 
@@ -491,7 +492,7 @@ namespace ear{
 
         Pipeline(
             PipelineDesc desc,
-            eau::Arena* arena = nullptr
+            std::optional<eau::Arena> arena = std::nullopt
             );
         ~Pipeline();
 
@@ -516,7 +517,7 @@ namespace ear{
 
         Texarray(
             TexarrayDesc desc,
-            eau::Arena* arena = nullptr
+            std::optional<eau::Arena> arena = std::nullopt
             );
         ~Texarray();
 
