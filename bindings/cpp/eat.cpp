@@ -1,5 +1,4 @@
 #include "eat.hpp"
-#include "core/ear/pipeline.h"
 
 namespace eat{
     int32_t width;
