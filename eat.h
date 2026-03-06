@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "core/eaw/eaw.h"
 #include "core/ear/ear.h"
 #include "core/eau/eau.h"
@@ -36,3 +40,7 @@ bool
 eat_frame(
     void
     );
+
+#ifdef __cplusplus
+}
+#endif
