@@ -9,6 +9,7 @@
 #include "user.h"
 #include "framebuffer.h"
 #include "text.h"
+#include "texarray.h"
 
 void
 ear_init(

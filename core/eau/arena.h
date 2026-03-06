@@ -18,7 +18,7 @@ eau_delete_arena(
     eau_arena* arena
     );
 
-eau_destructor*
+void
 eau_add_to_arena(
     eau_arena* arena,
     eau_destructor** user_dest,

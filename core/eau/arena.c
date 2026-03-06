@@ -24,15 +24,15 @@ eau_delete_arena(
     free(arena);
 }
 
-eau_destructor*
+void
 eau_add_to_arena(
     eau_arena* arena,
     eau_destructor** user_dest,
     void* data,
     void (*delete)(void*)
     ) {
-    eau_destructor* dest = malloc(sizeof(eau_destructor));
-    *dest = (eau_destructor){
+    *user_dest = malloc(sizeof(eau_destructor));
+    **user_dest = (eau_destructor){
         .arena = arena,
         .data = data,
         .delete = delete,
@@ -41,8 +41,7 @@ eau_add_to_arena(
 
     ++arena->dest_amt;
     arena->dests = realloc(arena->dests, sizeof(eau_destructor) * arena->dest_amt);
-    arena->dests[arena->dest_amt-1] = dest;
-    return dest;
+    arena->dests[arena->dest_amt-1] = *user_dest;
 }
 
 void

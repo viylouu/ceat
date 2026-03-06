@@ -2,80 +2,616 @@
 
 #include "../../eat.h"
 
-#include <array>
 #include <string>
+#include <vector>
+#include <array>
+
+template <typename T>
+struct vec2{
+    T x; T y;
+
+    vec2(T x, T y);
+    vec2(T n);
+    vec2();
+
+    vec2 operator+(vec2 b);
+    vec2 operator-();
+    vec2 operator-(vec2 b);
+    vec2 operator*(vec2 b);
+    vec2 operator/(vec2 b);
+};
+
+template <typename T>
+struct vec3{
+    T x; T y; T z;
+
+    vec3(T x, T y, T z);
+    vec3(T n);
+    vec3();
+
+    vec3 operator+(vec3 b);
+    vec3 operator-();
+    vec3 operator-(vec3 b);
+    vec3 operator*(vec3 b);
+    vec3 operator/(vec3 b);
+};
+
+struct Mat4{
+    float mat[16];
+
+    Mat4();
+
+    Mat4 
+    operator*(Mat4 b);
+
+    static Mat4 
+    ortho(
+        float left, float right,
+        float bottom, float top,
+        float near, float far
+        );
+
+    Mat4
+    translate(
+        vec3<float> pos
+        );
+
+    Mat4
+    scale(
+        vec3<float> size
+        );
+
+    Mat4
+    rotate_x(
+        float ang
+        );
+    Mat4
+    rotate_y(
+        float ang
+        );
+    Mat4
+    rotate_z(
+        float ang
+        );
+};
 
 namespace eat{
-    static int32_t width;
-    static int32_t height;
+    extern int32_t width;
+    extern int32_t height;
 
-    static float time;
-    static float delta;
-    static double time64;
-    static double delta64;
+    extern float time;
+    extern float delta;
+    extern double time64;
+    extern double delta64;
 
     struct init_opts{
         bool vsync = true;
     };
 
-    static void
+    void
     init(
         std::string title,
         int32_t width, int32_t height,
         init_opts opts
         );
 
-    static void
+    void
     stop(
         void
         );
 
-    static bool
+    bool
     frame(
         void
         );
 };
+namespace eaw{
+    enum class KeyState{
+        Released,
+        Pressed,
+        Held,
+        Inactive,
+    };
 
-namespace eaw{};
+    enum class Key{
+        Escape,
+        Caps,
+        Space, Tab,
+        Backspace, Delete,
+        Home, End,
+        PageUp, PageDown,
+        Insert,
 
-namespace eau{};
+        LShift, RShift,
+        LCtrl, RCtrl,
+        LAlt, RAlt,
+        LSuper, RSuper,
 
-namespace ear{};
+        Up, Left, Right, Down,
 
-static void 
-eat::init(
-    std::string title,
-    int32_t width, int32_t height,
-    eat::init_opts opts
-    ) {
-    eat_init(
-        (char*)title.c_str(),
-        width, height,
-        eat_init_opts{
-            .vsync = opts.vsync,
-            }
+        A, B, C, D, E,
+        F, G, H, I, J,
+        K, L, M, N, O,
+        P, Q, R, S, T,
+        U, V, W, X, Y, Z,
+        
+        K1, K2, K3, K4, K5,
+        K6, K7, K8, K9, K0,
+
+        F1, F2, F3, F4,
+        F5, F6, F7, F8,
+        F9, F10, F11, F12,
+
+        Last,
+    };
+    enum class Mouse{
+        Left, Right, Middle,
+        Last,
+    };
+
+    enum class MouseMode{
+        Normal,
+        Hidden,
+        Locked,
+    };
+
+    extern vec2<float> mouse;
+    extern vec2<double> mouse64;
+    extern vec2<float> mouse_delta;
+    extern vec2<double> mouse_delta64;
+    extern vec2<float> mouse_scroll;
+    extern vec2<double> mouse_scroll64;
+
+    bool
+    is_key(
+        Key key
         );
-}
+    bool
+    is_key_pressed(
+        Key key
+        );
+    bool
+    is_key_released(
+        Key key
+        );
 
-static void
-eat::stop(
+    bool
+    is_mouse(
+        Mouse mouse
+        );
+    bool
+    is_mouse_pressed(
+        Mouse mouse
+        );
+    bool
+    is_mouse_released(
+        Mouse mouse
+        );
+
     void
-    ) {
-    eat_stop();
-}
+    set_mouse_mode(
+        MouseMode mode
+        );
+};
+namespace eau{
+    typedef struct Arena Arena;
+    struct Destructor{
+        eau_destructor* destructor;
+        Arena* arena;
+    };
 
-static bool
-eat::frame(
+    struct Arena{
+        eau_arena* arena;
+
+        Arena();
+        ~Arena();
+
+        void
+        clear();
+
+        void
+        add(
+            Arena* arena,
+            Destructor* user_dest,
+            void* data,
+            void (*delete_fn)(void* data)
+            );
+    };
+
+    struct Rect{
+        vec2<float> min;
+        vec2<float> max;
+    };
+
+    struct CollisionInfo{
+        vec3<float> norm;
+        float depth;
+    };
+
+    bool
+    aabb2d(
+        Rect a,
+        Rect b
+        );
+    bool
+    point_aabb2d(
+        vec2<float> point,
+        Rect rect
+        );
+    bool
+    aabb3d(
+        vec3<float> min1,
+        vec3<float> max1,
+        vec3<float> min2,
+        vec3<float> max2
+        );
+
+    bool
+    gjk3d(
+        std::vector<float[3]> hull1,
+        std::vector<float[3]> hull2,
+        vec3<float> (*out_simplex)[4]
+        );
+
+    CollisionInfo
+    epa3d(
+        vec3<float> simplex[4],
+        std::vector<float[3]> hull1,
+        std::vector<float[3]> hull2
+        );
+
+    char*
+    load_file(
+        std::string path,
+        size_t* out_size
+        );
+};
+namespace ear{
+    enum class TextureFilter{
+        Nearest,
+        Linear,
+    };
+
+    enum class TextureType{
+        Color,
+        Depth,
+        Hdr,
+        Hdr32,
+    };
+
+    enum class TextureWrap{
+        Repeat,
+        Clamp,
+        Color,
+    };
+
+    struct TextureDesc{
+        TextureFilter filter;
+        TextureType type;
+        TextureWrap wrap;
+            float wrap_color[4];
+    };
+
+    struct Texture{
+        ear_texture* texture;
+
+        Texture(
+            TextureDesc desc,
+            uint8_t pixels[],
+            uint32_t width, uint32_t height,
+            eau::Arena* arena = nullptr
+            );
+        Texture(
+            TextureDesc desc,
+            const char* data, size_t data_size,
+            eau::Arena* arena = nullptr
+            );
+        ~Texture();
+
+        void
+        bind(
+            uint32_t slot
+            );
+
+        std::array<float,4>
+        get_color(
+            uint32_t x, uint32_t y
+            );
+
+        void
+        set_color(
+            uint32_t x, uint32_t y,
+            float col[4]
+            );
+
+        void
+        apply_changes(
+            void
+            );
+    };
+
+    enum class BufferType{
+        Uniform,
+        Storage,
+        Vertex,
+    };
+
+    enum class BufferUsage{
+        Dynamic,
+        Static,
+    };
+
+    struct BufferDesc{
+        BufferType type;
+        BufferUsage usage;
+        uint32_t stride;
+    };
+
+    struct Buffer{
+        ear_buffer* buffer;
+
+        Buffer(
+            BufferDesc desc,
+            void* data,
+            uint32_t size,
+            eau::Arena* arena = nullptr
+            );
+        ~Buffer();
+
+        void
+        bind(
+            uint32_t slot
+            );
+
+        void
+        update(
+            void
+            );
+    };
+
+    struct FramebufferDesc{
+        std::vector<Texture*> out_colors;
+        Texture* out_depth;
+        uint32_t width; uint32_t height;
+    };
+
+    struct Framebuffer{
+        ear_framebuffer* framebuffer;
+
+        Framebuffer(
+            FramebufferDesc desc,
+            eau::Arena* arena = nullptr
+            );
+        ~Framebuffer();
+
+        void
+        bind(
+            void
+            );
+
+        void
+        set_as_default(
+            void
+            );
+    };
+
     void
-    ) {
-    bool res = eat_frame();
+    unbind_framebuffer(
+        void
+        );
 
-    eat::width = eat_width;
-    eat::height = eat_height;
-    eat::time = eat_time;
-    eat::delta = eat_delta;
-    eat::time64 = eat_time64;
-    eat::delta64 = eat_delta64;
+    void
+    unset_default_framebuffer(
+        void
+        );
 
-    return res;
-}
+
+    enum class PrimitiveType{
+        Float,
+        Int,
+    };
+
+    enum class CullMode{
+        None,
+        Front,
+        Back,
+    };
+
+    enum class FrontFace{
+        CW,
+        CCW,
+    };
+
+    enum class BlendFactor{
+        Zero,
+        One,
+        SrcColor,
+        InvSrcColor,
+        DstColor,
+        InvDstColor,
+        SrcAlpha,
+        InvSrcAlpha,
+        DstAlpha,
+        InvDstAlpha,
+    };
+
+    enum class BlendOp{
+        Add,
+        Subtract,
+        RevSubtract,
+        Min,
+        Max,
+    };
+
+    enum class FillMode{
+        Fill,
+        Line,
+    };
+
+    struct ShaderDesc{
+        char* source;
+    };
+
+    struct VertexAttribDesc{
+        uint32_t location;
+        PrimitiveType type;
+        uint32_t components;
+        bool norm;
+        uint32_t offset;
+        uint32_t slot;
+    };
+
+    struct BlendState{
+        BlendFactor src_color; BlendFactor dst_color;
+        BlendOp color_op;
+        BlendFactor src_alpha; BlendFactor dst_alpha;
+        BlendOp alpha_op;
+
+        bool used = true;
+    };
+
+    struct PipelineDesc{
+        ShaderDesc vertex;
+        ShaderDesc fragment;
+
+        std::vector<VertexAttribDesc> vertex_attribs;
+
+        bool depth = false;
+
+        CullMode cull_mode = CullMode::None;
+        FrontFace front_face;
+
+        BlendState blend_state = BlendState{ .used = false };
+
+        FillMode fill_mode = FillMode::Fill;
+    };
+
+    struct Pipeline{
+        ear_pipeline* pipeline;
+
+        Pipeline(
+            PipelineDesc desc,
+            eau::Arena* arena = nullptr
+            );
+        ~Pipeline();
+
+        void
+        bind(
+            void
+            );
+    };
+
+    struct TexarrayDesc{
+        TextureFilter filter;
+        TextureType type;
+        TextureWrap wrap;
+        float wrap_color[4];
+
+        uint32_t width; uint32_t height;
+        uint32_t layers;
+    };
+
+    struct Texarray{
+        ear_texarray* texarray;
+
+        Texarray(
+            TexarrayDesc desc,
+            eau::Arena* arena = nullptr
+            );
+        ~Texarray();
+
+        void
+        bind(
+            uint32_t slot
+            );
+
+        void
+        add(
+            Texture* tex,
+            uint32_t layer
+            );
+
+        void
+        update(
+            void
+            );
+
+        void
+        update_layer(
+            uint32_t layer
+            );
+    };
+
+    void text(Texture atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,4> col);
+    void text(Texture atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,4> col);
+    void text(Texture atlas, std::string text, float x, float y, float scale, std::array<float,4> col);
+    void text(Texture atlas, std::string text, vec2<float> pos, float scale, std::array<float,4> col);
+    void text(Texture atlas, std::string text, float x, float y, std::array<float,4> col);
+    void text(Texture atlas, std::string text, vec2<float> pos, std::array<float,4> col);
+    void text(Texture atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,3> col);
+    void text(Texture atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,3> col);
+    void text(Texture atlas, std::string text, float x, float y, float scale, std::array<float,3> col);
+    void text(Texture atlas, std::string text, vec2<float> pos, float scale, std::array<float,3> col);
+    void text(Texture atlas, std::string text, float x, float y, std::array<float,3> col);
+    void text(Texture atlas, std::string text, vec2<float> pos, std::array<float,3> col);
+    void text(Texture atlas, std::string text, float x, float y, float scalex, float scaley, float col);
+    void text(Texture atlas, std::string text, vec2<float> pos, vec2<float> scale, float col);
+    void text(Texture atlas, std::string text, float x, float y, float scale, float col);
+    void text(Texture atlas, std::string text, vec2<float> pos, float scale, float col);
+    void text(Texture atlas, std::string text, float x, float y, float col);
+    void text(Texture atlas, std::string text, vec2<float> pos, float col);
+
+    void
+    clear(
+        std::array<float,3> col
+        );
+
+    enum class DrawMode{
+        Triangles,
+        Lines,
+    };
+
+    void
+    draw(
+        int32_t vertices,
+        int32_t instances = 1,
+        DrawMode draw_mode = DrawMode::Triangles
+        );
+
+    void
+    flush(
+        void
+        );
+
+    void rect(float x, float y, float w, float h, std::array<float,4> col);
+    void rect(vec2<float> pos, vec2<float> size, std::array<float,4> col);
+    void rect(float x, float y, float w, float h, std::array<float,3> col);
+    void rect(vec2<float> pos, vec2<float> size, std::array<float,3> col);
+    void rect(float x, float y, float w, float h, float col);
+    void rect(vec2<float> pos, vec2<float> size, float col);
+
+    void tex(Texture tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, std::array<float,4> col);
+    void tex(Texture tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, std::array<float,4> col);
+    void tex(Texture tex, float x, float y, float w, float h, std::array<float,4> col);
+    void tex(Texture tex, vec2<float> pos, vec2<float> size, std::array<float,4> col);
+    void tex(Texture tex, float x, float y, float sx, float sy, float sw, float sh, std::array<float,4> col);
+    void tex(Texture tex, vec2<float> pos, std::array<float,4> samp, std::array<float,4> col);
+    void tex(Texture tex, float x, float y, std::array<float,4> col);
+    void tex(Texture tex, vec2<float> pos, std::array<float,4> col);
+    void tex(Texture tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, std::array<float,3> col);
+    void tex(Texture tex, vec2<float> pos, vec2<float> size, std::array<float,3> samp, std::array<float,4> col);
+    void tex(Texture tex, float x, float y, float w, float h, std::array<float,3> col);
+    void tex(Texture tex, vec2<float> pos, vec2<float> size, std::array<float,3> col);
+    void tex(Texture tex, float x, float y, float sx, float sy, float sw, float sh, std::array<float,3> col);
+    void tex(Texture tex, vec2<float> pos, std::array<float,3> samp, std::array<float,4> col);
+    void tex(Texture tex, float x, float y, std::array<float,3> col);
+    void tex(Texture tex, vec2<float> pos, std::array<float,3> col);
+    void tex(Texture tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, float col);
+    void tex(Texture tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, std::array<float,4> col);
+    void tex(Texture tex, float x, float y, float w, float h, float col);
+    void tex(Texture tex, vec2<float> pos, vec2<float> size, float col);
+    void tex(Texture tex, float x, float y, float sx, float sy, float sw, float sh, float col);
+    void tex(Texture tex, vec2<float> pos, std::array<float,4> samp, float col);
+    void tex(Texture tex, float x, float y, float col);
+    void tex(Texture tex, vec2<float> pos, float col);
+};
