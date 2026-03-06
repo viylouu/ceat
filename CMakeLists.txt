@@ -31,6 +31,7 @@ target_sources(ceat
             core/eau/mat4.c
             core/eau/coll.c
             core/eau/arena.c
+            core/eau/clock.c
         PUBLIC
             FILE_SET HEADERS
             BASE_DIRS
