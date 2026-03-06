@@ -1,7 +1,6 @@
 #include "ear.h"
 //#include "../cutil.h"
 
-#include "core/ear/texture.h"
 #include "data.h"
 #include "gl.h"
 
