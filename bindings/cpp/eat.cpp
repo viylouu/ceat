@@ -460,7 +460,7 @@ namespace ear{
             .width = desc.width, .height = desc.height,
             .layers = desc.layers,
             };
-        std::copy(_desc.wrap_color, desc.wrap_color, sizeof(float)*4);
+        std::copy(_desc.wrap_color, _desc.wrap_color + 4, desc.wrap_color);
 
         texarray = ear_create_texarray(
             _desc,
