@@ -2,14 +2,14 @@ package main
 
 import "core:fmt"
 
-import "../../../bindings/odin/eat"
-import "../../../bindings/odin/eaw"
-import "../../../bindings/odin/ear"
+import "../../../../bindings/odin/eat"
+import "../../../../bindings/odin/eaw"
+import "../../../../bindings/odin/ear"
 
 main :: proc() {
     eat.init(
-        "hello from odin!",
-        800, 600,
+        "window",
+        1600, 900,
         { vsync = false }
         )
     defer eat.stop()

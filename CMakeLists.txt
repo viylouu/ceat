@@ -164,12 +164,12 @@ target_link_libraries(ex_object
         ceat
 )
 
-add_executable(ex_cpp)
-target_sources(ex_cpp
+add_executable(ex_cpp_window)
+target_sources(ex_cpp_window
     PRIVATE
-        examples/foreign/cpp/main.cpp
+        examples/foreign/cpp/window/main.cpp
 )
-target_link_libraries(ex_cpp
+target_link_libraries(ex_cpp_window
     PRIVATE
         ceat
         ceat_cpp

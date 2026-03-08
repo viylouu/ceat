@@ -1,10 +1,10 @@
-#include "../../../bindings/cpp/eat.hpp"
+#include "../../../../bindings/cpp/eat.hpp"
 #include <iostream>
 
 int main(void) {
     eat::init(
-        "hello from c++!",
-        800, 600,
+        "window",
+        1600, 900,
         { .vsync = false }
         );
 
