@@ -23,6 +23,7 @@ extern float eat_delta;
 typedef struct eat_console_desc{
     bool enabled;
     eaw_key key;
+    void (*command_solver)(char* command);
 } eat_console_desc;
 
 typedef struct eat_init_opts {

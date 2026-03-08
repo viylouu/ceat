@@ -50,7 +50,7 @@ eat_console_try_do(
     underscore = true;
     last_tick_time = eaw_time;
 
-    while (!eaw_is_key_pressed(EAW_KEY_ENTER)) {
+    while (true) {
         eat_width = eaw_window_width;
         eat_height = eaw_window_height;
 
@@ -91,5 +91,11 @@ eat_console_try_do(
         eaw_frame();
 
         if (!eaw_is_open()) return;
+
+        if (eaw_is_key_pressed(EAW_KEY_ENTER)) {
+            buf[buf_amt] = 0;
+            console.command_solver(buf);
+            return;
+        }
     }
 }
