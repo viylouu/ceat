@@ -330,6 +330,8 @@ namespace eau{
         eau_object* object;
         Arena* arena;
 
+        float delta;
+
         struct position_tag {};
         struct rotation_tag {};
 
@@ -394,6 +396,7 @@ protected:
                 arena == nullptr? nullptr : arena->arena
                 );
             this->arena = arena;
+            this->delta = object->delta;
         }
         ~Object() {
             if (!arena) eau_delete_object(object);
@@ -405,6 +408,7 @@ public:
             float delta
             ) {
             eau_set_object_tickrate(object, delta);
+            this->delta = object->delta;
         }
 
         void
@@ -412,6 +416,7 @@ public:
             void
             ) {
             eau_reset_object_tickrate(object);
+            this->delta = object->delta;
         }
 
         void
