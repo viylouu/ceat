@@ -86,7 +86,7 @@ ear_tex(
 
 
 void
-ear_rev_translate(
+ear_translate(
     float x, float y
     ) {
     mat4 trans;
@@ -95,7 +95,7 @@ ear_rev_translate(
 }
 
 void
-ear_rev_scale(
+ear_scale(
     float x, float y
     ) {
     mat4 scale;
@@ -104,7 +104,7 @@ ear_rev_scale(
 }
 
 void
-ear_rev_rotate(
+ear_rotate(
     float ang
     ) {
     mat4 rot;
@@ -113,7 +113,7 @@ ear_rev_rotate(
 }
 
 void
-ear_translate(
+ear_rev_translate(
     float x, float y
     ) {
     mat4 trans;
@@ -122,7 +122,7 @@ ear_translate(
 }
 
 void
-ear_scale(
+ear_rev_scale(
     float x, float y
     ) {
     mat4 scale;
@@ -131,7 +131,7 @@ ear_scale(
 }
 
 void
-ear_rotate(
+ear_rev_rotate(
     float ang
     ) {
     mat4 rot;
