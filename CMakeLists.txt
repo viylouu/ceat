@@ -3,6 +3,9 @@ project(ceat)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 find_package(glfw3 REQUIRED)
 
 option(BUILD_LINUX "do a linux build instead of windows" ON)
@@ -180,6 +183,17 @@ target_sources(ex_cpp_window
         examples/foreign/cpp/window/main.cpp
 )
 target_link_libraries(ex_cpp_window
+    PRIVATE
+        ceat
+        ceat_cpp
+)
+
+add_executable(ex_cpp_object)
+target_sources(ex_cpp_object
+    PRIVATE
+        examples/foreign/cpp/object/main.cpp
+)
+target_link_libraries(ex_cpp_object
     PRIVATE
         ceat
         ceat_cpp
