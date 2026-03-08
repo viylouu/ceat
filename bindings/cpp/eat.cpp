@@ -9,12 +9,23 @@ namespace eat{
     double time64;
     double delta64;
 
+    void (*user_command_solver)(std::string);
+
+    void 
+    _command_solver(
+        char* command
+        ) {
+        user_command_solver(std::string(command));
+    }
+
     void 
     init(
         std::string title,
         int32_t width, int32_t height,
         init_opts opts
         ) {
+        user_command_solver = opts.console.command_solver;
+
         eat_init(
             (char*)title.c_str(),
             width, height,
@@ -23,7 +34,7 @@ namespace eat{
                 .console = eat_console_desc{
                     .enabled = opts.console.enabled,
                     .key = (eaw_key)opts.console.key,
-                    .command_solver = opts.console.command_solver,
+                    .command_solver = _command_solver,
                     },
                 }
             );

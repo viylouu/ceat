@@ -178,7 +178,7 @@ namespace eat{
     struct console_desc{
         bool enabled = false;
         eaw::Key key = eaw::Key::Enter;
-        void (*command_solver)(char* command);
+        void (*command_solver)(std::string command) = nullptr;
     };
 
     struct init_opts{
