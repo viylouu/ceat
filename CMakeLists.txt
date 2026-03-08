@@ -87,126 +87,128 @@ target_compile_options(ceat_cpp
         -std=c++20
 )
 
-add_executable(ex_window)
-target_sources(ex_window
+if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
+    add_executable(ex_window)
+    target_sources(ex_window
+            PRIVATE
+                examples/window/main.c
+        )
+    target_link_libraries(ex_window
         PRIVATE
-            examples/window/main.c
+            ceat
     )
-target_link_libraries(ex_window
-    PRIVATE
-        ceat
-)
 
-add_executable(ex_triangle)
-target_sources(ex_triangle
+    add_executable(ex_triangle)
+    target_sources(ex_triangle
+            PRIVATE
+                examples/triangle/main.c
+        )
+    target_link_libraries(ex_triangle
         PRIVATE
-            examples/triangle/main.c
+            ceat
     )
-target_link_libraries(ex_triangle
-    PRIVATE
-        ceat
-)
 
-add_executable(ex_texture)
-target_sources(ex_texture
+    add_executable(ex_texture)
+    target_sources(ex_texture
+            PRIVATE
+                examples/texture/main.c
+        )
+    target_link_libraries(ex_texture
         PRIVATE
-            examples/texture/main.c
+            ceat
     )
-target_link_libraries(ex_texture
-    PRIVATE
-        ceat
-)
-target_compile_options(ex_texture
-    PRIVATE
-        -std=c23
-)
-
-add_executable(ex_framebuffer)
-target_sources(ex_framebuffer
+    target_compile_options(ex_texture
         PRIVATE
-            examples/framebuffer/main.c
+            -std=c23
     )
-target_link_libraries(ex_framebuffer
-    PRIVATE
-        ceat
-)
-target_compile_options(ex_framebuffer
-    PRIVATE
-        -std=c23
-)
 
-add_executable(ex_text)
-target_sources(ex_text
+    add_executable(ex_framebuffer)
+    target_sources(ex_framebuffer
+            PRIVATE
+                examples/framebuffer/main.c
+        )
+    target_link_libraries(ex_framebuffer
         PRIVATE
-            examples/text/main.c
+            ceat
     )
-target_link_libraries(ex_text
-    PRIVATE
-        ceat
-)
-target_compile_options(ex_text
-    PRIVATE
-        -std=c23
-)
+    target_compile_options(ex_framebuffer
+        PRIVATE
+            -std=c23
+    )
 
-add_executable(ex_input)
-target_sources(ex_input
-    PRIVATE
-        examples/input/main.c
-)
-target_link_libraries(ex_input
-    PRIVATE
-        ceat
-)
+    add_executable(ex_text)
+    target_sources(ex_text
+            PRIVATE
+                examples/text/main.c
+        )
+    target_link_libraries(ex_text
+        PRIVATE
+            ceat
+    )
+    target_compile_options(ex_text
+        PRIVATE
+            -std=c23
+    )
 
-add_executable(ex_object)
-target_sources(ex_object
-    PRIVATE
-        examples/object/main.c
-)
-target_link_libraries(ex_object
-    PRIVATE
-        ceat
-)
+    add_executable(ex_input)
+    target_sources(ex_input
+        PRIVATE
+            examples/input/main.c
+    )
+    target_link_libraries(ex_input
+        PRIVATE
+            ceat
+    )
 
-add_executable(ex_clock)
-target_sources(ex_clock
-    PRIVATE
-        examples/clock/main.c
-)
-target_link_libraries(ex_clock
-    PRIVATE
-        ceat
-)
+    add_executable(ex_object)
+    target_sources(ex_object
+        PRIVATE
+            examples/object/main.c
+    )
+    target_link_libraries(ex_object
+        PRIVATE
+            ceat
+    )
 
-add_executable(ex_console)
-target_sources(ex_console
-    PRIVATE
-        examples/console/main.c
-)
-target_link_libraries(ex_console
-    PRIVATE
-        ceat
-)
+    add_executable(ex_clock)
+    target_sources(ex_clock
+        PRIVATE
+            examples/clock/main.c
+    )
+    target_link_libraries(ex_clock
+        PRIVATE
+            ceat
+    )
 
-add_executable(ex_cpp_window)
-target_sources(ex_cpp_window
-    PRIVATE
-        examples/foreign/cpp/window/main.cpp
-)
-target_link_libraries(ex_cpp_window
-    PRIVATE
-        ceat
-        ceat_cpp
-)
+    add_executable(ex_console)
+    target_sources(ex_console
+        PRIVATE
+            examples/console/main.c
+    )
+    target_link_libraries(ex_console
+        PRIVATE
+            ceat
+    )
 
-add_executable(ex_cpp_object)
-target_sources(ex_cpp_object
-    PRIVATE
-        examples/foreign/cpp/object/main.cpp
-)
-target_link_libraries(ex_cpp_object
-    PRIVATE
-        ceat
-        ceat_cpp
-)
+    add_executable(ex_cpp_window)
+    target_sources(ex_cpp_window
+        PRIVATE
+            examples/foreign/cpp/window/main.cpp
+    )
+    target_link_libraries(ex_cpp_window
+        PRIVATE
+            ceat
+            ceat_cpp
+    )
+
+    add_executable(ex_cpp_object)
+    target_sources(ex_cpp_object
+        PRIVATE
+            examples/foreign/cpp/object/main.cpp
+    )
+    target_link_libraries(ex_cpp_object
+        PRIVATE
+            ceat
+            ceat_cpp
+    )
+endif()
