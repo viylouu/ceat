@@ -722,62 +722,6 @@ namespace ear{
         ear_tex(tex.texture, pos.x,pos.y, tex.texture->width,tex.texture->height, 0,0,tex.texture->width,tex.texture->height, (float[4]){ col, col, col, col }); }
 };
 
-template <typename T>
-vec2<T>::vec2(T x, T y) {
-    this->x = x;
-    this->y = y;
-}
-
-template <typename T>
-vec2<T>::vec2(T n) {
-    this->x = n;
-    this->y = n;
-}
-
-template <typename T>
-vec2<T>::vec2() {
-    *this = vec2(0);
-}
-
-template <typename T>
-vec2<T> vec2<T>::operator+(vec2 b) { return vec2(x + b.x, y + b.y); }
-template <typename T>
-vec2<T> vec2<T>::operator-() { return vec2(-x, -y); }
-template <typename T>
-vec2<T> vec2<T>::operator-(vec2 b) { return *this + -b; }
-template <typename T>
-vec2<T> vec2<T>::operator*(vec2 b) { return vec2(x * b.x, y * b.y); }
-template <typename T>
-vec2<T> vec2<T>::operator/(vec2 b) { return vec2(x / b.x, y / b.y); }
-
-template <typename T>
-vec3<T>::vec3(T x, T y, T z) {
-    this->x = x;
-    this->y = y;
-    this->z = z;
-}
-
-template <typename T>
-vec3<T>::vec3(T n) {
-    *this = vec3(n,n,n);
-}
-
-template <typename T>
-vec3<T>::vec3() {
-    *this = vec3(0);
-}
-
-template <typename T>
-vec3<T> vec3<T>::operator+(vec3 b) { return vec3(x + b.x, y + b.y, z + b.z); }
-template <typename T>
-vec3<T> vec3<T>::operator-() { return vec3(-x, -y, -z); }
-template <typename T>
-vec3<T> vec3<T>::operator-(vec3 b) { return *this + -b; }
-template <typename T>
-vec3<T> vec3<T>::operator*(vec3 b) { return vec3(x * b.x, y * b.y, z * b.z); }
-template <typename T>
-vec3<T> vec3<T>::operator/(vec3 b) { return vec3(x / b.x, y / b.y, z / b.z); }
-
 
 Mat4::Mat4() {
     eau_mat4_identity(&this->mat);
