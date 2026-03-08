@@ -164,6 +164,16 @@ target_link_libraries(ex_object
         ceat
 )
 
+add_executable(ex_clock)
+target_sources(ex_clock
+    PRIVATE
+        examples/clock/main.c
+)
+target_link_libraries(ex_clock
+    PRIVATE
+        ceat
+)
+
 add_executable(ex_cpp_window)
 target_sources(ex_cpp_window
     PRIVATE

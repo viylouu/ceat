@@ -62,7 +62,7 @@ eau_reset_clock(
     eau_clock* clock
     ) {
     clock->time = 0;
-    clock->paused = true;
+    clock->time64 = 0;
 }
 
 void
@@ -102,12 +102,12 @@ eau_update_clocks(
     ) {
     if (eau_clock_ll_first == NULL) return;
 
-    for (eau_clock_ll item = *eau_clock_ll_first; item.next != NULL; item = *item.next) {
-        if (item.clock->paused) continue;
+    for (eau_clock_ll* item = eau_clock_ll_first; item != NULL; item = item->next) {
+        if (item->clock->paused) continue;
 
-        item.clock->delta64 = eaw_delta * item.clock->speed;
-        item.clock->delta = eaw_delta * item.clock->speed;
-        item.clock->time64 += item.clock->delta64;
-        item.clock->time = item.clock->time64;
+        item->clock->delta64 = eaw_delta * item->clock->speed;
+        item->clock->delta = eaw_delta * item->clock->speed;
+        item->clock->time64 += item->clock->delta64;
+        item->clock->time = item->clock->time64;
     }
 }
