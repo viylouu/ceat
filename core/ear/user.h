@@ -1,6 +1,7 @@
 #pragma once
 
 #include "texture.h"
+#include "../eau/mat4.h"
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -40,4 +41,50 @@ ear_tex(
     float w, float h,
     float sx, float sy, float sw, float sh,
     float col[4]
+    );
+
+
+void
+ear_translate(
+    float x, float y
+    );
+
+void
+ear_scale(
+    float x, float y
+    );
+
+void
+ear_rotate(
+    float ang
+    );
+
+void
+ear_rev_translate(
+    float x, float y
+    );
+
+void
+ear_rev_scale(
+    float x, float y
+    );
+
+void
+ear_rev_rotate(
+    float ang
+    );
+
+void
+ear_reset_transform(
+    void
+    );
+
+void
+ear_save_transform(
+    mat4* out
+    );
+
+void
+ear_load_transform(
+    mat4 mat
     );

@@ -740,6 +740,87 @@ namespace ear{
         ear_tex(tex->texture, x,y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, col }); }
     void tex(Texture* tex, vec2<float> pos, float col) {
         ear_tex(tex->texture, pos.x,pos.y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, col }); }
+
+    void
+    translate(
+        float x, float y
+        ) {
+        ear_translate(x,y);
+    }
+    void
+    translate(
+        vec2<float> pos
+        ) {
+        ear_translate(pos.x,pos.y);
+    }
+    void
+    scale(
+        float x, float y
+        ) {
+        ear_scale(x,y);
+    }
+    void
+    scale(
+        vec2<float> scale
+        ) {
+        ear_scale(scale.x,scale.y);
+    }
+    void
+    rotate(
+        float ang
+        ) {
+        ear_rotate(ang);
+    }
+    void
+    rev_translate(
+        float x, float y
+        ) {
+        ear_rev_translate(x,y);
+    }
+    void
+    rev_translate(
+        vec2<float> pos
+        ) {
+        ear_rev_translate(pos.x,pos.y);
+    }
+    void
+    rev_scale(
+        float x, float y
+        ) {
+        ear_rev_scale(x,y);
+    }
+    void
+    rev_scale(
+        vec2<float> scale
+        ) {
+        ear_rev_scale(scale.x,scale.y);
+    }
+    void
+    rev_rotate(
+        float ang
+        ) {
+        ear_rev_rotate(ang);
+    }
+    void
+    reset_transform(
+        void
+        ) {
+        ear_reset_transform();
+    }
+    Mat4
+    save_transform(
+        void
+        ) {
+        Mat4 mat;
+        ear_save_transform(&mat.mat);
+        return mat;
+    }
+    void
+    load_transform(
+        Mat4& mat
+        ) {
+        ear_load_transform(mat.mat);
+    }
 };
 
 

@@ -888,6 +888,59 @@ namespace ear{
     void tex(Texture* tex, vec2<float> pos, std::array<float,4> samp, float col);
     void tex(Texture* tex, float x, float y, float col);
     void tex(Texture* tex, vec2<float> pos, float col);
+
+    void
+    translate(
+        float x, float y
+        );
+    void
+    translate(
+        vec2<float> pos
+        );
+    void
+    scale(
+        float x, float y
+        );
+    void
+    scale(
+        vec2<float> scale
+        );
+    void
+    rotate(
+        float ang
+        );
+    void
+    rev_translate(
+        float x, float y
+        );
+    void
+    rev_translate(
+        vec2<float> pos
+        );
+    void
+    rev_scale(
+        float x, float y
+        );
+    void
+    rev_scale(
+        vec2<float> scale
+        );
+    void
+    rev_rotate(
+        float ang
+        );
+    void
+    reset_transform(
+        void
+        );
+    void
+    save_transform(
+        Mat4* out
+        );
+    void
+    load_transform(
+        Mat4& mat
+        );
 };
 
 template <typename T>

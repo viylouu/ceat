@@ -5,6 +5,7 @@ struct InstData {
     vec2 size;
     vec4 col;
     vec4 samp;
+    mat4 transf;
 };
 
 const vec2 verts[6] = vec2[6](
@@ -29,7 +30,7 @@ void main() {
     vec2 vert = verts[gl_VertexID];
     InstData inst = insts[gl_InstanceID];
 
-    gl_Position = proj * vec4(vert * inst.size + inst.pos, 0,1);
+    gl_Position = proj * inst.transf * vec4(vert * inst.size + inst.pos, 0,1);
 
     fUv = vert;
     fUv.y = 1-fUv.y;

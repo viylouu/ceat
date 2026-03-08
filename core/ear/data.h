@@ -10,6 +10,7 @@
 #include "../eau/mat4.h"
 
 extern mat4 proj;
+extern mat4 transf;
 
 void
 ear_user_init(
@@ -31,6 +32,7 @@ typedef struct ear_rect_rend{
             float x; float y; 
             float w; float h; 
             float r; float g; float b; float a; 
+            mat4 transf;
         } ssbo_d[4096];
         uint32_t ssbo_i;
 } ear_rect_rend;
@@ -52,6 +54,7 @@ typedef struct ear_tex_rend{
             float w; float h;
             float r; float g; float b; float a;
             float sx; float sy; float sw; float sh;
+            mat4 transf;
         } ssbo_d[4096];
         uint32_t ssbo_i;
     ear_texture* cur_tex;

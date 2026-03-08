@@ -8,6 +8,7 @@
 #include "user.h"
 
 mat4 proj;
+mat4 transf;
 
 eau_arena* arena;
 

@@ -28,4 +28,6 @@ ear_frame(
     ) {
     ear_set_default_framebuffer(NULL);
     ear_bind_framebuffer(NULL);
+
+    eau_mat4_identity(&transf);
 }

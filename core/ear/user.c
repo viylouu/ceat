@@ -7,6 +7,8 @@
 #include <GL/gl.h>
 #include <GL/glext.h>
 
+#include <string.h>
+
 GLenum
 _TYPECONV_draw_mode(
     ear_draw_mode mode
@@ -54,6 +56,7 @@ ear_rect(
     last_used = EAR_INT_LU_RECT;
 
     ear_rr.ssbo_d[ear_rr.ssbo_i] = (typeof(ear_rr.ssbo_d[0])){ x,y, w,h, col[0],col[1],col[2],col[3] };
+    memcpy((uint8_t*)(&ear_rr.ssbo_d[ear_rr.ssbo_i]) + sizeof(ear_rr.ssbo_d[0]) - sizeof(float)*16, transf, sizeof(float)*16);
     ++ear_rr.ssbo_i;
 }
 
@@ -71,8 +74,90 @@ ear_tex(
     if (ear_tr.cur_tex != tex) ear_tex_rend_flush();
     ear_tr.cur_tex = tex;
 
-    ear_tr.ssbo_d[ear_tr.ssbo_i] = (typeof(ear_tr.ssbo_d[0])){ x,y, w,h, col[0],col[1],col[2],col[3], (float)sx/tex->width,1-(float)(sh+sy)/tex->height,(float)sw/tex->width,(float)sh/tex->height };
+    ear_tr.ssbo_d[ear_tr.ssbo_i] = (typeof(ear_tr.ssbo_d[0])){ 
+        x,y, 
+        w,h, 
+        col[0],col[1],col[2],col[3], 
+        (float)sx/tex->width,1-(float)(sh+sy)/tex->height,(float)sw/tex->width,(float)sh/tex->height 
+        };
+    memcpy((uint8_t*)(&ear_tr.ssbo_d[ear_tr.ssbo_i]) + sizeof(ear_tr.ssbo_d[0]) - sizeof(float)*16, transf, sizeof(float)*16);
     ++ear_tr.ssbo_i;
+}
+
+
+void
+ear_rev_translate(
+    float x, float y
+    ) {
+    mat4 trans;
+    eau_mat4_translate(&trans, x,y,0);
+    eau_mat4_mult(&transf, trans, transf);
+}
+
+void
+ear_rev_scale(
+    float x, float y
+    ) {
+    mat4 scale;
+    eau_mat4_scale(&scale, x,y,1);
+    eau_mat4_mult(&transf, scale, transf);
+}
+
+void
+ear_rev_rotate(
+    float ang
+    ) {
+    mat4 rot;
+    eau_mat4_rotate_z(&rot, ang);
+    eau_mat4_mult(&transf, rot, transf);
+}
+
+void
+ear_translate(
+    float x, float y
+    ) {
+    mat4 trans;
+    eau_mat4_translate(&trans, x,y,0);
+    eau_mat4_mult(&transf, transf, trans);
+}
+
+void
+ear_scale(
+    float x, float y
+    ) {
+    mat4 scale;
+    eau_mat4_scale(&scale, x,y,1);
+    eau_mat4_mult(&transf, transf, scale);
+}
+
+void
+ear_rotate(
+    float ang
+    ) {
+    mat4 rot;
+    eau_mat4_rotate_z(&rot, ang);
+    eau_mat4_mult(&transf, transf, rot);
+}
+
+void
+ear_reset_transform(
+    void
+    ) {
+    eau_mat4_identity(&transf);
+}
+
+void
+ear_save_transform(
+    mat4* out
+    ) {
+    eau_mat4_copy(transf, out);
+}
+
+void
+ear_load_transform(
+    mat4 mat
+    ) {
+    eau_mat4_copy(mat, &transf);
 }
 
 

@@ -329,6 +329,17 @@ foreign ceat {
     @(link_name="ear_flush") flush :: proc() ---
     @(link_name="ear_rect") _rect :: proc(x,y,w,h: f32, col: ^f32) ---
     @(link_name="ear_tex") _tex :: proc(tex: ^_texture, x,y,w,h,sx,sy,sw,sh: f32, col: ^f32) ---
+
+
+    @(link_name="ear_translate") translate_xy :: proc(x,y: f32) ---
+    @(link_name="ear_scale") scale_xy :: proc(x,y: f32) ---
+    @(link_name="ear_rotate") rotate :: proc(ang: f32) ---
+    @(link_name="ear_rev_translate") rev_translate_xy :: proc(x,y: f32) ---
+    @(link_name="ear_rev_scale") rev_scale_xy :: proc(x,y: f32) ---
+    @(link_name="ear_rev_rotate") rev_rotate :: proc(ang: f32) ---
+    @(link_name="ear_reset_transform") reset_transform :: proc() ---
+    @(link_name="ear_save_transform") _save_transform :: proc(out: ^^f32) ---
+    @(link_name="ear_load_transform") _load_transform :: proc(mat: ^f32) ---
 }
 
 create_buffer :: proc(desc: BufferDesc, data: rawptr, size: u32, arena: ^eau.Arena = nil) -> ^Buffer {
@@ -664,3 +675,44 @@ tex_gray_wh_vec :: proc(tex: ^Texture, pos: [2]f32, size: [2]f32, col: f32) { te
 tex_rgba_vec :: proc(tex: ^Texture, pos: [2]f32, col: [4]f32) { tex_rgba_wh_vec(tex, pos, {f32(tex.width),f32(tex.height)}, col) }
 tex_rgb_vec :: proc(tex: ^Texture, pos: [2]f32, col: [3]f32) { tex_rgb_wh_vec(tex, pos, {f32(tex.width),f32(tex.height)}, col) }
 tex_gray_vec :: proc(tex: ^Texture, pos: [2]f32, col: f32) { tex_gray_wh_vec(tex, pos, {f32(tex.width),f32(tex.height)}, col) }
+
+
+translate :: proc{
+    translate_vec,
+    translate_xy,
+}
+
+translate_vec :: proc(pos: [2]f32) { translate_xy(pos.x,pos.y) }
+
+scale :: proc{
+    scale_vec,
+    scale_xy,
+}
+
+scale_vec :: proc(scale: [2]f32) { scale_xy(scale.x,scale.y) }
+
+rev_translate :: proc{
+    rev_translate_vec,
+    rev_translate_xy,
+}
+
+rev_translate_vec :: proc(pos: [2]f32) { rev_translate_xy(pos.x,pos.y) }
+
+rev_scale :: proc{
+    rev_scale_vec,
+    rev_scale_xy,
+}
+
+rev_scale_vec :: proc(scale: [2]f32) { rev_scale_xy(scale.x,scale.y) }
+
+save_transform :: proc() -> [16]f32 {
+    t: [16]f32
+    t2: ^f32 = &t[0]
+    _save_transform(&t2)
+    return t
+}
+
+load_transform :: proc(transf: [16]f32) {
+    transf := transf
+    _load_transform(&transf[0]);
+}
