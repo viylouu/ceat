@@ -15,6 +15,8 @@ target_sources(ceat
         PRIVATE
             core/eat.c
 
+            core/console/console.c
+
             core/eaw/eaw.c
             core/eaw/window.c
             core/eaw/input.c
@@ -173,6 +175,16 @@ target_sources(ex_clock
         examples/clock/main.c
 )
 target_link_libraries(ex_clock
+    PRIVATE
+        ceat
+)
+
+add_executable(ex_console)
+target_sources(ex_console
+    PRIVATE
+        examples/console/main.c
+)
+target_link_libraries(ex_console
     PRIVATE
         ceat
 )

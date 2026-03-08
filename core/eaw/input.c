@@ -18,6 +18,9 @@ float eaw_mouse_scroll_y;
     double eaw_mouse_scroll_x64;
     double eaw_mouse_scroll_y64;
 
+char eaw_text_input[1024];
+uint32_t eaw_text_input_chars;
+
 double last_mouse_x;
 double last_mouse_y;
 
@@ -92,10 +95,22 @@ _scroll_cb(
 }
 
 void
+_char_cb(
+    GLFWwindow* window,
+    unsigned int codepoint
+    ) {
+    if (eaw_text_input_chars >= 1024) return; // no clue how the fuck this would happen
+
+    eaw_text_input[eaw_text_input_chars] = codepoint;
+    ++eaw_text_input_chars;
+}
+
+void
 eaw_input_init(
     void
     ) {
     glfwSetScrollCallback(eaw_window, _scroll_cb);
+    glfwSetCharCallback(eaw_window, _char_cb);
 }
 
 void
@@ -130,6 +145,7 @@ eaw_input_frame(
     upk(PAGE_UP, PAGE_UP);
     upk(PAGE_DOWN, PAGE_DOWN);
     upk(INSERT, INSERT);
+    upk(ENTER, ENTER);
 
     upk(LSHIFT, LEFT_SHIFT);
     upk(RSHIFT, RIGHT_SHIFT);

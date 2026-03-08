@@ -20,6 +20,10 @@ namespace eat{
             width, height,
             eat_init_opts{
                 .vsync = opts.vsync,
+                .console = eat_console_desc{
+                    .enabled = opts.console.enabled,
+                    .key = (eaw_key)opts.console.key,
+                    },
                 }
             );
     }
@@ -51,6 +55,8 @@ namespace eat{
         eaw::mouse_scroll = { eaw_mouse_scroll_x, eaw_mouse_scroll_y };
         eaw::mouse_scroll64 = { eaw_mouse_scroll_x64, eaw_mouse_scroll_y64 };
 
+        eaw::text_input.assign(eaw_text_input, eaw_text_input_chars);
+
         return res;
     }
 };
@@ -61,6 +67,8 @@ namespace eaw{
     vec2<double> mouse_delta64;
     vec2<float> mouse_scroll;
     vec2<double> mouse_scroll64;
+
+    std::string text_input;
 
     bool
     is_key(

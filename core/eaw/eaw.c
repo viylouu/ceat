@@ -37,6 +37,9 @@ eaw_frame(
     eaw_mouse_scroll_y64 = 0;
 
     eaw_window_frame();
+    
+    eaw_text_input_chars = 0;
+
     glfwPollEvents();
 
     eaw_input_frame();

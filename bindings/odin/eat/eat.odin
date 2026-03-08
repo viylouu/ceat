@@ -20,8 +20,11 @@ when ODIN_OS == .Windows {
     // unsupported os!
 }
 
+
+
 _init_opts :: struct{
     vsync: bool,
+    console: ConsoleDesc,
 }
 
 @(default_calling_convention="c")
@@ -39,8 +42,14 @@ foreign ceat {
 }
 
 
+ConsoleDesc :: struct{
+    enabled: bool,
+    key: eaw.Key,
+}
+
 InitOpts :: struct{
     vsync: Maybe(bool),
+    console: Maybe(ConsoleDesc),
 }
 
 init :: proc(title: cstring, width,height: i32, opts: InitOpts) {
@@ -48,7 +57,8 @@ init :: proc(title: cstring, width,height: i32, opts: InitOpts) {
         title,
         width, height,
         _init_opts{
-            vsync = opts.vsync.? or_else true
+            vsync = opts.vsync.? or_else true,
+            console = opts.console.? or_else ConsoleDesc{ enabled = false },
             },
         );
 }
@@ -62,6 +72,8 @@ frame :: proc() -> bool {
     eaw.mouse_delta64 = { eaw._mouse_delta_x64, eaw._mouse_delta_y64 }
     eaw.mouse_scroll   = { eaw._mouse_scroll_x,   eaw._mouse_scroll_y }
     eaw.mouse_scroll64 = { eaw._mouse_scroll_x64, eaw._mouse_scroll_y64 }
+
+    //eaw.text_input = 
 
     return res
 }

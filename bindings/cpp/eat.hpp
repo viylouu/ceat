@@ -75,36 +75,6 @@ struct Mat4{
         );
 };
 
-namespace eat{
-    extern int32_t width;
-    extern int32_t height;
-
-    extern float time;
-    extern float delta;
-    extern double time64;
-    extern double delta64;
-
-    struct init_opts{
-        bool vsync = true;
-    };
-
-    void
-    init(
-        std::string title,
-        int32_t width, int32_t height,
-        init_opts opts
-        );
-
-    void
-    stop(
-        void
-        );
-
-    bool
-    frame(
-        void
-        );
-};
 namespace eaw{
     enum class KeyState{
         Released,
@@ -121,6 +91,7 @@ namespace eaw{
         Home, End,
         PageUp, PageDown,
         Insert,
+        Enter,
 
         LShift, RShift,
         LCtrl, RCtrl,
@@ -162,6 +133,8 @@ namespace eaw{
     extern vec2<float> mouse_scroll;
     extern vec2<double> mouse_scroll64;
 
+    extern std::string text_input;
+
     bool
     is_key(
         Key key
@@ -191,6 +164,42 @@ namespace eaw{
     void
     set_mouse_mode(
         MouseMode mode
+        );
+};
+namespace eat{
+    extern int32_t width;
+    extern int32_t height;
+
+    extern float time;
+    extern float delta;
+    extern double time64;
+    extern double delta64;
+
+    struct console_desc{
+        bool enabled = false;
+        eaw::Key key = eaw::Key::Enter;
+    };
+
+    struct init_opts{
+        bool vsync = true;
+        console_desc console;
+    };
+
+    void
+    init(
+        std::string title,
+        int32_t width, int32_t height,
+        init_opts opts
+        );
+
+    void
+    stop(
+        void
+        );
+
+    bool
+    frame(
+        void
         );
 };
 namespace eau{

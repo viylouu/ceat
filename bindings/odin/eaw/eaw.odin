@@ -27,6 +27,7 @@ Key :: enum i32 {
     Home, End,
     PageUp, PageDown,
     Insert,
+    Enter,
 
     LShift, RShift,
     LCtrl, RCtrl,
@@ -82,6 +83,9 @@ foreign ceat {
     @(link_name="eaw_mouse_scroll_x64") _mouse_scroll_x64: f64
     @(link_name="eaw_mouse_scroll_y64") _mouse_scroll_y64: f64
 
+    @(link_name="eaw_text_input") text_input: cstring
+    @(link_name="eaw_text_input_chars") text_input_chars: u32
+
     @(link_name="eaw_is_key")          is_key :: proc(key: Key) -> bool ---
     @(link_name="eaw_is_key_pressed")  is_key_pressed :: proc(key: Key) -> bool ---
     @(link_name="eaw_is_key_released") is_key_released :: proc(key: Key) -> bool ---
@@ -99,3 +103,5 @@ mouse_delta:   [2]f32
 mouse_delta64: [2]f64
 mouse_scroll:   [2]f32
 mouse_scroll64: [2]f64
+
+//text_input: string

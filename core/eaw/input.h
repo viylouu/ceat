@@ -19,6 +19,7 @@ typedef enum eaw_key{
     EAW_KEY_HOME, EAW_KEY_END,
     EAW_KEY_PAGE_UP, EAW_KEY_PAGE_DOWN,
     EAW_KEY_INSERT,
+    EAW_KEY_ENTER,
 
     EAW_KEY_LSHIFT, EAW_KEY_RSHIFT,
     EAW_KEY_LCTRL, EAW_KEY_RCTRL,
@@ -61,6 +62,9 @@ extern float eaw_mouse_scroll_x;
 extern float eaw_mouse_scroll_y;
     extern double eaw_mouse_scroll_x64;
     extern double eaw_mouse_scroll_y64;
+
+extern char eaw_text_input[1024];
+extern uint32_t eaw_text_input_chars;
 
 
 bool

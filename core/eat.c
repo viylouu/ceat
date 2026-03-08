@@ -1,5 +1,7 @@
 #include "../eat.h"
 
+#include "console/console.h"
+
 int32_t eat_width;
 int32_t eat_height;
 
@@ -16,12 +18,17 @@ eat_init(
     ) {
     eaw_init(title, width, height, opts.vsync);
     ear_init();
+
+    console = opts.console;
+    if (console.enabled) eat_console_init();
 }
 
 void
 eat_stop(
     void
     ) {
+    if (console.enabled) eat_console_stop();
+
     ear_stop();
     eaw_stop();
 }
@@ -32,6 +39,8 @@ eat_frame(
     ) {
     ear_frame();
     eaw_frame();
+
+    if (console.enabled) eat_console_try_do();
 
     eat_time = eaw_time;
     eat_delta = eaw_delta;

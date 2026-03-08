@@ -20,8 +20,14 @@ extern float eat_delta;
     extern double eat_delta64;
 
 
+typedef struct eat_console_desc{
+    bool enabled;
+    eaw_key key;
+} eat_console_desc;
+
 typedef struct eat_init_opts {
     bool vsync;
+    eat_console_desc console;
 } eat_init_opts;
 
 void 
