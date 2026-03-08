@@ -321,8 +321,10 @@ _obj_tick :: proc "c" (cobj: ^_object) {
 }
 
 create_object :: proc(data: $T, arena: ^Arena = nil) -> ^Object(T) {
-    obj := new_clone(Object{
-        data = new_clone(data),
+    obj := new_clone(Object(T){
+        user = {
+            data = new_clone(data),
+            },
 
         delete = delete_object,
         set_tickrate = set_object_tickrate,
@@ -388,26 +390,26 @@ create_object :: proc(data: $T, arena: ^Arena = nil) -> ^Object(T) {
             case runtime.Type_Info_Float:
                 ptr := (^rawptr)(uintptr(obj.data) + str.offsets[i])
 
-                if rot_arr.size == size_of(f32) do obj.rot2d = (^f32)(ptr)
-                else if rot_arr.size == size_of(f64) do obj.rot2d64 = (^f64)(ptr)
+                if rot_arr.size == size_of(f32) do obj.user.rot2d = (^f32)(ptr)
+                else if rot_arr.size == size_of(f64) do obj.user.rot2d64 = (^f64)(ptr)
             }
         }
     }
 
     obj.object = _create_object(_object_desc{
-            .pos3d = obj.user.pos3d == nil? { nil } : { &obj.user.pos3d.x, &obj.user.pos3d.y, &obj.user.pos3d.z },
-            .pos3d64 = obj.user.pos3d64 == nil? { nil } : { &obj.user.pos3d64.x, &obj.user.pos3d64.y, &obj.user.pos3d64.z },
-            .rot3d = obj.user.rot3d == nil? { nil } : { &obj.user.rot3d.x, &obj.user.rot3d.y, &obj.user.rot3d.z },
-            .rot3d64 = obj.user.rot3d64 == nil? { nil } : { &obj.user.rot3d64.x, &obj.user.rot3d64.y, &obj.user.rot3d64.z },
-            .pos2d = obj.user.pos2d == nil? { nil } : { &obj.user.pos2d.x, &obj.user.pos2d.y },
-            .pos2d64 = obj.user.pos2d64 == nil? { nil } : { &obj.user.pos2d64.x, &obj.user.pos2d64.y },
-            .rot2d = obj.user.rot2d == nil? nil : &obj.user.rot2d,
-            .rot2d64 = obj.user.rot2d64 == nil? nil : &obj.user.rot2d64,
+            pos3d = obj.user.pos3d == nil? { nil,nil,nil } : { &obj.user.pos3d.x, &obj.user.pos3d.y, &obj.user.pos3d.z },
+            pos3d64 = obj.user.pos3d64 == nil? { nil,nil,nil } : { &obj.user.pos3d64.x, &obj.user.pos3d64.y, &obj.user.pos3d64.z },
+            rot3d = obj.user.rot3d == nil? { nil,nil,nil } : { &obj.user.rot3d.x, &obj.user.rot3d.y, &obj.user.rot3d.z },
+            rot3d64 = obj.user.rot3d64 == nil? { nil,nil,nil } : { &obj.user.rot3d64.x, &obj.user.rot3d64.y, &obj.user.rot3d64.z },
+            pos2d = obj.user.pos2d == nil? { nil,nil } : { &obj.user.pos2d.x, &obj.user.pos2d.y },
+            pos2d64 = obj.user.pos2d64 == nil? { nil,nil } : { &obj.user.pos2d64.x, &obj.user.pos2d64.y },
+            rot2d = obj.user.rot2d == nil? nil : obj.user.rot2d,
+            rot2d64 = obj.user.rot2d64 == nil? nil : obj.user.rot2d64,
 
-            .init = obj.user.init == nil? nil : _obj_init,
-            .stop = obj.user.stop == nil? nil : _obj_stop,
-            .draw = obj.user.draw == nil? nil : _obj_draw,
-            .tick = obj.user.tick == nil? nil : _obj_tick,
+            init = obj.user.init == nil? nil : _obj_init,
+            stop = obj.user.stop == nil? nil : _obj_stop,
+            draw = obj.user.draw == nil? nil : _obj_draw,
+            tick = obj.user.tick == nil? nil : _obj_tick,
             },
         obj,
         arena == nil? nil : arena.arena
@@ -421,15 +423,15 @@ delete_object :: proc(object: ^Object($T)) {
     free(object)
 }
 
-set_tickrates :: proc(delta: f32) {
+set_object_tickrates :: proc(delta: f32) {
     _set_object_tickrates(delta)
 }
 
-set_tickrate :: proc(object: ^Object($T), delta: f32) {
+set_object_tickrate :: proc(object: ^Object($T), delta: f32) {
     _set_object_tickrate(object.object, delta)
 }
 
-reset_tickrate :: proc(object: ^Object($T)) {
+reset_object_tickrate :: proc(object: ^Object($T)) {
     _reset_object_tickrate(object.object)
 }
 
