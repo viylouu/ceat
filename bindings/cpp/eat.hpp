@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <math.h>
 
 template <typename T>
 struct vec2{
@@ -19,6 +20,10 @@ struct vec2{
     vec2 operator-(vec2 b);
     vec2 operator*(vec2 b);
     vec2 operator/(vec2 b);
+    vec2 operator*(T b);
+    vec2 operator/(T b);
+
+    vec2 norm();
 };
 
 template <typename T>
@@ -34,6 +39,10 @@ struct vec3{
     vec3 operator-(vec3 b);
     vec3 operator*(vec3 b);
     vec3 operator/(vec3 b);
+    vec3 operator*(T b);
+    vec3 operator/(T b);
+
+    vec3 norm();
 };
 
 struct Mat4{
@@ -970,6 +979,16 @@ template <typename T>
 vec2<T> vec2<T>::operator*(vec2 b) { return vec2(x * b.x, y * b.y); }
 template <typename T>
 vec2<T> vec2<T>::operator/(vec2 b) { return vec2(x / b.x, y / b.y); }
+template <typename T>
+vec2<T> vec2<T>::operator*(T b) { return vec2(x * b, y * b); }
+template <typename T>
+vec2<T> vec2<T>::operator/(T b) { return vec2(x / b, y / b); }
+
+template <typename T>
+vec2<T> vec2<T>::norm() {
+    T mag = sqrt(x*x + y*y);
+    return *this / mag;
+}
 
 template <typename T>
 vec3<T>::vec3(T x, T y, T z) {
@@ -998,4 +1017,13 @@ template <typename T>
 vec3<T> vec3<T>::operator*(vec3 b) { return vec3(x * b.x, y * b.y, z * b.z); }
 template <typename T>
 vec3<T> vec3<T>::operator/(vec3 b) { return vec3(x / b.x, y / b.y, z / b.z); }
+template <typename T>
+vec3<T> vec3<T>::operator*(T b) { return vec3(x * b, y * b, z * b); }
+template <typename T>
+vec3<T> vec3<T>::operator/(T b) { return vec3(x / b, y / b, z / b); }
 
+template <typename T>
+vec3<T> vec3<T>::norm() {
+    T mag = sqrt(x*x + y*y + z*z);
+    return *this / mag;
+}
