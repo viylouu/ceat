@@ -451,22 +451,22 @@ private:
         virtual void
         on_init(
             void
-            ) = 0;
+            ) {}
 
         virtual void
         on_stop(
             void
-            ) = 0;
+            ) {}
 
         virtual void
         on_draw(
             void
-            ) = 0;
+            ) {}
 
         virtual void
         on_tick(
             void
-            ) = 0;
+            ) {}
 
         friend void _object_init<T>(eau_object*);
         friend void _object_tick<T>(eau_object*);
