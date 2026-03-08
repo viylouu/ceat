@@ -11,7 +11,7 @@ extern GLFWwindow* eaw_window;
 
 void
 eaw_window_init(
-    char* title,
+    const char* title,
     int32_t width, int32_t height,
     bool vsync
     );

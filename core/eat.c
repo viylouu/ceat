@@ -10,7 +10,7 @@ float eat_delta;
 
 void 
 eat_init(
-    char* title,
+    const char* title,
     int32_t width, int32_t height,
     eat_init_opts opts
     ) {

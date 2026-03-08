@@ -42,7 +42,7 @@ struct Mat4{
     Mat4();
 
     Mat4 
-    operator*(Mat4 b);
+    operator*(const Mat4& b);
 
     static Mat4 
     ortho(

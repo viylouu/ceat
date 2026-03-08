@@ -193,10 +193,10 @@ namespace eau{
             );
 
         if (out_simplex) {
-            *out_simplex[0] = { simpl[0][0], simpl[0][1], simpl[0][2] };
-            *out_simplex[1] = { simpl[1][0], simpl[1][1], simpl[1][2] };
-            *out_simplex[2] = { simpl[2][0], simpl[2][1], simpl[2][2] };
-            *out_simplex[3] = { simpl[3][0], simpl[3][1], simpl[3][2] };
+            (*out_simplex)[0] = { simpl[0][0], simpl[0][1], simpl[0][2] };
+            (*out_simplex)[1] = { simpl[1][0], simpl[1][1], simpl[1][2] };
+            (*out_simplex)[2] = { simpl[2][0], simpl[2][1], simpl[2][2] };
+            (*out_simplex)[3] = { simpl[3][0], simpl[3][1], simpl[3][2] };
         }
 
         return res;
@@ -209,10 +209,10 @@ namespace eau{
         std::vector<float[3]> hull2
         ) {
         float simpl[4][3] = {
-            simplex[0].x, simplex[0].y, simplex[0].z,
-            simplex[1].x, simplex[1].y, simplex[1].z,
-            simplex[2].x, simplex[2].y, simplex[2].z,
-            simplex[3].x, simplex[3].y, simplex[3].z,
+            { simplex[0].x, simplex[0].y, simplex[0].z, },
+            { simplex[1].x, simplex[1].y, simplex[1].z, },
+            { simplex[2].x, simplex[2].y, simplex[2].z, },
+            { simplex[3].x, simplex[3].y, simplex[3].z, },
             };
         eau_collision_info info = eau_epa3d(
             simpl,
@@ -341,7 +341,7 @@ namespace ear{
                 .type = (ear_texture_type)desc.type,
                 .wrap = (ear_texture_wrap)desc.wrap,
             };
-        std::copy(_desc.wrap_color, _desc.wrap_color + 4, desc.wrap_color);
+        std::copy(desc.wrap_color, desc.wrap_color + 4, _desc.wrap_color);
 
         texture = ear_create_texture(
             _desc,
@@ -361,7 +361,7 @@ namespace ear{
                 .type = (ear_texture_type)desc.type,
                 .wrap = (ear_texture_wrap)desc.wrap,
             };
-        std::copy(_desc.wrap_color, _desc.wrap_color + 4, desc.wrap_color);
+        std::copy(desc.wrap_color, desc.wrap_color + 4, _desc.wrap_color);
 
         texture = ear_load_texture(
             _desc,
@@ -558,7 +558,7 @@ namespace ear{
             .width = desc.width, .height = desc.height,
             .layers = desc.layers,
             };
-        std::copy(_desc.wrap_color, _desc.wrap_color + 4, desc.wrap_color);
+        std::copy(desc.wrap_color, desc.wrap_color + 4, _desc.wrap_color);
 
         texarray = ear_create_texarray(
             _desc,
@@ -744,7 +744,7 @@ vec2<T> vec2<T>::operator+(vec2 b) { return vec2(x + b.x, y + b.y); }
 template <typename T>
 vec2<T> vec2<T>::operator-() { return vec2(-x, -y); }
 template <typename T>
-vec2<T> vec2<T>::operator-(vec2 b) { return this + -b; }
+vec2<T> vec2<T>::operator-(vec2 b) { return *this + -b; }
 template <typename T>
 vec2<T> vec2<T>::operator*(vec2 b) { return vec2(x * b.x, y * b.y); }
 template <typename T>
@@ -772,7 +772,7 @@ vec3<T> vec3<T>::operator+(vec3 b) { return vec3(x + b.x, y + b.y, z + b.z); }
 template <typename T>
 vec3<T> vec3<T>::operator-() { return vec3(-x, -y, -z); }
 template <typename T>
-vec3<T> vec3<T>::operator-(vec3 b) { return this + -b; }
+vec3<T> vec3<T>::operator-(vec3 b) { return *this + -b; }
 template <typename T>
 vec3<T> vec3<T>::operator*(vec3 b) { return vec3(x * b.x, y * b.y, z * b.z); }
 template <typename T>
@@ -784,9 +784,10 @@ Mat4::Mat4() {
 }
 
 Mat4 
-Mat4::operator*(Mat4 b) {
-    eau_mat4_mult(&this->mat, this->mat, b.mat);
-    return *this;
+Mat4::operator*(const Mat4& b) {
+    Mat4 res;
+    eau_mat4_mult(&res.mat, res.mat, b.mat);
+    return res;
 }
 
 Mat4 
@@ -809,36 +810,41 @@ Mat4
 Mat4::translate(
     vec3<float> pos
     ) {
-    eau_mat4_translate(&this->mat, pos.x,pos.y,pos.z);
-    return *this;
+    Mat4 res;
+    eau_mat4_translate(&res.mat, pos.x,pos.y,pos.z);
+    return res;
 }
 
 Mat4
 Mat4::scale(
     vec3<float> size
     ) {
-    eau_mat4_scale(&this->mat, size.x,size.y,size.z);
-    return *this;
+    Mat4 res;
+    eau_mat4_scale(&res.mat, size.x,size.y,size.z);
+    return res;
 }
 
 Mat4
 Mat4::rotate_x(
     float ang
     ) {
-    eau_mat4_rotate_x(&this->mat, ang);
-    return *this;
+    Mat4 res;
+    eau_mat4_rotate_x(&res.mat, ang);
+    return res;
 }
 Mat4
 Mat4::rotate_y(
     float ang
     ) {
-    eau_mat4_rotate_y(&this->mat, ang);
-    return *this;
+    Mat4 res;
+    eau_mat4_rotate_y(&res.mat, ang);
+    return res;
 }
 Mat4
 Mat4::rotate_z(
     float ang
     ) {
-    eau_mat4_rotate_z(&this->mat, ang);
-    return *this;
+    Mat4 res;
+    eau_mat4_rotate_z(&res.mat, ang);
+    return res;
 }
