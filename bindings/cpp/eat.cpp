@@ -23,6 +23,7 @@ namespace eat{
                 .console = eat_console_desc{
                     .enabled = opts.console.enabled,
                     .key = (eaw_key)opts.console.key,
+                    .command_solver = opts.console.command_solver,
                     },
                 }
             );

@@ -45,6 +45,7 @@ foreign ceat {
 ConsoleDesc :: struct{
     enabled: bool,
     key: eaw.Key,
+    command_solver: proc "c" (command: cstring),
 }
 
 InitOpts :: struct{
