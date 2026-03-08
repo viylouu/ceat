@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include "texture.h"
+#include "user.h"
 
 void
 ear_text(
@@ -11,5 +12,6 @@ ear_text(
     char* text,
     float x, float y,
     float scalex, float scaley,
-    float col[4]
+    float col[4],
+    ear_align align
     );

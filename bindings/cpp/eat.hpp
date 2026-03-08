@@ -825,24 +825,30 @@ namespace ear{
             );
     };
 
-    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,4> col);
-    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,4> col);
-    void text(Texture* atlas, std::string text, float x, float y, float scale, std::array<float,4> col);
-    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, std::array<float,4> col);
-    void text(Texture* atlas, std::string text, float x, float y, std::array<float,4> col);
-    void text(Texture* atlas, std::string text, vec2<float> pos, std::array<float,4> col);
-    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,3> col);
-    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,3> col);
-    void text(Texture* atlas, std::string text, float x, float y, float scale, std::array<float,3> col);
-    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, std::array<float,3> col);
-    void text(Texture* atlas, std::string text, float x, float y, std::array<float,3> col);
-    void text(Texture* atlas, std::string text, vec2<float> pos, std::array<float,3> col);
-    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, float col);
-    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, float col);
-    void text(Texture* atlas, std::string text, float x, float y, float scale, float col);
-    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, float col);
-    void text(Texture* atlas, std::string text, float x, float y, float col);
-    void text(Texture* atlas, std::string text, vec2<float> pos, float col);
+    enum class Align{
+        TopLeft, Top, TopRight,
+        MidLeft, Mid, MidRight,
+        BotLeft, Bot, BotRight,
+    };
+
+    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,4> col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,4> col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, float x, float y, float scale, std::array<float,4> col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, std::array<float,4> col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, float x, float y, std::array<float,4> col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, vec2<float> pos, std::array<float,4> col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,3> col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,3> col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, float x, float y, float scale, std::array<float,3> col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, std::array<float,3> col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, float x, float y, std::array<float,3> col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, vec2<float> pos, std::array<float,3> col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, float col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, float col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, float x, float y, float scale, float col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, float col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, float x, float y, float col, Align align = Align::TopLeft);
+    void text(Texture* atlas, std::string text, vec2<float> pos, float col, Align align = Align::TopLeft);
 
     void
     clear(
@@ -866,37 +872,37 @@ namespace ear{
         void
         );
 
-    void rect(float x, float y, float w, float h, std::array<float,4> col);
-    void rect(vec2<float> pos, vec2<float> size, std::array<float,4> col);
-    void rect(float x, float y, float w, float h, std::array<float,3> col);
-    void rect(vec2<float> pos, vec2<float> size, std::array<float,3> col);
-    void rect(float x, float y, float w, float h, float col);
-    void rect(vec2<float> pos, vec2<float> size, float col);
+    void rect(float x, float y, float w, float h, std::array<float,4> col, Align align = Align::TopLeft);
+    void rect(vec2<float> pos, vec2<float> size, std::array<float,4> col, Align align = Align::TopLeft);
+    void rect(float x, float y, float w, float h, std::array<float,3> col, Align align = Align::TopLeft);
+    void rect(vec2<float> pos, vec2<float> size, std::array<float,3> col, Align align = Align::TopLeft);
+    void rect(float x, float y, float w, float h, float col, Align align = Align::TopLeft);
+    void rect(vec2<float> pos, vec2<float> size, float col, Align align = Align::TopLeft);
 
-    void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, std::array<float,4> col);
-    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, std::array<float,4> col);
-    void tex(Texture* tex, float x, float y, float w, float h, std::array<float,4> col);
-    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> col);
-    void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, std::array<float,4> col);
-    void tex(Texture* tex, vec2<float> pos, std::array<float,4> samp, std::array<float,4> col);
-    void tex(Texture* tex, float x, float y, std::array<float,4> col);
-    void tex(Texture* tex, vec2<float> pos, std::array<float,4> col);
-    void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, std::array<float,3> col);
-    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,3> samp, std::array<float,4> col);
-    void tex(Texture* tex, float x, float y, float w, float h, std::array<float,3> col);
-    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,3> col);
-    void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, std::array<float,3> col);
-    void tex(Texture* tex, vec2<float> pos, std::array<float,3> samp, std::array<float,4> col);
-    void tex(Texture* tex, float x, float y, std::array<float,3> col);
-    void tex(Texture* tex, vec2<float> pos, std::array<float,3> col);
-    void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, float col);
-    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, float col);
-    void tex(Texture* tex, float x, float y, float w, float h, float col);
-    void tex(Texture* tex, vec2<float> pos, vec2<float> size, float col);
-    void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, float col);
-    void tex(Texture* tex, vec2<float> pos, std::array<float,4> samp, float col);
-    void tex(Texture* tex, float x, float y, float col);
-    void tex(Texture* tex, vec2<float> pos, float col);
+    void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, std::array<float,4> col, Align align = Align::TopLeft);
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, std::array<float,4> col, Align align = Align::TopLeft);
+    void tex(Texture* tex, float x, float y, float w, float h, std::array<float,4> col, Align align = Align::TopLeft);
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> col, Align align = Align::TopLeft);
+    void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, std::array<float,4> col, Align align = Align::TopLeft);
+    void tex(Texture* tex, vec2<float> pos, std::array<float,4> samp, std::array<float,4> col, Align align = Align::TopLeft);
+    void tex(Texture* tex, float x, float y, std::array<float,4> col, Align align = Align::TopLeft);
+    void tex(Texture* tex, vec2<float> pos, std::array<float,4> col, Align align = Align::TopLeft);
+    void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, std::array<float,3> col, Align align = Align::TopLeft);
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,3> samp, std::array<float,4> col, Align align = Align::TopLeft);
+    void tex(Texture* tex, float x, float y, float w, float h, std::array<float,3> col, Align align = Align::TopLeft);
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,3> col, Align align = Align::TopLeft);
+    void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, std::array<float,3> col, Align align = Align::TopLeft);
+    void tex(Texture* tex, vec2<float> pos, std::array<float,3> samp, std::array<float,4> col, Align align = Align::TopLeft);
+    void tex(Texture* tex, float x, float y, std::array<float,3> col, Align align = Align::TopLeft);
+    void tex(Texture* tex, vec2<float> pos, std::array<float,3> col, Align align = Align::TopLeft);
+    void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, float col, Align align = Align::TopLeft);
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, float col, Align align = Align::TopLeft);
+    void tex(Texture* tex, float x, float y, float w, float h, float col, Align align = Align::TopLeft);
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, float col, Align align = Align::TopLeft);
+    void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, float col, Align align = Align::TopLeft);
+    void tex(Texture* tex, vec2<float> pos, std::array<float,4> samp, float col, Align align = Align::TopLeft);
+    void tex(Texture* tex, float x, float y, float col, Align align = Align::TopLeft);
+    void tex(Texture* tex, vec2<float> pos, float col, Align align = Align::TopLeft);
 
     void
     translate(

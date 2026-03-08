@@ -30,10 +30,10 @@ int main(void) {
     while (eat_frame()) {
         ear_bind_framebuffer(fb);
         ear_clear((float[3]){ .2f, .3f, .4f });
-        ear_tex(tex, 0,0, 64,64, 0,0,299,291, (float[4]){ 1,1,1,1 });
+        ear_tex(tex, 0,0, 64,64, 0,0,299,291, (float[4]){ 1,1,1,1 }, EAR_ALIGN_TOP_LEFT);
 
         ear_bind_framebuffer(NULL);
-        ear_tex(fbtex, 0,eat_height, eat_width,-eat_height, 0,0,128,128, (float[4]){ 1,1,1,1 });
+        ear_tex(fbtex, 0,eat_height, eat_width,-eat_height, 0,0,128,128, (float[4]){ 1,1,1,1 }, EAR_ALIGN_TOP_LEFT);
 
         printf("%.3f FPS\n", 1./eat_delta64);
     }

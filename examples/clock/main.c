@@ -28,9 +28,9 @@ int main(void) {
         char buf[64];
         snprintf(buf, sizeof(buf), "%.3f", clock->time);
 
-        ear_text(font, buf, 0,0, 4,4, (float[4]){ 1,1,1,1 });
+        ear_text(font, buf, 0,0, 4,4, (float[4]){ 1,1,1,1 }, EAR_ALIGN_TOP_LEFT);
 
-        ear_text(font, "space to start/stop\nr to reset\nleft/right to decrease/increase speed by 1", 0,64, 4,4, (float[4]){ 1,1,1,1 });
+        ear_text(font, "space to start/stop\nr to reset\nleft/right to decrease/increase speed by 1", 0,64, 4,4, (float[4]){ 1,1,1,1 }, EAR_ALIGN_TOP_LEFT);
 
         if (eaw_is_key_pressed(EAW_KEY_SPACE)) {
             paused = !paused;

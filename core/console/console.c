@@ -54,7 +54,7 @@ eat_console_try_do(
         eat_width = eaw_window_width;
         eat_height = eaw_window_height;
 
-        ear_rect(0, eat_height/2. - font->height/16./2*3., eat_width, font->height/16.*3, (float[4]){ 0,0,0,1 });
+        ear_rect(0, eat_height/2., eat_width, font->height/16.*3, (float[4]){ 0,0,0,1 }, EAR_ALIGN_MID_LEFT);
 
         for (uint32_t i = 0; i < eaw_text_input_chars; ++i) {
             buf[buf_amt] = eaw_text_input[i];
@@ -85,7 +85,7 @@ eat_console_try_do(
         else buf[buf_amt] = 0;
         buf[buf_amt+1] = 0;
 
-        ear_text(font, buf, 0, eat_height/2. - font->height/16./2*3, 3,3, (float[4]){ 1,1,1,1 });
+        ear_text(font, buf, 0, eat_height/2., 3,3, (float[4]){ 1,1,1,1 }, EAR_ALIGN_MID_LEFT);
 
         ear_frame();
         eaw_frame();

@@ -17,7 +17,7 @@ int main(void) {
         if (eaw_is_key(EAW_KEY_UP)) y -= eat_delta * speed;
         if (eaw_is_key(EAW_KEY_DOWN)) y += eat_delta * speed;
 
-        ear_rect(x,y, 64,64, eaw_is_mouse(EAW_MOUSE_LEFT)? (float[4]){ 0,1,0,1 } : (float[4]){ 1,0,0,1 });
+        ear_rect(x,y, 64,64, eaw_is_mouse(EAW_MOUSE_LEFT)? (float[4]){ 0,1,0,1 } : (float[4]){ 1,0,0,1 }, EAR_ALIGN_TOP_LEFT);
 
         printf("%.3f FPS\n", 1./eat_delta64);
     }

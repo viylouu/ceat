@@ -27,11 +27,18 @@ ear_flush(
     );
 
 
+typedef enum ear_align{
+    EAR_ALIGN_TOP_LEFT, EAR_ALIGN_TOP, EAR_ALIGN_TOP_RIGHT,
+    EAR_ALIGN_MID_LEFT, EAR_ALIGN_MID, EAR_ALIGN_MID_RIGHT,
+    EAR_ALIGN_BOT_LEFT, EAR_ALIGN_BOT, EAR_ALIGN_BOT_RIGHT,
+} ear_align;
+
 void
 ear_rect(
     float x, float y,
     float w, float h,
-    float col[4]
+    float col[4],
+    ear_align align
     );
 
 void
@@ -40,7 +47,8 @@ ear_tex(
     float x, float y,
     float w, float h,
     float sx, float sy, float sw, float sh,
-    float col[4]
+    float col[4],
+    ear_align align
     );
 
 
@@ -87,4 +95,12 @@ ear_save_transform(
 void
 ear_load_transform(
     mat4 mat
+    );
+
+
+
+void
+_CONV_topleftify(
+    float (*rect)[4],
+    ear_align align
     );

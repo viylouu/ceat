@@ -49,13 +49,21 @@ void
 ear_rect(
     float x, float y,
     float w, float h,
-    float col[4]
+    float col[4],
+    ear_align align
     ) {
     if (ear_rr.ssbo_i == sizeof(ear_rr.ssbo_d)/sizeof(ear_rr.ssbo_d[0])) ear_rect_rend_flush();
     if (last_used != EAR_INT_LU_RECT) ear_flush();
     last_used = EAR_INT_LU_RECT;
 
-    ear_rr.ssbo_d[ear_rr.ssbo_i] = (typeof(ear_rr.ssbo_d[0])){ x,y, w,h, col[0],col[1],col[2],col[3] };
+    float rect[4] = { x,y,w,h };
+    _CONV_topleftify(&rect, align);
+
+    ear_rr.ssbo_d[ear_rr.ssbo_i] = (typeof(ear_rr.ssbo_d[0])){ 
+        rect[0],rect[1],
+        rect[2],rect[3], 
+        col[0],col[1],col[2],col[3] 
+        };
     memcpy((uint8_t*)(&ear_rr.ssbo_d[ear_rr.ssbo_i]) + sizeof(ear_rr.ssbo_d[0]) - sizeof(float)*16, transf, sizeof(float)*16);
     ++ear_rr.ssbo_i;
 }
@@ -66,7 +74,8 @@ ear_tex(
     float x, float y,
     float w, float h,
     float sx, float sy, float sw, float sh,
-    float col[4]
+    float col[4],
+    ear_align align
     ) {
     if (ear_tr.ssbo_i == sizeof(ear_tr.ssbo_d)/sizeof(ear_tr.ssbo_d[0])) ear_tex_rend_flush();
     if (last_used != EAR_INT_LU_TEX) ear_flush();
@@ -74,9 +83,12 @@ ear_tex(
     if (ear_tr.cur_tex != tex) ear_tex_rend_flush();
     ear_tr.cur_tex = tex;
 
+    float rect[4] = { x,y,w,h };
+    _CONV_topleftify(&rect, align);
+
     ear_tr.ssbo_d[ear_tr.ssbo_i] = (typeof(ear_tr.ssbo_d[0])){ 
-        x,y, 
-        w,h, 
+        rect[0],rect[1],
+        rect[2],rect[3], 
         col[0],col[1],col[2],col[3], 
         (float)sx/tex->width,1-(float)(sh+sy)/tex->height,(float)sw/tex->width,(float)sh/tex->height 
         };
@@ -173,4 +185,27 @@ _TYPECONV_draw_mode(
     }
 
     eat_unreachable();
+}
+
+void
+_CONV_topleftify(
+    float (*rect)[4],
+    ear_align align
+    ) {
+    float offx; float offy;
+
+    switch (align) {
+    case EAR_ALIGN_TOP_LEFT:  offx = 0;  offy = 0;
+    case EAR_ALIGN_TOP:       offx = .5; offy = 0;
+    case EAR_ALIGN_TOP_RIGHT: offx = 1;  offy = 0;
+    case EAR_ALIGN_MID_LEFT:  offx = 0;  offy = .5;
+    case EAR_ALIGN_MID:       offx = .5; offy = .5;
+    case EAR_ALIGN_MID_RIGHT: offx = 1;  offy = .5;
+    case EAR_ALIGN_BOT_LEFT:  offx = 0;  offy = 1;
+    case EAR_ALIGN_BOT:       offx = .5; offy = 1;
+    case EAR_ALIGN_BOT_RIGHT: offx = 1;  offy = 1;
+    }
+
+    (*rect)[0] = (*rect)[0] - (*rect)[2] * offx;
+    (*rect)[1] = (*rect)[1] - (*rect)[3] * offy;
 }

@@ -619,42 +619,42 @@ namespace ear{
         ear_update_texarray_layer(texarray, layer);
     }
 
-    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,4> col) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, scalex,scaley, (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,4> col) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale.x,scale.y, (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void text(Texture* atlas, std::string text, float x, float y, float scale, std::array<float,4> col) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, scale,scale, (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, std::array<float,4> col) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale,scale, (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void text(Texture* atlas, std::string text, float x, float y, std::array<float,4> col) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, 1,1, (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, std::array<float,4> col) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, 1,1, (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,3> col) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, scalex,scaley, (float[4]){ col[0], col[1], col[2], 1 }); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,3> col) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale.x,scale.y, (float[4]){ col[0], col[1], col[2], 1 }); }
-    void text(Texture* atlas, std::string text, float x, float y, float scale, std::array<float,3> col) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, scale,scale, (float[4]){ col[0], col[1], col[2], 1 }); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, std::array<float,3> col) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale,scale, (float[4]){ col[0], col[1], col[2], 1 }); }
-    void text(Texture* atlas, std::string text, float x, float y, std::array<float,3> col) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, 1,1, (float[4]){ col[0], col[1], col[2], 1 }); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, std::array<float,3> col) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, 1,1, (float[4]){ col[0], col[1], col[2], 1 }); }
-    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, float col) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, scalex,scaley, (float[4]){ col, col, col, 1 }); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, float col) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale.x,scale.y, (float[4]){ col, col, col, 1 }); }
-    void text(Texture* atlas, std::string text, float x, float y, float scale, float col) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, scale,scale, (float[4]){ col, col, col, 1 }); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, float col) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale,scale, (float[4]){ col, col, col, 1 }); }
-    void text(Texture* atlas, std::string text, float x, float y, float col) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, 1,1, (float[4]){ col, col, col, 1 }); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, float col) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, 1,1, (float[4]){ col, col, col, 1 }); }
+    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,4> col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), x,y, scalex,scaley, (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,4> col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale.x,scale.y, (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, float x, float y, float scale, std::array<float,4> col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), x,y, scale,scale, (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, std::array<float,4> col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale,scale, (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, float x, float y, std::array<float,4> col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), x,y, 1,1, (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, vec2<float> pos, std::array<float,4> col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, 1,1, (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,3> col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), x,y, scalex,scaley, (float[4]){ col[0], col[1], col[2], 1 }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,3> col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale.x,scale.y, (float[4]){ col[0], col[1], col[2], 1 }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, float x, float y, float scale, std::array<float,3> col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), x,y, scale,scale, (float[4]){ col[0], col[1], col[2], 1 }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, std::array<float,3> col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale,scale, (float[4]){ col[0], col[1], col[2], 1 }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, float x, float y, std::array<float,3> col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), x,y, 1,1, (float[4]){ col[0], col[1], col[2], 1 }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, vec2<float> pos, std::array<float,3> col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, 1,1, (float[4]){ col[0], col[1], col[2], 1 }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, float col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), x,y, scalex,scaley, (float[4]){ col, col, col, 1 }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, float col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale.x,scale.y, (float[4]){ col, col, col, 1 }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, float x, float y, float scale, float col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), x,y, scale,scale, (float[4]){ col, col, col, 1 }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, float col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale,scale, (float[4]){ col, col, col, 1 }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, float x, float y, float col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), x,y, 1,1, (float[4]){ col, col, col, 1 }, (ear_align)align); }
+    void text(Texture* atlas, std::string text, vec2<float> pos, float col, Align align) {
+        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, 1,1, (float[4]){ col, col, col, 1 }, (ear_align)align); }
 
     void
     clear(
@@ -679,67 +679,67 @@ namespace ear{
         ear_flush();
     }
 
-    void rect(float x, float y, float w, float h, std::array<float,4> col) {
-        ear_rect(x,y, w,h, (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void rect(vec2<float> pos, vec2<float> size, std::array<float,4> col) {
-        ear_rect(pos.x,pos.y, size.x,size.y, (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void rect(float x, float y, float w, float h, std::array<float,3> col) {
-        ear_rect(x,y, w,h, (float[4]){ col[0], col[1], col[2], 1 }); }
-    void rect(vec2<float> pos, vec2<float> size, std::array<float,3> col) {
-        ear_rect(pos.x,pos.y, size.x,size.y, (float[4]){ col[0], col[1], col[2], 1 }); }
-    void rect(float x, float y, float w, float h, float col) {
-        ear_rect(x,y, w,h, (float[4]){ col, col, col, col }); }
-    void rect(vec2<float> pos, vec2<float> size, float col) {
-        ear_rect(pos.x,pos.y, size.x,size.y, (float[4]){ col, col, col, col }); }
+    void rect(float x, float y, float w, float h, std::array<float,4> col, Align align) {
+        ear_rect(x,y, w,h, (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void rect(vec2<float> pos, vec2<float> size, std::array<float,4> col, Align align) {
+        ear_rect(pos.x,pos.y, size.x,size.y, (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void rect(float x, float y, float w, float h, std::array<float,3> col, Align align) {
+        ear_rect(x,y, w,h, (float[4]){ col[0], col[1], col[2], 1 }, (ear_align)align); }
+    void rect(vec2<float> pos, vec2<float> size, std::array<float,3> col, Align align) {
+        ear_rect(pos.x,pos.y, size.x,size.y, (float[4]){ col[0], col[1], col[2], 1 }, (ear_align)align); }
+    void rect(float x, float y, float w, float h, float col, Align align) {
+        ear_rect(x,y, w,h, (float[4]){ col, col, col, col }, (ear_align)align); }
+    void rect(vec2<float> pos, vec2<float> size, float col, Align align) {
+        ear_rect(pos.x,pos.y, size.x,size.y, (float[4]){ col, col, col, col }, (ear_align)align); }
 
-    void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, std::array<float,4> col) {
-        ear_tex(tex->texture, x,y, w,h, sx,sy,sw,sh, (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, std::array<float,4> col) {
-        ear_tex(tex->texture, pos.x,pos.y, size.x,size.y, samp[0],samp[1],samp[2],samp[3], (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void tex(Texture* tex, float x, float y, float w, float h, std::array<float,4> col) {
-        ear_tex(tex->texture, x,y, w,h, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> col) {
-        ear_tex(tex->texture, pos.x,pos.y, size.x,size.y, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, std::array<float,4> col) {
-        ear_tex(tex->texture, x,y, sw,sh, sx,sy,sw,sh, (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void tex(Texture* tex, vec2<float> pos, std::array<float,4> samp, std::array<float,4> col) {
-        ear_tex(tex->texture, pos.x,pos.y, samp[2],samp[3], samp[0],samp[1],samp[2],samp[3], (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void tex(Texture* tex, float x, float y, std::array<float,4> col) {
-        ear_tex(tex->texture, x,y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void tex(Texture* tex, vec2<float> pos, std::array<float,4> col) {
-        ear_tex(tex->texture, pos.x,pos.y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, std::array<float,3> col) {
-        ear_tex(tex->texture, x,y, w,h, sx,sy,sw,sh, (float[4]){ col[0], col[1], col[2], 1 }); }
-    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, std::array<float,3> col) {
-        ear_tex(tex->texture, pos.x,pos.y, size.x,size.y, samp[0],samp[1],samp[2],samp[3], (float[4]){ col[0], col[1], col[2], 1 }); }
-    void tex(Texture* tex, float x, float y, float w, float h, std::array<float,3> col) {
-        ear_tex(tex->texture, x,y, w,h, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], 1 }); }
-    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,3> col) {
-        ear_tex(tex->texture, pos.x,pos.y, size.x,size.y, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], 1 }); }
-    void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, std::array<float,3> col) {
-        ear_tex(tex->texture, x,y, sw,sh, sx,sy,sw,sh, (float[4]){ col[0], col[1], col[2], 1 }); }
-    void tex(Texture* tex, vec2<float> pos, std::array<float,4> samp, std::array<float,3> col) {
-        ear_tex(tex->texture, pos.x,pos.y, samp[2],samp[3], samp[0],samp[1],samp[2],samp[3], (float[4]){ col[0], col[1], col[2], 1 }); }
-    void tex(Texture* tex, float x, float y, std::array<float,3> col) {
-        ear_tex(tex->texture, x,y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], 1 }); }
-    void tex(Texture* tex, vec2<float> pos, std::array<float,3> col) {
-        ear_tex(tex->texture, pos.x,pos.y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], col[3] }); }
-    void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, float col) {
-        ear_tex(tex->texture, x,y, w,h, sx,sy,sw,sh, (float[4]){ col, col, col, col }); }
-    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, float col) {
-        ear_tex(tex->texture, pos.x,pos.y, size.x,size.y, samp[0],samp[1],samp[2],samp[3], (float[4]){ col, col, col, col }); }
-    void tex(Texture* tex, float x, float y, float w, float h, float col) {
-        ear_tex(tex->texture, x,y, w,h, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, col }); }
-    void tex(Texture* tex, vec2<float> pos, vec2<float> size, float col) {
-        ear_tex(tex->texture, pos.x,pos.y, size.x,size.y, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, col }); }
-    void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, float col) {
-        ear_tex(tex->texture, x,y, sw,sh, sx,sy,sw,sh, (float[4]){ col, col, col, col }); }
-    void tex(Texture* tex, vec2<float> pos, std::array<float,4> samp, float col) {
-        ear_tex(tex->texture, pos.x,pos.y, samp[2],samp[3], samp[0],samp[1],samp[2],samp[3], (float[4]){ col, col, col, col }); }
-    void tex(Texture* tex, float x, float y, float col) {
-        ear_tex(tex->texture, x,y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, col }); }
-    void tex(Texture* tex, vec2<float> pos, float col) {
-        ear_tex(tex->texture, pos.x,pos.y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, col }); }
+    void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, std::array<float,4> col, Align align) {
+        ear_tex(tex->texture, x,y, w,h, sx,sy,sw,sh, (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, std::array<float,4> col, Align align) {
+        ear_tex(tex->texture, pos.x,pos.y, size.x,size.y, samp[0],samp[1],samp[2],samp[3], (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void tex(Texture* tex, float x, float y, float w, float h, std::array<float,4> col, Align align) {
+        ear_tex(tex->texture, x,y, w,h, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> col, Align align) {
+        ear_tex(tex->texture, pos.x,pos.y, size.x,size.y, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, std::array<float,4> col, Align align) {
+        ear_tex(tex->texture, x,y, sw,sh, sx,sy,sw,sh, (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void tex(Texture* tex, vec2<float> pos, std::array<float,4> samp, std::array<float,4> col, Align align) {
+        ear_tex(tex->texture, pos.x,pos.y, samp[2],samp[3], samp[0],samp[1],samp[2],samp[3], (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void tex(Texture* tex, float x, float y, std::array<float,4> col, Align align) {
+        ear_tex(tex->texture, x,y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void tex(Texture* tex, vec2<float> pos, std::array<float,4> col, Align align) {
+        ear_tex(tex->texture, pos.x,pos.y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, std::array<float,3> col, Align align) {
+        ear_tex(tex->texture, x,y, w,h, sx,sy,sw,sh, (float[4]){ col[0], col[1], col[2], 1 }, (ear_align)align); }
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, std::array<float,3> col, Align align) {
+        ear_tex(tex->texture, pos.x,pos.y, size.x,size.y, samp[0],samp[1],samp[2],samp[3], (float[4]){ col[0], col[1], col[2], 1 }, (ear_align)align); }
+    void tex(Texture* tex, float x, float y, float w, float h, std::array<float,3> col, Align align) {
+        ear_tex(tex->texture, x,y, w,h, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], 1 }, (ear_align)align); }
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,3> col, Align align) {
+        ear_tex(tex->texture, pos.x,pos.y, size.x,size.y, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], 1 }, (ear_align)align); }
+    void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, std::array<float,3> col, Align align) {
+        ear_tex(tex->texture, x,y, sw,sh, sx,sy,sw,sh, (float[4]){ col[0], col[1], col[2], 1 }, (ear_align)align); }
+    void tex(Texture* tex, vec2<float> pos, std::array<float,4> samp, std::array<float,3> col, Align align) {
+        ear_tex(tex->texture, pos.x,pos.y, samp[2],samp[3], samp[0],samp[1],samp[2],samp[3], (float[4]){ col[0], col[1], col[2], 1 }, (ear_align)align); }
+    void tex(Texture* tex, float x, float y, std::array<float,3> col, Align align) {
+        ear_tex(tex->texture, x,y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], 1 }, (ear_align)align); }
+    void tex(Texture* tex, vec2<float> pos, std::array<float,3> col, Align align) {
+        ear_tex(tex->texture, pos.x,pos.y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], col[3] }, (ear_align)align); }
+    void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, float col, Align align) {
+        ear_tex(tex->texture, x,y, w,h, sx,sy,sw,sh, (float[4]){ col, col, col, col }, (ear_align)align); }
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, float col, Align align) {
+        ear_tex(tex->texture, pos.x,pos.y, size.x,size.y, samp[0],samp[1],samp[2],samp[3], (float[4]){ col, col, col, col }, (ear_align)align); }
+    void tex(Texture* tex, float x, float y, float w, float h, float col, Align align) {
+        ear_tex(tex->texture, x,y, w,h, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, col }, (ear_align)align); }
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, float col, Align align) {
+        ear_tex(tex->texture, pos.x,pos.y, size.x,size.y, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, col }, (ear_align)align); }
+    void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, float col, Align align) {
+        ear_tex(tex->texture, x,y, sw,sh, sx,sy,sw,sh, (float[4]){ col, col, col, col }, (ear_align)align); }
+    void tex(Texture* tex, vec2<float> pos, std::array<float,4> samp, float col, Align align) {
+        ear_tex(tex->texture, pos.x,pos.y, samp[2],samp[3], samp[0],samp[1],samp[2],samp[3], (float[4]){ col, col, col, col }, (ear_align)align); }
+    void tex(Texture* tex, float x, float y, float col, Align align) {
+        ear_tex(tex->texture, x,y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, col }, (ear_align)align); }
+    void tex(Texture* tex, vec2<float> pos, float col, Align align) {
+        ear_tex(tex->texture, pos.x,pos.y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, col }, (ear_align)align); }
 
     void
     translate(

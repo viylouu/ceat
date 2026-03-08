@@ -285,6 +285,12 @@ DrawMode :: enum i32 {
     Lines,
 }
 
+Align :: enum i32 {
+    TopLeft, Top, TopRight,
+    MidLeft, Mid, MidRight,
+    BotLeft, Bot, BotRight,
+}
+
 @(default_calling_convention="c")
 foreign ceat {
     @(link_name="ear_create_buffer") _create_buffer :: proc(desc: BufferDesc, data: rawptr, size: u32, arena: ^eau._arena) -> ^_buffer ---
@@ -312,7 +318,7 @@ foreign ceat {
     @(link_name="ear_update_texarray_layer") _update_texarray_layer :: proc(texarray: ^_texarray, layer: u32) ---
 
 
-    @(link_name="ear_text") _text :: proc(atlas: ^_texture, text: cstring, x,y: f32, scalex, scaley: f32, col: ^f32) ---
+    @(link_name="ear_text") _text :: proc(atlas: ^_texture, text: cstring, x,y: f32, scalex, scaley: f32, col: ^f32, align: Align) ---
 
 
     @(link_name="ear_create_texture") _create_texture :: proc(desc: TextureDesc, pixels: [^]u8, width, height: u32, arena: ^eau._arena) -> ^_texture ---
@@ -327,8 +333,8 @@ foreign ceat {
     @(link_name="ear_clear") _clear :: proc(col: ^f32) ---
     @(link_name="ear_draw") _draw :: proc(vertices: i32, instances: i32, draw_mode: DrawMode) ---
     @(link_name="ear_flush") flush :: proc() ---
-    @(link_name="ear_rect") _rect :: proc(x,y,w,h: f32, col: ^f32) ---
-    @(link_name="ear_tex") _tex :: proc(tex: ^_texture, x,y,w,h,sx,sy,sw,sh: f32, col: ^f32) ---
+    @(link_name="ear_rect") _rect :: proc(x,y,w,h: f32, col: ^f32, align: Align) ---
+    @(link_name="ear_tex") _tex :: proc(tex: ^_texture, x,y,w,h,sx,sy,sw,sh: f32, col: ^f32, align: Align) ---
 
 
     @(link_name="ear_translate") translate_xy :: proc(x,y: f32) ---
@@ -512,25 +518,25 @@ text :: proc{
     text_gray_vec,
 }
 
-text_rgba_wh :: proc(atlas: ^Texture, text: cstring, x, y: f32, scalex, scaley: f32, col: [4]f32) { col := col ;; _text(atlas.texture, text, x,y,scalex, scaley, &col[0]) }
-text_rgb_wh :: proc(atlas: ^Texture, text: cstring, x, y: f32, scalex, scaley: f32, col: [3]f32) { text_rgba_wh(atlas, text, x,y, scalex, scaley, eau.as_rgba(col)) }
-text_gray_wh :: proc(atlas: ^Texture, text: cstring, x, y: f32, scalex, scaley: f32, col: f32) { text_rgb_wh(atlas, text, x,y, scalex, scaley, [3]f32 { col, col, col }) }
-text_rgba_size :: proc(atlas: ^Texture, text: cstring, x, y: f32, size: f32, col: [4]f32) { text_rgba_wh(atlas, text, x,y, size,size, col) }
-text_rgb_size :: proc(atlas: ^Texture, text: cstring, x, y: f32, size: f32, col: [3]f32) { text_rgb_wh(atlas, text, x,y, size,size, col) }
-text_gray_size :: proc(atlas: ^Texture, text: cstring, x, y: f32, size: f32, col: f32) { text_gray_wh(atlas, text, x,y, size,size, col) }
-text_rgba :: proc(atlas: ^Texture, text: cstring, x, y: f32, col: [4]f32) { text_rgba_size(atlas, text, x,y, 1, col) }
-text_rgb :: proc(atlas: ^Texture, text: cstring, x, y: f32, col: [3]f32) { text_rgb_size(atlas, text, x,y, 1, col) }
-text_gray :: proc(atlas: ^Texture, text: cstring, x, y: f32, col: f32) { text_gray_size(atlas, text, x,y, 1, col) }
+text_rgba_wh :: proc(atlas: ^Texture, text: cstring, x, y: f32, scalex, scaley: f32, col: [4]f32, align: Align = .TopLeft) { col := col ;; _text(atlas.texture, text, x,y,scalex, scaley, &col[0], align) }
+text_rgb_wh :: proc(atlas: ^Texture, text: cstring, x, y: f32, scalex, scaley: f32, col: [3]f32, align: Align = .TopLeft) { text_rgba_wh(atlas, text, x,y, scalex, scaley, eau.as_rgba(col), align) }
+text_gray_wh :: proc(atlas: ^Texture, text: cstring, x, y: f32, scalex, scaley: f32, col: f32, align: Align = .TopLeft) { text_rgb_wh(atlas, text, x,y, scalex, scaley, [3]f32 { col, col, col }, align) }
+text_rgba_size :: proc(atlas: ^Texture, text: cstring, x, y: f32, size: f32, col: [4]f32, align: Align = .TopLeft) { text_rgba_wh(atlas, text, x,y, size,size, col, align) }
+text_rgb_size :: proc(atlas: ^Texture, text: cstring, x, y: f32, size: f32, col: [3]f32, align: Align = .TopLeft) { text_rgb_wh(atlas, text, x,y, size,size, col, align) }
+text_gray_size :: proc(atlas: ^Texture, text: cstring, x, y: f32, size: f32, col: f32, align: Align = .TopLeft) { text_gray_wh(atlas, text, x,y, size,size, col, align) }
+text_rgba :: proc(atlas: ^Texture, text: cstring, x, y: f32, col: [4]f32, align: Align = .TopLeft) { text_rgba_size(atlas, text, x,y, 1, col, align) }
+text_rgb :: proc(atlas: ^Texture, text: cstring, x, y: f32, col: [3]f32, align: Align = .TopLeft) { text_rgb_size(atlas, text, x,y, 1, col, align) }
+text_gray :: proc(atlas: ^Texture, text: cstring, x, y: f32, col: f32, align: Align = .TopLeft) { text_gray_size(atlas, text, x,y, 1, col, align) }
 
-text_rgba_wh_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, size: [2]f32, col: [4]f32) { text_rgba_wh(atlas, text, pos.x,pos.y, size.x,size.y, col) }
-text_rgb_wh_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, size: [2]f32, col: [3]f32) { text_rgba_wh_vec(atlas, text, pos, size, eau.as_rgba(col)) }
-text_gray_wh_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, size: [2]f32, col: f32) { text_rgb_wh_vec(atlas, text, pos, size, [3]f32 { col, col, col }) }
-text_rgba_size_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, size: f32, col: [4]f32) { text_rgba_wh_vec(atlas, text, pos, {size,size}, col) }
-text_rgb_size_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, size: f32, col: [3]f32) { text_rgb_wh_vec(atlas, text, pos, {size,size}, col) }
-text_gray_size_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, size: f32, col: f32) { text_gray_wh_vec(atlas, text, pos, {size,size}, col) }
-text_rgba_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, col: [4]f32) { text_rgba_size_vec(atlas, text, pos, 1, col) }
-text_rgb_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, col: [3]f32) { text_rgb_size_vec(atlas, text, pos, 1, col) }
-text_gray_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, col: f32) { text_gray_size_vec(atlas, text, pos, 1, col) }
+text_rgba_wh_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, size: [2]f32, col: [4]f32, align: Align = .TopLeft) { text_rgba_wh(atlas, text, pos.x,pos.y, size.x,size.y, col, align) }
+text_rgb_wh_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, size: [2]f32, col: [3]f32, align: Align = .TopLeft) { text_rgba_wh_vec(atlas, text, pos, size, eau.as_rgba(col), align) }
+text_gray_wh_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, size: [2]f32, col: f32, align: Align = .TopLeft) { text_rgb_wh_vec(atlas, text, pos, size, [3]f32 { col, col, col }, align) }
+text_rgba_size_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, size: f32, col: [4]f32, align: Align = .TopLeft) { text_rgba_wh_vec(atlas, text, pos, {size,size}, col, align) }
+text_rgb_size_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, size: f32, col: [3]f32, align: Align = .TopLeft) { text_rgb_wh_vec(atlas, text, pos, {size,size}, col, align) }
+text_gray_size_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, size: f32, col: f32, align: Align = .TopLeft) { text_gray_wh_vec(atlas, text, pos, {size,size}, col, align) }
+text_rgba_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, col: [4]f32, align: Align = .TopLeft) { text_rgba_size_vec(atlas, text, pos, 1, col, align) }
+text_rgb_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, col: [3]f32, align: Align = .TopLeft) { text_rgb_size_vec(atlas, text, pos, 1, col, align) }
+text_gray_vec :: proc(atlas: ^Texture, text: cstring, pos: [2]f32, col: f32, align: Align = .TopLeft) { text_gray_size_vec(atlas, text, pos, 1, col, align) }
 
 
 create_texture :: proc(desc: TextureDesc, pixels: [^]u8, width,height: u32, arena: ^eau.Arena = nil) -> ^Texture {
@@ -615,12 +621,12 @@ rect :: proc{
     rect_gray_vec,
 }
 
-rect_rgba :: proc(x, y: f32, w, h: f32, col: [4]f32) { col := col ;; _rect(x,y,w,h,&col[0]) }
-rect_rgb :: proc(x, y: f32, w, h: f32, col: [3] f32) { rect_rgba(x,y, w,h, eau.as_rgba(col)) }
-rect_gray :: proc(x, y: f32, w, h: f32, col: f32) { rect_rgb(x,y, w,h, [3]f32 { col,col,col }) }
-rect_rgba_vec :: proc(pos: [2]f32, size: [2]f32, col: [4]f32) { rect_rgba(pos.x,pos.y, size.x,size.y, col) }
-rect_rgb_vec :: proc(pos: [2]f32, size: [2]f32, col: [3]f32) { rect_rgb(pos.x,pos.y, size.x,size.y, col) }
-rect_gray_vec :: proc(pos: [2]f32, size: [2]f32, col: f32) { rect_gray(pos.x,pos.y, size.x,size.y, col) }
+rect_rgba :: proc(x, y: f32, w, h: f32, col: [4]f32, align: Align = .TopLeft) { col := col ;; _rect(x,y,w,h,&col[0], align) }
+rect_rgb :: proc(x, y: f32, w, h: f32, col: [3] f32, align: Align = .TopLeft) { rect_rgba(x,y, w,h, eau.as_rgba(col), align) }
+rect_gray :: proc(x, y: f32, w, h: f32, col: f32, align: Align = .TopLeft) { rect_rgb(x,y, w,h, [3]f32 { col,col,col }, align) }
+rect_rgba_vec :: proc(pos: [2]f32, size: [2]f32, col: [4]f32, align: Align = .TopLeft) { rect_rgba(pos.x,pos.y, size.x,size.y, col, align) }
+rect_rgb_vec :: proc(pos: [2]f32, size: [2]f32, col: [3]f32, align: Align = .TopLeft) { rect_rgb(pos.x,pos.y, size.x,size.y, col, align) }
+rect_gray_vec :: proc(pos: [2]f32, size: [2]f32, col: f32, align: Align = .TopLeft) { rect_gray(pos.x,pos.y, size.x,size.y, col, align) }
 
 tex :: proc{
     tex_rgba_wh_samp,
@@ -650,31 +656,31 @@ tex :: proc{
     tex_gray_vec,
 }
 
-tex_rgba_wh_samp :: proc(tex: ^Texture, x, y: f32, w, h: f32, sx,sy,sw,sh: f32, col: [4]f32) { col := col ;; _tex(tex.texture, x,y,w,h,sx,sy,sw,sh, &col[0]) }
-tex_rgb_wh_samp :: proc(tex: ^Texture, x, y: f32, w, h: f32, sx,sy,sw,sh: f32, col: [3]f32) { tex_rgba_wh_samp(tex, x,y, w,h, sx,sy,sw,sh, eau.as_rgba(col)) }
-tex_gray_wh_samp :: proc(tex: ^Texture, x, y: f32, w, h: f32, sx,sy,sw,sh: f32, col: f32) { tex_rgb_wh_samp(tex, x,y, w,h, sx,sy,sw,sh, [3]f32{ col,col,col }) }
-tex_rgba_samp :: proc(tex: ^Texture, x, y: f32, sx,sy,sw,sh: f32, col: [4]f32) { tex_rgba_wh_samp(tex, x,y, sw,sh, sx,sy,sw,sh, col) }
-tex_rgb_samp :: proc(tex: ^Texture, x, y: f32, sx,sy,sw,sh: f32, col: [3]f32) { tex_rgb_wh_samp(tex, x,y, sw,sh, sx,sy,sw,sh, col) }
-tex_gray_samp :: proc(tex: ^Texture, x, y: f32, sx,sy,sw,sh: f32, col: f32) { tex_gray_wh_samp(tex, x,y, sw,sh, sx,sy,sw,sh, col) }
-tex_rgba_wh :: proc(tex: ^Texture, x, y: f32, w, h: f32, col: [4]f32) { tex_rgba_wh_samp(tex, x,y, w,h, 0,0, f32(tex.width),f32(tex.height), col) }
-tex_rgb_wh :: proc(tex: ^Texture, x, y: f32, w, h: f32, col: [3]f32) { tex_rgb_wh_samp(tex, x,y, w,h, 0,0, f32(tex.width),f32(tex.height), col) }
-tex_gray_wh :: proc(tex: ^Texture, x, y: f32, w, h: f32, col: f32) { tex_gray_wh_samp(tex, x,y, w,h, 0,0, f32(tex.width),f32(tex.height), col) }
-tex_rgba :: proc(tex: ^Texture, x, y: f32, col: [4]f32) { tex_rgba_wh(tex, x,y, f32(tex.width),f32(tex.height), col) }
-tex_rgb :: proc(tex: ^Texture, x, y: f32, col: [3]f32) { tex_rgb_wh(tex, x,y, f32(tex.width),f32(tex.height), col) }
-tex_gray :: proc(tex: ^Texture, x, y: f32, col: f32) { tex_gray_wh(tex, x,y, f32(tex.width),f32(tex.height), col) }
+tex_rgba_wh_samp :: proc(tex: ^Texture, x, y: f32, w, h: f32, sx,sy,sw,sh: f32, col: [4]f32, align: Align = .TopLeft) { col := col ;; _tex(tex.texture, x,y,w,h,sx,sy,sw,sh, &col[0], align) }
+tex_rgb_wh_samp :: proc(tex: ^Texture, x, y: f32, w, h: f32, sx,sy,sw,sh: f32, col: [3]f32, align: Align = .TopLeft) { tex_rgba_wh_samp(tex, x,y, w,h, sx,sy,sw,sh, eau.as_rgba(col), align) }
+tex_gray_wh_samp :: proc(tex: ^Texture, x, y: f32, w, h: f32, sx,sy,sw,sh: f32, col: f32, align: Align = .TopLeft) { tex_rgb_wh_samp(tex, x,y, w,h, sx,sy,sw,sh, [3]f32{ col,col,col }, align) }
+tex_rgba_samp :: proc(tex: ^Texture, x, y: f32, sx,sy,sw,sh: f32, col: [4]f32, align: Align = .TopLeft) { tex_rgba_wh_samp(tex, x,y, sw,sh, sx,sy,sw,sh, col, align) }
+tex_rgb_samp :: proc(tex: ^Texture, x, y: f32, sx,sy,sw,sh: f32, col: [3]f32, align: Align = .TopLeft) { tex_rgb_wh_samp(tex, x,y, sw,sh, sx,sy,sw,sh, col, align) }
+tex_gray_samp :: proc(tex: ^Texture, x, y: f32, sx,sy,sw,sh: f32, col: f32, align: Align = .TopLeft) { tex_gray_wh_samp(tex, x,y, sw,sh, sx,sy,sw,sh, col, align) }
+tex_rgba_wh :: proc(tex: ^Texture, x, y: f32, w, h: f32, col: [4]f32, align: Align = .TopLeft) { tex_rgba_wh_samp(tex, x,y, w,h, 0,0, f32(tex.width),f32(tex.height), col, align) }
+tex_rgb_wh :: proc(tex: ^Texture, x, y: f32, w, h: f32, col: [3]f32, align: Align = .TopLeft) { tex_rgb_wh_samp(tex, x,y, w,h, 0,0, f32(tex.width),f32(tex.height), col, align) }
+tex_gray_wh :: proc(tex: ^Texture, x, y: f32, w, h: f32, col: f32, align: Align = .TopLeft) { tex_gray_wh_samp(tex, x,y, w,h, 0,0, f32(tex.width),f32(tex.height), col, align) }
+tex_rgba :: proc(tex: ^Texture, x, y: f32, col: [4]f32, align: Align = .TopLeft) { tex_rgba_wh(tex, x,y, f32(tex.width),f32(tex.height), col, align) }
+tex_rgb :: proc(tex: ^Texture, x, y: f32, col: [3]f32, align: Align = .TopLeft) { tex_rgb_wh(tex, x,y, f32(tex.width),f32(tex.height), col, align) }
+tex_gray :: proc(tex: ^Texture, x, y: f32, col: f32, align: Align = .TopLeft) { tex_gray_wh(tex, x,y, f32(tex.width),f32(tex.height), col, align) }
 
-tex_rgba_wh_samp_vec :: proc(tex: ^Texture, pos: [2]f32, size: [2]f32, samp: [4]f32, col: [4]f32) { tex_rgba_wh_samp(tex, pos.x,pos.y, size.x,size.y, samp.x,samp.y,samp.z,samp.w, col) }
-tex_rgb_wh_samp_vec :: proc(tex: ^Texture, pos: [2]f32, size: [2]f32, samp: [4]f32, col: [3]f32) { tex_rgba_wh_samp_vec(tex, pos, size, samp, eau.as_rgba(col)) }
-tex_gray_wh_samp_vec :: proc(tex: ^Texture, pos: [2]f32, size: [2]f32, samp: [4]f32, col: f32) { tex_rgb_wh_samp_vec(tex, pos, size, samp, [3]f32{ col,col,col }) }
-tex_rgba_samp_vec :: proc(tex: ^Texture, pos: [2]f32, samp: [4]f32, col: [4]f32) { tex_rgba_wh_samp_vec(tex, pos, {samp.z,samp.w}, samp, col) }
-tex_rgb_samp_vec :: proc(tex: ^Texture, pos: [2]f32, samp: [4]f32, col: [3]f32) { tex_rgb_wh_samp_vec(tex, pos, {samp.z,samp.w}, samp, col) }
-tex_gray_samp_vec :: proc(tex: ^Texture, pos: [2]f32, samp: [4]f32, col: f32) { tex_gray_wh_samp_vec(tex, pos, {samp.z,samp.w}, samp, col) }
-tex_rgba_wh_vec :: proc(tex: ^Texture, pos: [2]f32, size: [2]f32, col: [4]f32) { tex_rgba_wh(tex, pos.x,pos.y, size.x,size.y, col) }
-tex_rgb_wh_vec :: proc(tex: ^Texture, pos: [2]f32, size: [2]f32, col: [3]f32) { tex_rgba_wh_vec(tex, pos, size, eau.as_rgba(col)) }
-tex_gray_wh_vec :: proc(tex: ^Texture, pos: [2]f32, size: [2]f32, col: f32) { tex_rgb_wh_vec(tex, pos, size, [3]f32 { col,col,col }) }
-tex_rgba_vec :: proc(tex: ^Texture, pos: [2]f32, col: [4]f32) { tex_rgba_wh_vec(tex, pos, {f32(tex.width),f32(tex.height)}, col) }
-tex_rgb_vec :: proc(tex: ^Texture, pos: [2]f32, col: [3]f32) { tex_rgb_wh_vec(tex, pos, {f32(tex.width),f32(tex.height)}, col) }
-tex_gray_vec :: proc(tex: ^Texture, pos: [2]f32, col: f32) { tex_gray_wh_vec(tex, pos, {f32(tex.width),f32(tex.height)}, col) }
+tex_rgba_wh_samp_vec :: proc(tex: ^Texture, pos: [2]f32, size: [2]f32, samp: [4]f32, col: [4]f32, align: Align = .TopLeft) { tex_rgba_wh_samp(tex, pos.x,pos.y, size.x,size.y, samp.x,samp.y,samp.z,samp.w, col, align) }
+tex_rgb_wh_samp_vec :: proc(tex: ^Texture, pos: [2]f32, size: [2]f32, samp: [4]f32, col: [3]f32, align: Align = .TopLeft) { tex_rgba_wh_samp_vec(tex, pos, size, samp, eau.as_rgba(col), align) }
+tex_gray_wh_samp_vec :: proc(tex: ^Texture, pos: [2]f32, size: [2]f32, samp: [4]f32, col: f32, align: Align = .TopLeft) { tex_rgb_wh_samp_vec(tex, pos, size, samp, [3]f32{ col,col,col }, align) }
+tex_rgba_samp_vec :: proc(tex: ^Texture, pos: [2]f32, samp: [4]f32, col: [4]f32, align: Align = .TopLeft) { tex_rgba_wh_samp_vec(tex, pos, {samp.z,samp.w}, samp, col, align) }
+tex_rgb_samp_vec :: proc(tex: ^Texture, pos: [2]f32, samp: [4]f32, col: [3]f32, align: Align = .TopLeft) { tex_rgb_wh_samp_vec(tex, pos, {samp.z,samp.w}, samp, col, align) }
+tex_gray_samp_vec :: proc(tex: ^Texture, pos: [2]f32, samp: [4]f32, col: f32, align: Align = .TopLeft) { tex_gray_wh_samp_vec(tex, pos, {samp.z,samp.w}, samp, col, align) }
+tex_rgba_wh_vec :: proc(tex: ^Texture, pos: [2]f32, size: [2]f32, col: [4]f32, align: Align = .TopLeft) { tex_rgba_wh(tex, pos.x,pos.y, size.x,size.y, col, align) }
+tex_rgb_wh_vec :: proc(tex: ^Texture, pos: [2]f32, size: [2]f32, col: [3]f32, align: Align = .TopLeft) { tex_rgba_wh_vec(tex, pos, size, eau.as_rgba(col), align) }
+tex_gray_wh_vec :: proc(tex: ^Texture, pos: [2]f32, size: [2]f32, col: f32, align: Align = .TopLeft) { tex_rgb_wh_vec(tex, pos, size, [3]f32 { col,col,col }, align) }
+tex_rgba_vec :: proc(tex: ^Texture, pos: [2]f32, col: [4]f32, align: Align = .TopLeft) { tex_rgba_wh_vec(tex, pos, {f32(tex.width),f32(tex.height)}, col, align) }
+tex_rgb_vec :: proc(tex: ^Texture, pos: [2]f32, col: [3]f32, align: Align = .TopLeft) { tex_rgb_wh_vec(tex, pos, {f32(tex.width),f32(tex.height)}, col, align) }
+tex_gray_vec :: proc(tex: ^Texture, pos: [2]f32, col: f32, align: Align = .TopLeft) { tex_gray_wh_vec(tex, pos, {f32(tex.width),f32(tex.height)}, col, align) }
 
 
 translate :: proc{
