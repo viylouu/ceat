@@ -272,6 +272,8 @@ namespace eau{
         eau_clock* clock;
         Arena* arena;
 
+        Clock() {}
+
         Clock(
             Arena* arena = nullptr
             );
@@ -555,6 +557,8 @@ namespace ear{
         ear_texture* texture;
         eau::Arena* arena;
 
+        Texture() {}
+
         Texture(
             TextureDesc desc,
             uint8_t pixels[],
@@ -611,6 +615,8 @@ namespace ear{
         ear_buffer* buffer;
         eau::Arena* arena;
 
+        Buffer() {}
+
         Buffer(
             BufferDesc desc,
             void* data,
@@ -639,6 +645,8 @@ namespace ear{
     struct Framebuffer{
         ear_framebuffer* framebuffer;
         eau::Arena* arena;
+
+        Framebuffer() {}
 
         Framebuffer(
             FramebufferDesc desc,
@@ -752,6 +760,8 @@ namespace ear{
         ear_pipeline* pipeline;
         eau::Arena* arena;
 
+        Pipeline() {}
+
         Pipeline(
             PipelineDesc desc,
             eau::Arena* arena = nullptr
@@ -777,6 +787,8 @@ namespace ear{
     struct Texarray{
         ear_texarray* texarray;
         eau::Arena* arena;
+
+        Texarray() {}
 
         Texarray(
             TexarrayDesc desc,
