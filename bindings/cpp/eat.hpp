@@ -890,7 +890,7 @@ namespace ear{
     void tex(Texture* tex, float x, float y, std::array<float,3> col);
     void tex(Texture* tex, vec2<float> pos, std::array<float,3> col);
     void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, float col);
-    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, std::array<float,4> col);
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, float col);
     void tex(Texture* tex, float x, float y, float w, float h, float col);
     void tex(Texture* tex, vec2<float> pos, vec2<float> size, float col);
     void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, float col);
