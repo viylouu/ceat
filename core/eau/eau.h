@@ -8,3 +8,4 @@
 #include "coll.h"
 #include "arena.h"
 #include "clock.h"
+#include "object.h"

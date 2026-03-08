@@ -1,5 +1,7 @@
 package eau
 
+import "base:runtime"
+
 when ODIN_OS == .Windows {
     foreign import ceat {
         "../../../build/ceat.lib",
@@ -46,7 +48,14 @@ Arena :: struct{
     clear: proc(arena: ^Arena),
 }
 
+_clock_ll :: struct{
+    clock: ^_clock,
+    next, prev: ^_clock_ll,
+};
+
 _clock :: struct{
+    ll: _clock_ll,
+
     time: f32,
     delta: f32,
     time64: f64,
@@ -55,6 +64,8 @@ _clock :: struct{
     speed: f32,
 
     dest: ^Destructor,
+
+    paused: bool,
 }
 
 Clock :: struct{
@@ -65,8 +76,80 @@ Clock :: struct{
     set_speed: proc(clock: ^Clock, speed: f32),
     set_time: proc(clock: ^Clock, time: f32),
     set_time64: proc(clock: ^Clock, time: f64), // this just uses 64 bit for the time setting, it does not only set time64
-    update: proc(clock: ^Clock),
+    start: proc(clock: ^Clock),
+    stop: proc(clock: ^Clock),
 }
+
+_object_ll :: struct{
+    obj: ^_object,
+    next, prev: ^_object_ll,
+}
+
+_object :: struct{
+    desc: _object_desc,
+
+    ll: _object_ll,
+
+    data: rawptr,
+
+    use_global_tickrate: bool,
+    delta: f32,
+    last_time: f64,
+
+    dest: ^Destructor,
+}
+
+_object_desc :: struct{
+    pos3d: [3]^f32, pos3d64: [3]^f64,
+    rot3d: [3]^f32, rot3d64: [3]^f64,
+
+    pos2d: [2]^f32, pos2d64: [2]^f64,
+    rot2d: ^f32,    rot2d64: ^f64,
+
+    init: proc "c" (obj: ^_object),
+    tick: proc "c" (obj: ^_object),
+    draw: proc "c" (obj: ^_object),
+    stop: proc "c" (obj: ^_object),
+}
+
+Object :: struct($T: typeid) {
+    using object: ^_object,
+
+    user: struct{
+        data: ^T,
+
+        pos3d: ^[3]f32, rot3d: ^[3]f32,
+        pos2d: ^[2]f32, rot2d: ^f32,
+        pos3d64: ^[3]f64, rot3d64: ^[3]f64,
+        pos2d64: ^[2]f64, rot2d64: ^f64,
+
+        init: ^ObjectProc,
+        tick: ^ObjectProc,
+        draw: ^ObjectProc,
+        stop: ^ObjectProc,
+    },
+
+    delete: proc(object: ^Object(T)),
+    set_tickrate: proc(object: ^Object(T), delta: f32),
+    reset_tickrate: proc(object: ^Object(T)),
+    init: proc(object: ^Object(T)),
+    stop: proc(object: ^Object(T)),
+    draw: proc(object: ^Object(T)),
+    try_tick: proc(object: ^Object(T)),
+}
+
+ObjectProc :: struct{
+    fn: proc(rawptr, rawptr),
+    ctx: rawptr,
+}
+
+wrap_object_proc :: proc($p: proc(^Object)) -> ObjectProc {
+    
+}
+
+//ObjectDesc :: struct{
+//    
+//}
 
 @(default_calling_convention="c")
 foreign ceat {
@@ -99,7 +182,24 @@ foreign ceat {
     @(link_name="eau_reset_clock") _reset_clock :: proc(clock: ^_clock) ---
     @(link_name="eau_set_clock_speed") _set_clock_speed :: proc(clock: ^_clock, speed: f32) ---
     @(link_name="eau_set_clock_time") _set_clock_time :: proc(clock: ^_clock, time: f64) ---
-    @(link_name="eau_update_clock") _update_clock :: proc(clock: ^_clock) ---
+    @(link_name="eau_start_clock") _start_clock :: proc(clock: ^_clock) ---
+    @(link_name="eau_stop_clock") _stop_clock :: proc(clock: ^_clock) ---
+    @(link_name="eau_update_clocks") _update_clocks :: proc() ---
+
+
+    @(link_name="eau_create_object") _create_object :: proc(desc: _object_desc, data: rawptr, arena: ^_arena) -> ^_object ---
+    @(link_name="eau_delete_object") _delete_object :: proc(object: ^_object) ---
+    @(link_name="eau_set_object_tickrates") _set_object_tickrates :: proc(delta: f32) ---
+    @(link_name="eau_set_object_tickrate") _set_object_tickrate :: proc(object: ^_object, delta: f32) ---
+    @(link_name="eau_reset_object_tickrate") _reset_object_tickrate :: proc(object: ^_object) ---
+    @(link_name="eau_init_object") _init_object :: proc(object: ^_object) ---
+    @(link_name="eau_stop_object") _stop_object :: proc(object: ^_object) ---
+    @(link_name="eau_draw_object") _draw_object :: proc(object: ^_object) ---
+    @(link_name="eau_try_tick_object") _try_tick_object :: proc(object: ^_object) ---
+    @(link_name="eau_init_objects") init_objects :: proc() ---
+    @(link_name="eau_stop_objects") stop_objects :: proc() ---
+    @(link_name="eau_draw_objects") draw_objects :: proc() ---
+    @(link_name="eau_try_tick_objects") try_tick_objects :: proc() ---
 }
 
 point_aabb2d :: proc(point: [2]f32, rect: Rect) -> bool {
@@ -157,7 +257,8 @@ create_clock :: proc(arena: ^Arena = nil) -> ^Clock {
         set_speed = set_clock_speed,
         set_time = set_clock_time32,
         set_time64 = set_clock_time64,
-        update = update_clock,
+        start = start_clock,
+        stop = stop_clock,
         })
 }
 
@@ -182,8 +283,170 @@ set_clock_time :: proc{
 set_clock_time32 :: proc(clock: ^Clock, time: f32) { _set_clock_time(clock.clock, f64(time)) }
 set_clock_time64 :: proc(clock: ^Clock, time: f64) { _set_clock_time(clock.clock, time) }
 
-update_clock :: proc(clock: ^Clock) {
-    _update_clock(clock.clock)
+start_clock :: proc(clock: ^Clock) {
+    _start_clock(clock.clock);
+}
+
+stop_clock :: proc(clock: ^Clock) {
+    _stop_clock(clock.clock)
+}
+
+update_clocks :: proc() {
+    _update_clocks()
+}
+
+
+_obj_init :: proc "c" (cobj: ^_object) {
+    context = runtime.default_context()
+    init := (^Object(any))(cobj.data).user.init
+    init.fn(cobj.data, init.ctx)
+}
+
+_obj_stop :: proc "c" (cobj: ^_object) {
+    context = runtime.default_context()
+    stop := (^Object(any))(cobj.data).user.stop
+    stop.fn(cobj.data, stop.ctx)
+}
+
+_obj_draw :: proc "c" (cobj: ^_object) {
+    context = runtime.default_context()
+    draw := (^Object(any))(cobj.data).user.draw
+    draw.fn(cobj.data, draw.ctx)
+}
+
+_obj_tick :: proc "c" (cobj: ^_object) {
+    context = runtime.default_context()
+    tick := (^Object(any))(cobj.data).user.tick
+    tick.fn(cobj.data, tick.ctx)
+}
+
+create_object :: proc(data: $T, arena: ^Arena = nil) -> ^Object(T) {
+    obj := new_clone(Object{
+        data = new_clone(data),
+
+        delete = delete_object,
+        set_tickrate = set_object_tickrate,
+        reset_tickrate = reset_object_tickrate,
+        init = init_object,
+        stop = stop_object,
+        draw = draw_object,
+        try_tick = try_tick_object,
+        })
+
+    info := runtime.type_info_base(type_info_of(T))
+
+    #partial switch str in info.variant {
+    case:
+    case runtime.Type_Info_Struct:
+        for i in 0..<str.field_count do switch str.tags[i] {
+        case "init", "draw", "tick", "stop":
+            obj_func := str.types[i]
+            #partial switch func in obj_func.variant {
+            case:
+            case runtime.Type_Info_Named:
+                assert(func.name == "ObjectProc")
+
+                ptr := (^ObjectProc)(uintptr(obj.data) + str.offsets[i])
+
+                switch str.tags[i] {
+                case "init": obj.user.init = ptr
+                case "stop": obj.user.stop = ptr
+                case "tick": obj.user.tick = ptr
+                case "draw": obj.user.draw = ptr
+                }
+            }
+        case "position":
+            pos_arr := str.types[i]
+            #partial switch pos in pos_arr.variant {
+            case:
+            case runtime.Type_Info_Array:
+                ptr := (^rawptr)(uintptr(obj.data) + str.offsets[i])
+
+                switch pos.count {
+                case:
+                case 2:
+                    if pos.elem_size == size_of(f32) do obj.user.pos2d = (^[2]f32)(ptr)
+                    else if pos.elem_size == size_of(f64) do obj.user.pos2d64 = (^[2]f64)(ptr)
+                case 3:
+                    if pos.elem_size == size_of(f32) do obj.user.pos3d = (^[3]f32)(ptr)
+                    else if pos.elem_size == size_of(f64) do obj.user.pos3d64 = (^[3]f64)(ptr)
+                }
+            }
+        case "rotation":
+            rot_arr := str.types[i]
+            #partial switch rot in rot_arr.variant {
+            case:
+            case runtime.Type_Info_Array:
+                ptr := (^rawptr)(uintptr(obj.data) + str.offsets[i])
+
+                switch pos.count {
+                case:
+                case 3:
+                    if rot.elem_size == size_of(f32) do obj.user.rot3d = (^[3]f32)(ptr)
+                    else if rot.elem_size == size_of(f64) do obj.user.rot3d64 = (^[3]f64)(ptr)
+                }
+            case runtime.Type_Info_Float:
+                ptr := (^rawptr)(uintptr(obj.data) + str.offsets[i])
+
+                if rot_arr.size == size_of(f32) do obj.rot2d = (^f32)(ptr)
+                else if rot_arr.size == size_of(f64) do obj.rot2d64 = (^f64)(ptr)
+            }
+        }
+    }
+
+    obj.object = _create_object(_object_desc{
+            .pos3d = obj.user.pos3d == nil? { nil } : { &obj.user.pos3d.x, &obj.user.pos3d.y, &obj.user.pos3d.z },
+            .pos3d64 = obj.user.pos3d64 == nil? { nil } : { &obj.user.pos3d64.x, &obj.user.pos3d64.y, &obj.user.pos3d64.z },
+            .rot3d = obj.user.rot3d == nil? { nil } : { &obj.user.rot3d.x, &obj.user.rot3d.y, &obj.user.rot3d.z },
+            .rot3d64 = obj.user.rot3d64 == nil? { nil } : { &obj.user.rot3d64.x, &obj.user.rot3d64.y, &obj.user.rot3d64.z },
+            .pos2d = obj.user.pos2d == nil? { nil } : { &obj.user.pos2d.x, &obj.user.pos2d.y },
+            .pos2d64 = obj.user.pos2d64 == nil? { nil } : { &obj.user.pos2d64.x, &obj.user.pos2d64.y },
+            .rot2d = obj.user.rot2d == nil? nil : &obj.user.rot2d,
+            .rot2d64 = obj.user.rot2d64 == nil? nil : &obj.user.rot2d64,
+
+            .init = obj.user.init == nil? nil : _obj_init,
+            .stop = obj.user.stop == nil? nil : _obj_stop,
+            .draw = obj.user.draw == nil? nil : _obj_draw,
+            .tick = obj.user.tick == nil? nil : _obj_tick,
+            },
+        obj,
+        arena == nil? nil : arena.arena
+        )
+
+    return obj
+}
+
+delete_object :: proc(object: ^Object($T)) {
+    _delete_object(object.object)
+    free(object)
+}
+
+set_tickrates :: proc(delta: f32) {
+    _set_object_tickrates(delta)
+}
+
+set_tickrate :: proc(object: ^Object($T), delta: f32) {
+    _set_object_tickrate(object.object, delta)
+}
+
+reset_tickrate :: proc(object: ^Object($T)) {
+    _reset_object_tickrate(object.object)
+}
+
+init_object :: proc(object: ^Object($T)) {
+    _init_object(object.object)
+}
+
+stop_object :: proc(object: ^Object($T)) {
+    _stop_object(object.object)
+}
+
+draw_object :: proc(object: ^Object($T)) {
+    _draw_object(object.object)
+}
+
+try_tick_object :: proc(object: ^Object($T)) {
+    _try_tick_object(object.object)
 }
 
 

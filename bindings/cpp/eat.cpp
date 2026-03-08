@@ -274,10 +274,226 @@ namespace eau{
     }
 
     void
-    Clock::update(
+    Clock::start(
         void
         ) {
-        eau_update_clock(clock);
+        eau_start_clock(clock);
+    }
+
+    void
+    Clock::stop(
+        void
+        ) {
+        eau_stop_clock(clock);
+    }
+
+    void
+    update_clocks(
+        void
+        ) {
+        eau_update_clocks();
+    }
+
+    template <typename T>
+    void _object_init(void* _obj) {
+        auto obj = (eau_object*)_obj;
+        auto type_obj = (Object<T>*)obj->data;
+        type_obj->on_init();
+    }
+
+    template <typename T>
+    void _object_stop(void* _obj) {
+        auto obj = (eau_object*)_obj;
+        auto type_obj = (Object<T>*)obj->data;
+        type_obj->on_stop();
+    }
+
+    template <typename T>
+    void _object_draw(void* _obj) {
+        auto obj = (eau_object*)_obj;
+        auto type_obj = (Object<T>*)obj->data;
+        type_obj->on_draw();
+    }
+
+    template <typename T>
+    void _object_tick(void* _obj) {
+        auto obj = (eau_object*)_obj;
+        auto type_obj = (Object<T>*)obj->data;
+        type_obj->on_tick();
+    }
+
+    template <typename T>
+    Object<T>::Object(
+        Arena* arena
+        ) {
+        eau_object_desc desc = eau_object_desc{
+            .pos3d = { nullptr }, .pos3d64 = { nullptr },
+            .rot3d = { nullptr }, .rot3d64 = { nullptr },
+            .pos2d = { nullptr }, .pos2d64 = { nullptr },
+            .rot2d =   nullptr,   .rot2d64 =   nullptr,
+
+            .init = _object_init<T>,
+            .tick = _object_tick<T>,
+            .draw = _object_draw<T>,
+            .stop = _object_stop<T>,
+            };
+
+        T* obj = (T*)this;
+        if constexpr (requires { obj->get(position_tag{}); }) {
+            auto& pos = obj->get(position_tag{}); {
+                using type = std::remove_cvref_t<decltype(pos)>;
+
+                if constexpr (std::is_same_v<type, vec3<float>>) {
+                    desc.pos3d[0] = &pos.x;
+                    desc.pos3d[1] = &pos.y;
+                    desc.pos3d[2] = &pos.z;
+                } else if constexpr (std::is_same_v<type, vec3<double>>) {
+                    desc.pos3d64[0] = &pos.x;
+                    desc.pos3d64[1] = &pos.y;
+                    desc.pos3d64[2] = &pos.z;
+                } else if constexpr (std::is_same_v<type, vec2<float>>) {
+                    desc.pos2d[0] = &pos.x;
+                    desc.pos2d[1] = &pos.y;
+                } else if constexpr (std::is_same_v<type, vec2<double>>) {
+                    desc.pos2d64[0] = &pos.x;
+                    desc.pos2d64[1] = &pos.y;
+                }
+            }
+        }
+        if constexpr (requires { obj->get(rotation_tag{}); }) {
+            auto& rot = obj->get(rotation_tag{}); {
+                using type = std::remove_cvref_t<decltype(rot)>;
+
+                if constexpr (std::is_same_v<type, vec3<float>>) {
+                    desc.rot3d[0] = &rot.x;
+                    desc.rot3d[1] = &rot.y;
+                    desc.rot3d[2] = &rot.z;
+                } else if constexpr (std::is_same_v<type, vec3<double>>) {
+                    desc.rot3d64[0] = &rot.x;
+                    desc.rot3d64[1] = &rot.y;
+                    desc.rot3d64[2] = &rot.z;
+                } else if constexpr (std::is_same_v<type, float>) desc.rot2d = &rot;
+                else if constexpr (std::is_same_v<type, double>) desc.rot2d64 = &rot;
+            }
+        }
+
+        object = eau_create_object(
+            desc, 
+            this, 
+            arena == nullptr? nullptr : arena->arena
+            );
+        arena = arena;
+    }
+    template <typename T>
+    Object<T>::~Object() {
+        if (!arena) eau_delete_object(object);
+    }
+
+    template <typename T>
+    void
+    Object<T>::set_tickrate(
+        float delta
+        ) {
+        eau_set_object_tickrate(object, delta);
+    }
+
+    template <typename T>
+    void
+    Object<T>::reset_tickrate(
+        void
+        ) {
+        eau_reset_object_tickrate(object);
+    }
+
+    template <typename T>
+    void
+    Object<T>::init(
+        void
+        ) {
+        eau_init_object(object);
+    }
+
+    template <typename T>
+    void
+    Object<T>::stop(
+        void
+        ) {
+        eau_stop_object(object);
+    }
+
+    template <typename T>
+    void
+    Object<T>::draw(
+        void
+        ) {
+        eau_draw_object(object);
+    }
+
+    template <typename T>
+    void
+    Object<T>::try_tick(
+        void
+        ) {
+        eau_try_tick_object(object);
+    }
+
+    /*template <typename T>
+    void
+    Object<T>::on_init(
+        void
+        ) = 0;
+
+    template <typename T>
+    void
+    Object<T>::on_stop(
+        void
+        ) = 0;
+
+    template <typename T>
+    void
+    Object<T>::on_draw(
+        void
+        ) = 0;
+
+    template <typename T>
+    void
+    Object<T>::on_tick(
+        void
+        ) = 0;*/
+
+    void
+    set_object_tickrates(
+        float delta
+        ) {
+        eau_set_object_tickrates(delta);
+    }
+
+    void
+    init_objects(
+        void
+        ) {
+        eau_init_objects();
+    }
+
+    void
+    stop_objects(
+        void
+        ) {
+        eau_stop_objects();
+    }
+
+    void
+    draw_objects(
+        void
+        ) {
+        eau_draw_objects();
+    }
+
+    void
+    try_tick_objects(
+        void
+        ) {
+        eau_try_tick_objects();
     }
 };
 namespace ear{

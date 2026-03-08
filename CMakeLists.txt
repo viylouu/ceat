@@ -32,6 +32,7 @@ target_sources(ceat
             core/eau/coll.c
             core/eau/arena.c
             core/eau/clock.c
+            core/eau/object.c
         PUBLIC
             FILE_SET HEADERS
             BASE_DIRS
@@ -75,6 +76,10 @@ target_sources(ceat_cpp
 target_link_libraries(ceat_cpp
     PRIVATE
         ceat
+)
+target_compile_options(ceat_cpp
+    PRIVATE
+        -std=c++20
 )
 
 add_executable(ex_window)
@@ -145,6 +150,16 @@ target_sources(ex_input
         examples/input/main.c
 )
 target_link_libraries(ex_input
+    PRIVATE
+        ceat
+)
+
+add_executable(ex_object)
+target_sources(ex_object
+    PRIVATE
+        examples/object/main.c
+)
+target_link_libraries(ex_object
     PRIVATE
         ceat
 )

@@ -3,6 +3,10 @@
 
 #include "../eaw/eaw.h"
 
+eau_clock_ll* eau_clock_ll_first;
+eau_clock_ll* eau_clock_ll_last;
+
+
 void
 _eau_arena_clock_delete(
     void* clock
@@ -16,12 +20,24 @@ eau_create_clock(
     ) {
     eau_clock* clock = malloc(sizeof(eau_clock));
     *clock = (eau_clock){
+        .ll = (eau_clock_ll){
+            .clock = clock,
+            .prev = eau_clock_ll_last,
+            .next = NULL,
+            },
+
         .time = 0,
         .time64 = 0,
         .delta = 0,
         .delta64 = 0,
         .speed = 1,
+
+        .paused = true,
         };
+
+    if (eau_clock_ll_last != NULL) eau_clock_ll_last->next = &clock->ll;
+    eau_clock_ll_last = &clock->ll;
+    if (eau_clock_ll_first == NULL) eau_clock_ll_first = &clock->ll;
 
     if (arena != NULL) eau_add_to_arena(arena, &clock->dest, clock, _eau_arena_clock_delete);
     return clock;
@@ -31,6 +47,12 @@ void
 eau_delete_clock(
     eau_clock* clock
     ) {
+    if (clock->ll.prev != NULL) clock->ll.prev->next = clock->ll.next;
+    else eau_clock_ll_first = clock->ll.next;
+
+    if (clock->ll.next != NULL) clock->ll.next->prev = clock->ll.prev;
+    else eau_clock_ll_last = clock->ll.prev;
+
     if (clock->dest != NULL) clock->dest->data = NULL;
     free(clock);
 }
@@ -40,6 +62,7 @@ eau_reset_clock(
     eau_clock* clock
     ) {
     clock->time = 0;
+    clock->paused = true;
 }
 
 void
@@ -60,11 +83,31 @@ eau_set_clock_time(
 }
 
 void
-eau_update_clock(
+eau_start_clock(
     eau_clock* clock
     ) {
-    clock->delta64 = eaw_delta * clock->speed;
-    clock->delta = eaw_delta * clock->speed;
-    clock->time64 += clock->delta64;
-    clock->time = clock->time64;
+    clock->paused = false;
+}
+
+void
+eau_stop_clock(
+    eau_clock* clock
+    ) {
+    clock->paused = true;
+}
+
+void
+eau_update_clocks(
+    void
+    ) {
+    if (eau_clock_ll_first == NULL) return;
+
+    for (eau_clock_ll item = *eau_clock_ll_first; item.next != NULL; item = *item.next) {
+        if (item.clock->paused) continue;
+
+        item.clock->delta64 = eaw_delta * item.clock->speed;
+        item.clock->delta = eaw_delta * item.clock->speed;
+        item.clock->time64 += item.clock->delta64;
+        item.clock->time = item.clock->time64;
+    }
 }

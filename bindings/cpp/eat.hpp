@@ -297,10 +297,112 @@ namespace eau{
             );
 
         void
-        update(
+        start(
+            void
+            );
+
+        void
+        stop(
             void
             );
     };
+
+    void
+    update_clocks(
+        void
+        );
+
+    template <typename T>
+    struct Object{
+        eau_object* object;
+        Arena* arena;
+
+        struct position_tag {};
+        struct rotation_tag {};
+
+protected:
+        Object(
+            Arena* arena = nullptr
+            );
+        ~Object();
+
+public:
+        void
+        set_tickrate(
+            float delta
+            );
+
+        void
+        reset_tickrate(
+            void
+            );
+
+        void
+        init(
+            void
+            );
+
+        void
+        stop(
+            void
+            );
+
+        void
+        draw(
+            void
+            );
+
+        void
+        try_tick(
+            void
+            );
+
+private:
+        virtual void
+        on_init(
+            void
+            ) = 0;
+
+        virtual void
+        on_stop(
+            void
+            ) = 0;
+
+        virtual void
+        on_draw(
+            void
+            ) = 0;
+
+        virtual void
+        on_tick(
+            void
+            ) = 0;
+    };
+
+    void
+    set_object_tickrates(
+        float delta
+        );
+
+    void
+    init_objects(
+        void
+        );
+
+    void
+    stop_objects(
+        void
+        );
+
+    void
+    draw_objects(
+        void
+        );
+
+    void
+    try_tick_objects(
+        void
+        );
 };
 namespace ear{
     enum class TextureFilter{
