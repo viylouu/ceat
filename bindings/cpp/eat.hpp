@@ -272,8 +272,6 @@ namespace eau{
         eau_clock* clock;
         Arena* arena;
 
-        Clock() {}
-
         Clock(
             Arena* arena = nullptr
             );
@@ -557,8 +555,6 @@ namespace ear{
         ear_texture* texture;
         eau::Arena* arena;
 
-        Texture() {}
-
         Texture(
             TextureDesc desc,
             uint8_t pixels[],
@@ -615,8 +611,6 @@ namespace ear{
         ear_buffer* buffer;
         eau::Arena* arena;
 
-        Buffer() {}
-
         Buffer(
             BufferDesc desc,
             void* data,
@@ -645,8 +639,6 @@ namespace ear{
     struct Framebuffer{
         ear_framebuffer* framebuffer;
         eau::Arena* arena;
-
-        Framebuffer() {}
 
         Framebuffer(
             FramebufferDesc desc,
@@ -760,8 +752,6 @@ namespace ear{
         ear_pipeline* pipeline;
         eau::Arena* arena;
 
-        Pipeline() {}
-
         Pipeline(
             PipelineDesc desc,
             eau::Arena* arena = nullptr
@@ -787,8 +777,6 @@ namespace ear{
     struct Texarray{
         ear_texarray* texarray;
         eau::Arena* arena;
-
-        Texarray() {}
 
         Texarray(
             TexarrayDesc desc,
@@ -818,24 +806,24 @@ namespace ear{
             );
     };
 
-    void text(Texture& atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,4> col);
-    void text(Texture& atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,4> col);
-    void text(Texture& atlas, std::string text, float x, float y, float scale, std::array<float,4> col);
-    void text(Texture& atlas, std::string text, vec2<float> pos, float scale, std::array<float,4> col);
-    void text(Texture& atlas, std::string text, float x, float y, std::array<float,4> col);
-    void text(Texture& atlas, std::string text, vec2<float> pos, std::array<float,4> col);
-    void text(Texture& atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,3> col);
-    void text(Texture& atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,3> col);
-    void text(Texture& atlas, std::string text, float x, float y, float scale, std::array<float,3> col);
-    void text(Texture& atlas, std::string text, vec2<float> pos, float scale, std::array<float,3> col);
-    void text(Texture& atlas, std::string text, float x, float y, std::array<float,3> col);
-    void text(Texture& atlas, std::string text, vec2<float> pos, std::array<float,3> col);
-    void text(Texture& atlas, std::string text, float x, float y, float scalex, float scaley, float col);
-    void text(Texture& atlas, std::string text, vec2<float> pos, vec2<float> scale, float col);
-    void text(Texture& atlas, std::string text, float x, float y, float scale, float col);
-    void text(Texture& atlas, std::string text, vec2<float> pos, float scale, float col);
-    void text(Texture& atlas, std::string text, float x, float y, float col);
-    void text(Texture& atlas, std::string text, vec2<float> pos, float col);
+    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,4> col);
+    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,4> col);
+    void text(Texture* atlas, std::string text, float x, float y, float scale, std::array<float,4> col);
+    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, std::array<float,4> col);
+    void text(Texture* atlas, std::string text, float x, float y, std::array<float,4> col);
+    void text(Texture* atlas, std::string text, vec2<float> pos, std::array<float,4> col);
+    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,3> col);
+    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,3> col);
+    void text(Texture* atlas, std::string text, float x, float y, float scale, std::array<float,3> col);
+    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, std::array<float,3> col);
+    void text(Texture* atlas, std::string text, float x, float y, std::array<float,3> col);
+    void text(Texture* atlas, std::string text, vec2<float> pos, std::array<float,3> col);
+    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, float col);
+    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, float col);
+    void text(Texture* atlas, std::string text, float x, float y, float scale, float col);
+    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, float col);
+    void text(Texture* atlas, std::string text, float x, float y, float col);
+    void text(Texture* atlas, std::string text, vec2<float> pos, float col);
 
     void
     clear(
@@ -866,30 +854,30 @@ namespace ear{
     void rect(float x, float y, float w, float h, float col);
     void rect(vec2<float> pos, vec2<float> size, float col);
 
-    void tex(Texture& tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, std::array<float,4> col);
-    void tex(Texture& tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, std::array<float,4> col);
-    void tex(Texture& tex, float x, float y, float w, float h, std::array<float,4> col);
-    void tex(Texture& tex, vec2<float> pos, vec2<float> size, std::array<float,4> col);
-    void tex(Texture& tex, float x, float y, float sx, float sy, float sw, float sh, std::array<float,4> col);
-    void tex(Texture& tex, vec2<float> pos, std::array<float,4> samp, std::array<float,4> col);
-    void tex(Texture& tex, float x, float y, std::array<float,4> col);
-    void tex(Texture& tex, vec2<float> pos, std::array<float,4> col);
-    void tex(Texture& tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, std::array<float,3> col);
-    void tex(Texture& tex, vec2<float> pos, vec2<float> size, std::array<float,3> samp, std::array<float,4> col);
-    void tex(Texture& tex, float x, float y, float w, float h, std::array<float,3> col);
-    void tex(Texture& tex, vec2<float> pos, vec2<float> size, std::array<float,3> col);
-    void tex(Texture& tex, float x, float y, float sx, float sy, float sw, float sh, std::array<float,3> col);
-    void tex(Texture& tex, vec2<float> pos, std::array<float,3> samp, std::array<float,4> col);
-    void tex(Texture& tex, float x, float y, std::array<float,3> col);
-    void tex(Texture& tex, vec2<float> pos, std::array<float,3> col);
-    void tex(Texture& tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, float col);
-    void tex(Texture& tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, std::array<float,4> col);
-    void tex(Texture& tex, float x, float y, float w, float h, float col);
-    void tex(Texture& tex, vec2<float> pos, vec2<float> size, float col);
-    void tex(Texture& tex, float x, float y, float sx, float sy, float sw, float sh, float col);
-    void tex(Texture& tex, vec2<float> pos, std::array<float,4> samp, float col);
-    void tex(Texture& tex, float x, float y, float col);
-    void tex(Texture& tex, vec2<float> pos, float col);
+    void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, std::array<float,4> col);
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, std::array<float,4> col);
+    void tex(Texture* tex, float x, float y, float w, float h, std::array<float,4> col);
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> col);
+    void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, std::array<float,4> col);
+    void tex(Texture* tex, vec2<float> pos, std::array<float,4> samp, std::array<float,4> col);
+    void tex(Texture* tex, float x, float y, std::array<float,4> col);
+    void tex(Texture* tex, vec2<float> pos, std::array<float,4> col);
+    void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, std::array<float,3> col);
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,3> samp, std::array<float,4> col);
+    void tex(Texture* tex, float x, float y, float w, float h, std::array<float,3> col);
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,3> col);
+    void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, std::array<float,3> col);
+    void tex(Texture* tex, vec2<float> pos, std::array<float,3> samp, std::array<float,4> col);
+    void tex(Texture* tex, float x, float y, std::array<float,3> col);
+    void tex(Texture* tex, vec2<float> pos, std::array<float,3> col);
+    void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, float col);
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, std::array<float,4> col);
+    void tex(Texture* tex, float x, float y, float w, float h, float col);
+    void tex(Texture* tex, vec2<float> pos, vec2<float> size, float col);
+    void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, float col);
+    void tex(Texture* tex, vec2<float> pos, std::array<float,4> samp, float col);
+    void tex(Texture* tex, float x, float y, float col);
+    void tex(Texture* tex, vec2<float> pos, float col);
 };
 
 template <typename T>

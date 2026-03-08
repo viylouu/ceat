@@ -35,7 +35,7 @@ int main(void) {
         { .vsync = true }
         );
 
-    MyObject obj = MyObject();
+    MyObject* obj = new MyObject();
 
     eau::init_objects();
 
@@ -47,6 +47,8 @@ int main(void) {
     }
 
     eau::stop_objects();
+
+    delete obj;
 
     eat::stop();
 
