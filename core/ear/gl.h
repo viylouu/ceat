@@ -15,7 +15,12 @@
 #endif
 
 #include <GL/gl.h>
+
+#ifdef _WIN32
+#include "../../include/GL/glext.h"
+#else
 #include <GL/glext.h>
+#endif
 
 typedef struct ear_gl{
     GLFUNC(createShader, GLuint, GLenum type);

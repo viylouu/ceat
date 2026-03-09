@@ -4,9 +4,6 @@
 #include "../eau/arena.h"
 #include "gl.h"
 
-#include <GL/gl.h>
-#include <GL/glext.h>
-
 GLenum
 _TYPECONV_cull_mode(
     ear_cull_mode mode

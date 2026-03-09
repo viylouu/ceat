@@ -3,9 +3,6 @@
 
 #include "gl.h"
 
-#include <GL/gl.h>
-#include <GL/glext.h>
-
 GLenum
 _TYPECONV_buffer_type(
     ear_buffer_type type

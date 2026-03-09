@@ -4,9 +4,6 @@
 #include "../eau/arena.h"
 #include "gl.h"
 
-#include <GL/gl.h>
-#include <GL/glext.h>
-
 #include <string.h>
 
 GLenum 

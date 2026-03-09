@@ -7,9 +7,6 @@
 #include "user.h"
 #include "gl.h"
 
-#include <GL/gl.h>
-#include <GL/glext.h>
-
 ear_framebuffer* default_fb;
 
 void

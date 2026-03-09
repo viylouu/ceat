@@ -6,9 +6,6 @@
 
 #include "gl.h"
 
-#include <GL/gl.h>
-#include <GL/glext.h>
-
 GLenum 
 _TYPECONV_texture_filter(
     ear_texture_filter filter
