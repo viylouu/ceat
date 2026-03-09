@@ -4,7 +4,7 @@ class MyObject : public eau::Object<MyObject> {
     int frame;
 
 public:
-    MyObject() : eau::Object<MyObject>(nullptr) {}
+    MyObject() : eau::Object<MyObject>() {}
     ~MyObject() {}
 
 private:

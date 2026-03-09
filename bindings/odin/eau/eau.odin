@@ -117,6 +117,8 @@ _object_desc :: struct{
     tick: proc "c" (obj: ^_object),
     draw: proc "c" (obj: ^_object),
     stop: proc "c" (obj: ^_object),
+
+    render_layer: i32,
 }
 
 Object :: struct($T: typeid) {
@@ -154,9 +156,9 @@ wrap_object_proc :: proc($p: proc(^Object)) -> ObjectProc {
     
 }
 
-//ObjectDesc :: struct{
-//    
-//}
+ObjectDesc :: struct{
+    render_layer: i32,
+}
 
 @(default_calling_convention="c")
 foreign ceat {
@@ -327,7 +329,7 @@ _obj_tick :: proc "c" (cobj: ^_object) {
     tick.fn(cobj.data, tick.ctx)
 }
 
-create_object :: proc(data: $T, arena: ^Arena = nil) -> ^Object(T) {
+create_object :: proc(desc: ObjectDesc, data: $T, arena: ^Arena = nil) -> ^Object(T) {
     obj := new_clone(Object(T){
         user = {
             data = new_clone(data),
@@ -417,6 +419,8 @@ create_object :: proc(data: $T, arena: ^Arena = nil) -> ^Object(T) {
             stop = obj.user.stop == nil? nil : _obj_stop,
             draw = obj.user.draw == nil? nil : _obj_draw,
             tick = obj.user.tick == nil? nil : _obj_tick,
+
+            render_layer = desc.render_layer,
             },
         obj,
         arena == nil? nil : arena.arena

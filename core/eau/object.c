@@ -1,8 +1,6 @@
 #include "object.h"
 #include "../cutil.h"
 
-#include "../eaw/eaw.h"
-
 eau_object_ll* eau_object_ll_first = NULL;
 eau_object_ll* eau_object_ll_last = NULL;
 
@@ -125,12 +123,61 @@ eau_stop_objects(
         eau_stop_object(item->obj);
 }
 
+typedef struct _eau_object_draw_arr_item{
+    eau_object** arr;
+    uint32_t arr_size;
+
+    int layer;
+} _eau_object_draw_arr_item;
+
 void
 eau_draw_objects(
     void
     ) {
-    for (eau_object_ll* item = eau_object_ll_first; item != NULL; item = item->next)
+    _eau_object_draw_arr_item* arr;
+    arr = malloc(sizeof(_eau_object_draw_arr_item));
+    uint32_t arr_size = 0;
+
+    int rendered = 0;
+
+    for (eau_object_ll* item = eau_object_ll_first; item != NULL; item = item->next) {
+        int layer = item->obj->desc.render_layer;
+
+        if (arr_size == 0) {
+            arr[0] = (_eau_object_draw_arr_item){
+                .arr = malloc(sizeof(eau_object*)),
+                .arr_size = 1,
+                .layer = layer,
+                };
+            arr[0].arr[0] = item->obj;
+            ++arr_size;
+        } else {
+            bool set = false;
+            for (uint32_t i = 0; i < arr_size; ++i) {
+                if (arr[i].layer != layer) continue;
+
+                ++arr[i].arr_size;
+                arr[i].arr = realloc(arr[i].arr, sizeof(eau_object*) * arr[i].arr_size);
+                arr[i].arr[arr[i].arr_size-1] = item->obj;
+            }
+
+            if (!set) {
+                ++arr_size;
+                arr = realloc(arr, sizeof(_eau_object_draw_arr_item) * arr_size);
+                arr[arr_size-1] = (_eau_object_draw_arr_item){
+                    .arr = malloc(sizeof(eau_object*)),
+                    .arr_size = 1,
+                    .layer = layer,
+                    };
+                arr[arr_size-1].arr[0] = item->obj;
+            }
+        }
+
         eau_draw_object(item->obj);
+    }
+
+    for (uint32_t i = 0; i < arr_size; ++i) free(arr[i].arr);
+    free(arr);
 }
 
 void

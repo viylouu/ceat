@@ -426,6 +426,7 @@ namespace eau{
 
 protected:
         Object(
+            int layer = 0,
             Arena* arena = nullptr
             ) {
             eau_object_desc desc = eau_object_desc{
@@ -438,6 +439,8 @@ protected:
                 .tick = &_object_tick<T>,
                 .draw = &_object_draw<T>,
                 .stop = &_object_stop<T>,
+
+                .render_layer = layer,
                 };
 
             T* obj = (T*)this;
@@ -595,8 +598,6 @@ private:
         auto type_obj = (Object<T>*)obj->data;
         type_obj->on_tick();
     }
-
-
 };
 namespace ear{
     enum class TextureFilter{

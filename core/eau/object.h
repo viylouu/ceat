@@ -98,6 +98,8 @@ struct eau_object_desc{
     void (*tick)(eau_object* obj);
     void (*draw)(eau_object* obj);
     void (*stop)(eau_object* obj);
+
+    int render_layer;
 };
 
 struct eau_object{
