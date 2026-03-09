@@ -172,9 +172,9 @@ eau_draw_objects(
                 arr[arr_size-1].arr[0] = item->obj;
             }
         }
-
-        eau_draw_object(item->obj);
     }
+
+    for (uint32_t i = 0; i < arr_size; ++i) for (uint32_t j = 0; j < arr[i].arr_size; ++j) eau_draw_object(arr[i].arr[j]);
 
     for (uint32_t i = 0; i < arr_size; ++i) free(arr[i].arr);
     free(arr);
