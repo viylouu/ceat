@@ -3,6 +3,7 @@
 
 #include "gl.h"
 #include "data.h"
+#include "../eau/coll.h"
 
 #include <string.h>
 
@@ -53,12 +54,12 @@ ear_rect(
     if (last_used != EAR_INT_LU_RECT) ear_flush();
     last_used = EAR_INT_LU_RECT;
 
-    float rect[4] = { x,y,w,h };
-    _CONV_topleftify(&rect, align);
+    eau_rect rect = (eau_rect){ x,y,w,h, align };
+    _CONV_topleftify(&rect);
 
     ear_rr.ssbo_d[ear_rr.ssbo_i] = (typeof(ear_rr.ssbo_d[0])){ 
-        rect[0],rect[1],
-        rect[2],rect[3], 
+        rect.x,rect.y,
+        rect.w,rect.h, 
         col[0],col[1],col[2],col[3] 
         };
     memcpy((uint8_t*)(&ear_rr.ssbo_d[ear_rr.ssbo_i]) + sizeof(ear_rr.ssbo_d[0]) - sizeof(float)*16, transf, sizeof(float)*16);
@@ -80,12 +81,12 @@ ear_tex(
     if (ear_tr.cur_tex != tex) ear_tex_rend_flush();
     ear_tr.cur_tex = tex;
 
-    float rect[4] = { x,y,w,h };
-    _CONV_topleftify(&rect, align);
+    eau_rect rect = (eau_rect){ x,y,w,h, align };
+    _CONV_topleftify(&rect);
 
     ear_tr.ssbo_d[ear_tr.ssbo_i] = (typeof(ear_tr.ssbo_d[0])){ 
-        rect[0],rect[1],
-        rect[2],rect[3], 
+        rect.x,rect.y,
+        rect.w,rect.h, 
         col[0],col[1],col[2],col[3], 
         (float)sx/tex->width,1-(float)(sh+sy)/tex->height,(float)sw/tex->width,(float)sh/tex->height 
         };
