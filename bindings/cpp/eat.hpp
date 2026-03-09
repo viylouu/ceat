@@ -22,6 +22,12 @@ struct vec2{
     vec2 operator/(vec2 b);
     vec2 operator*(T b);
     vec2 operator/(T b);
+    vec2& operator+=(vec2 b);
+    vec2& operator-=(vec2 b);
+    vec2& operator*=(vec2 b);
+    vec2& operator/=(vec2 b);
+    vec2& operator*=(T b);
+    vec2& operator/=(T b);
 
     vec2 norm();
 };
@@ -41,6 +47,12 @@ struct vec3{
     vec3 operator/(vec3 b);
     vec3 operator*(T b);
     vec3 operator/(T b);
+    vec3& operator+=(vec3 b);
+    vec3& operator-=(vec3 b);
+    vec3& operator*=(vec3 b);
+    vec3& operator/=(vec3 b);
+    vec3& operator*=(T b);
+    vec3& operator/=(T b);
 
     vec3 norm();
 };
@@ -989,6 +1001,18 @@ template <typename T>
 vec2<T> vec2<T>::operator*(T b) { return vec2(x * b, y * b); }
 template <typename T>
 vec2<T> vec2<T>::operator/(T b) { return vec2(x / b, y / b); }
+template <typename T>
+vec2<T>& vec2<T>::operator+=(vec2 b) { return *this = vec2(x + b.x, y + b.y); }
+template <typename T>
+vec2<T>& vec2<T>::operator-=(vec2 b) { return *this = *this + -b; }
+template <typename T>
+vec2<T>& vec2<T>::operator*=(vec2 b) { return *this = vec2(x * b.x, y * b.y); }
+template <typename T>
+vec2<T>& vec2<T>::operator/=(vec2 b) { return *this = vec2(x / b.x, y / b.y); }
+template <typename T>
+vec2<T>& vec2<T>::operator*=(T b) { return *this = vec2(x * b, y * b); }
+template <typename T>
+vec2<T>& vec2<T>::operator/=(T b) { return *this = vec2(x / b, y / b); }
 
 template <typename T>
 vec2<T> vec2<T>::norm() {
@@ -1027,6 +1051,18 @@ template <typename T>
 vec3<T> vec3<T>::operator*(T b) { return vec3(x * b, y * b, z * b); }
 template <typename T>
 vec3<T> vec3<T>::operator/(T b) { return vec3(x / b, y / b, z / b); }
+template <typename T>
+vec3<T>& vec3<T>::operator+=(vec3 b) { return *this = vec3(x + b.x, y + b.y, z + b.z); }
+template <typename T>
+vec3<T>& vec3<T>::operator-=(vec3 b) { return *this = *this + -b; }
+template <typename T>
+vec3<T>& vec3<T>::operator*=(vec3 b) { return *this = vec3(x * b.x, y * b.y, z * b.z); }
+template <typename T>
+vec3<T>& vec3<T>::operator/=(vec3 b) { return *this = vec3(x / b.x, y / b.y, z / b.z); }
+template <typename T>
+vec3<T>& vec3<T>::operator*=(T b) { return *this = vec3(x * b, y * b, z * b); }
+template <typename T>
+vec3<T>& vec3<T>::operator/=(T b) { return *this = vec3(x / b, y / b, z / b); }
 
 template <typename T>
 vec3<T> vec3<T>::norm() {
