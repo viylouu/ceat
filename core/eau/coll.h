@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "../ear/user.h"
+
 typedef struct eau_rect eau_rect;
 
 typedef struct eau_collision_info eau_collision_info;
@@ -10,12 +12,27 @@ typedef struct eau_collision_info eau_collision_info;
 
 bool
 eau_aabb2d(
+    float min1x, float min1y,
+    float max1x, float max1y,
+    float min2x, float min2y,
+    float max2x, float max2y
+    );
+
+bool
+eau_point_aabb2d(
+    float pointx, float pointy,
+    float minx, float miny,
+    float maxx, float maxy
+    );
+
+bool
+eau_rect_rect(
     eau_rect a,
     eau_rect b
     );
 
 bool
-eau_point_aabb2d(
+eau_point_rect(
     float pointx, float pointy,
     eau_rect rect
     );
@@ -45,11 +62,18 @@ eau_epa3d(
 
 
 struct eau_rect{
-    float minx; float miny;
-    float maxx; float maxy;
+    float x; float y;
+    float w; float h;
+    ear_align align;
 };
 
 struct eau_collision_info{
     float normx; float normy; float normz;
     float depth;
 };
+
+
+void
+_CONV_topleftify(
+    eau_rect* rect
+    );

@@ -184,25 +184,4 @@ _TYPECONV_draw_mode(
     eat_unreachable();
 }
 
-void
-_CONV_topleftify(
-    float (*rect)[4],
-    ear_align align
-    ) {
-    float offx; float offy;
 
-    switch (align) {
-    case EAR_ALIGN_TOP_LEFT:  offx = 0;  offy = 0;  break;
-    case EAR_ALIGN_TOP:       offx = .5; offy = 0;  break;
-    case EAR_ALIGN_TOP_RIGHT: offx = 1;  offy = 0;  break;
-    case EAR_ALIGN_MID_LEFT:  offx = 0;  offy = .5; break;
-    case EAR_ALIGN_MID:       offx = .5; offy = .5; break;
-    case EAR_ALIGN_MID_RIGHT: offx = 1;  offy = .5; break;
-    case EAR_ALIGN_BOT_LEFT:  offx = 0;  offy = 1;  break;
-    case EAR_ALIGN_BOT:       offx = .5; offy = 1;  break;
-    case EAR_ALIGN_BOT_RIGHT: offx = 1;  offy = 1;  break;
-    }
-
-    (*rect)[0] = (*rect)[0] - (*rect)[2] * offx;
-    (*rect)[1] = (*rect)[1] - (*rect)[3] * offy;
-}

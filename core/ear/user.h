@@ -96,11 +96,3 @@ void
 ear_load_transform(
     mat4 mat
     );
-
-
-
-void
-_CONV_topleftify(
-    float (*rect)[4],
-    ear_align align
-    );

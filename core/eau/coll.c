@@ -5,26 +5,73 @@
 #include <float.h>
 #include <math.h>
 
+void
+_CONV_topleftify(
+    eau_rect* rect
+    ) {
+    float offx; float offy;
+
+    switch (rect->align) {
+    case EAR_ALIGN_TOP_LEFT:  offx = 0;  offy = 0;  break;
+    case EAR_ALIGN_TOP:       offx = .5; offy = 0;  break;
+    case EAR_ALIGN_TOP_RIGHT: offx = 1;  offy = 0;  break;
+    case EAR_ALIGN_MID_LEFT:  offx = 0;  offy = .5; break;
+    case EAR_ALIGN_MID:       offx = .5; offy = .5; break;
+    case EAR_ALIGN_MID_RIGHT: offx = 1;  offy = .5; break;
+    case EAR_ALIGN_BOT_LEFT:  offx = 0;  offy = 1;  break;
+    case EAR_ALIGN_BOT:       offx = .5; offy = 1;  break;
+    case EAR_ALIGN_BOT_RIGHT: offx = 1;  offy = 1;  break;
+    }
+
+    rect->x -= rect->w * offx;
+    rect->y -= rect->h * offy;
+    rect->align = EAR_ALIGN_TOP_LEFT;
+}
+
 bool
 eau_aabb2d(
-    eau_rect a,
-    eau_rect b
+    float min1x, float min1y,
+    float max1x, float max1y,
+    float min2x, float min2y,
+    float max2x, float max2y
     ) {
-    return a.minx < b.maxx &&
-           a.maxx > b.minx &&
-           a.miny < b.maxy &&
-           a.maxy > b.miny;
+    return min1x < max2x &&
+           max1x > min2x &&
+           min1y < max2y &&
+           max1y > min2y;
 }
 
 bool
 eau_point_aabb2d(
-    float px, float py,
-    eau_rect r
+    float pointx, float pointy,
+    float minx, float miny,
+    float maxx, float maxy
     ) {
-    return px < r.maxx &&
-           px > r.minx &&
-           py < r.maxy &&
-           py > r.miny;
+    return pointx < maxx &&
+           pointx > minx &&
+           pointy < maxy &&
+           pointy > miny;
+}
+
+bool
+eau_rect_rect(
+    eau_rect a,
+    eau_rect b
+    ) {
+    _CONV_topleftify(&a);
+    _CONV_topleftify(&b);
+
+    return eau_aabb2d(a.x,a.y, a.x+a.w,a.y+a.h, b.x,b.y, b.x+b.w,b.y+b.h);
+}
+
+bool
+eau_point_rect(
+    float pointx, float pointy,
+    eau_rect rect
+    ) {
+    _CONV_topleftify(&rect);
+
+    return eau_point_aabb2d(pointx, pointy, rect.x,rect.y, rect.x+rect.w,rect.y+rect.h);
 }
 
 bool

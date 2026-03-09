@@ -259,6 +259,13 @@ namespace eat{
         void
         );
 };
+namespace ear{
+    enum class Align{
+        TopLeft, Top, TopRight,
+        MidLeft, Mid, MidRight,
+        BotLeft, Bot, BotRight,
+    };
+};
 namespace eau{
     typedef struct Arena Arena;
     struct Destructor{
@@ -287,8 +294,9 @@ namespace eau{
     };
 
     struct Rect{
-        vec2<float> min;
-        vec2<float> max;
+        vec2<float> pos;
+        vec2<float> size;
+        ear::Align align;
     };
 
     struct CollisionInfo{
@@ -298,14 +306,31 @@ namespace eau{
 
     bool
     aabb2d(
+        float min1x, float min1y,
+        float max1x, float max1y,
+        float min2x, float min2y,
+        float max2x, float max2y
+        );
+
+    bool
+    point_aabb2d(
+        float pointx, float pointy,
+        float minx, float miny,
+        float maxx, float maxy
+        );
+
+    bool
+    rect_rect(
         Rect a,
         Rect b
         );
+
     bool
-    point_aabb2d(
+    point_rect(
         vec2<float> point,
         Rect rect
         );
+
     bool
     aabb3d(
         vec3<float> min1,
@@ -854,12 +879,6 @@ namespace ear{
         update_layer(
             uint32_t layer
             );
-    };
-
-    enum class Align{
-        TopLeft, Top, TopRight,
-        MidLeft, Mid, MidRight,
-        BotLeft, Bot, BotRight,
     };
 
     void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,4> col, Align align = Align::TopLeft);

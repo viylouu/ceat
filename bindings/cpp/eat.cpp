@@ -197,33 +197,56 @@ namespace eau{
 
     bool
     aabb2d(
+        float min1x, float min1y,
+        float max1x, float max1y,
+        float min2x, float min2y,
+        float max2x, float max2y
+        ) {
+        return eau_aabb2d(min1x,min1y, max1x,max1y, min2x,min2y, max2x,max2y);
+    }
+
+    bool
+    point_aabb2d(
+        float pointx, float pointy,
+        float minx, float miny,
+        float maxx, float maxy
+        ) {
+        return eau_point_aabb2d(pointx,pointy, minx,miny, maxx,maxy);
+    }
+
+    bool
+    rect_rect(
         Rect a,
         Rect b
         ) {
-        return eau_aabb2d(
+        return eau_rect_rect(
+            eau_rect{ 
+            a.pos.x,a.pos.y, 
+            a.size.x,a.size.y, 
+            (ear_align)a.align
+            },
             eau_rect{
-                .minx = a.min.x, .miny = a.min.y,
-                .maxx = a.max.x, .maxy = a.max.y,
-                },
-            eau_rect{
-                .minx = b.min.x, .miny = b.min.y,
-                .maxx = b.max.x, .maxy = b.max.y,
-                }
-            );
+            a.pos.x,a.pos.y,
+            a.size.x,a.size.y,
+            (ear_align)a.align
+            });
     }
+
     bool
-    point_aabb2d(
+    point_rect(
         vec2<float> point,
         Rect rect
         ) {
-        return eau_point_aabb2d(
-            point.x, point.y,
+        return eau_point_rect(
+            point.x,point.y,
             eau_rect{
-                .minx = rect.min.x, .miny = rect.min.y,
-                .maxx = rect.max.x, .maxy = rect.max.y,
+                rect.pos.x,rect.pos.y,
+                rect.size.x,rect.size.y,
+                (ear_align)rect.align,
                 }
             );
     }
+
     bool
     aabb3d(
         vec3<float> min1,
