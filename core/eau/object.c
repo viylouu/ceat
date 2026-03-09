@@ -126,6 +126,7 @@ eau_stop_objects(
 typedef struct _eau_object_draw_arr_item{
     eau_object** arr;
     uint32_t arr_size;
+    uint32_t arr_cap;
 
     int layer;
 } _eau_object_draw_arr_item;
@@ -154,7 +155,11 @@ eau_draw_objects(
             if (arr[i].layer != layer) continue;
 
             ++arr[i].arr_size;
-            arr[i].arr = realloc(arr[i].arr, sizeof(eau_object*) * arr[i].arr_size);
+            if (arr[i].arr_size > arr[i].arr_cap) {
+                arr[i].arr_cap *= 2;
+                arr[i].arr = realloc(arr[i].arr, sizeof(eau_object*) * arr[i].arr_cap);
+            }
+
             arr[i].arr[arr[i].arr_size-1] = item->obj;
 
             set = true;
@@ -165,8 +170,9 @@ eau_draw_objects(
             ++arr_size;
             arr = realloc(arr, sizeof(_eau_object_draw_arr_item) * arr_size);
             arr[arr_size-1] = (_eau_object_draw_arr_item){
-                .arr = malloc(sizeof(eau_object*)),
+                .arr = malloc(sizeof(eau_object*)*4),
                 .arr_size = 1,
+                .arr_cap = 4,
                 .layer = layer,
                 };
             arr[arr_size-1].arr[0] = item->obj;
