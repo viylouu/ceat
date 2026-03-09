@@ -66,6 +66,9 @@ extern float eaw_mouse_scroll_y;
 extern char eaw_text_input[1024];
 extern uint32_t eaw_text_input_chars;
 
+extern char eaw_tick_text_input[1024];
+extern uint32_t eaw_tick_text_input_chars;
+
 
 bool
 eaw_is_key(
@@ -93,6 +96,32 @@ eaw_is_mouse_released(
     eaw_mouse mouse
     );
 
+bool
+eaw_tick_is_key(
+    eaw_key key
+    );
+bool
+eaw_tick_is_key_pressed(
+    eaw_key key
+    );
+bool
+eaw_tick_is_key_released(
+    eaw_key key
+    );
+
+bool
+eaw_tick_is_mouse(
+    eaw_mouse mouse
+    );
+bool
+eaw_tick_is_mouse_pressed(
+    eaw_mouse mouse
+    );
+bool
+eaw_tick_is_mouse_released(
+    eaw_mouse mouse
+    );
+
 
 typedef enum eaw_mouse_mode{
     EAW_MOUSE_MODE_NORMAL,
@@ -114,5 +143,10 @@ eaw_input_init(
 
 void
 eaw_input_frame(
+    void
+    );
+
+void
+eaw_input_tick(
     void
     );

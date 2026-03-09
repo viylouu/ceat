@@ -6,8 +6,9 @@
 eau_object_ll* eau_object_ll_first = NULL;
 eau_object_ll* eau_object_ll_last = NULL;
 
-float tickrate = 1.f / 240;
-
+float eau_tickrate = 1.f / 240;
+double _eau_last_tick = 0;
+bool eau_tick_this_frame;
 
 void
 _eau_arena_object_delete(
@@ -34,9 +35,7 @@ eau_create_object(
             .next = NULL,
             },
 
-        .use_global_tickrate = true,
-        .delta = tickrate,
-        .last_time = eaw_time,
+        .delta = eau_tickrate,
         };
 
     if (eau_object_ll_last != NULL) eau_object_ll_last->next = &obj->ll;
@@ -61,39 +60,19 @@ eau_delete_object(
     free(obj);
 }
 
-// tickrate:
+// eau_tickrate:
 // - measured in delta time
 // - if its 0, objects update each frame instead of on a fixed framerate
 
 void
-eau_set_object_tickrates(
+eau_set_object_tickrate(
     float delta
     ) {
-    tickrate = delta;
+    eau_tickrate = delta;
 
     if (eau_object_ll_first == NULL) return;
 
-    for (eau_object_ll* item = eau_object_ll_first; item != NULL; item = item->next) {
-        if (!item->obj->use_global_tickrate) continue;
-        item->obj->delta = delta;
-    }
-}
-
-void
-eau_set_object_tickrate(
-    eau_object* obj,
-    float delta
-    ) {
-    obj->use_global_tickrate = false;
-    obj->delta = delta;
-}
-
-void
-eau_reset_object_tickrate(
-    eau_object* obj
-    ) {
-    obj->use_global_tickrate = true;
-    obj->delta = tickrate;
+    for (eau_object_ll* item = eau_object_ll_first; item != NULL; item = item->next) item->obj->delta = delta;
 }
 
 void
@@ -125,8 +104,8 @@ eau_try_tick_object(
     eau_object* obj
     ) {
     if (!obj->desc.tick) return;
-    if (eaw_time - obj->last_time < obj->delta) return;
-    obj->last_time = eaw_time;
+    //
+    if (!eau_tick_this_frame) return;
     obj->desc.tick(obj);
 }
 
@@ -158,6 +137,8 @@ void
 eau_try_tick_objects(
     void
     ) {
+    if (!eau_tick_this_frame) return;
+
     for (eau_object_ll* item = eau_object_ll_first; item != NULL; item = item->next)
         eau_try_tick_object(item->obj);
 }

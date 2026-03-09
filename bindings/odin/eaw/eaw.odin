@@ -85,6 +85,8 @@ foreign ceat {
 
     @(link_name="eaw_text_input") text_input: cstring
     @(link_name="eaw_text_input_chars") text_input_chars: u32
+    @(link_name="eaw_tick_text_input") tick_text_input: cstring
+    @(link_name="eaw_tick_text_input_chars") tick_text_input_chars: u32
 
     @(link_name="eaw_is_key")          is_key :: proc(key: Key) -> bool ---
     @(link_name="eaw_is_key_pressed")  is_key_pressed :: proc(key: Key) -> bool ---
@@ -93,6 +95,14 @@ foreign ceat {
     @(link_name="eaw_is_mouse")          is_mouse :: proc(mouse: Mouse) -> bool ---
     @(link_name="eaw_is_mouse_pressed")  is_mouse_pressed :: proc(mouse: Mouse) -> bool ---
     @(link_name="eaw_is_mouse_released") is_mouse_released :: proc(mouse: Mouse) -> bool ---
+
+    @(link_name="eaw_tick_is_key")          tick_is_key :: proc(key: Key) -> bool ---
+    @(link_name="eaw_tick_is_key_pressed")  tick_is_key_pressed :: proc(key: Key) -> bool ---
+    @(link_name="eaw_tick_is_key_released") tick_is_key_released :: proc(key: Key) -> bool ---
+
+    @(link_name="eaw_tick_is_mouse")          tick_is_mouse :: proc(mouse: Mouse) -> bool ---
+    @(link_name="eaw_tick_is_mouse_pressed")  tick_is_mouse_pressed :: proc(mouse: Mouse) -> bool ---
+    @(link_name="eaw_tick_is_mouse_released") tick_is_mouse_released :: proc(mouse: Mouse) -> bool ---
 
     @(link_name="eaw_set_mouse_mode") set_mouse_mode :: proc(mode: MouseMode) ---
 }

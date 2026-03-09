@@ -28,6 +28,8 @@ struct vec2{
     vec2& operator/=(vec2 b);
     vec2& operator*=(T b);
     vec2& operator/=(T b);
+    vec2& operator=(vec2 b);
+    vec2& operator=(T b);
 
     vec2 norm();
 };
@@ -53,6 +55,8 @@ struct vec3{
     vec3& operator/=(vec3 b);
     vec3& operator*=(T b);
     vec3& operator/=(T b);
+    vec3& operator=(vec3 b);
+    vec3& operator=(T b);
 
     vec3 norm();
 };
@@ -155,6 +159,7 @@ namespace eaw{
     extern vec2<double> mouse_scroll64;
 
     extern std::string text_input;
+    extern std::string tick_text_input;
 
     bool
     is_key(
@@ -179,6 +184,32 @@ namespace eaw{
         );
     bool
     is_mouse_released(
+        Mouse mouse
+        );
+
+    bool
+    tick_is_key(
+        Key key
+        );
+    bool
+    tick_is_key_pressed(
+        Key key
+        );
+    bool
+    tick_is_key_released(
+        Key key
+        );
+
+    bool
+    tick_is_mouse(
+        Mouse mouse
+        );
+    bool
+    tick_is_mouse_pressed(
+        Mouse mouse
+        );
+    bool
+    tick_is_mouse_released(
         Mouse mouse
         );
 
@@ -435,22 +466,6 @@ protected:
 
 public:
         void
-        set_tickrate(
-            float delta
-            ) {
-            eau_set_object_tickrate(object, delta);
-            this->delta = object->delta;
-        }
-
-        void
-        reset_tickrate(
-            void
-            ) {
-            eau_reset_object_tickrate(object);
-            this->delta = object->delta;
-        }
-
-        void
         init(
             void
             ) {
@@ -506,7 +521,7 @@ private:
     };
 
     void
-    set_object_tickrates(
+    set_object_tickrate(
         float delta
         );
 
@@ -1013,6 +1028,10 @@ template <typename T>
 vec2<T>& vec2<T>::operator*=(T b) { return *this = vec2(x * b, y * b); }
 template <typename T>
 vec2<T>& vec2<T>::operator/=(T b) { return *this = vec2(x / b, y / b); }
+template <typename T>
+vec2<T>& vec2<T>::operator=(vec2 b) { return vec2(this->x = b.x, this->y = b.y); }
+template <typename T>
+vec2<T>& vec2<T>::operator=(T b) { return *this = vec2(b); }
 
 template <typename T>
 vec2<T> vec2<T>::norm() {
@@ -1063,6 +1082,10 @@ template <typename T>
 vec3<T>& vec3<T>::operator*=(T b) { return *this = vec3(x * b, y * b, z * b); }
 template <typename T>
 vec3<T>& vec3<T>::operator/=(T b) { return *this = vec3(x / b, y / b, z / b); }
+template <typename T>
+vec3<T>& vec3<T>::operator=(vec3 b) { return vec3(this->x = b.x, this->y = b.y, this->z = b.z); }
+template <typename T>
+vec3<T>& vec3<T>::operator=(T b) { return *this = vec3(b); }
 
 template <typename T>
 vec3<T> vec3<T>::norm() {

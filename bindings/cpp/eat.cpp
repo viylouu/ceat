@@ -68,6 +68,7 @@ namespace eat{
         eaw::mouse_scroll64 = { eaw_mouse_scroll_x64, eaw_mouse_scroll_y64 };
 
         eaw::text_input.assign(eaw_text_input, eaw_text_input_chars);
+        eaw::tick_text_input.assign(eaw_tick_text_input, eaw_tick_text_input_chars);
 
         return res;
     }
@@ -81,6 +82,7 @@ namespace eaw{
     vec2<double> mouse_scroll64;
 
     std::string text_input;
+    std::string tick_text_input;
 
     bool
     is_key(
@@ -118,6 +120,44 @@ namespace eaw{
         Mouse mouse
         ) {
         return eaw_is_mouse_released((eaw_mouse)mouse);
+    }
+
+    bool
+    tick_is_key(
+        Key key
+        ) {
+        return eaw_tick_is_key((eaw_key)key);
+    }
+    bool
+    tick_is_key_pressed(
+        Key key
+        ) {
+        return eaw_tick_is_key_pressed((eaw_key)key);
+    }
+    bool
+    tick_is_key_released(
+        Key key
+        ) {
+        return eaw_tick_is_key_released((eaw_key)key);
+    }
+
+    bool
+    tick_is_mouse(
+        Mouse mouse
+        ) {
+        return eaw_tick_is_mouse((eaw_mouse)mouse);
+    }
+    bool
+    tick_is_mouse_pressed(
+        Mouse mouse
+        ) {
+        return eaw_tick_is_mouse_pressed((eaw_mouse)mouse);
+    }
+    bool
+    tick_is_mouse_released(
+        Mouse mouse
+        ) {
+        return eaw_tick_is_mouse_released((eaw_mouse)mouse);
     }
 
     void
@@ -315,10 +355,10 @@ namespace eau{
     }
 
     void
-    set_object_tickrates(
+    set_object_tickrate(
         float delta
         ) {
-        eau_set_object_tickrates(delta);
+        eau_set_object_tickrate(delta);
     }
 
     void

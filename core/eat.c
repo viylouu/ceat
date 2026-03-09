@@ -1,6 +1,7 @@
 #include "../eat.h"
 
 #include "console/console.h"
+#include "eau/object.h"
 
 int32_t eat_width;
 int32_t eat_height;
@@ -37,6 +38,12 @@ bool
 eat_frame(
     void
     ) {
+    eau_tick_this_frame = false;
+    if (eaw_time - _eau_last_tick > eau_tickrate) {
+        _eau_last_tick = eaw_time;
+        eau_tick_this_frame = true;
+    }
+
     ear_frame();
     eaw_frame();
 

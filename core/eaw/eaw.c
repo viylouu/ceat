@@ -1,6 +1,8 @@
 #include "eaw.h"
 //#include "../cutil.h"
 
+#include "core/eau/object.h"
+
 #include <GLFW/glfw3.h>
 
 double eaw_time;
@@ -37,12 +39,14 @@ eaw_frame(
     eaw_mouse_scroll_y64 = 0;
 
     eaw_window_frame();
-    
+
     eaw_text_input_chars = 0;
+    if (eau_tick_this_frame) eaw_tick_text_input_chars = 0;
 
     glfwPollEvents();
 
     eaw_input_frame();
+    eaw_input_tick();
 
     eaw_time = glfwGetTime();
     eaw_delta = eaw_time - eaw_last_time;

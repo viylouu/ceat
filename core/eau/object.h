@@ -13,6 +13,11 @@ typedef struct eau_object_ll eau_object_ll;
 extern eau_object_ll* eau_object_ll_first;
 extern eau_object_ll* eau_object_ll_last;
 
+// dont touch these
+extern float eau_tickrate;
+extern double _eau_last_tick;
+extern bool eau_tick_this_frame;
+
 
 eau_object*
 eau_create_object(
@@ -31,19 +36,8 @@ eau_delete_object(
 // - if its 0, objects update each frame instead of on a fixed framerate
 
 void
-eau_set_object_tickrates(
-    float delta
-    );
-
-void
 eau_set_object_tickrate(
-    eau_object* object,
     float delta
-    );
-
-void
-eau_reset_object_tickrate(
-    eau_object* object
     );
 
 void
@@ -113,9 +107,7 @@ struct eau_object{
 
     void* data;
 
-    bool use_global_tickrate;
     float delta;
-    double last_time;
 
     eau_destructor* dest;
 };
