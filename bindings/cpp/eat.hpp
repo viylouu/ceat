@@ -1029,7 +1029,7 @@ vec2<T>& vec2<T>::operator*=(T b) { return *this = vec2(x * b, y * b); }
 template <typename T>
 vec2<T>& vec2<T>::operator/=(T b) { return *this = vec2(x / b, y / b); }
 template <typename T>
-vec2<T>& vec2<T>::operator=(vec2 b) { return vec2(this->x = b.x, this->y = b.y); }
+vec2<T>& vec2<T>::operator=(vec2 b) { this->x = b.x; this->y = b.y; return *this; }
 template <typename T>
 vec2<T>& vec2<T>::operator=(T b) { return *this = vec2(b); }
 
@@ -1083,7 +1083,7 @@ vec3<T>& vec3<T>::operator*=(T b) { return *this = vec3(x * b, y * b, z * b); }
 template <typename T>
 vec3<T>& vec3<T>::operator/=(T b) { return *this = vec3(x / b, y / b, z / b); }
 template <typename T>
-vec3<T>& vec3<T>::operator=(vec3 b) { return vec3(this->x = b.x, this->y = b.y, this->z = b.z); }
+vec3<T>& vec3<T>::operator=(vec3 b) { this->x = b.x; this->y = b.y; this->z = b.z; return *this; }
 template <typename T>
 vec3<T>& vec3<T>::operator=(T b) { return *this = vec3(b); }
 
