@@ -32,6 +32,8 @@ struct vec2{
     vec2& operator=(T b);
 
     vec2 norm();
+    T dist(vec2 b);
+    T mag();
 };
 
 template <typename T>
@@ -59,6 +61,8 @@ struct vec3{
     vec3& operator=(T b);
 
     vec3 norm();
+    T dist(vec3 b);
+    T mag();
 };
 
 struct Mat4{
@@ -1035,8 +1039,17 @@ vec2<T>& vec2<T>::operator=(T b) { return *this = vec2(b); }
 
 template <typename T>
 vec2<T> vec2<T>::norm() {
-    T mag = sqrt(x*x + y*y);
-    return *this / mag;
+    return *this / mag();
+}
+
+template <typename T>
+T vec2<T>::dist(vec2 b) {
+    return (b - *this).mag();
+}
+
+template <typename T>
+T vec2<T>::mag() {
+    return sqrt(x*x + y*y);
 }
 
 template <typename T>
@@ -1089,6 +1102,15 @@ vec3<T>& vec3<T>::operator=(T b) { return *this = vec3(b); }
 
 template <typename T>
 vec3<T> vec3<T>::norm() {
-    T mag = sqrt(x*x + y*y + z*z);
-    return *this / mag;
+    return *this / mag();
+}
+
+template <typename T>
+T vec3<T>::dist(vec3 b) {
+    return (b - *this).mag();
+}
+
+template <typename T>
+T vec3<T>::mag() {
+    return sqrt(x*x + y*y + z*z);
 }
