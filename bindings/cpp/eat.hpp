@@ -296,7 +296,7 @@ namespace eau{
     struct Rect{
         vec2<float> pos;
         vec2<float> size;
-        ear::Align align;
+        ear::Align align = ear::Align::TopLeft;
     };
 
     struct CollisionInfo{
@@ -306,17 +306,16 @@ namespace eau{
 
     bool
     aabb2d(
-        float min1x, float min1y,
-        float max1x, float max1y,
-        float min2x, float min2y,
-        float max2x, float max2y
+        vec2<float> min1,
+        vec2<float> max1,
+        vec2<float> min2,
+        vec2<float> max2
         );
 
     bool
     point_aabb2d(
-        float pointx, float pointy,
-        float minx, float miny,
-        float maxx, float maxy
+        vec2<float> point,
+        vec2<float>min, vec2<float>max
         );
 
     bool

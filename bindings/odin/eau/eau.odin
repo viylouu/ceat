@@ -17,9 +17,11 @@ when ODIN_OS == .Windows {
 mat4 :: [16]f32
 
 
+// figure out where the fuck to put Align
 Rect :: struct{
-    min: [2]f32,
-    max: [2]f32,
+    pos: [2]f32,
+    size: [2]f32,
+    align: _align,
 }
 
 CollisionInfo :: struct{
@@ -150,6 +152,14 @@ wrap_object_proc :: proc($p: proc(^Object)) -> ObjectProc {
 //ObjectDesc :: struct{
 //    
 //}
+
+// this is in ear
+// however i cant include that here
+_align :: enum i32 {
+    TopLeft, Top, TopRight,
+    MidLeft, Mid, MidRight,
+    BotLeft, Bot, BotRight,
+}
 
 @(default_calling_convention="c")
 foreign ceat {

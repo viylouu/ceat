@@ -1,7 +1,7 @@
 #include "text.h"
 //#include "../cutil.h"
 
-#include "user.h"
+#include "../eau/coll.h"
 
 void
 ear_text(
@@ -48,14 +48,14 @@ ear_text(
     ox = 0; oy = 0;
 
     if (align != EAR_ALIGN_TOP_LEFT) {
-        float rect[4] = { 0,0,width,height };
-        _CONV_topleftify(&rect, align);
+        eau_rect rect = (eau_rect){ 0,0,width,height, align };
+        _CONV_topleftify(&rect);
 
         for (int i = 0; text[i] != '\0'; ++i) {
             ear_tex(
                 atlas,
-                ox * charw * scalex + x + rect[0],
-                oy * charh * scaley + y + rect[1],
+                ox * charw * scalex + x + rect.x,
+                oy * charh * scaley + y + rect.y,
                 charw * scalex,
                 charh * scaley,
                 (float)(text[i] >> 4) * charw,
