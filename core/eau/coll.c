@@ -12,20 +12,20 @@ _CONV_topleftify(
     float offx; float offy;
 
     switch (rect->align) {
-    case EAR_ALIGN_TOP_LEFT:  offx = 0;  offy = 0;  break;
-    case EAR_ALIGN_TOP:       offx = .5; offy = 0;  break;
-    case EAR_ALIGN_TOP_RIGHT: offx = 1;  offy = 0;  break;
-    case EAR_ALIGN_MID_LEFT:  offx = 0;  offy = .5; break;
-    case EAR_ALIGN_MID:       offx = .5; offy = .5; break;
-    case EAR_ALIGN_MID_RIGHT: offx = 1;  offy = .5; break;
-    case EAR_ALIGN_BOT_LEFT:  offx = 0;  offy = 1;  break;
-    case EAR_ALIGN_BOT:       offx = .5; offy = 1;  break;
-    case EAR_ALIGN_BOT_RIGHT: offx = 1;  offy = 1;  break;
+    case EAU_ALIGN_TOP_LEFT:  offx = 0;  offy = 0;  break;
+    case EAU_ALIGN_TOP:       offx = .5; offy = 0;  break;
+    case EAU_ALIGN_TOP_RIGHT: offx = 1;  offy = 0;  break;
+    case EAU_ALIGN_MID_LEFT:  offx = 0;  offy = .5; break;
+    case EAU_ALIGN_MID:       offx = .5; offy = .5; break;
+    case EAU_ALIGN_MID_RIGHT: offx = 1;  offy = .5; break;
+    case EAU_ALIGN_BOT_LEFT:  offx = 0;  offy = 1;  break;
+    case EAU_ALIGN_BOT:       offx = .5; offy = 1;  break;
+    case EAU_ALIGN_BOT_RIGHT: offx = 1;  offy = 1;  break;
     }
 
     rect->x -= rect->w * offx;
     rect->y -= rect->h * offy;
-    rect->align = EAR_ALIGN_TOP_LEFT;
+    rect->align = EAU_ALIGN_TOP_LEFT;
 }
 
 bool

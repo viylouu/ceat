@@ -3,11 +3,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "../ear/user.h"
-
 typedef struct eau_rect eau_rect;
 
 typedef struct eau_collision_info eau_collision_info;
+
+//typedef enum eau_align eau_align;
 
 
 bool
@@ -61,10 +61,16 @@ eau_epa3d(
     );
 
 
+typedef enum eau_align{
+    EAU_ALIGN_TOP_LEFT, EAU_ALIGN_TOP, EAU_ALIGN_TOP_RIGHT,
+    EAU_ALIGN_MID_LEFT, EAU_ALIGN_MID, EAU_ALIGN_MID_RIGHT,
+    EAU_ALIGN_BOT_LEFT, EAU_ALIGN_BOT, EAU_ALIGN_BOT_RIGHT,
+} eau_align;
+
 struct eau_rect{
     float x; float y;
     float w; float h;
-    ear_align align;
+    eau_align align;
 };
 
 struct eau_collision_info{

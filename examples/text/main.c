@@ -18,7 +18,7 @@ int main(void) {
     while (eat_frame()) {
         ear_clear((float[3]){ .2f, .4f, .3f });
 
-        ear_text(font, "hello\n\tworld!!!!", 0,0, 16,16, (float[4]){ 1,1,1,1 }, EAR_ALIGN_TOP_LEFT);
+        ear_text(font, "hello\n\tworld!!!!", 0,0, 16,16, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
 
         printf("%.3f FPS\n", 1./eat_delta64);
     }

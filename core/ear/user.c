@@ -3,7 +3,6 @@
 
 #include "gl.h"
 #include "data.h"
-#include "../eau/coll.h"
 
 #include <string.h>
 
@@ -48,7 +47,7 @@ ear_rect(
     float x, float y,
     float w, float h,
     float col[4],
-    ear_align align
+    eau_align align
     ) {
     if (ear_rr.ssbo_i == sizeof(ear_rr.ssbo_d)/sizeof(ear_rr.ssbo_d[0])) ear_rect_rend_flush();
     if (last_used != EAR_INT_LU_RECT) ear_flush();
@@ -73,7 +72,7 @@ ear_tex(
     float w, float h,
     float sx, float sy, float sw, float sh,
     float col[4],
-    ear_align align
+    eau_align align
     ) {
     if (ear_tr.ssbo_i == sizeof(ear_tr.ssbo_d)/sizeof(ear_tr.ssbo_d[0])) ear_tex_rend_flush();
     if (last_used != EAR_INT_LU_TEX) ear_flush();

@@ -21,7 +21,7 @@ void object_tick(eau_object* obj) {
 
 void object_draw(eau_object* obj) {
     my_object* this = obj->data;
-    ear_rect(this->frame % (256-64) * 2, ((this->frame / 256) % 4) * 64 * 2, 128,128, (float[4]){ (this->frame % 256)/256.f,((this->frame/256)%4) / 4.f, (this->frame % (256-64)) / (256.f-64),1 }, EAR_ALIGN_TOP_LEFT);
+    ear_rect(this->frame % (256-64) * 2, ((this->frame / 256) % 4) * 64 * 2, 128,128, (float[4]){ (this->frame % 256)/256.f,((this->frame/256)%4) / 4.f, (this->frame % (256-64)) / (256.f-64),1 }, EAU_ALIGN_TOP_LEFT);
 }
 
 void object_stop(eau_object* obj) {

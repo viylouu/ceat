@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 #include "texture.h"
-#include "user.h"
+#include "../eau/coll.h"
 
 void
 ear_text(
@@ -13,5 +13,5 @@ ear_text(
     float x, float y,
     float scalex, float scaley,
     float col[4],
-    ear_align align
+    eau_align align
     );

@@ -2,6 +2,7 @@
 
 #include "texture.h"
 #include "../eau/mat4.h"
+#include "../eau/coll.h"
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -27,18 +28,12 @@ ear_flush(
     );
 
 
-typedef enum ear_align{
-    EAR_ALIGN_TOP_LEFT, EAR_ALIGN_TOP, EAR_ALIGN_TOP_RIGHT,
-    EAR_ALIGN_MID_LEFT, EAR_ALIGN_MID, EAR_ALIGN_MID_RIGHT,
-    EAR_ALIGN_BOT_LEFT, EAR_ALIGN_BOT, EAR_ALIGN_BOT_RIGHT,
-} ear_align;
-
 void
 ear_rect(
     float x, float y,
     float w, float h,
     float col[4],
-    ear_align align
+    eau_align align
     );
 
 void
@@ -48,7 +43,7 @@ ear_tex(
     float w, float h,
     float sx, float sy, float sw, float sh,
     float col[4],
-    ear_align align
+    eau_align align
     );
 
 

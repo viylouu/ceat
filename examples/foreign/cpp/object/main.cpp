@@ -1,5 +1,4 @@
 #include "../../../../bindings/cpp/eat.hpp"
-#include <iostream>
 
 class MyObject : public eau::Object<MyObject> {
     int frame;
