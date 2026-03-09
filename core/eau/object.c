@@ -130,6 +130,12 @@ typedef struct _eau_object_draw_arr_item{
     int layer;
 } _eau_object_draw_arr_item;
 
+int _eau_object_draw_arr_cmp(const void* _a, const void* _b) {
+    const _eau_object_draw_arr_item* a = _a;
+    const _eau_object_draw_arr_item* b = _b;
+    return a->layer - b->layer;
+}
+
 void
 eau_draw_objects(
     void
@@ -143,36 +149,31 @@ eau_draw_objects(
     for (eau_object_ll* item = eau_object_ll_first; item != NULL; item = item->next) {
         int layer = item->obj->desc.render_layer;
 
-        if (arr_size == 0) {
-            arr[0] = (_eau_object_draw_arr_item){
+        bool set = false;
+        for (uint32_t i = 0; i < arr_size; ++i) {
+            if (arr[i].layer != layer) continue;
+
+            ++arr[i].arr_size;
+            arr[i].arr = realloc(arr[i].arr, sizeof(eau_object*) * arr[i].arr_size);
+            arr[i].arr[arr[i].arr_size-1] = item->obj;
+
+            set = true;
+            break;
+        }
+
+        if (!set) {
+            ++arr_size;
+            arr = realloc(arr, sizeof(_eau_object_draw_arr_item) * arr_size);
+            arr[arr_size-1] = (_eau_object_draw_arr_item){
                 .arr = malloc(sizeof(eau_object*)),
                 .arr_size = 1,
                 .layer = layer,
                 };
-            arr[0].arr[0] = item->obj;
-            ++arr_size;
-        } else {
-            bool set = false;
-            for (uint32_t i = 0; i < arr_size; ++i) {
-                if (arr[i].layer != layer) continue;
-
-                ++arr[i].arr_size;
-                arr[i].arr = realloc(arr[i].arr, sizeof(eau_object*) * arr[i].arr_size);
-                arr[i].arr[arr[i].arr_size-1] = item->obj;
-            }
-
-            if (!set) {
-                ++arr_size;
-                arr = realloc(arr, sizeof(_eau_object_draw_arr_item) * arr_size);
-                arr[arr_size-1] = (_eau_object_draw_arr_item){
-                    .arr = malloc(sizeof(eau_object*)),
-                    .arr_size = 1,
-                    .layer = layer,
-                    };
-                arr[arr_size-1].arr[0] = item->obj;
-            }
+            arr[arr_size-1].arr[0] = item->obj;
         }
     }
+
+    qsort(arr, arr_size, sizeof(_eau_object_draw_arr_item), _eau_object_draw_arr_cmp);
 
     for (uint32_t i = 0; i < arr_size; ++i) for (uint32_t j = 0; j < arr[i].arr_size; ++j) eau_draw_object(arr[i].arr[j]);
 
