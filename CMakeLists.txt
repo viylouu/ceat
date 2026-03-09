@@ -20,8 +20,8 @@ if (NOT BUILD_LINUX)
     set(GLFW_USE_WAYLAND OFF CACHE INTERNAL "")
     set(GLFW_USE_X11 OFF CACHE INTERNAL "")
 
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc -static-libstdc++ -pthread")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++ -pthread")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static -static-libgcc -static-libstdc++ -pthread")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static -static-libgcc -static-libstdc++ -pthread")
 
     add_subdirectory(include/glfw)
 else()
