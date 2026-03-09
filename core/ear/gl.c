@@ -53,25 +53,25 @@ ear_gl_init(
     LOADGL(gl.vertexAttribBinding, "glVertexAttribBinding");
     LOADGL(gl.enableVertexAttribArray, "glEnableVertexAttribArray");
 
-    LOADGL(gl.enable, "glEnable");
-    LOADGL(gl.disable, "glDisable");
+    gl.enable = glEnable;
+    gl.disable = glDisable;
 
-    LOADGL(gl.depthFunc, "glDepthFunc");
+    gl.depthFunc = glDepthFunc;
 
-    LOADGL(gl.cullFace, "glCullFace");
-    LOADGL(gl.frontFace, "glFrontFace");
+    gl.cullFace = glCullFace;
+    gl.frontFace = glFrontFace;
 
     LOADGL(gl.blendFuncSeparate, "glBlendFuncSeparate");
     LOADGL(gl.blendEquationSeparate, "glBlendEquationSeparate");
 
-    LOADGL(gl.polygonMode, "glPolygonMode");
+    gl.polygonMode = glPolygonMode;
     
     LOADGL(gl.drawArraysInstanced, "glDrawArraysInstanced");
 
-    LOADGL(gl.clearColor, "glClearColor");
-    LOADGL(gl.clear, "glClear");
+    gl.clearColor = glClearColor;
+    gl.clear = glClear;
 
-    LOADGL(gl.viewport, "glViewport");
+    gl.viewport = glViewport;
 
     LOADGL(gl.genBuffers, "glGenBuffers");
     LOADGL(gl.deleteBuffers, "glDeleteBuffers");
@@ -81,14 +81,14 @@ ear_gl_init(
     LOADGL(gl.bindVertexBuffer, "glBindVertexBuffer");
     LOADGL(gl.bufferSubData, "glBufferSubData");
 
-    LOADGL(gl.genTextures, "glGenTextures");
-    LOADGL(gl.deleteTextures, "glDeleteTextures");
-    LOADGL(gl.bindTexture, "glBindTexture");
-    LOADGL(gl.texParameterI, "glTexParameteri");
-    LOADGL(gl.texParameterFv, "glTexParameterfv");
-    LOADGL(gl.texImage2D, "glTexImage2D");
+    gl.genTextures = glGenTextures;
+    gl.deleteTextures = glDeleteTextures;
+    gl.bindTexture = glBindTexture;
+    gl.texParameterI = glTexParameteri;
+    gl.texParameterFv = glTexParameterfv;
+    gl.texImage2D = glTexImage2D;
+    gl.texSubImage2D = glTexSubImage2D;
     LOADGL(gl.activeTexture, "glActiveTexture");
-    LOADGL(gl.texSubImage2D, "glTexSubImage2D");
     LOADGL(gl.texImage3D, "glTexImage3D");
     LOADGL(gl.texSubImage3D, "glTexSubImage3D");
 
@@ -98,7 +98,7 @@ ear_gl_init(
     LOADGL(gl.deleteFramebuffers, "glDeleteFramebuffers");
     LOADGL(gl.bindFramebuffer, "glBindFramebuffer");
     LOADGL(gl.framebufferTexture2D, "glFramebufferTexture2D");
-    LOADGL(gl.drawBuffer, "glDrawBuffer");
+    gl.drawBuffer = glDrawBuffer;
     LOADGL(gl.drawBuffers, "glDrawBuffers");
     LOADGL(gl.checkFramebufferStatus, "glCheckFramebufferStatus");
 }

@@ -6,9 +6,24 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(glfw3 REQUIRED)
 
-option(BUILD_LINUX "do a linux build instead of windows" ON)
+if(CMAKE_SYSTEM MATCHES Linux)
+    option(BUILD_LINUX ":3" ON)
+elseif(CMAKE_SYSTEM MATCHES Windows)
+    option(BUILD_LINUX ":3" OFF)
+endif()
+
+if (NOT BUILD_LINUX)
+    set(GLFW_BUILD_EXAMPLES OFF CACHE INTERNAL "")
+    set(GLFW_BUILD_TESTS OFF CACHE INTERNAL "")
+    set(GLFW_BUILD_DOCS OFF CACHE INTERNAL "")
+    set(GLFW_USE_WAYLAND OFF CACHE INTERNAL "")
+    set(GLFW_USE_X11 OFF CACHE INTERNAL "")
+
+    add_subdirectory(include/glfw)
+else()
+    find_package(glfw3 REQUIRED)
+endif()
 
 add_library(ceat STATIC)
 target_sources(ceat
@@ -70,6 +85,12 @@ else()
             gdi32
             user32
             shell32
+            glfw
+    )
+    target_compile_definitions(ceat 
+        PRIVATE 
+            _WIN32 
+            WINDOWS
     )
 endif()
 

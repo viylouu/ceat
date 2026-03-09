@@ -17,7 +17,7 @@ int main(void) {
 
     eau_clock* clock = eau_create_clock(NULL);
 
-    bool paused = false;
+    bool paused = true;
     float speed = 1;
 
     while (eat_frame()) {

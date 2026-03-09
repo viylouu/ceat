@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include <GL/gl.h>
+#include <GL/glext.h>
 
 #ifdef _WIN32
 #include <windows.h>
