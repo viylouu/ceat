@@ -19,6 +19,7 @@ eat_init(
     ) {
     eaw_init(title, width, height, opts.vsync);
     ear_init();
+    eaa_init();
 
     console = opts.console;
     if (console.enabled) eat_console_init();
@@ -30,6 +31,7 @@ eat_stop(
     ) {
     if (console.enabled) eat_console_stop();
 
+    eaa_stop();
     ear_stop();
     eaw_stop();
 }

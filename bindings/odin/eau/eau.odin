@@ -58,7 +58,7 @@ Arena :: struct{
 _clock_ll :: struct{
     clock: ^_clock,
     next, prev: ^_clock_ll,
-};
+}
 
 _clock :: struct{
     ll: _clock_ll,

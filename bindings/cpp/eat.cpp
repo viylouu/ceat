@@ -421,6 +421,95 @@ namespace eau{
         eau_try_tick_objects();
     }
 };
+namespace eaa{
+    Mixer::Mixer(
+        MixerDesc desc,
+        eau::Arena* arena
+        ) {
+        mixer = eaa_create_mixer(
+            eaa_mixer_desc{
+                .volume = desc.volume,
+                .pitch = desc.pitch,
+                .parent = desc.parent == nullptr? nullptr : desc.parent->mixer,
+                },
+            arena == nullptr? nullptr : arena->arena
+            );
+        this->arena = arena;
+    }
+    Mixer::~Mixer() {
+        if (!arena) eaa_delete_mixer(mixer);
+    }
+
+    void
+    Mixer::set_volume(
+        float volume
+        ) {
+        eaa_set_mixer_volume(mixer, volume);
+    }
+
+    void
+    Mixer::set_pitch(
+        float pitch
+        ) {
+        eaa_set_mixer_pitch(mixer, pitch);
+    }
+
+    Sound::Sound(
+        SoundDesc desc,
+        const char* data, size_t data_size,
+        eau::Arena* arena
+        ) {
+        sound = eaa_load_sound(
+            eaa_sound_desc{
+                .volume = desc.volume,
+                .pitch = desc.pitch,
+                .loop = desc.loop,
+                .mixer = desc.mixer == nullptr? nullptr : desc.mixer->mixer,
+                },
+            (const uint8_t*)data, (uint32_t)data_size,
+            arena == nullptr? nullptr : arena->arena
+            );
+        this->arena = arena;
+    }
+    Sound::~Sound() {
+        if (!arena) eaa_delete_sound(sound);
+    }
+
+    void
+    Sound::play(
+        void
+        ) {
+        eaa_play_sound(sound);
+    }
+
+    void
+    Sound::stop(
+        void
+        ) {
+        eaa_stop_sound(sound);
+    }
+
+    void
+    Sound::set_volume(
+        float volume
+        ) {
+        eaa_set_sound_volume(sound, volume);
+    }
+    
+    void
+    Sound::set_pitch(
+        float pitch
+        ) {
+        eaa_set_sound_pitch(sound, pitch);
+    }
+
+    void
+    Sound::set_loop(
+        bool loop
+        ) {
+        eaa_set_sound_loop(sound, loop);
+    }
+};
 namespace ear{
     Texture::Texture(
         TextureDesc desc,

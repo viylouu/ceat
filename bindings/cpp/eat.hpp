@@ -599,6 +599,82 @@ private:
         type_obj->on_tick();
     }
 };
+namespace eaa{
+    typedef struct Mixer Mixer;
+
+    struct MixerDesc{
+        float volume = 1;
+        float pitch = 1;
+
+        Mixer* parent = nullptr;
+    };
+
+    struct Mixer{
+        eaa_mixer* mixer;
+        eau::Arena* arena;
+
+        Mixer(
+            MixerDesc desc,
+            eau::Arena* arena = nullptr
+            );
+        ~Mixer();
+
+        void
+        set_volume(
+            float volume
+            );
+
+        void
+        set_pitch(
+            float pitch
+            );
+    };
+
+    struct SoundDesc{
+        float volume = 1;
+        float pitch = 1;
+        bool loop = false;
+
+        Mixer* mixer = nullptr;
+    };
+
+    struct Sound{
+        eaa_sound* sound;
+        eau::Arena* arena;
+
+        Sound(
+            SoundDesc desc,
+            const char* data, size_t data_size,
+            eau::Arena* arena = nullptr
+            );
+        ~Sound();
+
+        void
+        play(
+            void
+            );
+
+        void
+        stop(
+            void
+            );
+
+        void
+        set_volume(
+            float volume
+            );
+        
+        void
+        set_pitch(
+            float pitch
+            );
+
+        void
+        set_loop(
+            bool loop
+            );
+    };
+};
 namespace ear{
     enum class TextureFilter{
         Nearest,

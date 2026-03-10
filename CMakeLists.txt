@@ -56,6 +56,11 @@ target_sources(ceat
             core/eau/arena.c
             core/eau/clock.c
             core/eau/object.c
+
+            core/eaa/eaa.c
+            core/eaa/engine.c
+            core/eaa/sound.c
+            core/eaa/mixer.c
         PUBLIC
             FILE_SET HEADERS
             BASE_DIRS
@@ -210,6 +215,16 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
             examples/console/main.c
     )
     target_link_libraries(ex_console
+        PRIVATE
+            ceat
+    )
+
+    add_executable(ex_audio)
+    target_sources(ex_audio
+        PRIVATE
+            examples/audio/main.c
+    )
+    target_link_libraries(ex_audio
         PRIVATE
             ceat
     )

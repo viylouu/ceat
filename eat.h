@@ -7,6 +7,7 @@ extern "C" {
 #include "core/eaw/eaw.h"
 #include "core/ear/ear.h"
 #include "core/eau/eau.h"
+#include "core/eaa/eaa.h"
 
 #include <stdint.h>
 #include <stdbool.h>
