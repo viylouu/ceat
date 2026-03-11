@@ -1,5 +1,5 @@
 # ceat
-ceat is a game engine that is a direct translation of [eat-engine](https://github.com/viylouu/eat-engine/tree/main) to c.  
+ceat is a game engine that was originally a direct translation of [eat-engine](https://github.com/viylouu/eat-engine/tree/main) to c.  
 it was made to be used in other languages, and also has bindings for odin again so you can just use this instead since its newer and faster.  
 heres a snipped from the eat-engine readme:  
 ```md
