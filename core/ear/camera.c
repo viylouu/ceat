@@ -47,7 +47,7 @@ ear_bind_camera(
     ear_camera* cam,
     bool ui_mode
     ) {
-    ear_bind_framebuffer(cam->desc.fb);
+    if (ear_bound_camera != cam) ear_bind_framebuffer(cam->desc.fb);
     ear_bound_camera_ui_mode = ui_mode;
     ear_bound_camera = cam;
 }
