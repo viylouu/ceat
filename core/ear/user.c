@@ -59,7 +59,7 @@ ear_rect(
 
     mat4 mat;
     if (!ear_bound_camera_ui_mode && ear_bound_camera)
-        eau_mat4_mult(&mat, ear_bound_camera->matrix, transf);
+        eau_mat4_mult(&mat, transf, ear_bound_camera->matrix);
     else
         eau_mat4_copy(transf, &mat);
 
@@ -92,7 +92,7 @@ ear_tex(
 
     mat4 mat;
     if (!ear_bound_camera_ui_mode && ear_bound_camera)
-        eau_mat4_mult(&mat, ear_bound_camera->matrix, transf);
+        eau_mat4_mult(&mat, transf, ear_bound_camera->matrix);
     else
         eau_mat4_copy(transf, &mat);
 
