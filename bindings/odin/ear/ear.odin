@@ -285,6 +285,60 @@ DrawMode :: enum i32 {
     Lines,
 }
 
+_camera_desc_2d :: struct{
+    x, y: f32,
+    scalex, scaley: f32,
+    rot: f32,
+}
+
+_camera_desc_3d :: struct{
+    // unimplemented
+}
+
+_camera_desc :: struct{
+    fb: ^_framebuffer,
+
+    desc: union{
+        _camera_desc_2d,
+        _camera_desc_3d,
+    },
+}
+
+_camera :: struct{
+    mat: ^f32,
+    desc: _camera_desc,
+    dest: ^eau.Destructor,
+}
+
+CameraDesc2d :: struct{
+    pos: [2]f32,
+    scale: [2]f32,
+    rot: f32,
+}
+
+CameraDesc3d :: struct{
+
+}
+
+CameraDesc :: struct{
+    fb: ^Framebuffer,
+    desc: union{
+        CameraDesc2d,
+        CameraDesc3d,
+    },
+}
+
+Camera :: struct{
+    using camera: ^_camera,
+
+    delete: proc(camera: ^Camera),
+    bind: proc(camera: ^Camera, ui_mode: bool),
+
+    set_position_2d: proc(camera: ^Camera, pos: [2]f32),
+    set_scale_2d: proc(camera: ^Camera, scale: [2]f32),
+    set_rotation_2d: proc(camera: ^Camera, rot: f32),
+}
+
 @(default_calling_convention="c")
 foreign ceat {
     @(link_name="ear_create_buffer") _create_buffer :: proc(desc: BufferDesc, data: rawptr, size: u32, arena: ^eau._arena) -> ^_buffer ---
@@ -310,6 +364,14 @@ foreign ceat {
     @(link_name="ear_add_to_texarray") _add_to_texarray :: proc(texarray: ^_texarray, tex: ^_texture, layer: u32) ---
     @(link_name="ear_update_texarray") _update_texarray :: proc(texarray: ^_texarray) ---
     @(link_name="ear_update_texarray_layer") _update_texarray_layer :: proc(texarray: ^_texarray, layer: u32) ---
+
+
+    @(link_name="ear_create_camera") _create_camera :: proc(desc: _camera_desc, arena: ^eau._arena) -> ^_camera ---
+    @(link_name="ear_delete_camera") _delete_camera :: proc(camera: ^_camera) ---
+    @(link_name="ear_bind_camera") _bind_camera :: proc(camera: ^_camera, ui_mode: bool) ---
+    @(link_name="ear_set_camera_position_2d") _set_camera_position_2d :: proc(camera: ^_camera, x,y: f32) ---
+    @(link_name="ear_set_camera_scale_2d") _set_camera_scale_2d :: proc(camera: ^_camera, x,y: f32) ---
+    @(link_name="ear_set_camera_rotation_2d") _set_camera_rotation_2d :: proc(camera: ^_camera, angle: f32) ---
 
 
     @(link_name="ear_text") _text :: proc(atlas: ^_texture, text: cstring, x,y: f32, scalex, scaley: f32, col: ^f32, align: eau.Align) ---
@@ -715,4 +777,57 @@ save_transform :: proc() -> [16]f32 {
 load_transform :: proc(transf: [16]f32) {
     transf := transf
     _load_transform(&transf[0]);
+}
+
+create_camera :: proc(desc: CameraDesc, arena: ^eau.Arena = nil) -> ^Camera {
+    _desc := _camera_desc{
+        fb = desc.fb == nil? nil : desc.fb.framebuffer
+        }
+
+    switch type in desc.desc {
+    case CameraDesc2d:
+        _desc.desc = _camera_desc_2d{
+            x = type.pos.x, y = type.pos.y,
+            scalex = type.scale.x, scaley = type.scale.y,
+            rot = type.rot,
+            }
+    case CameraDesc3d:
+        _desc.desc = _camera_desc_3d{
+            }
+    }
+
+    return new_clone(Camera{
+        camera = _create_camera(
+            _desc,
+            arena == nil? nil : arena.arena,
+            ),
+
+        delete = delete_camera,
+        bind = bind_camera,
+
+        set_position_2d = set_camera_position_2d,
+        set_scale_2d = set_camera_scale_2d,
+        set_rotation_2d = set_camera_rotation_2d,
+        })
+}
+
+delete_camera :: proc(camera: ^Camera) {
+    _delete_camera(camera.camera)
+    free(camera)
+}
+
+bind_camera :: proc(camera: ^Camera, ui_mode: bool = false) {
+    _bind_camera(camera.camera, ui_mode)
+}
+
+set_camera_position_2d :: proc(camera: ^Camera, pos: [2]f32) {
+    _set_camera_position_2d(camera.camera, pos.x,pos.y)
+}
+
+set_camera_scale_2d :: proc(camera: ^Camera, scale: [2]f32) {
+    _set_camera_scale_2d(camera.camera, scale.x,scale.y)
+}
+
+set_camera_rotation_2d :: proc(camera: ^Camera, rot: f32) {
+    _set_camera_rotation_2d(camera.camera, rot)
 }

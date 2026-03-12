@@ -956,6 +956,74 @@ namespace ear{
             );
     };
 
+    enum class CameraType{
+        Cam2d,
+        Cam3d,
+    };
+
+    struct Camera2dDesc{
+        vec2<float> pos = vec2<float>{ 0,0 };
+        vec2<float> scale = vec2<float>{ 1,1 };
+        float rotation = 0;
+    };
+    struct Camera3dDesc{
+        // unimplemented
+    };
+
+    struct CameraDesc{
+        Framebuffer* fb = nullptr;
+
+        CameraType type;
+        union{
+            Camera2dDesc desc_2d;
+            Camera3dDesc desc_3d;
+        };
+    };
+
+    struct Camera{
+        ear_camera* camera;
+        eau::Arena* arena;
+
+        Camera(
+            CameraDesc desc,
+            eau::Arena* arena = nullptr
+            );
+        ~Camera();
+
+        void
+        bind(
+            bool ui_mode = false
+            );
+
+        void
+        set_position_2d(
+            vec2<float> pos
+            );
+        void
+        set_position_2d(
+            float x, float y
+            );
+
+        void
+        set_scale_2d(
+            vec2<float> scale
+            );
+        void
+        set_scale_2d(
+            float x, float y
+            );
+
+        void
+        set_rotation_2d(
+            float angle
+            );
+    };
+
+    void
+    unbind_camera(
+        void
+        );
+
     void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);
     void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);
     void text(Texture* atlas, std::string text, float x, float y, float scale, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);

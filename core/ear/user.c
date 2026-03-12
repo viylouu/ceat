@@ -3,6 +3,7 @@
 
 #include "gl.h"
 #include "data.h"
+#include "camera.h"
 
 #include <string.h>
 
@@ -56,12 +57,18 @@ ear_rect(
     eau_rect rect = (eau_rect){ x,y,w,h, align };
     _CONV_topleftify(&rect);
 
+    mat4 mat;
+    if (!ear_bound_camera_ui_mode && ear_bound_camera)
+        eau_mat4_mult(&mat, ear_bound_camera->matrix, transf);
+    else
+        eau_mat4_copy(transf, &mat);
+
     ear_rr.ssbo_d[ear_rr.ssbo_i] = (typeof(ear_rr.ssbo_d[0])){ 
         rect.x,rect.y,
         rect.w,rect.h, 
         col[0],col[1],col[2],col[3] 
         };
-    memcpy((uint8_t*)(&ear_rr.ssbo_d[ear_rr.ssbo_i]) + sizeof(ear_rr.ssbo_d[0]) - sizeof(float)*16, transf, sizeof(float)*16);
+    memcpy((uint8_t*)(&ear_rr.ssbo_d[ear_rr.ssbo_i]) + sizeof(ear_rr.ssbo_d[0]) - sizeof(float)*16, mat, sizeof(float)*16);
     ++ear_rr.ssbo_i;
 }
 
@@ -83,13 +90,19 @@ ear_tex(
     eau_rect rect = (eau_rect){ x,y,w,h, align };
     _CONV_topleftify(&rect);
 
+    mat4 mat;
+    if (!ear_bound_camera_ui_mode && ear_bound_camera)
+        eau_mat4_mult(&mat, ear_bound_camera->matrix, transf);
+    else
+        eau_mat4_copy(transf, &mat);
+
     ear_tr.ssbo_d[ear_tr.ssbo_i] = (typeof(ear_tr.ssbo_d[0])){ 
         rect.x,rect.y,
         rect.w,rect.h, 
         col[0],col[1],col[2],col[3], 
         (float)sx/tex->width,1-(float)(sh+sy)/tex->height,(float)sw/tex->width,(float)sh/tex->height 
         };
-    memcpy((uint8_t*)(&ear_tr.ssbo_d[ear_tr.ssbo_i]) + sizeof(ear_tr.ssbo_d[0]) - sizeof(float)*16, transf, sizeof(float)*16);
+    memcpy((uint8_t*)(&ear_tr.ssbo_d[ear_tr.ssbo_i]) + sizeof(ear_tr.ssbo_d[0]) - sizeof(float)*16, mat, sizeof(float)*16);
     ++ear_tr.ssbo_i;
 }
 

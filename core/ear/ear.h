@@ -10,6 +10,7 @@
 #include "framebuffer.h"
 #include "text.h"
 #include "texarray.h"
+#include "camera.h"
 
 void
 ear_init(

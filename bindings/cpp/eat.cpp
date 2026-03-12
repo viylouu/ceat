@@ -780,6 +780,90 @@ namespace ear{
         ear_update_texarray_layer(texarray, layer);
     }
 
+    Camera::Camera(
+        CameraDesc desc,
+        eau::Arena* arena
+        ) {
+        ear_camera_desc _desc = (ear_camera_desc){
+            .fb = desc.fb == nullptr? nullptr : desc.fb->framebuffer,
+            .type = (ear_camera_type)desc.type,
+            };
+
+        switch (desc.type) {
+        case CameraType::Cam2d:
+            _desc.desc_2d = (ear_camera_2d_desc){
+                .x = desc.desc_2d.pos.x,
+                .y = desc.desc_2d.pos.y,
+                .scalex = desc.desc_2d.scale.x,
+                .scaley = desc.desc_2d.scale.y,
+                .rotation = desc.desc_2d.rotation,
+                };
+
+            break;
+        case CameraType::Cam3d:
+            _desc.desc_3d = (ear_camera_3d_desc){
+                };
+
+            break;
+        }
+
+        camera = ear_create_camera(
+            _desc,
+            arena == nullptr? nullptr : arena->arena
+            );
+        this->arena = arena;
+    }
+    Camera::~Camera() {
+        if (!arena) ear_delete_camera(camera);
+    }
+
+    void
+    Camera::bind(
+        bool ui_mode
+        ) {
+        ear_bind_camera(camera, ui_mode);
+    }
+
+    void
+    Camera::set_position_2d(
+        vec2<float> pos
+        ) {
+        ear_set_camera_position_2d(camera, pos.x,pos.y);
+    }
+    void
+    Camera::set_position_2d(
+        float x, float y
+        ) {
+        ear_set_camera_position_2d(camera, x,y);
+    }
+
+    void
+    Camera::set_scale_2d(
+        vec2<float> scale
+        ) {
+        ear_set_camera_scale_2d(camera, scale.x,scale.y);
+    }
+    void
+    Camera::set_scale_2d(
+        float x, float y
+        ) {
+        ear_set_camera_scale_2d(camera, x,y);
+    }
+
+    void
+    Camera::set_rotation_2d(
+        float angle
+        ) {
+        ear_set_camera_rotation_2d(camera, angle);
+    }
+
+    void
+    unbind_camera(
+        void
+        ) {
+        ear_bind_camera(nullptr, false);
+    }
+
     void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,4> col, eau::Align align) {
         ear_text(atlas->texture, (char*)text.c_str(), x,y, scalex,scaley, (float[4]){ col[0], col[1], col[2], col[3] }, (eau_align)align); }
     void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,4> col, eau::Align align) {

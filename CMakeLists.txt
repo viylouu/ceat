@@ -47,6 +47,7 @@ target_sources(ceat
             core/ear/framebuffer.c
             core/ear/texarray.c
             core/ear/text.c
+            core/ear/camera.c
             core/ear/data.c
             core/ear/user.c
 
@@ -225,6 +226,16 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
             examples/audio/main.c
     )
     target_link_libraries(ex_audio
+        PRIVATE
+            ceat
+    )
+
+    add_executable(ex_camera)
+    target_sources(ex_camera
+        PRIVATE
+            examples/camera/main.c
+    )
+    target_link_libraries(ex_camera
         PRIVATE
             ceat
     )
