@@ -924,6 +924,19 @@ namespace ear{
     }
 
     void
+    mask(
+        float x, float y, float w, float h
+        ) {
+        ear_mask(x,y,w,h);
+    }
+    void
+    mask(
+        vec2<float> pos, vec2<float> size
+        ) {
+        ear_mask(pos.x,pos.y, size.x,size.y);
+    }
+
+    void
     flush(
         void
         ) {

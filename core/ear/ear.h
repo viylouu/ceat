@@ -11,6 +11,7 @@
 #include "text.h"
 #include "texarray.h"
 #include "camera.h"
+#include "misc.h"
 
 void
 ear_init(

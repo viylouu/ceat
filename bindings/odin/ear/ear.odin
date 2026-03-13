@@ -423,6 +423,8 @@ foreign ceat {
 
     @(link_name="ear_clear") _clear :: proc(col: ^f32) ---
     @(link_name="ear_draw") _draw :: proc(vertices: i32, instances: i32, draw_mode: DrawMode) ---
+    @(link_name="ear_mask") _mask :: proc(x,y,w,h: f32) ---
+
     @(link_name="ear_flush") flush :: proc() ---
     @(link_name="ear_rect") _rect :: proc(x,y,w,h: f32, col: ^f32, align: eau.Align) ---
     @(link_name="ear_tex") _tex :: proc(tex: ^_texture, x,y,w,h,sx,sy,sw,sh: f32, col: ^f32, align: eau.Align) ---
@@ -728,10 +730,19 @@ draw :: proc(#any_int vertices: i32, #any_int instances: i32 = 1, draw_mode: Dra
     _draw(vertices, instances, draw_mode)
 }
 
+mask :: proc{
+    mask_vec,
+    mask_xy,
+}
+
+mask_vec :: proc(pos: [2]f32, size: [2]f32) { _mask(pos.x,pos.y, size.x,size.y) }
+mask_xy :: proc(x,y,w,h: f32) { _mask(x,y, w,h) }
+
 clear :: proc(col: [3]f32) {
     col := col
     _clear(&col[0])
 }
+
 
 rect :: proc{
     rect_rgba,

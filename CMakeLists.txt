@@ -48,6 +48,7 @@ target_sources(ceat
             core/ear/texarray.c
             core/ear/text.c
             core/ear/camera.c
+            core/ear/misc.c
             core/ear/data.c
             core/ear/user.c
 

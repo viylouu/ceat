@@ -1072,6 +1072,15 @@ namespace ear{
         );
 
     void
+    mask(
+        float x, float y, float w, float h
+        );
+    void
+    mask(
+        vec2<float> pos, vec2<float> size
+        );
+
+    void
     flush(
         void
         );

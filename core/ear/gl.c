@@ -72,6 +72,7 @@ ear_gl_init(
     gl.clear = glClear;
 
     gl.viewport = glViewport;
+    gl.scissor = glScissor;
 
     LOADGL(gl.genBuffers, "glGenBuffers");
     LOADGL(gl.deleteBuffers, "glDeleteBuffers");

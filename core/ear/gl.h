@@ -65,6 +65,7 @@ typedef struct ear_gl{
     GLFUNC(clear, void, GLbitfield mask);
 
     GLFUNC(viewport, void, GLint x, GLint y, GLsizei width, GLsizei height);
+    GLFUNC(scissor, void, GLint x, GLint y, GLsizei width, GLsizei height);
 
     GLFUNC(genBuffers, void, GLsizei n, GLuint* buffers);
     GLFUNC(deleteBuffers, void, GLsizei n, GLuint* buffers);

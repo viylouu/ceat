@@ -5,6 +5,7 @@
 #include "../eau/mat4.h"
 #include "data.h"
 #include "user.h"
+#include "misc.h"
 #include "gl.h"
 
 ear_framebuffer* default_fb;
@@ -82,12 +83,13 @@ ear_bind_framebuffer(
         gl.bindFramebuffer(GL_FRAMEBUFFER, fb->id);
         eau_mat4_ortho(&proj, 0,fb->desc.width, 0,fb->desc.height, 0,1);
         gl.viewport(0,0, fb->desc.width, fb->desc.height);
+        ear_mask(0,0, fb->desc.width, fb->desc.height);
     } else if (default_fb == NULL) {
         gl.bindFramebuffer(GL_FRAMEBUFFER, 0);
         eau_mat4_ortho(&proj, 0,eaw_window_width,eaw_window_height, 0, 0,1);
         gl.viewport(0,0, eaw_window_width,eaw_window_height);
-    }
-    else ear_bind_framebuffer(default_fb);
+        ear_mask(0,0, eaw_window_width,eaw_window_height);
+    } else ear_bind_framebuffer(default_fb);
 }
 
 void

@@ -5,7 +5,7 @@
 
 #include "pipeline.h"
 #include "buffer.h"
-#include "user.h"
+#include "misc.h"
 
 mat4 proj;
 mat4 transf;
@@ -49,15 +49,6 @@ ear_rect_rend_create(
             .stride = sizeof(ear_rr.ssbo_d[0]),
         }, &ear_rr.ssbo_d, sizeof(ear_rr.ssbo_d), arena);
 }
-
-/*void 
-ear_rect_rend_delete(
-    void
-    ) {
-    ear_delete_buffer(ear_rr.ssbo);
-    ear_delete_buffer(ear_rr.ubo);
-    ear_delete_pipeline(ear_rr.pln);
-}*/
 
 void
 ear_rect_rend_flush(
@@ -117,15 +108,6 @@ ear_tex_rend_create(
             .stride = sizeof(ear_tr.ssbo_d[0]),
         }, &ear_tr.ssbo_d, sizeof(ear_tr.ssbo_d), arena);
 }
-
-/*void
-ear_tex_rend_delete(
-    void
-    ) {
-    ear_delete_buffer(ear_tr.ssbo);
-    ear_delete_buffer(ear_tr.ubo);
-    ear_delete_pipeline(ear_tr.pln);
-}*/
 
 void
 ear_tex_rend_flush(
