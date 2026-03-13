@@ -735,7 +735,7 @@ namespace ear{
             );
 
         void
-        apply_changes(
+        update(
             void
             );
     };
@@ -1019,29 +1019,40 @@ namespace ear{
             );
     };
 
+    enum class FontType{
+        BitmapMono,
+        Truetype,
+    };
+
+    struct Font{
+        ear_font* font;
+        eau::Arena* arena;
+
+        Font(
+            FontType type,
+            const char* data, size_t data_size,
+            eau::Arena* arena = nullptr
+            );
+        ~Font();
+    };
+
     void
     unbind_camera(
         void
         );
 
-    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, float x, float y, float scale, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, float x, float y, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, vec2<float> pos, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,3> col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,3> col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, float x, float y, float scale, std::array<float,3> col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, std::array<float,3> col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, float x, float y, std::array<float,3> col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, vec2<float> pos, std::array<float,3> col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, float col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, float col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, float x, float y, float scale, float col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, float col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, float x, float y, float col, eau::Align align = eau::Align::TopLeft);
-    void text(Texture* atlas, std::string text, vec2<float> pos, float col, eau::Align align = eau::Align::TopLeft);
+    void text(Font* font, std::string text, float x, float y, float scale, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);
+    void text(Font* font, std::string text, vec2<float> pos, float scale, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);
+    void text(Font* font, std::string text, float x, float y, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);
+    void text(Font* font, std::string text, vec2<float> pos, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);
+    void text(Font* font, std::string text, float x, float y, float scale, std::array<float,3> col, eau::Align align = eau::Align::TopLeft);
+    void text(Font* font, std::string text, vec2<float> pos, float scale, std::array<float,3> col, eau::Align align = eau::Align::TopLeft);
+    void text(Font* font, std::string text, float x, float y, std::array<float,3> col, eau::Align align = eau::Align::TopLeft);
+    void text(Font* font, std::string text, vec2<float> pos, std::array<float,3> col, eau::Align align = eau::Align::TopLeft);
+    void text(Font* font, std::string text, float x, float y, float scale, float col, eau::Align align = eau::Align::TopLeft);
+    void text(Font* font, std::string text, vec2<float> pos, float scale, float col, eau::Align align = eau::Align::TopLeft);
+    void text(Font* font, std::string text, float x, float y, float col, eau::Align align = eau::Align::TopLeft);
+    void text(Font* font, std::string text, vec2<float> pos, float col, eau::Align align = eau::Align::TopLeft);
 
     void
     clear(

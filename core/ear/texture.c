@@ -89,14 +89,14 @@ ear_create_texture(
 ear_texture*
 ear_load_texture(
     ear_texture_desc desc,
-    const uint8_t* data, size_t data_size,
+    const char* data, size_t data_size,
     eau_arena* arena
     ) {
     int32_t width;
     int32_t height;
     int32_t chans;
     stbi_set_flip_vertically_on_load(1);
-    uint8_t* pixels = stbi_load_from_memory(data, data_size, &width, &height, &chans, 4);
+    uint8_t* pixels = stbi_load_from_memory((const uint8_t*)data, data_size, &width, &height, &chans, 4);
     eat_assert(pixels != NULL, "failed to load image data!");
 
     ear_texture* tex = ear_create_texture(desc, pixels, width, height, arena);
@@ -153,7 +153,7 @@ ear_set_texture_color(
 }
 
 void
-ear_apply_texture_changes(
+ear_update_texture(
     ear_texture* tex
     ) {
     gl.bindTexture(GL_TEXTURE_2D, tex->id);

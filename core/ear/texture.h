@@ -25,7 +25,7 @@ ear_create_texture(
 ear_texture*
 ear_load_texture(
     ear_texture_desc desc,
-    const uint8_t* data, size_t data_size,
+    const char* data, size_t data_size,
     eau_arena* arena
     );
 
@@ -56,7 +56,7 @@ ear_set_texture_color(
     );
 
 void
-ear_apply_texture_changes(
+ear_update_texture(
     ear_texture* texture
     );
 

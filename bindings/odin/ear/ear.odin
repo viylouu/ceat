@@ -2,6 +2,8 @@ package ear
 
 import "core:c"
 
+import stbtt "vendor:stb/truetype"
+
 import "../eau"
 
 when ODIN_OS == .Windows {
@@ -339,6 +341,36 @@ Camera :: struct{
     set_rotation_2d: proc(camera: ^Camera, rot: f32),
 }
 
+_bitmap_mono_font :: struct{
+    atlas: ^_texture,
+    charw,charh: f32,
+}
+
+_truetype_font :: struct{
+    atlases: rawptr,
+    atlas_amt: u32,
+
+    info: stbtt.fontinfo,
+    ascent, descent, linegap: f32,
+}
+
+_font :: struct{
+    lineheight: f32,
+
+    types: union{
+        _bitmap_mono_font,
+        _truetype_font,
+    },
+
+    dest: ^eau.Destructor,
+}
+
+Font :: struct{
+    using font: ^_font,
+
+    delete: proc(font: ^Font),
+}
+
 @(default_calling_convention="c")
 foreign ceat {
     @(link_name="ear_create_buffer") _create_buffer :: proc(desc: BufferDesc, data: rawptr, size: u32, arena: ^eau._arena) -> ^_buffer ---
@@ -374,6 +406,9 @@ foreign ceat {
     @(link_name="ear_set_camera_rotation_2d") _set_camera_rotation_2d :: proc(camera: ^_camera, angle: f32) ---
 
 
+    @(link_name="ear_load_bitmap_mono_font") _load_bitmap_mono_font :: proc(data: [^]u8, data_size: c.size_t, arena: ^eau._arena) -> ^_font ---
+    @(link_name="ear_load_truetype_font") _load_truetype_font :: proc(data: [^]u8, data_size: c.size_t, arena: ^eau._arena) -> ^_font ---
+    @(link_name="ear_delete_font") _delete_font :: proc(font: ^_font) ---
     @(link_name="ear_text") _text :: proc(atlas: ^_texture, text: cstring, x,y: f32, scalex, scaley: f32, col: ^f32, align: eau.Align) ---
 
 
@@ -551,6 +586,36 @@ update_texarray_layer :: proc(arr: ^TexArray, layer: u32) {
     _update_texarray_layer(arr.texarray, layer)
 }
 
+
+load_bitmap_mono_font :: proc(data: []u8, arena: ^eau.Arena = nil) -> ^Font {
+    return new_clone(Font{
+        font = _load_bitmap_mono_font(
+            raw_data(data), 
+            len(data), 
+            arena == nil? nil : arena.arena
+            ),
+
+        delete = delete_font,
+        })
+}
+
+load_truetype_font :: proc(data: []u8, arena: ^eau.Arena = nil) -> ^Font {
+    return new_clone(Font{
+        font = _load_truetype_font(
+            raw_data(data), 
+            len(data), 
+            arena == nil? nil : arena.arena
+            ),
+
+        delete = delete_font,
+        })
+}
+
+delete_font :: proc(font: ^Font) {
+    _delete_font(font.font)
+
+    free(font)
+}
 
 text :: proc{
     text_rgba_wh,

@@ -546,7 +546,7 @@ namespace ear{
 
         texture = ear_load_texture(
             _desc,
-            (const uint8_t*)data, data_size,
+            data, data_size,
             arena == nullptr? nullptr : arena->arena
             );
         this->arena = arena;
@@ -580,10 +580,10 @@ namespace ear{
     }
 
     void
-    Texture::apply_changes(
+    Texture::update(
         void
         ) {
-        ear_apply_texture_changes(texture);
+        ear_update_texture(texture);
     }
 
     Buffer::Buffer(
@@ -864,42 +864,48 @@ namespace ear{
         ear_bind_camera(nullptr, false);
     }
 
-    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,4> col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, scalex,scaley, (float[4]){ col[0], col[1], col[2], col[3] }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,4> col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale.x,scale.y, (float[4]){ col[0], col[1], col[2], col[3] }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, float x, float y, float scale, std::array<float,4> col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, scale,scale, (float[4]){ col[0], col[1], col[2], col[3] }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, std::array<float,4> col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale,scale, (float[4]){ col[0], col[1], col[2], col[3] }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, float x, float y, std::array<float,4> col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, 1,1, (float[4]){ col[0], col[1], col[2], col[3] }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, std::array<float,4> col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, 1,1, (float[4]){ col[0], col[1], col[2], col[3] }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, std::array<float,3> col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, scalex,scaley, (float[4]){ col[0], col[1], col[2], 1 }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, std::array<float,3> col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale.x,scale.y, (float[4]){ col[0], col[1], col[2], 1 }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, float x, float y, float scale, std::array<float,3> col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, scale,scale, (float[4]){ col[0], col[1], col[2], 1 }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, std::array<float,3> col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale,scale, (float[4]){ col[0], col[1], col[2], 1 }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, float x, float y, std::array<float,3> col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, 1,1, (float[4]){ col[0], col[1], col[2], 1 }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, std::array<float,3> col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, 1,1, (float[4]){ col[0], col[1], col[2], 1 }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, float x, float y, float scalex, float scaley, float col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, scalex,scaley, (float[4]){ col, col, col, 1 }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, vec2<float> scale, float col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale.x,scale.y, (float[4]){ col, col, col, 1 }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, float x, float y, float scale, float col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, scale,scale, (float[4]){ col, col, col, 1 }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, float scale, float col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, scale,scale, (float[4]){ col, col, col, 1 }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, float x, float y, float col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), x,y, 1,1, (float[4]){ col, col, col, 1 }, (eau_align)align); }
-    void text(Texture* atlas, std::string text, vec2<float> pos, float col, eau::Align align) {
-        ear_text(atlas->texture, (char*)text.c_str(), pos.x,pos.y, 1,1, (float[4]){ col, col, col, 1 }, (eau_align)align); }
+    Font::Font(
+        FontType type,
+        const char* data, size_t data_size,
+        eau::Arena* arena
+        ) {
+        switch (type) {
+        case FontType::BitmapMono:
+            font = ear_load_bitmap_mono_font(data, data_size, arena == nullptr? nullptr : arena->arena);
+            break;
+        case FontType::Truetype:
+            font = ear_load_truetype_font(data, data_size, arena == nullptr? nullptr : arena->arena);
+            break;
+        }
+    }
+    Font::~Font() {
+        if (!arena) ear_delete_font(font);
+    }
+
+    void text(Font* font, std::string text, float x, float y, float scale, std::array<float,4> col, eau::Align align) {
+        ear_text(font->font, (char*)text.c_str(), x,y, scale, (float[4]){ col[0], col[1], col[2], col[3] }, (eau_align)align); }
+    void text(Font* font, std::string text, vec2<float> pos, float scale, std::array<float,4> col, eau::Align align) {
+        ear_text(font->font, (char*)text.c_str(), pos.x,pos.y, scale, (float[4]){ col[0], col[1], col[2], col[3] }, (eau_align)align); }
+    void text(Font* font, std::string text, float x, float y, std::array<float,4> col, eau::Align align) {
+        ear_text(font->font, (char*)text.c_str(), x,y, 1, (float[4]){ col[0], col[1], col[2], col[3] }, (eau_align)align); }
+    void text(Font* font, std::string text, vec2<float> pos, std::array<float,4> col, eau::Align align) {
+        ear_text(font->font, (char*)text.c_str(), pos.x,pos.y, 1, (float[4]){ col[0], col[1], col[2], col[3] }, (eau_align)align); }
+    void text(Font* font, std::string text, float x, float y, float scale, std::array<float,3> col, eau::Align align) {
+        ear_text(font->font, (char*)text.c_str(), x,y, scale, (float[4]){ col[0], col[1], col[2], 1 }, (eau_align)align); }
+    void text(Font* font, std::string text, vec2<float> pos, float scale, std::array<float,3> col, eau::Align align) {
+        ear_text(font->font, (char*)text.c_str(), pos.x,pos.y, scale, (float[4]){ col[0], col[1], col[2], 1 }, (eau_align)align); }
+    void text(Font* font, std::string text, float x, float y, std::array<float,3> col, eau::Align align) {
+        ear_text(font->font, (char*)text.c_str(), x,y, 1, (float[4]){ col[0], col[1], col[2], 1 }, (eau_align)align); }
+    void text(Font* font, std::string text, vec2<float> pos, std::array<float,3> col, eau::Align align) {
+        ear_text(font->font, (char*)text.c_str(), pos.x,pos.y, 1, (float[4]){ col[0], col[1], col[2], 1 }, (eau_align)align); }
+    void text(Font* font, std::string text, float x, float y, float scale, float col, eau::Align align) {
+        ear_text(font->font, (char*)text.c_str(), x,y, scale, (float[4]){ col, col, col, 1 }, (eau_align)align); }
+    void text(Font* font, std::string text, vec2<float> pos, float scale, float col, eau::Align align) {
+        ear_text(font->font, (char*)text.c_str(), pos.x,pos.y, scale, (float[4]){ col, col, col, 1 }, (eau_align)align); }
+    void text(Font* font, std::string text, float x, float y, float col, eau::Align align) {
+        ear_text(font->font, (char*)text.c_str(), x,y, 1, (float[4]){ col, col, col, 1 }, (eau_align)align); }
+    void text(Font* font, std::string text, vec2<float> pos, float col, eau::Align align) {
+        ear_text(font->font, (char*)text.c_str(), pos.x,pos.y, 1, (float[4]){ col, col, col, 1 }, (eau_align)align); }
 
     void
     clear(

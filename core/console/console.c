@@ -2,7 +2,7 @@
 
 eat_console_desc console;
 
-ear_texture* font;
+ear_font* font;
 
 float text_repeat_wait = .5;
 float text_repeat_delta = 1./24;
@@ -17,22 +17,18 @@ void
 eat_console_init(
     void
     ) {
-    static const uint8_t tex_data[] = {
-    #embed "font.png"
+    static const char tex_data[] = {
+    #embed "roboto.ttf"
     };
 
-    font = ear_load_texture((ear_texture_desc){
-            .filter = EAR_FILTER_NEAREST,
-            .type = EAR_TEX_COLOR,
-            .wrap = EAR_WRAP_REPEAT,
-        }, tex_data, sizeof(tex_data), NULL);
+    font = ear_load_truetype_font(tex_data, sizeof(tex_data), NULL);
 }
 
 void
 eat_console_stop(
     void
     ) {
-    ear_delete_texture(font);
+    ear_delete_font(font);
 }
 
 void
@@ -54,7 +50,7 @@ eat_console_try_do(
         eat_width = eaw_window_width;
         eat_height = eaw_window_height;
 
-        ear_rect(0, eat_height/2., eat_width, font->height/16.*3, (float[4]){ 0,0,0,1 }, EAU_ALIGN_MID_LEFT);
+        ear_rect(0, eat_height/2., eat_width, font->lineheight * 16, (float[4]){ 0,0,0,1 }, EAU_ALIGN_MID_LEFT);
 
         for (uint32_t i = 0; i < eaw_text_input_chars; ++i) {
             buf[buf_amt] = eaw_text_input[i];
@@ -85,7 +81,7 @@ eat_console_try_do(
         else buf[buf_amt] = 0;
         buf[buf_amt+1] = 0;
 
-        ear_text(font, buf, 0, eat_height/2., 3,3, (float[4]){ 1,1,1,1 }, EAU_ALIGN_MID_LEFT);
+        ear_text(font, buf, 4, eat_height/2., 16, (float[4]){ 1,1,1,1 }, EAU_ALIGN_MID_LEFT);
 
         ear_frame();
         eaw_frame();

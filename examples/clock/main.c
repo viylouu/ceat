@@ -5,15 +5,11 @@
 int main(void) {
     eat_init("clock", 1600,900, (eat_init_opts){});
 
-    static const uint8_t tex_data[] = {
+    static const char tex_data[] = {
     #embed "font.png"
     };
 
-    ear_texture* font = ear_load_texture((ear_texture_desc){
-            .filter = EAR_FILTER_NEAREST,
-            .type = EAR_TEX_COLOR,
-            .wrap = EAR_WRAP_REPEAT,
-        }, tex_data, sizeof(tex_data), NULL);
+    ear_font* font = ear_load_bitmap_mono_font(tex_data, sizeof(tex_data), NULL);
 
     eau_clock* clock = eau_create_clock(NULL);
 
@@ -28,9 +24,9 @@ int main(void) {
         char buf[64];
         snprintf(buf, sizeof(buf), "%.3f", clock->time);
 
-        ear_text(font, buf, 0,0, 4,4, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
+        ear_text(font, buf, 0,0, 8 * 4, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
 
-        ear_text(font, "space to start/stop\nr to reset\nleft/right to decrease/increase speed by 1", 0,64, 4,4, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
+        ear_text(font, "space to start/stop\nr to reset\nleft/right to decrease/increase speed by 1", 0,64, 8 * 4, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
 
         if (eaw_is_key_pressed(EAW_KEY_SPACE)) {
             paused = !paused;
@@ -55,7 +51,7 @@ int main(void) {
 
     eau_delete_clock(clock);
 
-    ear_delete_texture(font);
+    ear_delete_font(font);
 
     eat_stop();
 
