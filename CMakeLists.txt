@@ -6,7 +6,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-
 if(CMAKE_SYSTEM MATCHES Linux)
     option(BUILD_LINUX ":3" ON)
 elseif(CMAKE_SYSTEM MATCHES Windows)
@@ -29,47 +28,47 @@ else()
 endif()
 
 add_library(ceat STATIC)
-target_sources(ceat
-        PRIVATE
-            core/eat.c
+target_sources(ceat 
+    PRIVATE 
+        core/eat.c
 
-            core/console/console.c
+        core/debug/console.c
 
-            core/eaw/eaw.c
-            core/eaw/window.c
-            core/eaw/input.c
+        core/eaw/eaw.c
+        core/eaw/window.c
+        core/eaw/input.c
 
-            core/ear/ear.c
-            core/ear/gl.c
-            core/ear/pipeline.c
-            core/ear/buffer.c
-            core/ear/texture.c
-            core/ear/framebuffer.c
-            core/ear/texarray.c
-            core/ear/text.c
-            core/ear/camera.c
-            core/ear/misc.c
-            core/ear/data.c
-            core/ear/user.c
+        core/ear/ear.c
+        core/ear/gl.c
+        core/ear/pipeline.c
+        core/ear/buffer.c
+        core/ear/framebuffer.c
+        core/ear/texarray.c
+        core/ear/text.c
+        core/ear/texture.c
+        core/ear/camera.c
+        core/ear/misc.c
+        core/ear/data.c
+        core/ear/user.c
 
-            core/eau/file.c
-            core/eau/mat4.c
-            core/eau/coll.c
-            core/eau/arena.c
-            core/eau/clock.c
-            core/eau/object.c
+        core/eau/file.c
+        core/eau/mat4.c
+        core/eau/coll.c
+        core/eau/arena.c
+        core/eau/clock.c
+        core/eau/object.c
 
-            core/eaa/eaa.c
-            core/eaa/engine.c
-            core/eaa/sound.c
-            core/eaa/mixer.c
-        PUBLIC
-            FILE_SET HEADERS
-            BASE_DIRS
-                .
-            FILES
-                eat.h
-    )
+        core/eaa/eaa.c
+        core/eaa/engine.c
+        core/eaa/sound.c
+        core/eaa/mixer.c
+    PUBLIC
+        FILE_SET HEADERS
+        BASE_DIRS
+            .
+        FILES
+            eat.h
+)
 target_link_libraries(ceat
     PRIVATE
         glfw

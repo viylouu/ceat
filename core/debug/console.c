@@ -18,7 +18,7 @@ eat_console_init(
     void
     ) {
     static const char tex_data[] = {
-    #embed "roboto.ttf"
+    #embed "verdana.ttf"
     };
 
     font = ear_load_truetype_font(tex_data, sizeof(tex_data), NULL);
@@ -81,7 +81,7 @@ eat_console_try_do(
         else buf[buf_amt] = 0;
         buf[buf_amt+1] = 0;
 
-        ear_text(font, buf, 4, eat_height/2., 16, (float[4]){ 1,1,1,1 }, EAU_ALIGN_MID_LEFT);
+        ear_text(font, buf, 4, eat_height/2., 14, (float[4]){ 1,1,1,1 }, EAU_ALIGN_MID_LEFT);
 
         ear_frame();
         eaw_frame();

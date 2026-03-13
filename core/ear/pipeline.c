@@ -252,4 +252,6 @@ _TYPECONV_fill_mode(
     case EAR_FILL_FILL: return GL_FILL;
     case EAR_FILL_LINE: return GL_LINE;
     }
+
+    eat_unreachable();
 }

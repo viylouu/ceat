@@ -1,7 +1,7 @@
 #include "eaw.h"
 //#include "../cutil.h"
 
-#include "core/eau/object.h"
+#include "../eau/object.h"
 
 #include <GLFW/glfw3.h>
 

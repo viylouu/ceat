@@ -10,7 +10,7 @@ int main(void) {
     };
 
     static const char ttf_data[] = {
-    #embed "roboto.ttf"
+    #embed "verdana.ttf"
     };
 
     ear_font* bmp_mono_font = ear_load_bitmap_mono_font(bm_data, sizeof(bm_data), NULL);

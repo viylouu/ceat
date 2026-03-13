@@ -1,6 +1,6 @@
 #include "../eat.h"
 
-#include "console/console.h"
+#include "debug/console.h"
 #include "eau/object.h"
 
 int32_t eat_width;
