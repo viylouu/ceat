@@ -73,8 +73,8 @@ struct eau_clock{
 
     float speed;
 
+    bool paused;
+
     eau_destructor* dest;
     eat_debug_ll_obj* deb_obj;
-
-    bool paused;
 };

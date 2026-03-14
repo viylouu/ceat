@@ -4,6 +4,7 @@ import "core:c"
 
 import stbtt "vendor:stb/truetype"
 
+import "../debug"
 import "../eau"
 
 when ODIN_OS == .Windows {
@@ -28,6 +29,7 @@ _buffer :: struct{
     desc: BufferDesc,
 
     dest: ^eau.Destructor,
+    deb_obj: ^debug.LLObj,
 }
 
 Buffer :: struct{
@@ -62,6 +64,7 @@ _framebuffer :: struct{
     desc: _framebuffer_desc,
 
     dest: ^eau.Destructor,
+    deb_obj: ^debug.LLObj,
 }
 
 _framebuffer_desc :: struct{
@@ -98,6 +101,7 @@ _pipeline :: struct{
     desc: _pipeline_desc,
 
     dest: ^eau.Destructor,
+    deb_obj: ^debug.LLObj,
 }
 
 _pipeline_desc :: struct{
@@ -211,6 +215,7 @@ _texarray :: struct{
     desc: TexarrayDesc,
 
     dest: ^eau.Destructor,
+    deb_obj: ^debug.LLObj,
 }
 
 TexarrayDesc :: struct{
@@ -244,7 +249,8 @@ _texture :: struct{
 
     desc: TextureDesc,
 
-    dest: ^eau.Destructor
+    dest: ^eau.Destructor,
+    deb_obj: ^debug.LLObj,
 }
 
 TextureDesc :: struct{
@@ -311,7 +317,9 @@ _camera_desc :: struct{
 _camera :: struct{
     mat: ^f32,
     desc: _camera_desc,
+
     dest: ^eau.Destructor,
+    deb_obj: ^debug.LLObj,
 }
 
 CameraDesc2d :: struct{
@@ -365,6 +373,7 @@ _font :: struct{
     },
 
     dest: ^eau.Destructor,
+    deb_obj: ^debug.LLObj,
 }
 
 Font :: struct{

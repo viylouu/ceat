@@ -1,5 +1,6 @@
 package eat
 
+import "../debug"
 import "../eaw"
 
 when ODIN_OS == .Windows {
@@ -24,8 +25,8 @@ when ODIN_OS == .Windows {
 
 _init_opts :: struct{
     vsync: bool,
-    console: ConsoleDesc,
-    debug: DebugDesc,
+    console: debug.ConsoleDesc,
+    debug: debug.DebugDesc,
 }
 
 @(default_calling_convention="c")
@@ -43,21 +44,10 @@ foreign ceat {
 }
 
 
-ConsoleDesc :: struct{
-    enabled: bool,
-    key: eaw.Key,
-    command_solver: proc "c" (command: cstring),
-}
-
-DebugDesc :: struct{
-    enabled: bool,
-    key: eaw.Key,
-}
-
 InitOpts :: struct{
     vsync: Maybe(bool),
-    console: Maybe(ConsoleDesc),
-    debug: Maybe(DebugDesc),
+    console: Maybe(debug.ConsoleDesc),
+    debug: Maybe(debug.DebugDesc),
 }
 
 init :: proc(title: cstring, width,height: i32, opts: InitOpts) {
@@ -66,8 +56,8 @@ init :: proc(title: cstring, width,height: i32, opts: InitOpts) {
         width, height,
         _init_opts{
             vsync = opts.vsync.? or_else true,
-            console = opts.console.? or_else ConsoleDesc{ enabled = false },
-            debug = opts.debug.? or_else DebugDesc{ enabled = false },
+            console = opts.console.? or_else debug.ConsoleDesc{ enabled = false },
+            debug = opts.debug.? or_else debug.DebugDesc{ enabled = false },
             },
         );
 }

@@ -2,6 +2,7 @@ package ear
 
 import "core:c"
 
+import "../debug"
 import "../eau"
 
 import ma "vendor:miniaudio"
@@ -40,6 +41,7 @@ _sound :: struct{
     desc: _sound_desc,
 
     dest: ^eau.Destructor,
+    deb_obj: ^debug.LLObj,
 }
 
 Sound :: struct{
@@ -67,7 +69,9 @@ _mixer_desc :: struct{
 
 _mixer :: struct{
     desc: _mixer_desc,
+
     dest: ^eau.Destructor,
+    deb_obj: ^debug.LLObj,
 }
 
 Mixer :: struct{

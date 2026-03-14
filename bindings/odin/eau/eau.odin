@@ -2,6 +2,8 @@ package eau
 
 import "base:runtime"
 
+import "../debug"
+
 when ODIN_OS == .Windows {
     foreign import ceat {
         "../../../build/ceat.lib",
@@ -38,6 +40,8 @@ CollisionInfo :: struct{
 _arena :: struct{
     dests: [^]^Destructor,
     dest_amt: u32,
+
+    deb_obj: ^debug.LLObj,
 }
 
 Destructor :: struct{
@@ -70,9 +74,10 @@ _clock :: struct{
 
     speed: f32,
 
-    dest: ^Destructor,
-
     paused: bool,
+
+    dest: ^Destructor,
+    deb_obj: ^debug.LLObj,
 }
 
 Clock :: struct{
@@ -104,6 +109,7 @@ _object :: struct{
     last_time: f64,
 
     dest: ^Destructor,
+    deb_obj: ^debug.LLObj,
 }
 
 _object_desc :: struct{
@@ -152,8 +158,13 @@ ObjectProc :: struct{
     ctx: rawptr,
 }
 
-wrap_object_proc :: proc($p: proc(^Object)) -> ObjectProc {
-    
+wrap_object_proc :: proc($p: proc(^Object($T))) -> ObjectProc {
+    return ObjectProc{
+        fn = proc(obj: rawptr, ctx: rawptr) {
+            (proc(^Object(T))(ctx))((^Object(T))(obj))
+            },
+        ctx = rawptr(p),
+        }
 }
 
 ObjectDesc :: struct{
