@@ -36,6 +36,10 @@ namespace eat{
                     .key = (eaw_key)opts.console.key,
                     .command_solver = _command_solver,
                     },
+                .debug = eat_debug_desc{
+                    .enabled = opts.debug.enabled,
+                    .key = (eaw_key)opts.debug.key,
+                    },
                 }
             );
     }

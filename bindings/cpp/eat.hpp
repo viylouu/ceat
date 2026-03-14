@@ -237,9 +237,15 @@ namespace eat{
         void (*command_solver)(std::string command) = nullptr;
     };
 
+    struct debug_desc{
+        bool enabled = false;
+        eaw::Key key = eaw::Key::F8;
+    };
+
     struct init_opts{
         bool vsync = true;
         console_desc console;
+        debug_desc debug;
     };
 
     void

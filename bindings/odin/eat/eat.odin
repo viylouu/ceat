@@ -25,6 +25,7 @@ when ODIN_OS == .Windows {
 _init_opts :: struct{
     vsync: bool,
     console: ConsoleDesc,
+    debug: DebugDesc,
 }
 
 @(default_calling_convention="c")
@@ -48,9 +49,15 @@ ConsoleDesc :: struct{
     command_solver: proc "c" (command: cstring),
 }
 
+DebugDesc :: struct{
+    enabled: bool,
+    key: eaw.Key,
+}
+
 InitOpts :: struct{
     vsync: Maybe(bool),
     console: Maybe(ConsoleDesc),
+    debug: Maybe(DebugDesc),
 }
 
 init :: proc(title: cstring, width,height: i32, opts: InitOpts) {
@@ -60,6 +67,7 @@ init :: proc(title: cstring, width,height: i32, opts: InitOpts) {
         _init_opts{
             vsync = opts.vsync.? or_else true,
             console = opts.console.? or_else ConsoleDesc{ enabled = false },
+            debug = opts.debug.? or_else DebugDesc{ enabled = false },
             },
         );
 }
