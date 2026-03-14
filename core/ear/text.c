@@ -317,23 +317,25 @@ _ear_truetype_text(
     for (int i = 0; text[i] != '\0'; ++i) {
         struct _ear_truetype_font_char* ch = &atlas->chars[text[i]];
 
-        eau_rect indiv = (eau_rect){ 0,0, ch->adw * scale - ch->w, font->lineheight * scale - (font->truetype.ascent - font->truetype.descent) * scale, align };
+        eau_rect indiv = (eau_rect){ 0,0, ch->adw * scale - ch->w, font->lineheight * height - (font->truetype.ascent - font->truetype.descent) * scale, align };
         _CONV_topleftify(&indiv);
 
-        ear_tex(
-            atlas->atlas,
-            ox + off_x + rect.x - indiv.x, 
-            oy + off_y + font->truetype.ascent * scale + ch->yoff + rect.y - indiv.y,
-            ch->w, ch->h,
-            ch->x, ch->y, ch->w, ch->h,
-            col, EAU_ALIGN_TOP_LEFT
-            );
+        if (text[i] != '\n' && text[i] != '\t') {
+            ear_tex(
+                atlas->atlas,
+                ox + off_x + rect.x - indiv.x, 
+                oy + off_y + font->truetype.ascent * scale + ch->yoff + rect.y - indiv.y,
+                ch->w, ch->h,
+                ch->x, ch->y, ch->w, ch->h,
+                col, EAU_ALIGN_TOP_LEFT
+                );
+        }
 
         ox += ch->adw * scale;
         if (text[i] == '\t') ox += ch->adw * scale * 3;
         if (text[i] == '\n') {
             ox = 0;
-            oy += font->lineheight * scale;
+            oy += font->lineheight * height;
         }
     }
 }
@@ -385,39 +387,41 @@ _ear_truetype_text_size(
 
     for (uint32_t i = 0; text[i] != '\0'; ++i) {
         struct _ear_truetype_font_char* ch = &atlas->chars[text[i]];
-        if (!ch->exists) {
+        if (!ch->exists && text[i] != '\n') {
             ch->exists = true;
 
             int ax; int lsb;
             stbtt_GetCodepointHMetrics(&font->truetype.info, text[i], &ax,&lsb);
             ch->adw = ax;
 
-            int xoff; int yoff; int wid; int hei;
-            char* glyph = (char*)stbtt_GetCodepointBitmap(&font->truetype.info, scale, scale, text[i], &wid,&hei,&xoff,&yoff);
-            ch->w = wid;
-            ch->h = hei;
-            ch->yoff = yoff;
+            if (text[i] != '\t') {
+                int xoff; int yoff; int wid; int hei;
+                char* glyph = (char*)stbtt_GetCodepointBitmap(&font->truetype.info, scale, scale, text[i], &wid,&hei,&xoff,&yoff);
+                ch->w = wid;
+                ch->h = hei;
+                ch->yoff = yoff;
 
-            if (atlas->lastx + ch->w > at_width) {
-                atlas->lastx = 0;
-                atlas->lasty += atlas->curmaxh;
-                atlas->curmaxh = ch->h;
+                if (atlas->lastx + ch->w > at_width) {
+                    atlas->lastx = 0;
+                    atlas->lasty += atlas->curmaxh;
+                    atlas->curmaxh = ch->h;
+                }
+
+                ch->x = atlas->lastx;
+                ch->y = atlas->lasty;
+
+                for (uint32_t y = 0; y < hei; ++y) for (uint32_t x = 0; x < wid; ++x) {
+                    char a = glyph[y * wid + x];
+                    ear_set_texture_color(atlas->atlas, ch->x + x, at_height - (ch->y + y) - 1, (float[4]){ 1,1,1,a/255.f });
+                }
+
+                stbtt_FreeBitmap((uint8_t*)glyph, NULL);
+
+                atlas->lastx += ch->w;
+                if (ch->h > atlas->curmaxh) atlas->curmaxh = ch->h;
+
+                ear_update_texture(atlas->atlas);
             }
-
-            ch->x = atlas->lastx;
-            ch->y = atlas->lasty;
-
-            for (uint32_t y = 0; y < hei; ++y) for (uint32_t x = 0; x < wid; ++x) {
-                char a = glyph[y * wid + x];
-                ear_set_texture_color(atlas->atlas, ch->x + x, at_height - (ch->y + y) - 1, (float[4]){ 1,1,1,a/255.f });
-            }
-
-            stbtt_FreeBitmap((uint8_t*)glyph, NULL);
-
-            atlas->lastx += ch->w;
-            if (ch->h > atlas->curmaxh) atlas->curmaxh = ch->h;
-
-            ear_update_texture(atlas->atlas);
         }
 
         if (i != 0) {
@@ -429,11 +433,11 @@ _ear_truetype_text_size(
         if (text[i] == '\t') ox += ch->adw * scale * 3;
         if (text[i] == '\n') {
             ox = 0;
-            oy += font->lineheight * scale;
+            oy += font->lineheight * height;
         }
 
         if (ox > w) w = ox;
-        if (oy + font->lineheight * scale > h) h = oy + font->lineheight * scale;
+        if (oy + font->lineheight * height > h) h = oy + font->lineheight * height;
     }
 
     if (out_width) *out_width = w;
@@ -443,9 +447,104 @@ _ear_truetype_text_size(
 
 void
 _ear_debug_font_window(
-    void* font,
+    void* _font,
     float x, float y, float w, float h,
     eat_debug_theme t,
-    int32_t* sel
+    int32_t* selected
     ) {
+    ear_font* font = _font;
+
+    float offy = 0;
+    float off = 16;
+    
+    char buf[64];
+
+    switch (font->type) {
+    case EAR_FONT_BITMAP_MONO: snprintf(buf, sizeof(buf), "type: bitmap-mono"); break;
+    case EAR_FONT_TRUETYPE: snprintf(buf, sizeof(buf), "type: truetype"); break;
+    }
+
+    ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+    offy += off;
+
+    switch (font->type) {
+    case EAR_FONT_BITMAP_MONO:
+        snprintf(buf, sizeof(buf), "char width: %.0f, char height: %.0f", font->bitmap_mono.charw, font->bitmap_mono.charh);
+        ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+        offy += off;
+
+        uint32_t idx = 0;
+        for (eat_debug_ll_obj* it = eat_debug_ll_first; it != NULL; it = it->next) {
+            if (it->data == font->bitmap_mono.atlas) break;
+            ++idx;
+        }
+
+        snprintf(buf, sizeof(buf), "texture %d", idx);
+
+        float width;
+        ear_text_size(t.font, buf, 14, &width, NULL);
+
+        bool sel = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y+offy, width+8,16 });
+
+        ear_rect(x,y+offy, width+8, 16, sel? debug_theme.sel_but_col : debug_theme.but_col, EAU_ALIGN_TOP_LEFT);
+        ear_rect(x+2,y+2+offy, width+4, 12, sel? debug_theme.but_col : debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);
+
+        if (sel && eaw_is_mouse_pressed(EAW_MOUSE_LEFT)) *selected = idx;
+
+        ear_text(t.font, buf, x + 4, y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+
+        offy += 18;
+
+        float sizex = w;
+        float sizey = h - offy;
+
+        const float wpaspect = (float)font->bitmap_mono.atlas->width / font->bitmap_mono.atlas->height;
+        float winaspect = sizex / sizey;
+
+        width = sizex;
+        float height = sizey;
+        if (winaspect > wpaspect) width = height * wpaspect;
+        else height = width / wpaspect;
+
+        float draw_offx = (sizex - width) * .5;
+        float draw_offy = (sizey - height) * .5;
+
+        ear_rect(draw_offx + x, draw_offy + y+offy, width, height, (float[4]){ 0,0,0,1 }, EAU_ALIGN_TOP_LEFT);
+        ear_tex(font->bitmap_mono.atlas, draw_offx + x, draw_offy + y+offy, width,height, 0,0,font->bitmap_mono.atlas->width,font->bitmap_mono.atlas->height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
+
+        break;
+    case EAR_FONT_TRUETYPE:
+        if (font->truetype.atlas_amt == 0) {
+            ear_text(t.font, "no atlases", x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+        } else {
+            snprintf(buf, sizeof(buf), "%d atlases:", font->truetype.atlas_amt);
+            ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+            offy += off;
+
+            for (uint32_t i = 0; i < font->truetype.atlas_amt; ++i) {
+                uint32_t idx = 0;
+                for (eat_debug_ll_obj* it = eat_debug_ll_first; it != NULL; it = it->next) {
+                    if (it->data == font->truetype.atlases[i].atlas) break;
+                    ++idx;
+                }
+
+                snprintf(buf, sizeof(buf), "texture %d", idx);
+
+                float width;
+                ear_text_size(t.font, buf, 14, &width, NULL);
+
+                bool sel = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y+offy, width+8,16 });
+
+                ear_rect(x,y+offy, width+8, 16, sel? debug_theme.sel_but_col : debug_theme.but_col, EAU_ALIGN_TOP_LEFT);
+                ear_rect(x+2,y+2+offy, width+4, 12, sel? debug_theme.but_col : debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);
+
+                if (sel && eaw_is_mouse_pressed(EAW_MOUSE_LEFT)) *selected = idx;
+
+                ear_text(t.font, buf, x + 4, y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+
+                offy += 18;
+            }
+        }
+        break;
+    }
 }
