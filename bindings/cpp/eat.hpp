@@ -729,6 +729,12 @@ namespace ear{
             uint32_t slot
             );
 
+        void
+        resize(
+            uint32_t width,
+            uint32_t height
+            );
+
         std::array<float,4>
         get_color(
             uint32_t x, uint32_t y
@@ -805,6 +811,12 @@ namespace ear{
         void
         bind(
             void
+            );
+
+        void
+        resize(
+            uint32_t width,
+            uint32_t height
             );
 
         void

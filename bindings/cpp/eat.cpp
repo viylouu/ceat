@@ -566,6 +566,14 @@ namespace ear{
         ear_bind_texture(texture, slot);
     }
 
+    void
+    Texture::resize(
+        uint32_t width,
+        uint32_t height
+        ) {
+        ear_resize_texture(texture, width, height);
+    }
+
     std::array<float,4>
     Texture::get_color(
         uint32_t x, uint32_t y
@@ -653,6 +661,14 @@ namespace ear{
         void
         ) {
         ear_bind_framebuffer(framebuffer);
+    }
+
+    void
+    Framebuffer::resize(
+        uint32_t width,
+        uint32_t height
+        ) {
+        ear_resize_framebuffer(framebuffer, width, height);
     }
 
     void

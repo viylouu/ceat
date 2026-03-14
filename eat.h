@@ -20,6 +20,10 @@ extern float eat_delta;
     extern double eat_time64;
     extern double eat_delta64;
 
+extern ear_texture* _eat_screen_color;
+extern ear_texture* _eat_screen_depth;
+extern ear_framebuffer* _eat_screen_framebuffer;
+
 
 typedef struct eat_console_desc{
     bool enabled;

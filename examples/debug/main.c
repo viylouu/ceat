@@ -29,7 +29,12 @@ void object_stop(eau_object* obj) {
 }
 
 int main(void) {
-    eat_init("object", 512,512, (eat_init_opts){});
+    eat_init("object", 1600,900, (eat_init_opts){
+        .debug = (eat_debug_desc){
+            .enabled = true,
+            .key = EAW_KEY_F8,
+            },
+        });
 
     my_object* obj_data = malloc(sizeof(my_object));
     eau_object* obj = eau_create_object((eau_object_desc){

@@ -76,6 +76,7 @@ Framebuffer :: struct{
 
     delete: proc(framebuffer: ^Framebuffer),
     bind: proc(framebuffer: ^Framebuffer),
+    resize: proc(framebuffer: ^Framebuffer, width, height: u32),
     set_as_default: proc(framebuffer: ^Framebuffer),
 
     _alloc: struct{
@@ -258,6 +259,7 @@ Texture :: struct{
 
     delete: proc(texture: ^Texture),
     bind: proc(texture: ^Texture, slot: u32),
+    resize: proc(texture: ^Texture, width, height: u32),
     get_color: proc(texture: ^Texture, x,y: u32) -> [4]f32,
     set_color: proc(texture: ^Texture, x,y: u32, col: [4]f32),
     apply_changes: proc(texture: ^Texture),
@@ -382,6 +384,7 @@ foreign ceat {
     @(link_name="ear_create_framebuffer") _create_framebuffer :: proc(desc: _framebuffer_desc, arena: ^eau._arena) -> ^_framebuffer ---
     @(link_name="ear_delete_framebuffer") _delete_framebuffer :: proc(framebuffer: ^_framebuffer) ---
     @(link_name="ear_bind_framebuffer") _bind_framebuffer :: proc(framebuffer: ^_framebuffer) ---
+    @(link_name="ear_resize_framebuffer") _resize_framebuffer :: proc(Framebuffer: ^_framebuffer, width: u32, height: u32) ---
     @(link_name="ear_set_default_framebuffer") _set_default_framebuffer :: proc(framebuffer: ^_framebuffer) ---
 
 
@@ -416,6 +419,7 @@ foreign ceat {
     @(link_name="ear_load_texture") _load_texture :: proc(desc: TextureDesc, data: [^]u8, data_size: c.size_t, arena: ^eau._arena) -> ^_texture ---
     @(link_name="ear_delete_texture") _delete_texture :: proc(texture: ^_texture) ---
     @(link_name="ear_bind_texture") _bind_texture :: proc(texture: ^_texture, slot: u32) ---
+    @(link_name="ear_resize_texture") _resize_texture :: proc(texture: ^_texture, width: u32, height: u32) ---
     @(link_name="ear_get_texture_color") _get_texture_color :: proc(texture: ^_texture, x,y: u32, out: ^^f32) ---
     @(link_name="ear_set_texture_color") _set_texture_color :: proc(texture: ^_texture, x,y: u32, col: ^f32) ---
     @(link_name="ear_apply_texture_changes") _apply_texture_changes :: proc(texture: ^_texture) ---
@@ -486,6 +490,7 @@ create_framebuffer :: proc(desc: FramebufferDesc, arena: ^eau.Arena = nil) -> ^F
 
         delete = delete_framebuffer,
         bind = bind_framebuffer,
+        resize = resize_framebuffer,
         set_as_default = set_default_framebuffer,
 
         _alloc = {
@@ -505,6 +510,10 @@ delete_framebuffer :: proc(fb: ^Framebuffer) {
 
 bind_framebuffer :: proc(fb: ^Framebuffer) {
     _bind_framebuffer(fb == nil? nil : fb.framebuffer)
+}
+
+resize_framebuffer :: proc(fb: ^Framebuffer, width, height: u32) {
+    _resize_framebuffer(fb.framebuffer, width, height)
 }
 
 set_default_framebuffer :: proc(fb: ^Framebuffer) {
@@ -675,6 +684,7 @@ create_texture :: proc(desc: TextureDesc, pixels: [^]u8, width,height: u32, aren
 
         delete = delete_texture,
         bind = bind_texture,
+        resize = resize_texture,
         get_color = get_texture_color,
         set_color = set_texture_color,
         apply_changes = apply_texture_changes,
@@ -707,6 +717,10 @@ delete_texture :: proc(tex: ^Texture) {
 
 bind_texture :: proc(tex: ^Texture, slot: u32) {
     _bind_texture(tex.texture, slot)
+}
+
+resize_texture :: proc(tex: ^Texture, width, height: u32) {
+    _resize_texture(tex.texture, width, height)
 }
 
 get_texture_color :: proc(tex: ^Texture, #any_int x,y: u32) -> [4]f32 {

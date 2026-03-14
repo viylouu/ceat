@@ -27,7 +27,18 @@ ear_bind_framebuffer(
     );
 
 void
+ear_resize_framebuffer(
+    ear_framebuffer* framebuffer,
+    uint32_t width, uint32_t height
+    );
+
+void
 ear_set_default_framebuffer(
+    ear_framebuffer* framebuffer
+    );
+
+void
+_ear_set_master_framebuffer(
     ear_framebuffer* framebuffer
     );
 

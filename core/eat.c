@@ -3,8 +3,6 @@
 #include "debug/console.h"
 #include "debug/debug.h"
 
-#include "eau/object.h"
-
 int32_t eat_width;
 int32_t eat_height;
 
@@ -12,6 +10,10 @@ float eat_time;
 float eat_delta;
     double eat_time64;
     double eat_delta64;
+
+ear_texture* _eat_screen_color;
+ear_texture* _eat_screen_depth;
+ear_framebuffer* _eat_screen_framebuffer;
 
 void 
 eat_init(
@@ -22,6 +24,24 @@ eat_init(
     eaw_init(title, width, height, opts.vsync);
     ear_init();
     eaa_init();
+
+    _eat_screen_color = ear_create_texture((ear_texture_desc){
+        .type = EAR_TEX_COLOR,
+        .filter = EAR_FILTER_NEAREST,
+        .wrap = EAR_WRAP_REPEAT,
+        }, NULL, width, height, NULL);
+    _eat_screen_depth = ear_create_texture((ear_texture_desc){
+        .type = EAR_TEX_DEPTH,
+        .filter = EAR_FILTER_NEAREST,
+        .wrap = EAR_WRAP_REPEAT,
+        }, NULL, width, height, NULL);
+    _eat_screen_framebuffer = ear_create_framebuffer((ear_framebuffer_desc){
+        .out_colors = &_eat_screen_color,
+            .out_color_amt = 1,
+        .out_depth = _eat_screen_depth,
+        .width = width,
+        .height = height,
+        }, NULL);
 
     debug = opts.debug;
     console = opts.console;
@@ -35,6 +55,10 @@ eat_stop(
     ) {
     if (console.enabled) eat_console_stop();
     if (debug.enabled) eat_debug_stop();
+
+    ear_delete_framebuffer(_eat_screen_framebuffer);
+    ear_delete_texture(_eat_screen_depth);
+    ear_delete_texture(_eat_screen_color);
 
     eaa_stop();
     ear_stop();
@@ -51,8 +75,18 @@ eat_frame(
         eau_tick_this_frame = true;
     }
 
+    _ear_set_master_framebuffer(NULL);
+    ear_set_default_framebuffer(NULL);
+    ear_bind_framebuffer(NULL);
+
+    ear_tex(_eat_screen_color, 0,0, eat_width,eat_height, 0,0, eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
+
     ear_frame();
     eaw_frame();
+
+    _ear_set_master_framebuffer(_eat_screen_framebuffer);
+    ear_set_default_framebuffer(NULL);
+    ear_bind_framebuffer(NULL);
 
     if (console.enabled) eat_console_try_do();
     if (debug.enabled) eat_debug_try_do();

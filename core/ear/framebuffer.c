@@ -9,6 +9,7 @@
 #include "gl.h"
 
 ear_framebuffer* default_fb;
+ear_framebuffer* master_fb;
 
 void
 _ear_arena_framebuffer_delete(
@@ -84,12 +85,25 @@ ear_bind_framebuffer(
         eau_mat4_ortho(&proj, 0,fb->desc.width, 0,fb->desc.height, 0,1);
         gl.viewport(0,0, fb->desc.width, fb->desc.height);
         ear_mask(0,0, fb->desc.width, fb->desc.height);
-    } else if (default_fb == NULL) {
+    } else if (default_fb != NULL) {
+        ear_bind_framebuffer(default_fb); 
+    } else if (master_fb != NULL) {
+        ear_bind_framebuffer(master_fb);
+    } else {
         gl.bindFramebuffer(GL_FRAMEBUFFER, 0);
-        eau_mat4_ortho(&proj, 0,eaw_window_width,eaw_window_height, 0, 0,1);
+        eau_mat4_ortho(&proj, 0, eaw_window_width,eaw_window_height, 0, 0,1);
         gl.viewport(0,0, eaw_window_width,eaw_window_height);
         ear_mask(0,0, eaw_window_width,eaw_window_height);
-    } else ear_bind_framebuffer(default_fb);
+    }
+}
+
+void
+ear_resize_framebuffer(
+    ear_framebuffer* fb,
+    uint32_t width, uint32_t height
+    ) {
+    fb->desc.width = width;
+    fb->desc.height = height;
 }
 
 void
@@ -97,4 +111,11 @@ ear_set_default_framebuffer(
     ear_framebuffer* fb
     ) {
     default_fb = fb;
+}
+
+void
+_ear_set_master_framebuffer(
+    ear_framebuffer* fb
+    ) {
+    master_fb = fb;
 }

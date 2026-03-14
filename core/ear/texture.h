@@ -40,6 +40,12 @@ ear_bind_texture(
     uint32_t slot
     );
 
+void
+ear_resize_texture(
+    ear_texture* texture,
+    uint32_t width, uint32_t height
+    );
+
 
 void
 ear_get_texture_color(

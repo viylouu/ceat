@@ -80,8 +80,6 @@ ear_create_texture(
         pixels
         );
 
-    gl.bindTexture(GL_TEXTURE_2D, 0);
-
     if (arena != NULL) eau_add_to_arena(arena, &tex->dest, tex, _ear_arena_texture_delete);
     return tex;
 }
@@ -123,6 +121,28 @@ ear_bind_texture(
     gl.activeTexture(GL_TEXTURE0 + slot);
     gl.bindTexture(GL_TEXTURE_2D, tex->id);
     gl.uniform1i(slot, slot);
+}
+
+void
+ear_resize_texture(
+    ear_texture* tex,
+    uint32_t width, uint32_t height
+    ) {
+    tex->width = width;
+    tex->height = height;
+
+    gl.bindTexture(GL_TEXTURE_2D, tex->id);
+
+    gl.texImage2D(
+        GL_TEXTURE_2D,
+        0,
+        _TYPECONV_texture_type_as_intf(tex->desc.type),
+        width, height,
+        0,
+        _TYPECONV_texture_type_as_f(tex->desc.type),
+        _TYPECONV_texture_type_as_type(tex->desc.type),
+        tex->pixels
+        );
 }
 
 
