@@ -37,8 +37,8 @@ eat_debug_try_do(
     if (eaw_is_key_pressed(debug.key)) eat_debug_toggled = !eat_debug_toggled;
     if (!eat_debug_toggled) return;
 
-    float bg_col[4] = { .5,.5,.5, 1 };
-    float but_col[4] = { .75,.75,.75, 1 };
+    float bg_col[4] = { .15,.15,.15, 1 };
+    float but_col[4] = { .25,.25,.25, 1 };
     float text_col[4] = { 1,1,1, 1 };
 
     ear_rect(0,0, eaw_window_width, 16, bg_col, EAU_ALIGN_TOP_LEFT);
@@ -61,6 +61,8 @@ eat_debug_try_do(
         ear_text_size(debug_font, buf, 14, &w,NULL);
 
         ear_rect(x,y, w+8, 16, but_col, EAU_ALIGN_TOP_LEFT);
+        ear_rect(x+2,y+2, w+4, 12, bg_col, EAU_ALIGN_TOP_LEFT);
+
         ear_text(debug_font, buf, x+4, y, 14, text_col, EAU_ALIGN_TOP_LEFT);
 
         x += w + 12;
