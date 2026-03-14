@@ -80,7 +80,8 @@ eat_frame(
     ear_set_default_framebuffer(NULL);
     ear_bind_framebuffer(NULL);
 
-    ear_tex(_eat_screen_color, 0,0, eat_width,eat_height, 0,0, eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
+    if (!debug.enabled || !eat_debug_toggled) 
+        ear_tex(_eat_screen_color, 0,0, eat_width,eat_height, 0,0, eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
 
     if (debug.enabled) eat_debug_try_do();
 
@@ -100,13 +101,12 @@ eat_frame(
     eat_time64 = eaw_time;
     eat_delta64 = eaw_delta;
 
-    eat_width = eaw_window_width;
-    eat_height = eaw_window_height;
+    eat_debug_get_screen_size(&eat_width, &eat_height);
 
     if (prev_width != eat_width || prev_height != eat_height) {
-        ear_resize_texture(_eat_screen_color, eaw_window_width, eaw_window_height);
-        ear_resize_texture(_eat_screen_depth, eaw_window_width, eaw_window_height);
-        ear_resize_framebuffer(_eat_screen_framebuffer, eaw_window_width, eaw_window_height);
+        ear_resize_texture(_eat_screen_color, eat_width, eat_height);
+        ear_resize_texture(_eat_screen_depth, eat_width, eat_height);
+        ear_resize_framebuffer(_eat_screen_framebuffer, eat_width, eat_height);
     }
 
     return eaw_is_open();

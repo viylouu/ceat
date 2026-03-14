@@ -42,7 +42,9 @@ _ear_arena_texarray_delete(
 void
 _ear_debug_texarray_window(
     void* arr,
-    float x, float y, float w, float h
+    float x, float y, float w, float h,
+    eat_debug_theme theme,
+    int32_t* sel
     );
 
 ear_texarray*
@@ -189,7 +191,9 @@ ear_update_texarray_layer(
 void
 _ear_debug_texarray_window(
     void* arr,
-    float x, float y, float w, float h
+    float x, float y, float w, float h,
+    eat_debug_theme t,
+    int32_t* sel
     ) {
     
 }

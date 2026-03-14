@@ -17,8 +17,9 @@ _eau_arena_clock_delete(
 void
 _eau_debug_clock_window(
     void* clock, 
-    float x, float y, 
-    float w, float h
+    float x, float y,  float w, float h,
+    eat_debug_theme theme,
+    int32_t* sel
     );
 
 eau_clock*
@@ -129,8 +130,9 @@ eau_update_clocks(
 void
 _eau_debug_clock_window(
     void* clock, 
-    float x, float y, 
-    float w, float h
+    float x, float y, float w, float h,
+    eat_debug_theme t,
+    int32_t* sel
     ) {
     printf("hi :3");
 }

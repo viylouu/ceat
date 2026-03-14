@@ -8,8 +8,19 @@ typedef struct eat_debug_desc{
     eaw_key key;
 } eat_debug_desc;
 
+typedef struct eat_debug_theme{
+    ear_font* font;
+
+    float bg_col[4];
+    float text_col[4];
+
+    float but_col[4];
+    float sel_but_col[4];
+} eat_debug_theme;
+
+extern eat_debug_theme debug_theme;
+
 extern eat_debug_desc debug;
-extern ear_font* debug_font;
 
 extern bool eat_debug_toggled;
 
@@ -39,7 +50,7 @@ eat_debug_ll_obj*
 eat_debug_add_obj(
     void* data,
     char* name,
-    void (*debug_window)(void* obj, float x, float y, float w, float h)
+    void (*debug_window)(void* obj, float x, float y, float w, float h, eat_debug_theme theme, int32_t* sel)
     );
 
 void
@@ -47,10 +58,16 @@ eat_debug_remove_obj(
     eat_debug_ll_obj* obj
     );
 
+void
+eat_debug_get_screen_size(
+    int32_t* width,
+    int32_t* height
+    );
+
 struct eat_debug_ll_obj{
     void* data;
     char* type_name;
-    void (*debug_window)(void* obj, float x, float y, float w, float h);
+    void (*debug_window)(void* obj, float x, float y, float w, float h, eat_debug_theme theme, int32_t* sel);
 
     eat_debug_ll_obj* next;
     eat_debug_ll_obj* prev;

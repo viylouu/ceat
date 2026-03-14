@@ -16,7 +16,9 @@ _eaa_arena_sound_delete(
 void
 _eaa_debug_sound_window(
     void* sound,
-    float x, float y, float w, float h
+    float x, float y, float w, float h,
+    eat_debug_theme theme,
+    int32_t* sel
     );
 
 eaa_sound*
@@ -155,7 +157,9 @@ eaa_set_sound_loop(
 void
 _eaa_debug_sound_window(
     void* sound,
-    float x, float y, float w, float h
+    float x, float y, float w, float h,
+    eat_debug_theme t,
+    int32_t* sel
     ) {
     
 }

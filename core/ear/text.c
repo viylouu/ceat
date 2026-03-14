@@ -16,7 +16,9 @@ _ear_arena_font_delete(
 void
 _ear_debug_font_window(
     void* font,
-    float x, float y, float w, float h
+    float x, float y, float w, float h,
+    eat_debug_theme theme,
+    int32_t* sel
     );
 
 ear_font*
@@ -442,6 +444,8 @@ _ear_truetype_text_size(
 void
 _ear_debug_font_window(
     void* font,
-    float x, float y, float w, float h
+    float x, float y, float w, float h,
+    eat_debug_theme t,
+    int32_t* sel
     ) {
 }

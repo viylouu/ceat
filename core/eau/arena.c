@@ -4,7 +4,9 @@
 void
 _eau_debug_arena_window(
     void* arena,
-    float x, float y, float w, float h
+    float x, float y, float w, float h,
+    eat_debug_theme theme,
+    int32_t* sel
     );
 
 eau_arena*
@@ -77,6 +79,8 @@ eau_clear_arena(
 void
 _eau_debug_arena_window(
     void* arena,
-    float x, float y, float w, float h
+    float x, float y, float w, float h,
+    eat_debug_theme t,
+    int32_t* sel
     ) {
 }

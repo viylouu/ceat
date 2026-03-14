@@ -18,7 +18,9 @@ _eau_arena_object_delete(
 void
 _eau_debug_object_window(
     void* obj,
-    float x, float y, float w, float h
+    float x, float y, float w, float h,
+    eat_debug_theme theme,
+    int32_t* sel
     );
 
 eau_object*
@@ -215,7 +217,9 @@ eau_try_tick_objects(
 void
 _eau_debug_object_window(
     void* obj,
-    float x, float y, float w, float h
+    float x, float y, float w, float h,
+    eat_debug_theme t,
+    int32_t* sel
     ) {
     
 }

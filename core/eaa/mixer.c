@@ -15,7 +15,9 @@ _eaa_arena_mixer_delete(
 void
 _eaa_debug_mixer_window(
     void* mixer,
-    float x, float y, float w, float h
+    float x, float y, float w, float h,
+    eat_debug_theme theme,
+    int32_t* sel
     );
 
 eaa_mixer*
@@ -70,7 +72,9 @@ eaa_set_mixer_pitch(
 void
 _eaa_debug_mixer_window(
     void* mixer,
-    float x, float y, float w, float h
+    float x, float y, float w, float h,
+    eat_debug_theme t,
+    int32_t* sel
     ) {
     
 }

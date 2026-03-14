@@ -21,7 +21,9 @@ _ear_arena_camera_delete(
 void
 _ear_debug_camera_window(
     void* cam,
-    float x, float y, float w, float h
+    float x, float y, float w, float h,
+    eat_debug_theme theme,
+    int32_t* sel
     );
 
 ear_camera*
@@ -134,7 +136,9 @@ _ear_camera_update(
 void
 _ear_debug_camera_window(
     void* cam,
-    float x, float y, float w, float h
+    float x, float y, float w, float h,
+    eat_debug_theme t,
+    int32_t* sel
     ) {
     
 }

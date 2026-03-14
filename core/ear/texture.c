@@ -4,6 +4,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../include/stb_image.h"
 
+#include "text.h"
+#include "user.h"
 #include "gl.h"
 
 GLenum 
@@ -42,7 +44,9 @@ _ear_arena_texture_delete(
 void
 _ear_debug_texture_window(
     void* tex,
-    float x, float y, float w, float h
+    float x, float y, float w, float h,
+    eat_debug_theme theme,
+    int32_t* sel
     );
 
 ear_texture*
@@ -208,9 +212,70 @@ ear_update_texture(
 
 void
 _ear_debug_texture_window(
-    void* tex,
-    float x, float y, float w, float h
+    void* _tex,
+    float x, float y, float w, float h,
+    eat_debug_theme t,
+    int32_t* sel
     ) {
+    ear_texture* tex = _tex;
+
+    float offy = 0;
+    float off = 16;
+    
+    char buf[64];
+
+    snprintf(buf, sizeof(buf), "width: %d, height: %d", tex->width, tex->height);
+    ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+    offy += off;
+
+    switch (tex->desc.type) {
+    case EAR_TEX_COLOR: snprintf(buf, sizeof(buf), "type: color"); break;
+    case EAR_TEX_DEPTH: snprintf(buf, sizeof(buf), "type: depth"); break;
+    case EAR_TEX_HDR:   snprintf(buf, sizeof(buf), "type: hdr");   break;
+    case EAR_TEX_HDR32: snprintf(buf, sizeof(buf), "type: hdr32"); break;
+    }
+
+    ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+    offy += off;
+
+    switch (tex->desc.filter) {
+    case EAR_FILTER_NEAREST: snprintf(buf, sizeof(buf), "filter: nearest"); break;
+    case EAR_FILTER_LINEAR:  snprintf(buf, sizeof(buf), "filter: linear");  break;
+    }
+
+    ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+    offy += off;
+
+    switch (tex->desc.wrap) {
+    case EAR_WRAP_REPEAT: snprintf(buf, sizeof(buf), "wrap: repeat"); break;
+    case EAR_WRAP_CLAMP:  snprintf(buf, sizeof(buf), "wrap: clamp"); break;
+    case EAR_WRAP_COLOR:  snprintf(buf, sizeof(buf), "wrap: color ( rgba(%d, %d, %d, %d) )", 
+        (int)(tex->desc.wrap_color[0] * 255), 
+        (int)(tex->desc.wrap_color[1] * 255),
+        (int)(tex->desc.wrap_color[2] * 255),
+        (int)(tex->desc.wrap_color[3] * 255)
+        ); break;
+    }
+
+    ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+    offy += off;
+
+    float sizex = w;
+    float sizey = h - offy;
+
+    const float wpaspect = (float)tex->width / tex->height;
+    float winaspect = sizex / sizey;
+
+    float width = sizex;
+    float height = sizey;
+    if (winaspect > wpaspect) width = height * wpaspect;
+    else height = width / wpaspect;
+
+    float draw_offx = (sizex - width) * .5;
+    float draw_offy = (sizey - height) * .5;
+
+    ear_rect(draw_offx + x, draw_offy + y+offy, width, height, (float[4]){ 0,0,0,1 }, EAU_ALIGN_TOP_LEFT);
+    ear_tex(tex, draw_offx + x, draw_offy + y+offy, width,height, 0,0,tex->width,tex->height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
 }
 
 
