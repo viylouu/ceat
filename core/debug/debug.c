@@ -73,6 +73,12 @@ eat_debug_try_do(
         bool highlight = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y, w+8,16 });
         bool sel = i == selected || highlight;
 
+        x += w + 12;
+        if (x + 4 > eaw_window_width) {
+            y += 20;
+            x = 4;
+        } else x -= w + 12;
+            
         ear_rect(x,y, w+8, 16, sel? debug_theme.sel_but_col : debug_theme.but_col, EAU_ALIGN_TOP_LEFT);
         ear_rect(x+2,y+2, w+4, 12, sel? debug_theme.but_col : debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);
 
@@ -80,10 +86,6 @@ eat_debug_try_do(
         if (selected == i) sel_obj = it;
 
         x += w + 12;
-        if (x + 4 + w + 12 > eaw_window_width) {
-            y += 20;
-            x = 4;
-        }
 
         ++i;
     }
@@ -98,13 +100,16 @@ eat_debug_try_do(
 
         float w;
         ear_text_size(debug_theme.font, buf, 14, &w,NULL);
+
+        x += w + 12;
+        if (x + 4 > eaw_window_width) {
+            y += 20;
+            x = 4;
+        } else x -= w + 12;
+
         ear_text(debug_theme.font, buf, x+4, y, 14, debug_theme.text_col, EAU_ALIGN_TOP_LEFT);
 
         x += w + 12;
-        if (x + 4 + w + 12 > eaw_window_width) {
-            y += 20;
-            x = 4;
-        }
 
         ++i;
     }
