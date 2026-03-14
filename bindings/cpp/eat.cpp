@@ -199,7 +199,7 @@ namespace eau{
                 );
     }
 
-    Rect&
+    Rect
     Rect::topleftify(
         void
         ) {
@@ -209,15 +209,12 @@ namespace eau{
             (eau_align)align,
             });
 
-        pos.x = rect.x;
-        pos.y = rect.y;
-        size.x = rect.w;
-        size.y = rect.h;
-        align = eau::Align::TopLeft;
-
-        return *this;
+        return Rect{
+            .pos = { rect.x, rect.y },
+            .size = { rect.w, rect.h },
+            };
     }
-    Rect&
+    Rect
     Rect::alignify(
         Align align
         ) {
@@ -227,16 +224,17 @@ namespace eau{
             (eau_align)this->align,
             }, (eau_align)align);
 
-        pos.x = rect.x;
-        pos.y = rect.y;
-        size.x = rect.w;
-        size.y = rect.h;
+        
         this->align = align;
 
-        return *this;
+        return Rect{
+            .pos = { rect.x, rect.y },
+            .size = { rect.w, rect.h },
+            .align = align,
+            };
     }
 
-    Rect&
+    Rect
     Rect::scale_to_fit(
         Rect fit
         ) {
@@ -253,16 +251,16 @@ namespace eau{
                 }
             );
 
-        pos.x = rect.x;
-        pos.y = rect.y;
-        size.x = rect.w;
-        size.y = rect.h;
-        align = (eau::Align)rect.align;
+        
 
-        return *this;
+        return Rect{
+            pos = { rect.x, rect.y },
+            size = { rect.w, rect.h },
+            align = (eau::Align)rect.align,
+            };
     }
 
-    Rect&
+    Rect
     Rect::space_convert(
         Rect orig,
         Rect new_
@@ -285,13 +283,11 @@ namespace eau{
                 }
             );
 
-        pos.x = rect.x;
-        pos.y = rect.y;
-        size.x = rect.w;
-        size.y = rect.h;
-        align = (eau::Align)rect.align;
-
-        return *this;
+        return Rect{
+            pos = { rect.x, rect.y },
+            size = { rect.w, rect.h },
+            align = (eau::Align)rect.align,
+            };
     }
 
     bool

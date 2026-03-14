@@ -35,7 +35,7 @@ struct vec2{
     vec2& operator=(vec2 b);
     vec2& operator=(T b);
 
-    vec2&
+    vec2
     space_convert(
         eau::Rect original_space,
         eau::Rect new_space
@@ -313,21 +313,21 @@ namespace eau{
         vec2<float> size;
         Align align = Align::TopLeft;
 
-        Rect&
+        Rect
         topleftify(
             void
             );
-        Rect&
+        Rect
         alignify(
             Align align
             );
 
-        Rect&
+        Rect
         scale_to_fit(
             Rect fit
             );
 
-        Rect&
+        Rect
         space_convert(
             Rect original_space,
             Rect new_space
@@ -1268,8 +1268,9 @@ template <typename T>
 vec2<T>& vec2<T>::operator=(T b) { return *this = vec2(b); }
 
 template <typename T>
-vec2<T>&
+vec2<T>
 vec2<T>::space_convert(eau::Rect original_space, eau::Rect new_space) {
+    float nx; float ny;
     eau_point_space_convert(
         x,y, 
         eau_rect{
@@ -1286,8 +1287,8 @@ vec2<T>::space_convert(eau::Rect original_space, eau::Rect new_space) {
             new_space.size.y,
             (eau_align)new_space.align,
             }, 
-        &x, &y);
-    return *this;
+        &nx, &ny);
+    return { nx,ny };
 }
 
 template <typename T>
