@@ -1,32 +1,11 @@
 #include "coll.h"
 #include "../cutil.h"
 
+#include "conv.h"
+
 #include <string.h>
 #include <float.h>
 #include <math.h>
-
-void
-_CONV_topleftify(
-    eau_rect* rect
-    ) {
-    float offx; float offy;
-
-    switch (rect->align) {
-    case EAU_ALIGN_TOP_LEFT:  offx = 0;  offy = 0;  break;
-    case EAU_ALIGN_TOP:       offx = .5; offy = 0;  break;
-    case EAU_ALIGN_TOP_RIGHT: offx = 1;  offy = 0;  break;
-    case EAU_ALIGN_MID_LEFT:  offx = 0;  offy = .5; break;
-    case EAU_ALIGN_MID:       offx = .5; offy = .5; break;
-    case EAU_ALIGN_MID_RIGHT: offx = 1;  offy = .5; break;
-    case EAU_ALIGN_BOT_LEFT:  offx = 0;  offy = 1;  break;
-    case EAU_ALIGN_BOT:       offx = .5; offy = 1;  break;
-    case EAU_ALIGN_BOT_RIGHT: offx = 1;  offy = 1;  break;
-    }
-
-    rect->x -= rect->w * offx;
-    rect->y -= rect->h * offy;
-    rect->align = EAU_ALIGN_TOP_LEFT;
-}
 
 bool
 eau_aabb2d(
@@ -58,8 +37,8 @@ eau_rect_rect(
     eau_rect a,
     eau_rect b
     ) {
-    _CONV_topleftify(&a);
-    _CONV_topleftify(&b);
+    a = eau_rect_topleftify(a);
+    b = eau_rect_topleftify(b);
 
     return eau_aabb2d(a.x,a.y, a.x+a.w,a.y+a.h, b.x,b.y, b.x+b.w,b.y+b.h);
 }
@@ -69,7 +48,7 @@ eau_point_rect(
     float pointx, float pointy,
     eau_rect rect
     ) {
-    _CONV_topleftify(&rect);
+    rect = eau_rect_topleftify(rect);
 
     return eau_point_aabb2d(pointx, pointy, rect.x,rect.y, rect.x+rect.w,rect.y+rect.h);
 }

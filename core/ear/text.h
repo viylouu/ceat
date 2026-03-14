@@ -8,7 +8,7 @@
 #include "../eau/arena.h"
 #include "../debug/debug.h"
 #include "texture.h"
-#include "../eau/coll.h"
+#include "../eau/conv.h"
 
 typedef struct ear_font ear_font;
 

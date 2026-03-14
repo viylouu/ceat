@@ -7,6 +7,10 @@
 #include <array>
 #include <math.h>
 
+namespace eau{
+    typedef struct Rect Rect;
+};
+
 template <typename T>
 struct vec2{
     T x; T y;
@@ -30,6 +34,12 @@ struct vec2{
     vec2& operator/=(T b);
     vec2& operator=(vec2 b);
     vec2& operator=(T b);
+
+    vec2&
+    space_convert(
+        eau::Rect original_space,
+        eau::Rect new_space
+        );
 
     vec2 norm();
     T dist(vec2 b);
@@ -302,6 +312,26 @@ namespace eau{
         vec2<float> pos;
         vec2<float> size;
         Align align = Align::TopLeft;
+
+        Rect&
+        topleftify(
+            void
+            );
+        Rect&
+        alignify(
+            Align align
+            );
+
+        Rect&
+        scale_to_fit(
+            Rect fit
+            );
+
+        Rect&
+        space_convert(
+            Rect original_space,
+            Rect new_space
+            );
     };
 
     struct CollisionInfo{
@@ -1236,6 +1266,29 @@ template <typename T>
 vec2<T>& vec2<T>::operator=(vec2 b) { this->x = b.x; this->y = b.y; return *this; }
 template <typename T>
 vec2<T>& vec2<T>::operator=(T b) { return *this = vec2(b); }
+
+template <typename T>
+vec2<T>&
+vec2<T>::space_convert(eau::Rect original_space, eau::Rect new_space) {
+    eau_point_space_convert(
+        x,y, 
+        eau_rect{
+            original_space.pos.x,
+            original_space.pos.y,
+            original_space.size.x,
+            original_space.size.y,
+            (eau_align)original_space.align,
+            }, 
+        eau_rect{
+            new_space.pos.x,
+            new_space.pos.y,
+            new_space.size.x,
+            new_space.size.y,
+            (eau_align)new_space.align,
+            }, 
+        &x, &y);
+    return *this;
+}
 
 template <typename T>
 vec2<T> vec2<T>::norm() {

@@ -199,6 +199,101 @@ namespace eau{
                 );
     }
 
+    Rect&
+    Rect::topleftify(
+        void
+        ) {
+        eau_rect rect = eau_rect_topleftify(eau_rect{
+            pos.x, pos.y,
+            size.x, size.y,
+            (eau_align)align,
+            });
+
+        pos.x = rect.x;
+        pos.y = rect.y;
+        size.x = rect.w;
+        size.y = rect.h;
+        align = eau::Align::TopLeft;
+
+        return *this;
+    }
+    Rect&
+    Rect::alignify(
+        Align align
+        ) {
+        eau_rect rect = eau_rect_alignify(eau_rect{
+            pos.x, pos.y,
+            size.x, size.y,
+            (eau_align)this->align,
+            }, (eau_align)align);
+
+        pos.x = rect.x;
+        pos.y = rect.y;
+        size.x = rect.w;
+        size.y = rect.h;
+        this->align = align;
+
+        return *this;
+    }
+
+    Rect&
+    Rect::scale_to_fit(
+        Rect fit
+        ) {
+        eau_rect rect = eau_rect_scale_to_fit(
+            eau_rect{
+                pos.x, pos.y,
+                size.x, size.y,
+                (eau_align)align,
+                }, 
+            eau_rect{
+                fit.pos.x, fit.pos.y,
+                fit.size.x, fit.size.y,
+                (eau_align)fit.align
+                }
+            );
+
+        pos.x = rect.x;
+        pos.y = rect.y;
+        size.x = rect.w;
+        size.y = rect.h;
+        align = (eau::Align)rect.align;
+
+        return *this;
+    }
+
+    Rect&
+    Rect::space_convert(
+        Rect orig,
+        Rect new_
+        ) {
+        eau_rect rect = eau_rect_space_convert(
+            eau_rect{
+                pos.x, pos.y,
+                size.x, size.y,
+                (eau_align)align,
+                }, 
+            eau_rect{
+                orig.pos.x, orig.pos.y,
+                orig.size.x, orig.size.y,
+                (eau_align)orig.align
+                },
+            eau_rect{
+                new_.pos.x, new_.pos.y,
+                new_.size.x, new_.size.y,
+                (eau_align)new_.align
+                }
+            );
+
+        pos.x = rect.x;
+        pos.y = rect.y;
+        size.x = rect.w;
+        size.y = rect.h;
+        align = (eau::Align)rect.align;
+
+        return *this;
+    }
+
     bool
     aabb2d(
         vec2<float> min1,

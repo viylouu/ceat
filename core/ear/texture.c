@@ -1,5 +1,6 @@
 #include "texture.h"
 #include "../cutil.h"
+#include "core/eau/conv.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../include/stb_image.h"
@@ -260,22 +261,13 @@ _ear_debug_texture_window(
     ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
     offy += off;
 
-    float sizex = w;
-    float sizey = h - offy;
+    eau_rect rect = (eau_rect){ 0,0, tex->width, tex->height, EAU_ALIGN_TOP_LEFT };
+    eau_rect fit = (eau_rect){ x, y+offy, w, h - offy, EAU_ALIGN_TOP_LEFT };
 
-    const float wpaspect = (float)tex->width / tex->height;
-    float winaspect = sizex / sizey;
+    rect = eau_rect_scale_to_fit(rect, fit);
 
-    float width = sizex;
-    float height = sizey;
-    if (winaspect > wpaspect) width = height * wpaspect;
-    else height = width / wpaspect;
-
-    float draw_offx = (sizex - width) * .5;
-    float draw_offy = (sizey - height) * .5;
-
-    ear_rect(draw_offx + x, draw_offy + y+offy, width, height, (float[4]){ 0,0,0,1 }, EAU_ALIGN_TOP_LEFT);
-    ear_tex(tex, draw_offx + x, draw_offy + y+offy, width,height, 0,0,tex->width,tex->height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
+    ear_rect(rect.x, rect.y, rect.w, rect.h, (float[4]){ 0,0,0,1 }, EAU_ALIGN_TOP_LEFT);
+    ear_tex(tex, rect.x, rect.y, rect.w, rect.h, 0,0,tex->width,tex->height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
 }
 
 

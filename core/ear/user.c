@@ -1,7 +1,6 @@
 #include "user.h"
 #include "../cutil.h"
 
-#include "gl.h"
 #include "data.h"
 #include "camera.h"
 
@@ -34,7 +33,7 @@ ear_rect(
     last_used = EAR_INT_LU_RECT;
 
     eau_rect rect = (eau_rect){ x,y,w,h, align };
-    _CONV_topleftify(&rect);
+    rect = eau_rect_topleftify(rect);
 
     mat4 mat;
     if (!ear_bound_camera_ui_mode && ear_bound_camera)
@@ -67,7 +66,7 @@ ear_tex(
     ear_tr.cur_tex = tex;
 
     eau_rect rect = (eau_rect){ x,y,w,h, align };
-    _CONV_topleftify(&rect);
+    rect = eau_rect_topleftify(rect);
 
     mat4 mat;
     if (!ear_bound_camera_ui_mode && ear_bound_camera)

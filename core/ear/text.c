@@ -5,6 +5,7 @@
 #include "../../include/stb_truetype.h"
 
 #include "user.h"
+#include "../eau/coll.h"
 
 void
 _ear_arena_font_delete(
@@ -230,7 +231,7 @@ _ear_bitmap_mono_text(
         );
 
     eau_rect rect = (eau_rect){ 0,0,width,height, align };
-    _CONV_topleftify(&rect);
+    rect = eau_rect_topleftify(rect);
 
     for (int i = 0; text[i] != '\0'; ++i) {
         ear_tex(
@@ -312,13 +313,13 @@ _ear_truetype_text(
     }
 
     eau_rect rect = (eau_rect){ 0,0,w,h, align };
-    _CONV_topleftify(&rect);
+    rect = eau_rect_topleftify(rect);
 
     for (int i = 0; text[i] != '\0'; ++i) {
         struct _ear_truetype_font_char* ch = &atlas->chars[text[i]];
 
         eau_rect indiv = (eau_rect){ 0,0, ch->adw * scale - ch->w, font->lineheight * height - (font->truetype.ascent - font->truetype.descent) * scale, align };
-        _CONV_topleftify(&indiv);
+        indiv = eau_rect_topleftify(indiv);
 
         if (text[i] != '\n' && text[i] != '\t') {
             ear_tex(

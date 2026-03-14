@@ -3,6 +3,7 @@
 
 #include "../eaw/window.h"
 #include "../eau/mat4.h"
+#include "../eau/coll.h"
 #include "data.h"
 #include "user.h"
 #include "misc.h"

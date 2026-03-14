@@ -184,6 +184,13 @@ foreign ceat {
     @(link_name="eaw_mat4_rotate_z") mat4_rotate_z :: proc(mat: ^mat4, ang: f32) ---
 
 
+    @(link_name="eau_rect_topleftify") rect_topleftify :: proc(rect: Rect) -> Rect ---
+    @(link_name="eau_rect_alignify") rect_alignify :: proc(rect: Rect, align: Align) -> Rect ---
+    @(link_name="eau_rect_scale_to_fit") rect_scale_to_fit :: proc(rect: Rect, fit: Rect) -> Rect ---
+    @(link_name="eau_rect_space_convert") rect_space_convert :: proc(rect: Rect, orig: Rect, new: Rect) -> Rect ---
+    @(link_name="eau_point_space_convert") _point_space_convert :: proc(x,y: f32, orig: Rect, new: Rect, outx,outy: ^f32) ---
+
+
     @(link_name="eau_aabb2d") aabb2d :: proc(a, b: Rect) -> bool ---
     @(link_name="eau_point_aabb2d") _point_aabb2d :: proc(px,py: f32, r: Rect) -> bool ---
     @(link_name="eau_aabb3d") _aabb3d :: proc(min1x,min1y,min1z, max1x,max1y,max1z, min2x,min2y,min2z, max2x,max2y,max2z: f32) -> bool ---
@@ -221,6 +228,13 @@ foreign ceat {
     @(link_name="eau_draw_objects") draw_objects :: proc() ---
     @(link_name="eau_try_tick_objects") try_tick_objects :: proc() ---
 }
+
+point_space_convert :: proc(pos: [2]f32, orig: Rect, new: Rect) -> [2]f32 {
+    pos := pos
+    _point_space_convert(pos.x,pos.y, orig, new, &pos.x,&pos.y)
+    return pos
+}
+
 
 point_aabb2d :: proc(point: [2]f32, rect: Rect) -> bool {
     return _point_aabb2d(point.x, point.y, rect)

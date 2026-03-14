@@ -58,6 +58,7 @@ target_sources(ceat
         core/eau/arena.c
         core/eau/clock.c
         core/eau/object.c
+        core/eau/conv.c
 
         core/eaa/eaa.c
         core/eaa/engine.c
