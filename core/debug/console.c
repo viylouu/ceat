@@ -1,8 +1,8 @@
 #include "console.h"
 
-eat_console_desc console;
+#include "debug.h"
 
-ear_font* font;
+eat_console_desc console;
 
 float text_repeat_wait = .5;
 float text_repeat_delta = 1./24;
@@ -17,18 +17,12 @@ void
 eat_console_init(
     void
     ) {
-    static const char tex_data[] = {
-    #embed "verdana.ttf"
-    };
-
-    font = ear_load_truetype_font(tex_data, sizeof(tex_data), NULL);
 }
 
 void
 eat_console_stop(
     void
     ) {
-    ear_delete_font(font);
 }
 
 void
@@ -50,7 +44,7 @@ eat_console_try_do(
         eat_width = eaw_window_width;
         eat_height = eaw_window_height;
 
-        ear_rect(0, eat_height/2., eat_width, font->lineheight * 16, (float[4]){ 0,0,0,1 }, EAU_ALIGN_MID_LEFT);
+        ear_rect(0, eat_height/2., eat_width, debug_font->lineheight * 16, (float[4]){ 0,0,0,1 }, EAU_ALIGN_MID_LEFT);
 
         for (uint32_t i = 0; i < eaw_text_input_chars; ++i) {
             buf[buf_amt] = eaw_text_input[i];
@@ -81,7 +75,7 @@ eat_console_try_do(
         else buf[buf_amt] = 0;
         buf[buf_amt+1] = 0;
 
-        ear_text(font, buf, 4, eat_height/2., 14, (float[4]){ 1,1,1,1 }, EAU_ALIGN_MID_LEFT);
+        ear_text(debug_font, buf, 4, eat_height/2., 14, (float[4]){ 1,1,1,1 }, EAU_ALIGN_MID_LEFT);
 
         ear_frame();
         eaw_frame();

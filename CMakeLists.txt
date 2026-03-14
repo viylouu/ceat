@@ -32,6 +32,7 @@ target_sources(ceat
     PRIVATE 
         core/eat.c
 
+        core/debug/debug.c
         core/debug/console.c
 
         core/eaw/eaw.c

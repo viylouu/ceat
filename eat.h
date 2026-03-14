@@ -27,9 +27,15 @@ typedef struct eat_console_desc{
     void (*command_solver)(char* command);
 } eat_console_desc;
 
+typedef struct eat_debug_desc{
+    bool enabled;
+    eaw_key key;
+} eat_debug_desc;
+
 typedef struct eat_init_opts {
     bool vsync;
     eat_console_desc console;
+    eat_debug_desc debug;
 } eat_init_opts;
 
 void 

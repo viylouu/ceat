@@ -1,6 +1,8 @@
 #include "../eat.h"
 
 #include "debug/console.h"
+#include "debug/debug.h"
+
 #include "eau/object.h"
 
 int32_t eat_width;
@@ -21,7 +23,9 @@ eat_init(
     ear_init();
     eaa_init();
 
+    debug = opts.debug;
     console = opts.console;
+    if (debug.enabled || console.enabled) eat_debug_init();
     if (console.enabled) eat_console_init();
 }
 
@@ -30,6 +34,7 @@ eat_stop(
     void
     ) {
     if (console.enabled) eat_console_stop();
+    if (debug.enabled) eat_debug_stop();
 
     eaa_stop();
     ear_stop();
@@ -50,6 +55,7 @@ eat_frame(
     eaw_frame();
 
     if (console.enabled) eat_console_try_do();
+    if (debug.enabled) eat_debug_try_do();
 
     eat_time = eaw_time;
     eat_delta = eaw_delta;
