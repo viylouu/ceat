@@ -126,7 +126,7 @@ eau_rect_aspect_space_convert(
     eau_rect orig,
     eau_rect new
     ) {
-    eau_align origalign = rect.align;
+    eau_align orig_align = rect.align;
 
     rect = eau_rect_topleftify(rect);
     orig = eau_rect_topleftify(orig);
@@ -136,13 +136,14 @@ eau_rect_aspect_space_convert(
     float new_asp = new.w / new.h;
 
     float scale;
-    float offx; float offy;
+    float offx = 0, offy = 0;
+
     if (new_asp > orig_asp) {
         scale = new.h / orig.h;
-        offx = (new.w - orig.w * scale) * .5f;
+        offx = (new.w - orig.w * scale) * 0.5f;
     } else {
         scale = new.w / orig.w;
-        offy = (new.h - orig.h * scale) * .5f;
+        offy = (new.h - orig.h * scale) * 0.5f;
     }
 
     rect.x = new.x + offx + (rect.x - orig.x) * scale;
@@ -150,7 +151,7 @@ eau_rect_aspect_space_convert(
     rect.w *= scale;
     rect.h *= scale;
 
-    rect = eau_rect_alignify(rect, origalign);
+    rect = eau_rect_alignify(rect, orig_align);
     return rect;
 }
 
