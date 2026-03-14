@@ -3,6 +3,8 @@
 eat_debug_desc debug;
 ear_font* debug_font;
 
+bool toggled;
+
 void
 eat_debug_init(
     void
@@ -12,6 +14,8 @@ eat_debug_init(
     };
 
     debug_font = ear_load_truetype_font(tex_data, sizeof(tex_data), NULL);
+    
+    toggled = false;
 }
 
 void
@@ -25,5 +29,6 @@ void
 eat_debug_try_do(
     void
     ) {
-    if (!eaw_is_key_pressed(debug.key)) return;
+    if (eaw_is_key_pressed(debug.key)) toggled = !toggled;
+    if (!toggled) return;
 }
