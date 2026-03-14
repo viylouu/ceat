@@ -241,6 +241,16 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
             ceat
     )
 
+    add_executable(ex_debug)
+    target_sources(ex_debug
+        PRIVATE
+            examples/debug/main.c
+    )
+    target_link_libraries(ex_debug
+        PRIVATE
+            ceat
+    )
+
     add_executable(ex_cpp_window)
     target_sources(ex_cpp_window
         PRIVATE
