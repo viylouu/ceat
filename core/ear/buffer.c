@@ -21,6 +21,13 @@ _ear_arena_buffer_delete(
     ear_delete_buffer(buf); 
 }
 
+void
+_ear_debug_buffer_window(
+    void* buffer, 
+    float x, float y, 
+    float w, float h
+    );
+
 ear_buffer*
 ear_create_buffer(
     ear_buffer_desc desc,
@@ -33,6 +40,12 @@ ear_create_buffer(
         .desc = desc,
         .data = data,
         .size = size, .prev_size = size,
+
+        .deb_obj = eat_debug_add_obj(
+            buf,
+            "buffer",
+            _ear_debug_buffer_window
+            ),
         };
 
     gl.genBuffers(1, &buf->id);
@@ -56,6 +69,8 @@ void
 ear_delete_buffer(
     ear_buffer* buf
     ) {
+    eat_debug_remove_obj(buf->deb_obj);
+
     gl.deleteBuffers(1, &buf->id);
 
     if (buf->dest != NULL) buf->dest->data = NULL;
@@ -97,6 +112,15 @@ ear_update_buffer(
     gl.bindBuffer(targ, 0);
 }
 
+
+void
+_ear_debug_buffer_window(
+    void* buffer, 
+    float x, float y, 
+    float w, float h
+    ) {
+    printf(":3");
+}
 
 
 

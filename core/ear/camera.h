@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include "../eau/arena.h"
+#include "../debug/debug.h"
 #include "../eau/mat4.h"
 #include "framebuffer.h"
 
@@ -87,4 +88,5 @@ struct ear_camera{
     ear_camera_desc desc;
 
     eau_destructor* dest;
+    eat_debug_ll_obj* deb_obj;
 };

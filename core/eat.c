@@ -1,5 +1,6 @@
 #include "../eat.h"
 
+#include "core/eaw/window.h"
 #include "debug/console.h"
 #include "debug/debug.h"
 
@@ -81,6 +82,10 @@ eat_frame(
 
     ear_tex(_eat_screen_color, 0,0, eat_width,eat_height, 0,0, eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
 
+    if (debug.enabled) eat_debug_try_do();
+
+    int prev_width = eat_width;
+    int prev_height = eat_height;
     ear_frame();
     eaw_frame();
 
@@ -89,8 +94,7 @@ eat_frame(
     ear_bind_framebuffer(NULL);
 
     if (console.enabled) eat_console_try_do();
-    if (debug.enabled) eat_debug_try_do();
-
+    
     eat_time = eaw_time;
     eat_delta = eaw_delta;
     eat_time64 = eaw_time;
@@ -98,6 +102,12 @@ eat_frame(
 
     eat_width = eaw_window_width;
     eat_height = eaw_window_height;
+
+    if (prev_width != eat_width || prev_height != eat_height) {
+        ear_resize_texture(_eat_screen_color, eaw_window_width, eaw_window_height);
+        ear_resize_texture(_eat_screen_depth, eaw_window_width, eaw_window_height);
+        ear_resize_framebuffer(_eat_screen_framebuffer, eaw_window_width, eaw_window_height);
+    }
 
     return eaw_is_open();
 }

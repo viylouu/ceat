@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include "../eau/arena.h"
+#include "../debug/debug.h"
 
 typedef struct ear_pipeline ear_pipeline;
 typedef struct ear_pipeline_desc ear_pipeline_desc;
@@ -129,4 +130,5 @@ struct ear_pipeline{
     ear_pipeline_desc desc;
 
     eau_destructor* dest;
+    eat_debug_ll_obj* deb_obj;
 };

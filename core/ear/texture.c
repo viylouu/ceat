@@ -39,6 +39,12 @@ _ear_arena_texture_delete(
     ear_delete_texture(tex); 
 }
 
+void
+_ear_debug_texture_window(
+    void* tex,
+    float x, float y, float w, float h
+    );
+
 ear_texture*
 ear_create_texture(
     ear_texture_desc desc,
@@ -53,6 +59,12 @@ ear_create_texture(
 
         .pixels = pixels,
         .stbi_pixels = false,
+
+        .deb_obj = eat_debug_add_obj(
+            tex,
+            "texture",
+            _ear_debug_texture_window
+            ),
         };
 
     gl.genTextures(1, &tex->id);
@@ -106,6 +118,8 @@ void
 ear_delete_texture(
     ear_texture* tex
     ) {
+    eat_debug_remove_obj(tex->deb_obj);
+
     gl.deleteTextures(1, &tex->id);
     if (tex->stbi_pixels) stbi_image_free(tex->pixels);
 
@@ -189,6 +203,14 @@ ear_update_texture(
         );
 
     gl.bindTexture(GL_TEXTURE_2D, 0);
+}
+
+
+void
+_ear_debug_texture_window(
+    void* tex,
+    float x, float y, float w, float h
+    ) {
 }
 
 

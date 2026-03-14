@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "../debug/debug.h"
+
 typedef struct eau_arena eau_arena;
 
 typedef struct eau_destructor eau_destructor;
@@ -50,4 +52,6 @@ struct eau_destructor{
 struct eau_arena{
     eau_destructor** dests;
     uint32_t dest_amt;
+
+    eat_debug_ll_obj* deb_obj;
 };

@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include "../eau/arena.h"
+#include "../debug/debug.h"
 #include "texture.h"
 
 typedef struct ear_framebuffer ear_framebuffer;
@@ -56,4 +57,5 @@ struct ear_framebuffer{
     ear_framebuffer_desc desc;
 
     eau_destructor* dest;
+    eat_debug_ll_obj* deb_obj;
 };

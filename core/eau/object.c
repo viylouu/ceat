@@ -15,6 +15,12 @@ _eau_arena_object_delete(
     eau_delete_object(obj); 
 }
 
+void
+_eau_debug_object_window(
+    void* obj,
+    float x, float y, float w, float h
+    );
+
 eau_object*
 eau_create_object(
     eau_object_desc desc,
@@ -23,7 +29,7 @@ eau_create_object(
     ) {
     eau_object* obj = malloc(sizeof(eau_object));
     *obj = (eau_object){
-        desc = desc,
+        .desc = desc,
 
         .data = data,
 
@@ -34,6 +40,12 @@ eau_create_object(
             },
 
         .delta = eau_tickrate,
+
+        .deb_obj = eat_debug_add_obj(
+            obj,
+            "object",
+            _eau_debug_object_window
+            ),
         };
 
     if (eau_object_ll_last != NULL) eau_object_ll_last->next = &obj->ll;
@@ -48,6 +60,8 @@ void
 eau_delete_object(
     eau_object* obj
     ) {
+    eat_debug_remove_obj(obj->deb_obj);
+
     if (obj->ll.prev != NULL) obj->ll.prev->next = obj->ll.next;
     else eau_object_ll_first = obj->ll.next;
 
@@ -195,4 +209,13 @@ eau_try_tick_objects(
 
     for (eau_object_ll* item = eau_object_ll_first; item != NULL; item = item->next)
         eau_try_tick_object(item->obj);
+}
+
+
+void
+_eau_debug_object_window(
+    void* obj,
+    float x, float y, float w, float h
+    ) {
+    
 }

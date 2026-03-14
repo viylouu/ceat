@@ -1,6 +1,12 @@
 #include "arena.h"
 #include "../cutil.h"
 
+void
+_eau_debug_arena_window(
+    void* arena,
+    float x, float y, float w, float h
+    );
+
 eau_arena*
 eau_create_arena(
     void
@@ -9,6 +15,12 @@ eau_create_arena(
     *arena = (eau_arena){
         .dests = malloc(1),
         .dest_amt = 0,
+
+        .deb_obj = eat_debug_add_obj(
+            arena,
+            "arena",
+            _eau_debug_arena_window
+            ),
         };
 
     return arena;
@@ -18,6 +30,8 @@ void
 eau_delete_arena(
     eau_arena* arena
     ) {
+    eat_debug_remove_obj(arena->deb_obj);
+
     eau_clear_arena(arena);
     free(arena->dests);
 
@@ -57,4 +71,12 @@ eau_clear_arena(
         free(dest);
     }
     arena->dest_amt = 0;
+}
+
+
+void
+_eau_debug_arena_window(
+    void* arena,
+    float x, float y, float w, float h
+    ) {
 }

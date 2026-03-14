@@ -37,6 +37,12 @@ _ear_arena_pipeline_delete(
     ear_delete_pipeline(pln); 
 }
 
+void
+_ear_debug_pipeline_window(
+    void* pln,
+    float x, float y, float w, float h
+    );
+
 ear_pipeline*
 ear_create_pipeline(
     ear_pipeline_desc desc,
@@ -45,6 +51,12 @@ ear_create_pipeline(
     ear_pipeline* pln = malloc(sizeof(ear_pipeline));
     *pln = (ear_pipeline){
         .desc = desc,
+
+        .deb_obj = eat_debug_add_obj(
+            pln,
+            "pipeline",
+            _ear_debug_pipeline_window
+            ),
         };
 
     uint32_t vsh = gl.createShader(GL_VERTEX_SHADER);
@@ -139,6 +151,8 @@ void
 ear_delete_pipeline(
     ear_pipeline* pln
     ) {
+    eat_debug_remove_obj(pln->deb_obj);
+
     gl.deleteVertexArrays(1, &pln->vao);
     gl.deleteProgram(pln->id);
 
@@ -181,6 +195,14 @@ ear_bind_pipeline(
     gl.polygonMode(GL_FRONT_AND_BACK, _TYPECONV_fill_mode(pln->desc.fill_mode));
 }
 
+
+void
+_ear_debug_pipeline_window(
+    void* pln,
+    float x, float y, float w, float h
+    ) {
+
+}
 
 
 

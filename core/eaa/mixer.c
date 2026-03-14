@@ -12,6 +12,12 @@ _eaa_arena_mixer_delete(
     eaa_delete_mixer(mixer); 
 }
 
+void
+_eaa_debug_mixer_window(
+    void* mixer,
+    float x, float y, float w, float h
+    );
+
 eaa_mixer*
 eaa_create_mixer(
     eaa_mixer_desc desc,
@@ -20,6 +26,12 @@ eaa_create_mixer(
     eaa_mixer* mixer = malloc(sizeof(eaa_mixer));
     *mixer = (eaa_mixer){
         .desc = desc,
+
+        .deb_obj = eat_debug_add_obj(
+            mixer,
+            "mixer",
+            _eaa_debug_mixer_window
+            ),
         };
 
     if (arena != NULL) eau_add_to_arena(arena, &mixer->dest, mixer, _eaa_arena_mixer_delete);
@@ -30,6 +42,8 @@ void
 eaa_delete_mixer(
     eaa_mixer* mixer
     ) {
+    eat_debug_remove_obj(mixer->deb_obj);
+
     if (mixer->dest != NULL) mixer->dest->data = NULL;
     free(mixer);
 }
@@ -50,4 +64,13 @@ eaa_set_mixer_pitch(
     ) {
     mixer->desc.pitch = pitch;
     _eaa_mixer_changed_this_frame = true;
+}
+
+
+void
+_eaa_debug_mixer_window(
+    void* mixer,
+    float x, float y, float w, float h
+    ) {
+    
 }

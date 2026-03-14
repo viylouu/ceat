@@ -18,6 +18,12 @@ _ear_arena_framebuffer_delete(
     ear_delete_framebuffer(fb); 
 }
 
+void
+_ear_debug_framebuffer_window(
+    void* fb,
+    float x, float y, float w, float h
+    );
+
 ear_framebuffer*
 ear_create_framebuffer(
     ear_framebuffer_desc desc,
@@ -26,6 +32,12 @@ ear_create_framebuffer(
     ear_framebuffer* fb = malloc(sizeof(ear_framebuffer));
     *fb = (ear_framebuffer){
         .desc = desc,
+
+        .deb_obj = eat_debug_add_obj(
+            fb,
+            "framebuffer",
+            _ear_debug_framebuffer_window
+            ),
         };
 
     gl.genFramebuffers(1, &fb->id);
@@ -68,6 +80,8 @@ void
 ear_delete_framebuffer(
     ear_framebuffer* fb
     ) {
+    eat_debug_remove_obj(fb->deb_obj);
+
     gl.deleteFramebuffers(1, &fb->id);
 
     if (fb->dest != NULL) fb->dest->data = NULL;
@@ -118,4 +132,13 @@ _ear_set_master_framebuffer(
     ear_framebuffer* fb
     ) {
     master_fb = fb;
+}
+
+
+void
+_ear_debug_framebuffer_window(
+    void* fb,
+    float x, float y, float w, float h
+    ) {
+    
 }

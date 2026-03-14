@@ -1,8 +1,6 @@
 #include "window.h"
 #include "../cutil.h"
 
-#include "../../eat.h"
-
 #include <GLFW/glfw3.h>
 
 int32_t eaw_window_width;
@@ -55,15 +53,7 @@ eaw_window_frame(
     ) {
     glfwSwapBuffers(eaw_window);
 
-    int32_t prev_width = eaw_window_width;
-    int32_t prev_height = eaw_window_height;
     glfwGetWindowSize(eaw_window, &eaw_window_width, &eaw_window_height);
-
-    if (prev_width != eaw_window_width || prev_height != eaw_window_height) {
-        ear_resize_texture(_eat_screen_color, eaw_window_width, eaw_window_height);
-        ear_resize_texture(_eat_screen_depth, eaw_window_width, eaw_window_height);
-        ear_resize_framebuffer(_eat_screen_framebuffer, eaw_window_width, eaw_window_height);
-    }
 }
 
 bool

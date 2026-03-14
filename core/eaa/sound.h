@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include "../eau/arena.h"
+#include "../debug/debug.h"
 #include "mixer.h"
 #include "../../include/miniaudio.h"
 
@@ -81,4 +82,5 @@ struct eaa_sound{
     eaa_sound_desc desc;
 
     eau_destructor* dest;
+    eat_debug_ll_obj* deb_obj;
 };

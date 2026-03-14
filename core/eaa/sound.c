@@ -13,6 +13,12 @@ _eaa_arena_sound_delete(
     eaa_delete_sound(sound); 
 }
 
+void
+_eaa_debug_sound_window(
+    void* sound,
+    float x, float y, float w, float h
+    );
+
 eaa_sound*
 eaa_load_sound(
     eaa_sound_desc desc,
@@ -29,6 +35,12 @@ eaa_load_sound(
             },
 
         .desc = desc,
+
+        .deb_obj = eat_debug_add_obj(
+            sound,
+            "sound",
+            _eaa_debug_sound_window
+            ),
         };
 
     if (eaa_sound_ll_last != NULL) eaa_sound_ll_last->next = &sound->ll;
@@ -71,6 +83,8 @@ void
 eaa_delete_sound(
     eaa_sound* sound
     ) {
+    eat_debug_remove_obj(sound->deb_obj);
+
     if (sound->ll.prev != NULL) sound->ll.prev->next = sound->ll.next;
     else eaa_sound_ll_first = sound->ll.next;
 
@@ -135,4 +149,13 @@ eaa_set_sound_loop(
     ) {
     sound->desc.loop = loop;
     ma_sound_set_looping(&sound->sound, loop);
+}
+
+
+void
+_eaa_debug_sound_window(
+    void* sound,
+    float x, float y, float w, float h
+    ) {
+    
 }

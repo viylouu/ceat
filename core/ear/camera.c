@@ -18,6 +18,12 @@ _ear_arena_camera_delete(
     ear_delete_camera(cam); 
 }
 
+void
+_ear_debug_camera_window(
+    void* cam,
+    float x, float y, float w, float h
+    );
+
 ear_camera*
 ear_create_camera(
     ear_camera_desc desc,
@@ -26,6 +32,12 @@ ear_create_camera(
     ear_camera* cam = malloc(sizeof(ear_camera));
     *cam = (ear_camera){
         .desc = desc,
+
+        .deb_obj = eat_debug_add_obj(
+            cam,
+            "camera",
+            _ear_debug_camera_window
+            ),
         };
 
     _ear_camera_update(cam);
@@ -38,6 +50,8 @@ void
 ear_delete_camera(
     ear_camera* cam
     ) {
+    eat_debug_remove_obj(cam->deb_obj);
+
     if (cam->dest != NULL) cam->dest->data = NULL;
     free(cam);
 }
@@ -114,4 +128,13 @@ _ear_camera_update(
         break;
     case EAR_CAMERA_3D: eat_assert(false, "3d camera type is not yet supported!");
     }
+}
+
+
+void
+_ear_debug_camera_window(
+    void* cam,
+    float x, float y, float w, float h
+    ) {
+    
 }

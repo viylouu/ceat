@@ -5,6 +5,8 @@
 
 #include "../../include/stb_truetype.h"
 
+#include "../eau/arena.h"
+#include "../debug/debug.h"
 #include "texture.h"
 #include "../eau/coll.h"
 
@@ -30,6 +32,16 @@ ear_load_truetype_font(
 void
 ear_delete_font(
     ear_font* font
+    );
+
+void
+ear_text_size(
+    ear_font* font,
+    char* text,
+    float height,
+
+    float* out_width,
+    float* out_height
     );
 
 void
@@ -89,4 +101,5 @@ struct ear_font{
     };
 
     eau_destructor* dest;
+    eat_debug_ll_obj* deb_obj;
 };

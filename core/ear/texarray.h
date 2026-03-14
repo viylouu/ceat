@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include "../eau/arena.h"
+#include "../debug/debug.h"
 #include "texture.h"
 
 typedef struct ear_texarray ear_texarray;
@@ -64,4 +65,5 @@ struct ear_texarray{
     ear_texarray_desc desc;
 
     eau_destructor* dest;
+    eat_debug_ll_obj* deb_obj;
 };

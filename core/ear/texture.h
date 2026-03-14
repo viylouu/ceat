@@ -5,6 +5,7 @@
 #include <stddef.h>
 
 #include "../eau/arena.h"
+#include "../debug/debug.h"
 
 typedef struct ear_texture ear_texture;
 typedef struct ear_texture_desc ear_texture_desc;
@@ -104,4 +105,5 @@ struct ear_texture{
     ear_texture_desc desc;
 
     eau_destructor* dest;
+    eat_debug_ll_obj* deb_obj;
 };

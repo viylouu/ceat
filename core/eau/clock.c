@@ -14,6 +14,13 @@ _eau_arena_clock_delete(
     eau_delete_clock(clock); 
 }
 
+void
+_eau_debug_clock_window(
+    void* clock, 
+    float x, float y, 
+    float w, float h
+    );
+
 eau_clock*
 eau_create_clock(
     eau_arena* arena
@@ -33,6 +40,12 @@ eau_create_clock(
         .speed = 1,
 
         .paused = true,
+
+        .deb_obj = eat_debug_add_obj(
+            clock,
+            "clock",
+            _eau_debug_clock_window
+            ),
         };
 
     if (eau_clock_ll_last != NULL) eau_clock_ll_last->next = &clock->ll;
@@ -110,4 +123,14 @@ eau_update_clocks(
         item->clock->time64 += item->clock->delta64;
         item->clock->time = item->clock->time64;
     }
+}
+
+
+void
+_eau_debug_clock_window(
+    void* clock, 
+    float x, float y, 
+    float w, float h
+    ) {
+    printf("hi :3");
 }

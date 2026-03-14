@@ -1,6 +1,12 @@
 #pragma once
 
-#include "../../eat.h"
+#include "../eaw/input.h"
+
+typedef struct eat_console_desc{
+    bool enabled;
+    eaw_key key;
+    void (*command_solver)(char* command);
+} eat_console_desc;
 
 extern eat_console_desc console;
 

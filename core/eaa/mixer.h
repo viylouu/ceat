@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include "../eau/arena.h"
+#include "../debug/debug.h"
 #include "../../include/miniaudio.h"
 
 typedef struct eaa_mixer eaa_mixer;
@@ -47,4 +48,5 @@ struct eaa_mixer{
     eaa_mixer_desc desc;
 
     eau_destructor* dest;
+    eat_debug_ll_obj* deb_obj;
 };

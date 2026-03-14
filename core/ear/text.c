@@ -13,6 +13,12 @@ _ear_arena_font_delete(
     ear_delete_font(font); 
 }
 
+void
+_ear_debug_font_window(
+    void* font,
+    float x, float y, float w, float h
+    );
+
 ear_font*
 ear_load_bitmap_mono_font(
     const char* data, size_t data_size,
@@ -32,6 +38,12 @@ ear_load_bitmap_mono_font(
             .charw = atlas->width / 16.f,
             .charh = atlas->height / 16.f,
             },
+
+        .deb_obj = eat_debug_add_obj(
+            font,
+            "font",
+            _ear_debug_font_window
+            ),
         };
 
     if (arena != NULL) eau_add_to_arena(arena, &font->dest, font, _ear_arena_font_delete);
@@ -49,6 +61,12 @@ ear_load_truetype_font(
         .truetype = (ear_truetype_font){
             .atlas_amt = 0,
             },
+
+        .deb_obj = eat_debug_add_obj(
+            font,
+            "font",
+            _ear_debug_font_window
+            ),
         };
 
     eat_assert(stbtt_InitFont(&font->truetype.info, (uint8_t*)data, 0), "failed to load font!");
@@ -71,6 +89,8 @@ void
 ear_delete_font(
     ear_font* font
     ) {
+    eat_debug_remove_obj(font->deb_obj);
+
     switch (font->type) {
     case EAR_FONT_TRUETYPE: 
         for (uint32_t i = 0; i < font->truetype.atlas_amt; ++i) {
@@ -92,9 +112,17 @@ _ear_bitmap_mono_text(
     ear_texture* atlas,
     char* text,
     float x, float y,
-    float scalex, float scaley,
+    float scale,
     float col[4],
     eau_align align
+    );
+
+void
+_ear_bitmap_mono_text_size(
+    ear_texture* atlas,
+    char* text,
+    float scale,
+    float* out_width, float* out_height
     );
 
 void
@@ -105,6 +133,14 @@ _ear_truetype_text(
     float height,
     float col[4],
     eau_align align
+    );
+
+void
+_ear_truetype_text_size(
+    ear_font* font,
+    char* text,
+    float height,
+    float* out_width, float* out_height
     );
 
 void
@@ -123,7 +159,6 @@ ear_text(
             text,
             x, y,
             height / font->bitmap_mono.charh,
-            height / font->bitmap_mono.charh,
             col,
             align
             );
@@ -141,15 +176,89 @@ ear_text(
     }
 }
 
+void
+ear_text_size(
+    ear_font* font,
+    char* text,
+    float height,
+
+    float* out_width,
+    float* out_height
+    ) {
+    switch (font->type) {
+    case EAR_FONT_BITMAP_MONO:
+        _ear_bitmap_mono_text_size(
+            font->bitmap_mono.atlas,
+            text,
+            height / font->bitmap_mono.charh,
+            out_width, out_height
+            );
+        break;
+    case EAR_FONT_TRUETYPE:
+        _ear_truetype_text_size(
+            font,
+            text,
+            height,
+            out_width, out_height
+            );
+        break;
+    }
+}
+
 
 void
 _ear_bitmap_mono_text(
     ear_texture* atlas,
     char* text,
     float x, float y,
-    float scalex, float scaley,
+    float scale,
     float col[4],
     eau_align align
+    ) {
+    float ox = 0; float oy = 0;
+    float charw = atlas->width / 16.f;
+    float charh = atlas->height / 16.f;
+
+    float width; float height;
+    _ear_bitmap_mono_text_size(
+        atlas,
+        text,
+        scale,
+        &width, &height
+        );
+
+    eau_rect rect = (eau_rect){ 0,0,width,height, align };
+    _CONV_topleftify(&rect);
+
+    for (int i = 0; text[i] != '\0'; ++i) {
+        ear_tex(
+            atlas,
+            ox * charw * scale + x + rect.x,
+            oy * charh * scale + y + rect.y,
+            charw * scale,
+            charh * scale,
+            (float)(text[i] >> 4) * charw,
+            (float)(text[i] & 0xF) * charh,
+            charw, charh,
+            col,
+            align
+            );
+
+        ++ox;
+        if (text[i] == '\t') ox += 3;
+        if (text[i] == '\n') {
+            ox = 0;
+            ++oy;
+        }
+    }
+}
+
+void
+_ear_bitmap_mono_text_size(
+    ear_texture* atlas,
+    char* text,
+    float scale,
+    float* out_width, float* out_height
     ) {
     float ox = 0; float oy = 0;
     float charw = atlas->width / 16.f;
@@ -158,21 +267,6 @@ _ear_bitmap_mono_text(
     float width = 0; float height = 0;
 
     for (int i = 0; text[i] != '\0'; ++i) {
-        if (align == EAU_ALIGN_TOP_LEFT) {
-            ear_tex(
-                atlas,
-                ox * charw * scalex + x,
-                oy * charh * scaley + y,
-                charw * scalex,
-                charh * scaley,
-                (float)(text[i] >> 4) * charw,
-                (float)(text[i] & 0xF) * charh,
-                charw, charh,
-                col,
-                EAU_ALIGN_TOP_LEFT
-                );
-        }
-
         ++ox;
         if (text[i] == '\t') ox += 3;
         if (text[i] == '\n') {
@@ -180,38 +274,12 @@ _ear_bitmap_mono_text(
             ++oy;
         }
 
-        if (ox * charw * scalex > width)  width = ox * charw * scalex;
-        if (oy * charh * scaley > height) height = oy * charh * scaley;
+        if (ox * charw * scale > width)  width = ox * charw * scale;
+        if (oy * charh * scale > height) height = oy * charh * scale;
     }
 
-    ox = 0; oy = 0;
-
-    if (align != EAU_ALIGN_TOP_LEFT) {
-        eau_rect rect = (eau_rect){ 0,0,width,height, align };
-        _CONV_topleftify(&rect);
-
-        for (int i = 0; text[i] != '\0'; ++i) {
-            ear_tex(
-                atlas,
-                ox * charw * scalex + x + rect.x,
-                oy * charh * scaley + y + rect.y,
-                charw * scalex,
-                charh * scaley,
-                (float)(text[i] >> 4) * charw,
-                (float)(text[i] & 0xF) * charh,
-                charw, charh,
-                col,
-                align
-                );
-
-            ++ox;
-            if (text[i] == '\t') ox += 3;
-            if (text[i] == '\n') {
-                ox = 0;
-                ++oy;
-            }
-        }
-    }
+    if (out_width) *out_width = width;
+    if (out_height) *out_height = height;
 }
 
 void
@@ -223,6 +291,60 @@ _ear_truetype_text(
     float col[4],
     eau_align align
     ) {
+    float scale = stbtt_ScaleForPixelHeight(&font->truetype.info, height);
+
+    float ox = 0; float oy = 0;
+    float w; float h;
+    _ear_truetype_text_size(
+        font,
+        text,
+        height,
+        &w, &h
+        );
+
+    struct _ear_truetype_font_atlas* atlas;
+    for (uint32_t i = 0; i < font->truetype.atlas_amt; ++i) {
+        if (font->truetype.atlases[i].height != height) continue;
+        atlas = &font->truetype.atlases[i];
+        break;
+    }
+
+    eau_rect rect = (eau_rect){ 0,0,w,h, align };
+    _CONV_topleftify(&rect);
+
+    for (int i = 0; text[i] != '\0'; ++i) {
+        struct _ear_truetype_font_char* ch = &atlas->chars[text[i]];
+
+        eau_rect indiv = (eau_rect){ 0,0, ch->adw * scale - ch->w, font->lineheight * scale - (font->truetype.ascent - font->truetype.descent) * scale, align };
+        _CONV_topleftify(&indiv);
+
+        ear_tex(
+            atlas->atlas,
+            ox + off_x + rect.x - indiv.x, 
+            oy + off_y + font->truetype.ascent * scale + ch->yoff + rect.y - indiv.y,
+            ch->w, ch->h,
+            ch->x, ch->y, ch->w, ch->h,
+            col, EAU_ALIGN_TOP_LEFT
+            );
+
+        ox += ch->adw * scale;
+        if (text[i] == '\t') ox += ch->adw * scale * 3;
+        if (text[i] == '\n') {
+            ox = 0;
+            oy += font->lineheight * scale;
+        }
+    }
+}
+
+void
+_ear_truetype_text_size(
+    ear_font* font,
+    char* text,
+    float height,
+    float* out_width, float* out_height
+    ) {
+    // https://github.com/justinmeiners/stb-truetype-example/blob/master/main.c
+
     bool found = false;
     uint32_t idx = 0;
 
@@ -230,6 +352,7 @@ _ear_truetype_text(
         if (font->truetype.atlases[i].height != height) continue;
         found = true;
         idx = i;
+        break;
     }
 
     struct _ear_truetype_font_atlas* atlas;
@@ -253,12 +376,10 @@ _ear_truetype_text(
         atlas->height = height;
     }
 
-    // https://github.com/justinmeiners/stb-truetype-example/blob/master/main.c
+    float scale = stbtt_ScaleForPixelHeight(&font->truetype.info, height);
 
     float ox = 0; float oy = 0;
     float w = 0; float h = 0;
-
-    float scale = stbtt_ScaleForPixelHeight(&font->truetype.info, height);
 
     for (uint32_t i = 0; text[i] != '\0'; ++i) {
         struct _ear_truetype_font_char* ch = &atlas->chars[text[i]];
@@ -302,17 +423,6 @@ _ear_truetype_text(
             ox += kern * scale;
         }
 
-        if (align == EAU_ALIGN_TOP_LEFT && text[i] != '\n' && text[i] != '\t') {
-            ear_tex(
-                atlas->atlas,
-                ox + off_x, 
-                oy + off_y + font->truetype.ascent * scale + ch->yoff,
-                ch->w, ch->h,
-                ch->x, ch->y, ch->w, ch->h,
-                col, EAU_ALIGN_TOP_LEFT
-                );
-        }
-
         ox += ch->adw * scale;
         if (text[i] == '\t') ox += ch->adw * scale * 3;
         if (text[i] == '\n') {
@@ -324,33 +434,14 @@ _ear_truetype_text(
         if (oy + font->lineheight * scale > h) h = oy + font->lineheight * scale;
     }
 
-    ox = 0; oy = 0;
+    if (out_width) *out_width = w;
+    if (out_height) *out_height = h;
+}
 
-    if (align != EAU_ALIGN_TOP_LEFT) {
-        eau_rect rect = (eau_rect){ 0,0,w,h, align };
-        _CONV_topleftify(&rect);
 
-        for (int i = 0; text[i] != '\0'; ++i) {
-            struct _ear_truetype_font_char* ch = &atlas->chars[text[i]];
-
-            eau_rect indiv = (eau_rect){ 0,0, ch->adw * scale - ch->w, font->lineheight * scale - (font->truetype.ascent - font->truetype.descent) * scale, align };
-            _CONV_topleftify(&indiv);
-
-            ear_tex(
-                atlas->atlas,
-                ox + off_x + rect.x - indiv.x, 
-                oy + off_y + font->truetype.ascent * scale + ch->yoff + rect.y - indiv.y,
-                ch->w, ch->h,
-                ch->x, ch->y, ch->w, ch->h,
-                col, EAU_ALIGN_TOP_LEFT
-                );
-
-            ox += ch->adw * scale;
-            if (text[i] == '\t') ox += ch->adw * scale * 3;
-            if (text[i] == '\n') {
-                ox = 0;
-                oy += font->lineheight * scale;
-            }
-        }
-    }
+void
+_ear_debug_font_window(
+    void* font,
+    float x, float y, float w, float h
+    ) {
 }

@@ -39,6 +39,12 @@ _ear_arena_texarray_delete(
     ear_delete_texarray(arr); 
 }
 
+void
+_ear_debug_texarray_window(
+    void* arr,
+    float x, float y, float w, float h
+    );
+
 ear_texarray*
 ear_create_texarray(
     ear_texarray_desc desc,
@@ -48,6 +54,12 @@ ear_create_texarray(
     *arr = (ear_texarray){
         .desc = desc,
         .texs = malloc(sizeof(ear_texture*) * desc.layers),
+
+        .deb_obj = eat_debug_add_obj(
+            arr,
+            "texarray",
+            _ear_debug_texarray_window
+            ),
         };
 
     memset(arr->texs, 0, sizeof(ear_texture*) * desc.layers);
@@ -89,6 +101,8 @@ void
 ear_delete_texarray(
     ear_texarray* arr
     ) {
+    eat_debug_remove_obj(arr->deb_obj);
+
     gl.deleteTextures(1, &arr->id);
     free(arr->texs);
 
@@ -169,4 +183,13 @@ ear_update_texarray_layer(
         );
 
     gl.bindTexture(GL_TEXTURE_2D_ARRAY, 0);
+}
+
+
+void
+_ear_debug_texarray_window(
+    void* arr,
+    float x, float y, float w, float h
+    ) {
+    
 }

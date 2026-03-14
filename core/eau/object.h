@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include "arena.h"
+#include "../debug/debug.h"
 
 typedef struct eau_object eau_object;
 typedef struct eau_object_desc eau_object_desc;
@@ -112,4 +113,5 @@ struct eau_object{
     float delta;
 
     eau_destructor* dest;
+    eat_debug_ll_obj* deb_obj;
 };
