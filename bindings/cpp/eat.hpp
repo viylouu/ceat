@@ -40,6 +40,11 @@ struct vec2{
         eau::Rect original_space,
         eau::Rect new_space
         );
+    vec2
+    aspect_space_convert(
+        eau::Rect original_space,
+        eau::Rect new_space
+        );
 
     vec2 norm();
     T dist(vec2 b);
@@ -329,6 +334,11 @@ namespace eau{
 
         Rect
         space_convert(
+            Rect original_space,
+            Rect new_space
+            );
+        Rect
+        aspect_space_convert(
             Rect original_space,
             Rect new_space
             );
@@ -1272,6 +1282,30 @@ vec2<T>
 vec2<T>::space_convert(eau::Rect original_space, eau::Rect new_space) {
     float nx; float ny;
     eau_point_space_convert(
+        x,y, 
+        eau_rect{
+            original_space.pos.x,
+            original_space.pos.y,
+            original_space.size.x,
+            original_space.size.y,
+            (eau_align)original_space.align,
+            }, 
+        eau_rect{
+            new_space.pos.x,
+            new_space.pos.y,
+            new_space.size.x,
+            new_space.size.y,
+            (eau_align)new_space.align,
+            }, 
+        &nx, &ny);
+    return { nx,ny };
+}
+
+template <typename T>
+vec2<T>
+vec2<T>::aspect_space_convert(eau::Rect original_space, eau::Rect new_space) {
+    float nx; float ny;
+    eau_point_aspect_space_convert(
         x,y, 
         eau_rect{
             original_space.pos.x,
