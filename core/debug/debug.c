@@ -101,7 +101,7 @@ eat_debug_try_do(
         ear_text(debug_theme.font, buf, x+4, y, 14, debug_theme.text_col, EAU_ALIGN_TOP_LEFT);
 
         x += w + 12;
-        if (x + 4 > eaw_window_width) {
+        if (x + 4 + w + 12 > eaw_window_width) {
             y += 20;
             x = 4;
         }
