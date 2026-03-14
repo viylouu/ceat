@@ -118,7 +118,8 @@ eau_try_tick_object(
     eau_object* obj
     ) {
     if (!obj->desc.tick) return;
-    //
+    if (debug.enabled && eat_debug_toggled) return;
+
     if (!eau_tick_this_frame) return;
     obj->desc.tick(obj);
 }
@@ -208,6 +209,7 @@ eau_try_tick_objects(
     void
     ) {
     if (!eau_tick_this_frame) return;
+    if (debug.enabled && eat_debug_toggled) return;
 
     for (eau_object_ll* item = eau_object_ll_first; item != NULL; item = item->next)
         eau_try_tick_object(item->obj);
