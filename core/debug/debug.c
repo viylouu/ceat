@@ -63,6 +63,25 @@ eat_debug_try_do(
         ear_rect(x,y, w+8, 16, but_col, EAU_ALIGN_TOP_LEFT);
         ear_rect(x+2,y+2, w+4, 12, bg_col, EAU_ALIGN_TOP_LEFT);
 
+        x += w + 12;
+        if (x + 4 > eaw_window_width) {
+            y += 20;
+            x = 4;
+        }
+
+        ++i;
+    }
+
+    x = 4;
+    y = eaw_window_height - 256 + 4;
+
+    i = 0;
+    for (eat_debug_ll_obj* it = eat_debug_ll_first; it != NULL; it = it->next) {
+        char buf[64];
+        snprintf(buf, sizeof(buf), "%s %d", it->type_name, i);
+
+        float w;
+        ear_text_size(debug_font, buf, 14, &w,NULL);
         ear_text(debug_font, buf, x+4, y, 14, text_col, EAU_ALIGN_TOP_LEFT);
 
         x += w + 12;
