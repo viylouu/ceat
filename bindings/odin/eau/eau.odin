@@ -189,8 +189,6 @@ foreign ceat {
     @(link_name="eau_rect_scale_to_fit") rect_scale_to_fit :: proc(rect: Rect, fit: Rect) -> Rect ---
     @(link_name="eau_rect_space_convert") rect_space_convert :: proc(rect: Rect, orig: Rect, new: Rect) -> Rect ---
     @(link_name="eau_point_space_convert") _point_space_convert :: proc(x,y: f32, orig: Rect, new: Rect, outx,outy: ^f32) ---
-    @(link_name="eau_rect_aspect_space_convert") rect_aspect_space_convert :: proc(rect: Rect, orig: Rect, new: Rect) -> Rect ---
-    @(link_name="eau_point_aspect_space_convert") _point_aspect_space_convert :: proc(x,y: f32, orig: Rect, new: Rect, outx,outy: ^f32) ---
 
 
     @(link_name="eau_aabb2d") aabb2d :: proc(a, b: Rect) -> bool ---
@@ -234,12 +232,6 @@ foreign ceat {
 point_space_convert :: proc(pos: [2]f32, orig: Rect, new: Rect) -> [2]f32 {
     pos := pos
     _point_space_convert(pos.x,pos.y, orig, new, &pos.x,&pos.y)
-    return pos
-}
-
-point_aspect_space_convert :: proc(pos: [2]f32, orig: Rect, new: Rect) -> [2]f32 {
-    pos := pos
-    _point_aspect_space_convert(pos.x,pos.y, orig, new, &pos.x,&pos.y)
     return pos
 }
 

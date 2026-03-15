@@ -285,35 +285,6 @@ namespace eau{
             };
     }
 
-    Rect
-    Rect::aspect_space_convert(
-        Rect orig,
-        Rect new_
-        ) {
-        eau_rect rect = eau_rect_aspect_space_convert(
-            eau_rect{
-                pos.x, pos.y,
-                size.x, size.y,
-                (eau_align)align,
-                }, 
-            eau_rect{
-                orig.pos.x, orig.pos.y,
-                orig.size.x, orig.size.y,
-                (eau_align)orig.align
-                },
-            eau_rect{
-                new_.pos.x, new_.pos.y,
-                new_.size.x, new_.size.y,
-                (eau_align)new_.align
-                }
-            );
-
-        return Rect{
-            .pos = { rect.x, rect.y },
-            .size = { rect.w, rect.h },
-            .align = (eau::Align)rect.align,
-            };
-    }
 
     bool
     aabb2d(

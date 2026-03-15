@@ -337,11 +337,6 @@ namespace eau{
             Rect original_space,
             Rect new_space
             );
-        Rect
-        aspect_space_convert(
-            Rect original_space,
-            Rect new_space
-            );
     };
 
     struct CollisionInfo{

@@ -44,21 +44,6 @@ eau_point_space_convert(
     float* outx, float* outy
     );
 
-eau_rect
-eau_rect_aspect_space_convert(
-    eau_rect rect,
-    eau_rect original_space,
-    eau_rect new_space
-    );
-
-void
-eau_point_aspect_space_convert(
-    float x, float y,
-    eau_rect original_space,
-    eau_rect new_space,
-    float* outx, float* outy
-    );
-
 
 
 struct eau_rect{
