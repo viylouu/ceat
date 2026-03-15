@@ -398,8 +398,8 @@ _ear_truetype_text_size(
             if (text[i] != '\t') {
                 int xoff; int yoff; int wid; int hei;
                 char* glyph = (char*)stbtt_GetCodepointBitmap(&font->truetype.info, scale, scale, text[i], &wid,&hei,&xoff,&yoff);
-                ch->w = wid;
-                ch->h = hei;
+                ch->w = wid + 1;
+                ch->h = hei + 1;
                 ch->yoff = yoff;
 
                 if (atlas->lastx + ch->w > at_width) {
