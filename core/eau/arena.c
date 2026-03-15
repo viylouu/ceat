@@ -1,6 +1,9 @@
 #include "arena.h"
 #include "../cutil.h"
 
+#include "../ear/text.h"
+#include "conv.h"
+
 void
 _eau_debug_arena_window(
     void* arena,
@@ -78,9 +81,19 @@ eau_clear_arena(
 
 void
 _eau_debug_arena_window(
-    void* arena,
+    void* _arena,
     float x, float y, float w, float h,
     eat_debug_theme t,
     int32_t* sel
     ) {
+    eau_arena* arena = _arena;
+
+    float offy = 0;
+    float off = 16;
+    
+    char buf[64];
+
+    snprintf(buf, sizeof(buf), "items: %d", arena->dest_amt);
+    ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+    offy += off;
 }

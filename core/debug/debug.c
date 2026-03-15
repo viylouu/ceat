@@ -49,12 +49,14 @@ eat_debug_try_do(
     } if (!eat_debug_toggled) return;
 
     ear_rect(0,0, eaw_window_width, 16, debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);
+    ear_rect(0,16, eaw_window_width, 2, debug_theme.but_col, EAU_ALIGN_TOP_LEFT);
     ear_text(debug_theme.font, "yummy debug", 0,0, 14, debug_theme.text_col, EAU_ALIGN_TOP_LEFT);
 
     float x = 4; 
     float y = eaw_window_height - 256;
 
     ear_rect(0, y, eaw_window_width, 256, debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);
+    ear_rect(0, y-2, eaw_window_width, 2, debug_theme.but_col, EAU_ALIGN_TOP_LEFT);
     ear_mask(0, y, eaw_window_width, 256);
 
     y += 4;
@@ -119,10 +121,10 @@ eat_debug_try_do(
         return;
     }
 
-    ear_rect(0,16, eaw_window_width/2.f, eaw_window_height - 256 - 16, debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);
-    ear_mask(4,20, eaw_window_width/2.f - 8, eaw_window_height - 256 - 16 - 8);
+    ear_rect(0,18, eaw_window_width/2.f, eaw_window_height - 256 - 16 - 4, debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);
+    ear_mask(4,22, eaw_window_width/2.f - 8, eaw_window_height - 256 - 16 - 8 - 4);
 
-    sel_obj->debug_window(sel_obj->data, 4,20, eaw_window_width/2.f - 8, eaw_window_height - 256 - 16 - 8, debug_theme, &selected);
+    sel_obj->debug_window(sel_obj->data, 4,22, eaw_window_width/2.f - 8, eaw_window_height - 256 - 16 - 8 - 4, debug_theme, &selected);
 
     if (prev_sel == selected && eaw_is_mouse_pressed(EAW_MOUSE_LEFT)) selected = -1;
 

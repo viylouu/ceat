@@ -2,6 +2,9 @@
 #include "../cutil.h"
 
 #include "../eaw/window.h"
+#include "../eau/coll.h"
+#include "text.h"
+#include "user.h"
 
 ear_camera* ear_bound_camera = NULL;
 bool ear_bound_camera_ui_mode = false;
@@ -135,10 +138,63 @@ _ear_camera_update(
 
 void
 _ear_debug_camera_window(
-    void* cam,
+    void* _cam,
     float x, float y, float w, float h,
     eat_debug_theme t,
-    int32_t* sel
+    int32_t* selected
     ) {
+    ear_camera* cam = _cam;
+
+    float offy = 0;
+    float off = 16;
     
+    char buf[64];
+
+    uint32_t idx = 0;
+    for (eat_debug_ll_obj* it = eat_debug_ll_first; it != NULL; it = it->next) {
+        if (it->data == cam->desc.fb) break;
+        ++idx;
+    }
+
+    snprintf(buf, sizeof(buf), "framebuffer %d", idx);
+
+    float width;
+    ear_text_size(t.font, buf, 14, &width, NULL);
+
+    bool sel = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y+offy, width+8,16 });
+
+    ear_rect(x,y+offy, width+8, 16, sel? debug_theme.sel_but_col : debug_theme.but_col, EAU_ALIGN_TOP_LEFT);
+    ear_rect(x+2,y+2+offy, width+4, 12, sel? debug_theme.but_col : debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);
+
+    if (sel && eaw_is_mouse_pressed(EAW_MOUSE_LEFT)) *selected = idx;
+
+    ear_text(t.font, buf, x + 4, y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+    offy += 18;
+
+    switch (cam->desc.type) {
+    case EAR_CAMERA_2D: snprintf(buf, sizeof(buf), "type: 2d"); break;
+    case EAR_CAMERA_3D: snprintf(buf, sizeof(buf), "type: 3d"); break;
+    }
+
+    ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+    offy += off;
+
+    switch (cam->desc.type) {
+    case EAR_CAMERA_2D:
+        snprintf(buf, sizeof(buf), "position: %.3f, %.3f", cam->desc.desc_2d.x, cam->desc.desc_2d.y);
+        ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+        offy += off;
+
+        snprintf(buf, sizeof(buf), "scale: %.3f, %.3f", cam->desc.desc_2d.scalex, cam->desc.desc_2d.scaley);
+        ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+        offy += off;
+
+        snprintf(buf, sizeof(buf), "rotation: %.3f", cam->desc.desc_2d.rotation);
+        ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+        offy += off;
+
+        break;
+    case EAR_CAMERA_3D:
+        break;
+    }
 }
