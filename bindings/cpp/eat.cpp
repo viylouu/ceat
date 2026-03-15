@@ -224,9 +224,6 @@ namespace eau{
             (eau_align)this->align,
             }, (eau_align)align);
 
-        
-        this->align = align;
-
         return Rect{
             .pos = { rect.x, rect.y },
             .size = { rect.w, rect.h },
@@ -250,8 +247,6 @@ namespace eau{
                 (eau_align)fit.align
                 }
             );
-
-        
 
         return Rect{
             pos = { rect.x, rect.y },
