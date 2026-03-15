@@ -4,15 +4,14 @@
 #include "data.h"
 #include "gl.h"
 
-#include <GL/gl.h>
-#include <GL/glext.h>
-
 void
 ear_init(
     void
     ) {
     ear_gl_init();
     ear_user_init();
+
+    gl.enable(GL_SCISSOR_TEST);
 }
 
 void 

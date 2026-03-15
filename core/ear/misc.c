@@ -1,7 +1,10 @@
 #include "misc.h"
 #include "../cutil.h"
 
+#include "../eaw/window.h"
+#include "user.h"
 #include "gl.h"
+#include "framebuffer.h"
 
 GLenum
 _TYPECONV_draw_mode(
@@ -28,7 +31,13 @@ void
 ear_mask(
     float x, float y, float w, float h
     ) {
-    gl.scissor(x,y,w,h);
+    ear_flush();
+
+    if (_ear_cur_framebuffer == NULL) {
+        gl.scissor(x,eaw_window_height - (y+h), w, h);
+    } else {
+        gl.scissor(x,_ear_cur_framebuffer->desc.height - (y+h), w, h);
+    }
 }
 
 

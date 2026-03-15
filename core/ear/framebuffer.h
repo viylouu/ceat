@@ -10,6 +10,8 @@
 typedef struct ear_framebuffer ear_framebuffer;
 typedef struct ear_framebuffer_desc ear_framebuffer_desc;
 
+extern ear_framebuffer* _ear_cur_framebuffer;
+
 
 ear_framebuffer*
 ear_create_framebuffer(

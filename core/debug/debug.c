@@ -57,7 +57,7 @@ eat_debug_try_do(
 
     ear_rect(0, y, eaw_window_width, 256, debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);
     ear_rect(0, y-2, eaw_window_width, 2, debug_theme.but_col, EAU_ALIGN_TOP_LEFT);
-    ear_mask(0, y, eaw_window_width, 256);
+    ear_mask(0, y-2, eaw_window_width, 256+2);
 
     y += 4;
 
@@ -120,6 +120,8 @@ eat_debug_try_do(
         ear_tex(_eat_screen_color, 0,16, eaw_window_width, eaw_window_height - 256 - 16, 0,0,eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
         return;
     }
+
+    ear_mask(0,0, eaw_window_width,eaw_window_height);
 
     ear_rect(0,18, eaw_window_width/2.f, eaw_window_height - 256 - 16 - 4, debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);
     ear_rect(0,18+16, eaw_window_width/2.f, 2, debug_theme.but_col, EAU_ALIGN_TOP_LEFT);
