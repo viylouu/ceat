@@ -1,6 +1,8 @@
 #include "object.h"
 #include "../cutil.h"
 
+#include "../ear/text.h"
+
 eau_object_ll* eau_object_ll_first = NULL;
 eau_object_ll* eau_object_ll_last = NULL;
 
@@ -219,10 +221,61 @@ eau_try_tick_objects(
 
 void
 _eau_debug_object_window(
-    void* obj,
+    void* _obj,
     float x, float y, float w, float h,
     eat_debug_theme t,
     int32_t* sel
     ) {
+    eau_object* obj = _obj;
+
+    float offy = 0;
+    float off = 16;
     
+    char buf[64];
+
+    snprintf(buf, sizeof(buf), "render layer: %d", obj->desc.render_layer);
+    ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+    offy += off;
+
+    size_t l = snprintf(buf, sizeof(buf), "funcs:");
+    bool first = true;
+    if (obj->desc.init) {
+        l += snprintf(buf + l, sizeof(buf) - l, " init");
+        first = false;
+    } if (obj->desc.stop) {
+        l += snprintf(buf + l, sizeof(buf) - l, first? " stop" : ", stop");
+        first = false;
+    } if (obj->desc.tick) {
+        l += snprintf(buf + l, sizeof(buf) - l, first? " tick" : ", tick");
+        first = false;
+    } if (obj->desc.draw) {
+        l += snprintf(buf + l, sizeof(buf) - l, first? " draw" : ", draw");
+        first = false;
+    } if (first) snprintf(buf, sizeof(buf), "no funcs");
+
+    ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+    offy += off;
+
+#define add_1(dimsize)
+#define add_2(dimsize) , *(obj->desc.pos##dimsize[1])
+#define add_3(dimsize) , *(obj->desc.pos##dimsize[1]), *(obj->desc.pos##dimsize[2])
+#define add_1_s()
+#define add_2_s() ", %.3f"
+#define add_3_s() ", %.3f, %.3f"
+#define pos(name, dimsize, amt) do { \
+    if (obj->desc.pos##dimsize[0]) { \
+        snprintf(buf, sizeof(buf), "%s: %.3f" add_##amt##_s(), name, *(obj->desc.pos##dimsize[0]) add_##amt(dimsize)); \
+        ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT); \
+        offy += off; \
+    } \
+} while(0)
+
+    pos("pos", 2d, 2);
+    pos("pos", 2d64, 2);
+    pos("pos", 3d, 3);
+    pos("pos", 3d64, 3);
+    pos("rot", 2d, 1);
+    pos("rot", 2d64, 1);
+    pos("rot", 3d, 3);
+    pos("rot", 3d64, 3);
 }
