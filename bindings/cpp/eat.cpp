@@ -249,9 +249,9 @@ namespace eau{
             );
 
         return Rect{
-            pos = { rect.x, rect.y },
-            size = { rect.w, rect.h },
-            align = (eau::Align)rect.align,
+            .pos = { rect.x, rect.y },
+            .size = { rect.w, rect.h },
+            .align = (eau::Align)rect.align,
             };
     }
 
@@ -309,9 +309,9 @@ namespace eau{
             );
 
         return Rect{
-            pos = { rect.x, rect.y },
-            size = { rect.w, rect.h },
-            align = (eau::Align)rect.align,
+            .pos = { rect.x, rect.y },
+            .size = { rect.w, rect.h },
+            .align = (eau::Align)rect.align,
             };
     }
 
