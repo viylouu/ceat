@@ -12,10 +12,6 @@ MyObject :: struct{
 }
 
 object_init :: proc(obj: ^eau.Object(MyObject)) {
-    using obj.user.data
-
-    frame = 0
-
     fmt.printf("hello world :D\n")
 }
 
@@ -41,7 +37,7 @@ main :: proc() {
         )
     defer eat.stop()
 
-    obj := eau.create_object(MyObject{})
+    obj := eau.create_object({}, MyObject{})
     defer obj->delete()
 
     eau.init_objects()

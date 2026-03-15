@@ -78,8 +78,8 @@ target_link_libraries(ceat
 target_compile_options(ceat
     PRIVATE
         -std=c23
-        -g
-        -O0
+        #-g
+        #-O0
 )
 
 if(BUILD_LINUX)

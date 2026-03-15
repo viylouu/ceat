@@ -372,13 +372,11 @@ create_object :: proc(desc: ObjectDesc, data: $T, arena: ^Arena = nil) -> ^Objec
     info := runtime.type_info_base(type_info_of(T))
 
     #partial switch str in info.variant {
-    case:
     case runtime.Type_Info_Struct:
         for i in 0..<str.field_count do switch str.tags[i] {
         case "init", "draw", "tick", "stop":
             obj_func := str.types[i]
             #partial switch func in obj_func.variant {
-            case:
             case runtime.Type_Info_Named:
                 assert(func.name == "ObjectProc")
 
@@ -394,7 +392,6 @@ create_object :: proc(desc: ObjectDesc, data: $T, arena: ^Arena = nil) -> ^Objec
         case "position":
             pos_arr := str.types[i]
             #partial switch pos in pos_arr.variant {
-            case:
             case runtime.Type_Info_Array:
                 ptr := (^rawptr)(uintptr(obj.data) + str.offsets[i])
 
@@ -411,11 +408,10 @@ create_object :: proc(desc: ObjectDesc, data: $T, arena: ^Arena = nil) -> ^Objec
         case "rotation":
             rot_arr := str.types[i]
             #partial switch rot in rot_arr.variant {
-            case:
             case runtime.Type_Info_Array:
                 ptr := (^rawptr)(uintptr(obj.data) + str.offsets[i])
 
-                switch pos.count {
+                switch rot.count {
                 case:
                 case 3:
                     if rot.elem_size == size_of(f32) do obj.user.rot3d = (^[3]f32)(ptr)
@@ -430,7 +426,8 @@ create_object :: proc(desc: ObjectDesc, data: $T, arena: ^Arena = nil) -> ^Objec
         }
     }
 
-    obj.object = _create_object(_object_desc{
+    obj.object = _create_object(
+        _object_desc{
             pos3d = obj.user.pos3d == nil? { nil,nil,nil } : { &obj.user.pos3d.x, &obj.user.pos3d.y, &obj.user.pos3d.z },
             pos3d64 = obj.user.pos3d64 == nil? { nil,nil,nil } : { &obj.user.pos3d64.x, &obj.user.pos3d64.y, &obj.user.pos3d64.z },
             rot3d = obj.user.rot3d == nil? { nil,nil,nil } : { &obj.user.rot3d.x, &obj.user.rot3d.y, &obj.user.rot3d.z },
