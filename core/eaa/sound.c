@@ -41,7 +41,8 @@ eaa_load_sound(
         .deb_obj = eat_debug_add_obj(
             sound,
             "sound",
-            _eaa_debug_sound_window
+            _eaa_debug_sound_window,
+            arena
             ),
         };
 

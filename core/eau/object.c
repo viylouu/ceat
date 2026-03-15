@@ -46,7 +46,8 @@ eau_create_object(
         .deb_obj = eat_debug_add_obj(
             obj,
             "object",
-            _eau_debug_object_window
+            _eau_debug_object_window,
+            arena
             ),
         };
 

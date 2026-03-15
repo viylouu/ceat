@@ -32,7 +32,8 @@ eaa_create_mixer(
         .deb_obj = eat_debug_add_obj(
             mixer,
             "mixer",
-            _eaa_debug_mixer_window
+            _eaa_debug_mixer_window,
+            arena
             ),
         };
 

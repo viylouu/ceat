@@ -40,7 +40,8 @@ ear_create_framebuffer(
         .deb_obj = eat_debug_add_obj(
             fb,
             "framebuffer",
-            _ear_debug_framebuffer_window
+            _ear_debug_framebuffer_window,
+            arena
             ),
         };
 

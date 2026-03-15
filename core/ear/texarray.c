@@ -60,7 +60,8 @@ ear_create_texarray(
         .deb_obj = eat_debug_add_obj(
             arr,
             "texarray",
-            _ear_debug_texarray_window
+            _ear_debug_texarray_window,
+            arena
             ),
         };
 

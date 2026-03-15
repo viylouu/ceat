@@ -45,7 +45,8 @@ eau_create_clock(
         .deb_obj = eat_debug_add_obj(
             clock,
             "clock",
-            _eau_debug_clock_window
+            _eau_debug_clock_window,
+            arena
             ),
         };
 

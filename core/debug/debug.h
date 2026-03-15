@@ -2,6 +2,7 @@
 
 #include "../eaw/input.h"
 typedef struct ear_font ear_font;
+typedef struct eau_arena eau_arena;
 
 typedef struct eat_debug_desc{
     bool enabled;
@@ -50,7 +51,8 @@ eat_debug_ll_obj*
 eat_debug_add_obj(
     void* data,
     char* name,
-    void (*debug_window)(void* obj, float x, float y, float w, float h, eat_debug_theme theme, int32_t* sel)
+    void (*debug_window)(void* obj, float x, float y, float w, float h, eat_debug_theme theme, int32_t* sel),
+    eau_arena* arena
     );
 
 void
@@ -68,6 +70,7 @@ struct eat_debug_ll_obj{
     void* data;
     char* type_name;
     void (*debug_window)(void* obj, float x, float y, float w, float h, eat_debug_theme theme, int32_t* sel);
+    eau_arena* arena;
 
     eat_debug_ll_obj* next;
     eat_debug_ll_obj* prev;

@@ -47,7 +47,8 @@ ear_create_buffer(
         .deb_obj = eat_debug_add_obj(
             buf,
             "buffer",
-            _ear_debug_buffer_window
+            _ear_debug_buffer_window,
+            arena
             ),
         };
 

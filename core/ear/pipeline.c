@@ -58,7 +58,8 @@ ear_create_pipeline(
         .deb_obj = eat_debug_add_obj(
             pln,
             "pipeline",
-            _ear_debug_pipeline_window
+            _ear_debug_pipeline_window,
+            arena
             ),
         };
 

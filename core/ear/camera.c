@@ -41,7 +41,8 @@ ear_create_camera(
         .deb_obj = eat_debug_add_obj(
             cam,
             "camera",
-            _ear_debug_camera_window
+            _ear_debug_camera_window,
+            arena
             ),
         };
 

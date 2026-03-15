@@ -68,7 +68,8 @@ ear_create_texture(
         .deb_obj = eat_debug_add_obj(
             tex,
             "texture",
-            _ear_debug_texture_window
+            _ear_debug_texture_window,
+            arena
             ),
         };
 

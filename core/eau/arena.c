@@ -24,7 +24,8 @@ eau_create_arena(
         .deb_obj = eat_debug_add_obj(
             arena,
             "arena",
-            _eau_debug_arena_window
+            _eau_debug_arena_window,
+            NULL
             ),
         };
 

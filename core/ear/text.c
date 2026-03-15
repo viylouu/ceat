@@ -45,7 +45,8 @@ ear_load_bitmap_mono_font(
         .deb_obj = eat_debug_add_obj(
             font,
             "font",
-            _ear_debug_font_window
+            _ear_debug_font_window,
+            arena
             ),
         };
 
@@ -68,7 +69,8 @@ ear_load_truetype_font(
         .deb_obj = eat_debug_add_obj(
             font,
             "font",
-            _ear_debug_font_window
+            _ear_debug_font_window,
+            arena
             ),
         };
 
