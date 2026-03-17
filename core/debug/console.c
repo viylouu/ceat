@@ -53,13 +53,14 @@ eat_console_try_do(
         }
 
         if (buf_amt != 0) {
-            if (eaw_is_key_pressed(EAW_KEY_BACKSPACE)) { --buf_amt; last_hold_time = eaw_time; repeating = false; }
-            if (eaw_is_key(EAW_KEY_BACKSPACE)) {
-                if (!repeating) {
-                    if (eaw_time - last_hold_time > text_repeat_wait)
-                        repeating = true;
-                } else {
-                    if (eaw_time - last_hold_time > text_repeat_delta) {
+            if (eaw_is_key_pressed(EAW_KEY_BACKSPACE)) { 
+                --buf_amt; 
+                last_hold_time = eaw_time; 
+                repeating = false; 
+            } else if (eaw_is_key(EAW_KEY_BACKSPACE)) {
+                if (eaw_time - last_hold_time > text_repeat_wait) {
+                    if (!repeating) repeating = true;
+                    else {
                         --buf_amt;
                         last_hold_time = eaw_time;
                     }

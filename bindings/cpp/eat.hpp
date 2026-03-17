@@ -1096,16 +1096,10 @@ namespace ear{
 
     void text(Font* font, std::string text, float x, float y, float scale, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);
     void text(Font* font, std::string text, vec2<float> pos, float scale, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);
-    void text(Font* font, std::string text, float x, float y, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);
-    void text(Font* font, std::string text, vec2<float> pos, std::array<float,4> col, eau::Align align = eau::Align::TopLeft);
     void text(Font* font, std::string text, float x, float y, float scale, std::array<float,3> col, eau::Align align = eau::Align::TopLeft);
     void text(Font* font, std::string text, vec2<float> pos, float scale, std::array<float,3> col, eau::Align align = eau::Align::TopLeft);
-    void text(Font* font, std::string text, float x, float y, std::array<float,3> col, eau::Align align = eau::Align::TopLeft);
-    void text(Font* font, std::string text, vec2<float> pos, std::array<float,3> col, eau::Align align = eau::Align::TopLeft);
     void text(Font* font, std::string text, float x, float y, float scale, float col, eau::Align align = eau::Align::TopLeft);
     void text(Font* font, std::string text, vec2<float> pos, float scale, float col, eau::Align align = eau::Align::TopLeft);
-    void text(Font* font, std::string text, float x, float y, float col, eau::Align align = eau::Align::TopLeft);
-    void text(Font* font, std::string text, vec2<float> pos, float col, eau::Align align = eau::Align::TopLeft);
 
     void
     clear(
