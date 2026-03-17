@@ -1047,9 +1047,9 @@ namespace ear{
     void rect(vec2<float> pos, vec2<float> size, std::array<float,3> col, eau::Align align) {
         ear_rect(pos.x,pos.y, size.x,size.y, (float[4]){ col[0], col[1], col[2], 1 }, (eau_align)align); }
     void rect(float x, float y, float w, float h, float col, eau::Align align) {
-        ear_rect(x,y, w,h, (float[4]){ col, col, col, col }, (eau_align)align); }
+        ear_rect(x,y, w,h, (float[4]){ col, col, col, 1 }, (eau_align)align); }
     void rect(vec2<float> pos, vec2<float> size, float col, eau::Align align) {
-        ear_rect(pos.x,pos.y, size.x,size.y, (float[4]){ col, col, col, col }, (eau_align)align); }
+        ear_rect(pos.x,pos.y, size.x,size.y, (float[4]){ col, col, col, 1 }, (eau_align)align); }
 
     void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, std::array<float,4> col, eau::Align align) {
         ear_tex(tex->texture, x,y, w,h, sx,sy,sw,sh, (float[4]){ col[0], col[1], col[2], col[3] }, (eau_align)align); }
@@ -1084,21 +1084,21 @@ namespace ear{
     void tex(Texture* tex, vec2<float> pos, std::array<float,3> col, eau::Align align) {
         ear_tex(tex->texture, pos.x,pos.y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col[0], col[1], col[2], col[3] }, (eau_align)align); }
     void tex(Texture* tex, float x, float y, float w, float h, float sx, float sy, float sw, float sh, float col, eau::Align align) {
-        ear_tex(tex->texture, x,y, w,h, sx,sy,sw,sh, (float[4]){ col, col, col, col }, (eau_align)align); }
+        ear_tex(tex->texture, x,y, w,h, sx,sy,sw,sh, (float[4]){ col, col, col, 1 }, (eau_align)align); }
     void tex(Texture* tex, vec2<float> pos, vec2<float> size, std::array<float,4> samp, float col, eau::Align align) {
-        ear_tex(tex->texture, pos.x,pos.y, size.x,size.y, samp[0],samp[1],samp[2],samp[3], (float[4]){ col, col, col, col }, (eau_align)align); }
+        ear_tex(tex->texture, pos.x,pos.y, size.x,size.y, samp[0],samp[1],samp[2],samp[3], (float[4]){ col, col, col, 1 }, (eau_align)align); }
     void tex(Texture* tex, float x, float y, float w, float h, float col, eau::Align align) {
-        ear_tex(tex->texture, x,y, w,h, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, col }, (eau_align)align); }
+        ear_tex(tex->texture, x,y, w,h, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, 1 }, (eau_align)align); }
     void tex(Texture* tex, vec2<float> pos, vec2<float> size, float col, eau::Align align) {
-        ear_tex(tex->texture, pos.x,pos.y, size.x,size.y, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, col }, (eau_align)align); }
+        ear_tex(tex->texture, pos.x,pos.y, size.x,size.y, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, 1 }, (eau_align)align); }
     void tex(Texture* tex, float x, float y, float sx, float sy, float sw, float sh, float col, eau::Align align) {
-        ear_tex(tex->texture, x,y, sw,sh, sx,sy,sw,sh, (float[4]){ col, col, col, col }, (eau_align)align); }
+        ear_tex(tex->texture, x,y, sw,sh, sx,sy,sw,sh, (float[4]){ col, col, col, 1 }, (eau_align)align); }
     void tex(Texture* tex, vec2<float> pos, std::array<float,4> samp, float col, eau::Align align) {
-        ear_tex(tex->texture, pos.x,pos.y, samp[2],samp[3], samp[0],samp[1],samp[2],samp[3], (float[4]){ col, col, col, col }, (eau_align)align); }
+        ear_tex(tex->texture, pos.x,pos.y, samp[2],samp[3], samp[0],samp[1],samp[2],samp[3], (float[4]){ col, col, col, 1 }, (eau_align)align); }
     void tex(Texture* tex, float x, float y, float col, eau::Align align) {
-        ear_tex(tex->texture, x,y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, col }, (eau_align)align); }
+        ear_tex(tex->texture, x,y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, 1 }, (eau_align)align); }
     void tex(Texture* tex, vec2<float> pos, float col, eau::Align align) {
-        ear_tex(tex->texture, pos.x,pos.y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, col }, (eau_align)align); }
+        ear_tex(tex->texture, pos.x,pos.y, tex->texture->width,tex->texture->height, 0,0,tex->texture->width,tex->texture->height, (float[4]){ col, col, col, 1 }, (eau_align)align); }
 
     void
     translate(
