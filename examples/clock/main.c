@@ -11,7 +11,7 @@ int main(void) {
 
     ear_font* font = ear_load_bitmap_mono_font(tex_data, sizeof(tex_data), NULL);
 
-    eau_clock* clock = eau_create_clock(NULL);
+    eau_clock* clock = eau_create_clock(false, NULL);
 
     bool paused = true;
     float speed = 1;
