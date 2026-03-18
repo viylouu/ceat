@@ -597,6 +597,11 @@ private:
         );
 
     void
+    set_object_tickspeed(
+        float speed
+        );
+
+    void
     init_objects(
         void
         );

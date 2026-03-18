@@ -9,6 +9,7 @@ eau_object_ll* eau_object_ll_last = NULL;
 float eau_tickrate = 1.f / 240;
 double _eau_last_tick = 0;
 bool eau_tick_this_frame;
+float tickspeed = 1;
 
 void
 _eau_arena_object_delete(
@@ -88,8 +89,17 @@ eau_set_object_tickrate(
     eau_tickrate = delta;
 
     if (eau_object_ll_first == NULL) return;
+    for (eau_object_ll* item = eau_object_ll_first; item != NULL; item = item->next) item->obj->delta = eau_tickrate * tickspeed;
+}
 
-    for (eau_object_ll* item = eau_object_ll_first; item != NULL; item = item->next) item->obj->delta = delta;
+void
+eau_set_object_tickspeed(
+    float speed
+    ) {
+    tickspeed = speed;
+
+    if (eau_object_ll_first == NULL) return;
+    for (eau_object_ll* item = eau_object_ll_first; item != NULL; item = item->next) item->obj->delta = eau_tickrate * tickspeed;
 }
 
 void

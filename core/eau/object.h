@@ -41,6 +41,13 @@ eau_set_object_tickrate(
     float delta
     );
 
+// sets the delta multiplier on objects from tickrate
+// this does not change tickrate, only delta
+void
+eau_set_object_tickspeed(
+    float speed
+    );
+
 void
 eau_init_object(
     eau_object* object

@@ -485,6 +485,13 @@ namespace eau{
     }
 
     void
+    set_object_tickspeed(
+        float speed
+        ) {
+        eau_set_object_tickspeed(speed);
+    }
+
+    void
     init_objects(
         void
         ) {

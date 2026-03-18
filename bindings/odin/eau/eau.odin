@@ -216,9 +216,8 @@ foreign ceat {
 
     @(link_name="eau_create_object") _create_object :: proc(desc: _object_desc, data: rawptr, arena: ^_arena) -> ^_object ---
     @(link_name="eau_delete_object") _delete_object :: proc(object: ^_object) ---
-    @(link_name="eau_set_object_tickrates") _set_object_tickrates :: proc(delta: f32) ---
-    @(link_name="eau_set_object_tickrate") _set_object_tickrate :: proc(object: ^_object, delta: f32) ---
-    @(link_name="eau_reset_object_tickrate") _reset_object_tickrate :: proc(object: ^_object) ---
+    @(link_name="eau_set_object_tickrate") set_object_tickrate :: proc(delta: f32) ---
+    @(link_name="eau_set_object_tickspeed") set_object_tickspeed :: proc(delta: f32) ---
     @(link_name="eau_init_object") _init_object :: proc(object: ^_object) ---
     @(link_name="eau_stop_object") _stop_object :: proc(object: ^_object) ---
     @(link_name="eau_draw_object") _draw_object :: proc(object: ^_object) ---
@@ -454,14 +453,6 @@ create_object :: proc(desc: ObjectDesc, data: $T, arena: ^Arena = nil) -> ^Objec
 delete_object :: proc(object: ^Object($T)) {
     _delete_object(object.object)
     free(object)
-}
-
-set_object_tickrates :: proc(delta: f32) {
-    _set_object_tickrates(delta)
-}
-
-set_object_tickrate :: proc(object: ^Object($T), delta: f32) {
-    _set_object_tickrate(object.object, delta)
 }
 
 reset_object_tickrate :: proc(object: ^Object($T)) {
