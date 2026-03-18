@@ -2,6 +2,7 @@
 #include "../cutil.h"
 
 #include "../eaw/eaw.h"
+#include "core/eau/object.h"
 
 eau_clock_ll* eau_clock_ll_first;
 eau_clock_ll* eau_clock_ll_last;
@@ -24,6 +25,7 @@ _eau_debug_clock_window(
 
 eau_clock*
 eau_create_clock(
+    bool fixed,
     eau_arena* arena
     ) {
     eau_clock* clock = malloc(sizeof(eau_clock));
@@ -39,6 +41,8 @@ eau_create_clock(
         .delta = 0,
         .delta64 = 0,
         .speed = 1,
+
+        .is_fixed = fixed,
 
         .paused = true,
 
@@ -120,9 +124,11 @@ eau_update_clocks(
     for (eau_clock_ll* item = eau_clock_ll_first; item != NULL; item = item->next) {
         if (item->clock->paused) continue;
 
-        item->clock->delta64 = eaw_delta * item->clock->speed;
-        item->clock->delta = eaw_delta * item->clock->speed;
+        if (!item->clock->is_fixed) item->clock->delta64 = eaw_delta * item->clock->speed;
+        else item->clock->delta64 = eau_tickrate * eau_tickspeed * item->clock->speed;
+
         item->clock->time64 += item->clock->delta64;
+        item->clock->delta = item->clock->delta64;
         item->clock->time = item->clock->time64;
     }
 }

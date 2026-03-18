@@ -18,6 +18,7 @@ extern eau_object_ll* eau_object_ll_last;
 extern float eau_tickrate;
 extern double _eau_last_tick;
 extern bool eau_tick_this_frame;
+extern float eau_tickspeed;
 
 
 eau_object*

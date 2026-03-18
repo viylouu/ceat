@@ -16,6 +16,7 @@ extern eau_clock_ll* eau_clock_ll_last;
 
 eau_clock*
 eau_create_clock(
+    bool fixed,
     eau_arena* arena
     );
 
@@ -70,6 +71,8 @@ struct eau_clock{
     float delta;
     double time64;
     double delta64;
+
+    bool is_fixed;
 
     float speed;
 
