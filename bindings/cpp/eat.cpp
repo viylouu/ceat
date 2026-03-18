@@ -420,9 +420,10 @@ namespace eau{
     }
 
     Clock::Clock(
+        bool fixed,
         eau::Arena* arena
         ) {
-        clock = eau_create_clock(arena == nullptr? nullptr : arena->arena);
+        clock = eau_create_clock(fixed, arena == nullptr? nullptr : arena->arena);
         this->arena = arena;
     }
     Clock::~Clock() {

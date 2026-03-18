@@ -72,6 +72,8 @@ _clock :: struct{
     time64: f64,
     delta64: f64,
 
+    is_fixed: bool,
+
     speed: f32,
 
     paused: bool,
@@ -204,7 +206,7 @@ foreign ceat {
     @(link_name="eau_clear_arena") _clear_arena :: proc(arena: ^_arena) ---
 
 
-    @(link_name="eau_create_clock") _create_clock :: proc(arena: ^_arena) -> ^_clock ---
+    @(link_name="eau_create_clock") _create_clock :: proc(fixed: bool, arena: ^_arena) -> ^_clock ---
     @(link_name="eau_delete_clock") _delete_clock :: proc(clock: ^_clock) ---
     @(link_name="eau_reset_clock") _reset_clock :: proc(clock: ^_clock) ---
     @(link_name="eau_set_clock_speed") _set_clock_speed :: proc(clock: ^_clock, speed: f32) ---
@@ -281,9 +283,9 @@ clear_arena :: proc(arena: ^Arena) {
 }
 
 
-create_clock :: proc(arena: ^Arena = nil) -> ^Clock {
+create_clock :: proc(fixed: bool = false, arena: ^Arena = nil) -> ^Clock {
     return new_clone(Clock{
-        clock = _create_clock(arena),
+        clock = _create_clock(fixed, arena),
 
         delete = delete_clock,
         reset = reset_clock,

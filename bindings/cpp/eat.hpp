@@ -403,6 +403,7 @@ namespace eau{
         Arena* arena;
 
         Clock(
+            bool fixed = false,
             Arena* arena = nullptr
             );
         ~Clock();
