@@ -16,3 +16,6 @@ cmake --build build
 ```
 this will create either a `libceat.a` file or a `ceat.lib` file in the build folder  
 (and also build the examples)
+
+## docs
+if you dont know how to do stuff see the [docs](docs/index.md)
