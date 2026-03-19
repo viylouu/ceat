@@ -6,6 +6,7 @@
 #include <vector>
 #include <array>
 #include <math.h>
+#include <functional>
 
 namespace eau{
     typedef struct Rect Rect;
@@ -440,6 +441,58 @@ namespace eau{
 
     void
     update_clocks(
+        void
+        );
+
+
+    struct Timer{
+        eau_timer* timer;
+        Arena* arena;
+
+        Timer(
+            double wait,
+            bool fixed = false,
+            Arena* arena = nullptr
+            );
+        ~Timer();
+
+        void
+        set_onzero(
+            std::function<void()>* func
+            );
+
+        void
+        reset(
+            void
+            );
+
+        void
+        set_speed(
+            float speed
+            );
+
+        void
+        set_time(
+            float time
+            );
+        void
+        set_time(
+            double time
+            );
+
+        void
+        start(
+            void
+            );
+
+        void
+        stop(
+            void
+            );
+    };
+
+    void
+    update_timers(
         void
         );
 

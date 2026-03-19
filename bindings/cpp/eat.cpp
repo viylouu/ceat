@@ -478,6 +478,81 @@ namespace eau{
         eau_update_clocks();
     }
 
+    Timer::Timer(
+        double wait,
+        bool fixed,
+        eau::Arena* arena
+        ) {
+        timer = eau_create_timer(wait, fixed, arena == nullptr? nullptr : arena->arena);
+        this->arena = arena;
+    }
+    Timer::~Timer() {
+        if (!arena) eau_delete_timer(timer);
+    }
+
+    void
+    _timer_onzero_cb(
+        void* data
+        ) {
+        auto f = (std::function<void()>*)data;
+        (*f)();
+    }
+
+    void
+    Timer::set_onzero(
+        std::function<void()>* func
+        ) {
+        eau_set_timer_onzero(timer, _timer_onzero_cb, func);
+    }
+
+    void
+    Timer::reset(
+        void
+        ) {
+        eau_reset_timer(timer);
+    }
+
+    void
+    Timer::set_speed(
+        float speed
+        ) {
+        eau_set_timer_speed(timer, speed);
+    }
+
+    void
+    Timer::set_time(
+        float time
+        ) {
+        eau_set_timer_time(timer, (double)time);
+    }
+    void
+    Timer::set_time(
+        double time
+        ) {
+        eau_set_timer_time(timer, time);
+    }
+
+    void
+    Timer::start(
+        void
+        ) {
+        eau_start_timer(timer);
+    }
+
+    void
+    Timer::stop(
+        void
+        ) {
+        eau_stop_timer(timer);
+    }
+
+    void
+    update_timers(
+        void
+        ) {
+        eau_update_timers();
+    }
+
     void
     set_object_tickrate(
         float delta

@@ -60,6 +60,7 @@ target_sources(ceat
         core/eau/object.c
         core/eau/conv.c
         core/eau/ecs.c
+        core/eau/timer.c
 
         core/eaa/eaa.c
         core/eaa/engine.c

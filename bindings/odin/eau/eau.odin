@@ -94,6 +94,42 @@ Clock :: struct{
     stop: proc(clock: ^Clock),
 }
 
+_timer_ll :: struct{
+    timer: ^_timer,
+    next, prev: ^_timer_ll,
+}
+
+_timer :: struct{
+    ll: _timer_ll,
+
+    time: f32,
+    delta: f32,
+    time64: f64,
+    delta64: f64,
+
+    is_fixed: bool,
+
+    speed: f32,
+
+    paused: bool,
+
+    dest: ^Destructor,
+    deb_obj: ^debug.LLObj,
+}
+
+Timer :: struct{
+    using timer: ^_timer,
+
+    delete: proc(timer: ^Timer),
+    set_onzero: proc(timer: ^Timer, onzero: proc "c" (data: rawptr), data: rawptr),
+    reset: proc(timer: ^Timer),
+    set_speed: proc(timer: ^Timer, speed: f32),
+    set_time: proc(timer: ^Timer, time: f32),
+    set_time64: proc(timer: ^Timer, time: f64), // this just uses 64 bit for the time setting, it does not only set time64
+    start: proc(timer: ^Timer),
+    stop: proc(timer: ^Timer),
+}
+
 _object_ll :: struct{
     obj: ^_object,
     next, prev: ^_object_ll,
@@ -213,7 +249,18 @@ foreign ceat {
     @(link_name="eau_set_clock_time") _set_clock_time :: proc(clock: ^_clock, time: f64) ---
     @(link_name="eau_start_clock") _start_clock :: proc(clock: ^_clock) ---
     @(link_name="eau_stop_clock") _stop_clock :: proc(clock: ^_clock) ---
-    @(link_name="eau_update_clocks") _update_clocks :: proc() ---
+    @(link_name="eau_update_clocks") update_clocks :: proc() ---
+
+
+    @(link_name="eau_create_timer") _create_timer :: proc(wait: f64, fixed: bool, arena: ^_arena) -> ^_timer ---
+    @(link_name="eau_delete_timer") _delete_timer :: proc(timer: ^_timer) ---
+    @(link_name="eau_set_timer_onzero") _set_timer_onzero :: proc(timer: ^_timer, onzero: proc "c" (data: rawptr), data: rawptr) ---
+    @(link_name="eau_reset_timer") _reset_timer :: proc(timer: ^_timer) ---
+    @(link_name="eau_set_timer_speed") _set_timer_speed :: proc(timer: ^_timer, speed: f32) ---
+    @(link_name="eau_set_timer_time") _set_timer_time :: proc(timer: ^_timer, time: f64) ---
+    @(link_name="eau_start_timer") _start_timer :: proc(timer: ^_timer) ---
+    @(link_name="eau_stop_timer") _stop_timer :: proc(timer: ^_timer) ---
+    @(link_name="eau_update_timers") update_timers :: proc() ---
 
 
     @(link_name="eau_create_object") _create_object :: proc(desc: _object_desc, data: rawptr, arena: ^_arena) -> ^_object ---
@@ -326,8 +373,53 @@ stop_clock :: proc(clock: ^Clock) {
     _stop_clock(clock.clock)
 }
 
-update_clocks :: proc() {
-    _update_clocks()
+
+create_timer :: proc(wait: f64, fixed: bool = false, arena: ^Arena = nil) -> ^Timer {
+    return new_clone(Timer{
+        timer = _create_timer(wait, fixed, arena),
+
+        delete = delete_timer,
+        set_onzero = set_timer_onzero,
+        reset = reset_timer,
+        set_speed = set_timer_speed,
+        set_time = set_timer_time32,
+        set_time64 = set_timer_time64,
+        start = start_timer,
+        stop = stop_timer,
+        })
+}
+
+delete_timer :: proc(timer: ^Timer) {
+    _delete_timer(timer.timer)
+    free(timer)
+}
+
+set_timer_onzero :: proc(timer: ^Timer, onzero: proc "c" (data: rawptr), data: rawptr) {
+    _set_timer_onzero(timer.timer, onzero, data)
+}
+
+reset_timer :: proc(timer: ^Timer) {
+    _reset_timer(timer.timer)
+}
+
+set_timer_speed :: proc(timer: ^Timer, speed: f32) {
+    _set_timer_speed(timer.timer, speed)
+}
+
+set_timer_time :: proc{
+    set_timer_time32,
+    set_timer_time64,
+}
+
+set_timer_time32 :: proc(timer: ^Timer, time: f32) { _set_timer_time(timer.timer, f64(time)) }
+set_timer_time64 :: proc(timer: ^Timer, time: f64) { _set_timer_time(timer.timer, time) }
+
+start_timer :: proc(timer: ^Timer) {
+    _start_timer(timer.timer);
+}
+
+stop_timer :: proc(timer: ^Timer) {
+    _stop_timer(timer.timer)
 }
 
 

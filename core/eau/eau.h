@@ -9,3 +9,4 @@
 #include "arena.h"
 #include "clock.h"
 #include "object.h"
+#include "timer.h"
