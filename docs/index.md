@@ -12,3 +12,7 @@ First decide you wanna install ceat engine (yo soy windows) - you should probabl
 once you've made your decision... are you sure?  
 clone https://github.com/viylouu/ceat  
 then run the build commands located in the readme  
+  
+> DO NOT GO [HERE](house.md)  
+> unless you want rigor mortis  
+    > gee i dont know rick  
