@@ -256,6 +256,16 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
             ceat
     )
 
+    add_executable(ex_timer)
+    target_sources(ex_timer
+        PRIVATE
+            examples/timer/main.c
+    )
+    target_link_libraries(ex_timer
+        PRIVATE
+            ceat
+    )
+
     add_executable(ex_cpp_window)
     target_sources(ex_cpp_window
         PRIVATE
