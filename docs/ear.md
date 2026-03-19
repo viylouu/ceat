@@ -26,7 +26,7 @@ ear_rect(
     );
 ```
 rect draws a rectangle to the framebuffer (wow who couldve... uhh... see below).  
-![img](orange\ geusse.png "this is a picture of a foot")
+![img](orange_geusse.png "this is a picture of a foot")
 
 ## low level
 
