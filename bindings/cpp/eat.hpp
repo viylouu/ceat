@@ -449,6 +449,8 @@ namespace eau{
         eau_timer* timer;
         Arena* arena;
 
+        std::function<void()> onzero;
+
         Timer(
             double wait,
             bool fixed = false,
@@ -458,7 +460,7 @@ namespace eau{
 
         void
         set_onzero(
-            std::function<void()>* func
+            std::function<void()> func
             );
 
         void

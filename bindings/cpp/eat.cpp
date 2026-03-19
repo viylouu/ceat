@@ -500,9 +500,10 @@ namespace eau{
 
     void
     Timer::set_onzero(
-        std::function<void()>* func
+        std::function<void()> func
         ) {
-        eau_set_timer_onzero(timer, _timer_onzero_cb, func);
+        onzero = func;
+        eau_set_timer_onzero(timer, _timer_onzero_cb, &onzero);
     }
 
     void
