@@ -4,6 +4,8 @@ ear has 2 different types of rendering things.
 - low level
 
 ## high level
+most things drawn in the high level library will be drawn relative to the top left of the screen.  
+the window draw space is in the range of 0 to width or height.
 
 #### flush
 ```c
@@ -27,6 +29,22 @@ ear_rect(
 ```
 rect draws a rectangle to the framebuffer (wow who couldve... uhh... see below).  
 ![img](orange_geusse.png "this is a picture of a foot")
+
+#### tex
+```c
+void
+ear_tex(
+    ear_texture* tex,
+    float x, float y,
+    float w, float h,
+    float sx, float sy, float sw, float sh,
+    float col[4],
+    eau_align align
+    );
+```
+tex draws a texture to the framebuffer (wow who co- i already did this joke.).).).).).).).).  
+the sx, sy, sw, and sh variables denote the sample position in the texture.  
+these are in the range of 0 to the texture width and height.  
 
 ## low level
 
