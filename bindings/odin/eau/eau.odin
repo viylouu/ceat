@@ -126,6 +126,7 @@ Timer :: struct{
     set_speed: proc(timer: ^Timer, speed: f32),
     set_time: proc(timer: ^Timer, time: f32),
     set_time64: proc(timer: ^Timer, time: f64), // this just uses 64 bit for the time setting, it does not only set time64
+    set_wait: proc(timer: ^Timer, wait: f64),
     start: proc(timer: ^Timer),
     stop: proc(timer: ^Timer),
 }
@@ -258,6 +259,7 @@ foreign ceat {
     @(link_name="eau_reset_timer") _reset_timer :: proc(timer: ^_timer) ---
     @(link_name="eau_set_timer_speed") _set_timer_speed :: proc(timer: ^_timer, speed: f32) ---
     @(link_name="eau_set_timer_time") _set_timer_time :: proc(timer: ^_timer, time: f64) ---
+    @(link_name="eau_set_timer_wait") _set_timer_wait :: proc(timer: ^_timer, wait: f64) ---
     @(link_name="eau_start_timer") _start_timer :: proc(timer: ^_timer) ---
     @(link_name="eau_stop_timer") _stop_timer :: proc(timer: ^_timer) ---
     @(link_name="eau_update_timers") update_timers :: proc() ---
@@ -384,6 +386,7 @@ create_timer :: proc(wait: f64, fixed: bool = false, arena: ^Arena = nil) -> ^Ti
         set_speed = set_timer_speed,
         set_time = set_timer_time32,
         set_time64 = set_timer_time64,
+        set_wait = set_timer_wait,
         start = start_timer,
         stop = stop_timer,
         })
@@ -413,6 +416,10 @@ set_timer_time :: proc{
 
 set_timer_time32 :: proc(timer: ^Timer, time: f32) { _set_timer_time(timer.timer, f64(time)) }
 set_timer_time64 :: proc(timer: ^Timer, time: f64) { _set_timer_time(timer.timer, time) }
+
+set_timer_wait :: proc(timer: ^Timer, wait: f64) {
+    _set_timer_wait(timer.timer, wait)
+}
 
 start_timer :: proc(timer: ^Timer) {
     _start_timer(timer.timer);

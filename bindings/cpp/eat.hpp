@@ -421,10 +421,6 @@ namespace eau{
 
         void
         set_time(
-            float time
-            );
-        void
-        set_time(
             double time
             );
 
@@ -475,11 +471,12 @@ namespace eau{
 
         void
         set_time(
-            float time
-            );
-        void
-        set_time(
             double time
+            );
+
+        void
+        set_wait(
+            double wait
             );
 
         void

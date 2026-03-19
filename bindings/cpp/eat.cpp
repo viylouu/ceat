@@ -446,12 +446,6 @@ namespace eau{
 
     void
     Clock::set_time(
-        float time
-        ) {
-        eau_set_clock_time(clock, (double)time);
-    }
-    void
-    Clock::set_time(
         double time
         ) {
         eau_set_clock_time(clock, time);
@@ -523,15 +517,16 @@ namespace eau{
 
     void
     Timer::set_time(
-        float time
-        ) {
-        eau_set_timer_time(timer, (double)time);
-    }
-    void
-    Timer::set_time(
         double time
         ) {
         eau_set_timer_time(timer, time);
+    }
+
+    void
+    Timer::set_wait(
+        double wait
+        ) {
+        eau_set_timer_wait(timer, wait);
     }
 
     void

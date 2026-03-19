@@ -108,6 +108,14 @@ eau_set_timer_speed(
 }
 
 void
+eau_set_timer_wait(
+    eau_timer* timer,
+    double wait
+    ) {
+    timer->wait = wait;
+}
+
+void
 eau_set_timer_time(
     eau_timer* timer,
     double time

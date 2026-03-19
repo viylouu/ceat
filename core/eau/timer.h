@@ -51,6 +51,12 @@ eau_set_timer_time(
     );
 
 void
+eau_set_timer_wait(
+    eau_timer* timer,
+    double wait
+    );
+
+void
 eau_start_timer(
     eau_timer* timer
     );
