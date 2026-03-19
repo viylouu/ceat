@@ -503,7 +503,8 @@ namespace eau{
         std::function<void()> func
         ) {
         onzero = func;
-        eau_set_timer_onzero(timer, _timer_onzero_cb, &onzero);
+        if (onzero) eau_set_timer_onzero(timer, _timer_onzero_cb, &onzero);
+        else eau_set_timer_onzero(timer, nullptr, nullptr);
     }
 
     void
