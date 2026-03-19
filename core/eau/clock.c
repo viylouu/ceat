@@ -124,10 +124,11 @@ eau_update_clocks(
     for (eau_clock_ll* item = eau_clock_ll_first; item != NULL; item = item->next) {
         if (item->clock->paused) continue;
 
-        if (!item->clock->is_fixed) { 
+        if (!item->clock->is_fixed) item->clock->delta64 = eaw_delta * item->clock->speed;
+        else {
             if (!eau_tick_this_frame) continue;
-            item->clock->delta64 = eaw_delta * item->clock->speed;
-        } else item->clock->delta64 = eau_tickrate * eau_tickspeed * item->clock->speed;
+            item->clock->delta64 = eau_tickrate * eau_tickspeed * item->clock->speed;
+        }
 
         item->clock->time64 += item->clock->delta64;
         item->clock->delta = item->clock->delta64;

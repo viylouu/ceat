@@ -141,10 +141,11 @@ eau_update_timers(
 
         if (item->timer->paused) { item = next; continue; }
 
-        if (!item->timer->is_fixed) {
+        if (!item->timer->is_fixed) item->timer->delta64 = eaw_delta * item->timer->speed;
+        else {
             if (!eau_tick_this_frame) { item = next; continue; }
-            item->timer->delta64 = eaw_delta * item->timer->speed;
-        } else item->timer->delta64 = eau_tickrate * eau_tickspeed * item->timer->speed;
+            item->timer->delta64 = eau_tickrate * eau_tickspeed * item->timer->speed;
+        }
 
         item->timer->time64 -= item->timer->delta64;
         item->timer->delta = item->timer->delta64;
