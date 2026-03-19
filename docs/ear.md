@@ -25,8 +25,8 @@ ear_rect(
     eau_align align
     );
 ```
-rect draws a rectangle to the framebuffer (wow who couldve... uhh... see below).
-![feet pics](orange geusse.png)
+rect draws a rectangle to the framebuffer (wow who couldve... uhh... see below).  
+![img](orange\ geusse.png "this is a picture of a foot")
 
 ## low level
 
