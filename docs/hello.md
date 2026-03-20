@@ -1,5 +1,5 @@
 ## to run hello world build and run this with cmake?
-
+```c
 #include "../../eat.h" //engine
 
 #include <stdio.h> //printf
@@ -15,3 +15,4 @@ int main(void) {
     eat_stop();
     return 0;
 }
+```
