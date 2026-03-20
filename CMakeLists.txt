@@ -27,6 +27,9 @@ else()
     find_package(glfw3 REQUIRED)
 endif()
 
+#add_compile_options(-fsanitize=address -g)
+#add_link_options(-fsanitize=address)
+
 add_library(ceat STATIC)
 target_sources(ceat 
     PRIVATE 

@@ -70,10 +70,7 @@ eau_clear_arena(
     ) {
     for (uint32_t i = 0; i < arena->dest_amt; ++i) {
         eau_destructor* dest = arena->dests[i];
-        if (dest->data != NULL) {
-            dest->delete(dest->data);
-            *dest->user_dest = NULL;
-        }
+        if (dest->data != NULL) dest->delete(dest->data);
         free(dest);
     }
     arena->dest_amt = 0;
