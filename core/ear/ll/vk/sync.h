@@ -19,3 +19,8 @@ void
 _ear_vk_delete_sync_objects(
     void
     );
+
+void
+_ear_vk_wait_for_fences(
+    uint32_t frame
+    );

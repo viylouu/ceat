@@ -7,7 +7,7 @@ extern VkInstance _ear_vk_instance;
 
 void 
 _ear_vk_create_instance(
-    void
+    const char* title
     );
 void
 _ear_vk_delete_instance(

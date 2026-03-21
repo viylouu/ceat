@@ -14,3 +14,8 @@ void
 ear_vk_exit(
     void
     );
+
+void
+ear_vk_frame(
+    void
+    );

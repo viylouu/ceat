@@ -14,13 +14,13 @@ VkInstance _ear_vk_instance;
 
 void 
 _ear_vk_create_instance(
-    void
+    const char* title
     ) {
     VkApplicationInfo appinfo = {
         .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
         .pNext = NULL,
 
-        .pApplicationName = "appname",
+        .pApplicationName = title,
         .applicationVersion = VK_MAKE_VERSION(1,0,0),
 
         .pEngineName = "eat",

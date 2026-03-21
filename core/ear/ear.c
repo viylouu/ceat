@@ -31,6 +31,8 @@ void
 ear_frame(
     void
     ) {
+    ear_vk_frame();
+
     //ear_set_default_framebuffer(NULL);
     //ear_bind_framebuffer(NULL);
 
