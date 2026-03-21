@@ -53,6 +53,7 @@ target_sources(ceat
         core/ear/ll/vk/device_log.c
         core/ear/ll/vk/queue_fam.c
         core/ear/ll/vk/swapchain.c
+        core/ear/ll/vk/comm_pool.c
         #core/ear/ll/pipeline.c
         #core/ear/ll/buffer.c
         #core/ear/ll/framebuffer.c

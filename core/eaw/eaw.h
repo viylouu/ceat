@@ -17,7 +17,7 @@ eaw_init(
     );
 
 void 
-eaw_stop(
+eaw_exit(
     void
     );
 

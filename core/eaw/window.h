@@ -17,7 +17,7 @@ eaw_window_init(
     );
 
 void 
-eaw_window_stop(
+eaw_window_exit(
     void
     );
 

@@ -14,10 +14,10 @@ eaa_init(
 }
 
 void 
-eaa_stop(
+eaa_exit(
     void
     ) {
-    eaa_engine_stop();
+    eaa_engine_exit();
 }
 
 void

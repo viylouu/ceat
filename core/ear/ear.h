@@ -25,7 +25,7 @@ ear_init(
     );
 
 void 
-ear_stop(
+ear_exit(
     void
     );
 

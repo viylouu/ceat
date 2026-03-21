@@ -44,7 +44,7 @@ eat_init(
     );
 
 void
-eat_stop(
+eat_exit(
     void
     );
 

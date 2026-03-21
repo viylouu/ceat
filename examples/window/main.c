@@ -13,7 +13,7 @@ int main(void) {
         //printf("%.3f FPS\n", 1./eat_delta64);
     }
 
-    eat_stop();
+    eat_exit();
 
     return 0;
 }

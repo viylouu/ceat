@@ -22,7 +22,8 @@ eat_init(
     int32_t width, int32_t height,
     eat_init_opts opts
     ) {
-    ear_init(title, width, height, opts.vsync); // calls eaw_init
+    eaw_init(title, width, height, opts.vsync);
+    ear_init(title, width, height, opts.vsync);
     eaa_init();
 
     /*
@@ -52,7 +53,7 @@ eat_init(
 }
 
 void
-eat_stop(
+eat_exit(
     void
     ) {
     if (console.enabled) eat_console_stop();
@@ -64,9 +65,9 @@ eat_stop(
     ear_delete_texture(_eat_screen_color);
     */
 
-    eaa_stop();
-    ear_stop();
-    eaw_stop();
+    eaa_exit();
+    ear_exit();
+    eaw_exit();
 }
 
 bool
