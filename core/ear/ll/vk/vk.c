@@ -12,6 +12,7 @@
 #include "instance.h"
 #include "sync.h"
 #include "image_views.h"
+#include "framebuffer.h"
 
 uint32_t cur_frame = 0;
 uint32_t cur_img_index;
@@ -40,6 +41,7 @@ ear_vk_init(
     _ear_vk_create_swapchain();
     _ear_vk_create_image_views();
     _ear_vk_create_render_pass();
+    _ear_vk_create_framebuffers();
 
     eat_warn("vk init!");
 }
@@ -47,6 +49,7 @@ void
 ear_vk_exit(
     void
     ) {
+    _ear_vk_delete_framebuffers();
     _ear_vk_delete_render_pass();
     _ear_vk_delete_image_views();
     _ear_vk_delete_swapchain();
