@@ -49,6 +49,8 @@ void
 ear_vk_exit(
     void
     ) {
+    _ear_vk_device_wait_idle();
+
     _ear_vk_delete_framebuffers();
     _ear_vk_delete_render_pass();
     _ear_vk_delete_image_views();

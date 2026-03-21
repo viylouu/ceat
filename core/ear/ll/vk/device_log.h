@@ -15,3 +15,8 @@ void
 _ear_vk_delete_logical_device(
     void
     );
+
+void
+_ear_vk_device_wait_idle(
+    void
+    );
