@@ -2,6 +2,8 @@
 
 #include <stdint.h>
 
+#define EAR_VK_MAX_FRAMES_IN_FLIGHT 3
+
 void 
 ear_vk_init(
     const char* title,

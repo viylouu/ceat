@@ -2,11 +2,13 @@
 #include "../../../cutil.h"
 
 #include "comm_pool.h"
+#include "comm_buffer.h"
 #include "device_log.h"
 #include "device_phys.h"
 #include "surface.h"
 #include "validation.h"
 #include "instance.h"
+#include "sync.h"
 
 void 
 ear_vk_init(
@@ -24,6 +26,9 @@ ear_vk_init(
     _ear_vk_create_logical_device();
 
     _ear_vk_create_command_pool();
+    _ear_vk_create_command_buffers();
+
+    _ear_vk_create_sync_objects();
 
     eat_warn("vulkan init complete!");
 }
@@ -31,6 +36,8 @@ void
 ear_vk_exit(
     void
     ) {
+    _ear_vk_delete_sync_objects();
+
     _ear_vk_delete_command_pool();
 
     _ear_vk_delete_logical_device();
