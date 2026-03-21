@@ -14,7 +14,7 @@
 #include "image_views.h"
 #include "framebuffer.h"
 
-uint32_t cur_frame = 0;
+uint32_t cur_frame = EAR_VK_MAX_FRAMES_IN_FLIGHT;
 uint32_t cur_img_index;
 bool first_frame = true;
 
@@ -70,22 +70,21 @@ ear_vk_frame(
     void
     ) {
     if (!first_frame) {
-        //_ear_vk_end_render_pass(cur_frame);
-        //_ear_vk_end_command_buffer(_ear_vk_comm_buffers[cur_frame]);
+        _ear_vk_end_render_pass(cur_frame);
+        _ear_vk_end_command_buffer(_ear_vk_comm_buffers[cur_frame]);
 
-        //_ear_vk_submit_command_buffer(&_ear_vk_comm_buffers[cur_frame], cur_frame);
-        //_ear_vk_present_swapchain(cur_img_index);
+        _ear_vk_submit_command_buffer(&_ear_vk_comm_buffers[cur_frame], cur_frame);
+        _ear_vk_present_swapchain(cur_img_index, cur_frame);
     }
 
     first_frame = false;
 
     ++cur_frame;
-    if (cur_frame > EAR_VK_MAX_FRAMES_IN_FLIGHT) cur_frame = 0;
+    if (cur_frame >= EAR_VK_MAX_FRAMES_IN_FLIGHT) cur_frame = 0;
 
     _ear_vk_wait_for_fences(cur_frame);
     cur_img_index = _ear_vk_acquire_swapchain_image(cur_frame);
 
-    //_ear_vk_reset_command_buffer(_ear_vk_comm_buffers[cur_frame]);
-    //_ear_vk_start_command_buffer(_ear_vk_comm_buffers[cur_frame], cur_img_index);
-    //_ear_vk_start_render_pass(cur_img_index, cur_frame);
+    _ear_vk_start_command_buffer(_ear_vk_comm_buffers[cur_frame], cur_img_index);
+    _ear_vk_start_render_pass(cur_img_index, cur_frame);
 }

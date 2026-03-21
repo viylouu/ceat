@@ -31,6 +31,12 @@ _ear_vk_acquire_swapchain_image(
     uint32_t frame
     );
 
+void
+_ear_vk_present_swapchain(
+    uint32_t index,
+    uint32_t frame
+    );
+
 
 struct _ear_vk_swapchain_support_details{
     VkSurfaceCapabilitiesKHR capabilities;

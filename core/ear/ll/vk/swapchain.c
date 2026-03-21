@@ -168,3 +168,30 @@ _ear_vk_acquire_swapchain_image(
 
     return index;
 }
+
+void
+_ear_vk_present_swapchain(
+    uint32_t index,
+    uint32_t frame
+    ) {
+    VkSemaphore signalsemaphores[] = { _ear_vk_render_finish_sems[frame] };
+
+    VkSwapchainKHR swapchains[] = { _ear_vk_swapchain };
+
+    VkPresentInfoKHR presentinfo = {
+        .sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
+        .pNext = NULL,
+
+        .waitSemaphoreCount = sizeof(signalsemaphores) / sizeof(signalsemaphores[0]),
+        .pWaitSemaphores    = signalsemaphores,
+
+        .swapchainCount = sizeof(swapchains) / sizeof(swapchains[0]),
+        .pSwapchains    = swapchains,
+
+        .pImageIndices = &index,
+
+        .pResults = NULL,
+        };
+
+    vkQueuePresentKHR(_ear_vk_present_queue, &presentinfo);
+}

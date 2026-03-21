@@ -22,7 +22,7 @@ _ear_vk_create_sync_objects(
         .sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO,
         .pNext = NULL,
 
-        .flags = 0,
+        .flags = VK_FENCE_CREATE_SIGNALED_BIT,
         };
 
     for (uint32_t i = 0; i < EAR_VK_MAX_FRAMES_IN_FLIGHT; ++i) {
