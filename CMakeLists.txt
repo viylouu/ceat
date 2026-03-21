@@ -56,6 +56,7 @@ target_sources(ceat
         core/ear/ll/vk/comm_pool.c
         core/ear/ll/vk/comm_buffer.c
         core/ear/ll/vk/sync.c
+        core/ear/ll/vk/image_views.c
         #core/ear/ll/pipeline.c
         #core/ear/ll/buffer.c
         #core/ear/ll/framebuffer.c

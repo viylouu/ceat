@@ -10,6 +10,7 @@
 #include "validation.h"
 #include "instance.h"
 #include "sync.h"
+#include "image_views.h"
 
 uint32_t cur_frame = 0;
 uint32_t cur_img_index;
@@ -36,6 +37,7 @@ ear_vk_init(
     _ear_vk_create_sync_objects();
 
     _ear_vk_create_swapchain();
+    _ear_vk_create_image_views();
 
     eat_warn("vk init!");
 }
@@ -43,6 +45,7 @@ void
 ear_vk_exit(
     void
     ) {
+    _ear_vk_delete_image_views();
     _ear_vk_delete_swapchain();
 
     _ear_vk_delete_sync_objects();
