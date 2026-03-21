@@ -13,7 +13,7 @@ bool
 _eaw_can_create_wl_surface(
     VkInstance inst
     ) {
-#ifdef _WIN32
+/*#ifdef _WIN32
     return true;
 #else
     if (!getenv("WAYLAND_DISPLAY")) return true;
@@ -30,7 +30,8 @@ _eaw_can_create_wl_surface(
 
     glfwDestroyWindow(win);
     return r == VK_SUCCESS;
-#endif
+#endif*/
+    return true;
 }
 
 void 

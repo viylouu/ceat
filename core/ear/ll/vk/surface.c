@@ -4,6 +4,7 @@
 #include "instance.h"
 
 #include "../../../eaw/window.h"
+
 #include <GLFW/glfw3.h>
 
 VkSurfaceKHR _ear_vk_surface;

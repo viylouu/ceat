@@ -17,13 +17,13 @@ eaw_window_init(
     int32_t width, int32_t height,
     bool vsync
     ) {
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-
     eat_assert(glfwInit(), "glfw failed to init");
 
     _eaw_window_width  = width;
     _eaw_window_height = height;
+
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
     _eaw_glfw_window = glfwCreateWindow(width, height, title, NULL,NULL);
     eat_assert(_eaw_glfw_window != NULL, "failed to create window");
