@@ -1,13 +1,13 @@
 #include "swapchain.h"
-#include "../../../cutil.h"
+#include "../../../../cutil.h"
 
-#include "../../../eaw/window.h"
+#include "../../../../eaw/window.h"
 
-#include "sync.h"
-#include "queue_fam.h"
-#include "device_phys.h"
-#include "device_log.h"
-#include "surface.h"
+#include "../sync.h"
+#include "../queue_fam.h"
+#include "../device_phys.h"
+#include "../device_log.h"
+#include "../surface.h"
 
 VkSwapchainKHR _ear_vk_swapchain;
 VkImage* _ear_vk_swapchain_imgs;

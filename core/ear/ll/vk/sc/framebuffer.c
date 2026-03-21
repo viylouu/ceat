@@ -1,10 +1,10 @@
 #include "framebuffer.h"
-#include "../../../cutil.h"
+#include "../../../../cutil.h"
 
 #include "image_views.h"
 #include "swapchain.h"
 #include "render_pass.h"
-#include "device_log.h"
+#include "../device_log.h"
 
 VkFramebuffer* _ear_vk_swapchain_fbufs;
 

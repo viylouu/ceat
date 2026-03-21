@@ -3,16 +3,16 @@
 
 #include "comm_pool.h"
 #include "comm_buffer.h"
-#include "render_pass.h"
-#include "swapchain.h"
+#include "sc/render_pass.h"
+#include "sc/swapchain.h"
 #include "device_log.h"
 #include "device_phys.h"
 #include "surface.h"
 #include "validation.h"
 #include "instance.h"
 #include "sync.h"
-#include "image_views.h"
-#include "framebuffer.h"
+#include "sc/image_views.h"
+#include "sc/framebuffer.h"
 
 uint32_t cur_frame = EAR_VK_MAX_FRAMES_IN_FLIGHT;
 uint32_t cur_img_index;
