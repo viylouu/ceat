@@ -3,15 +3,19 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "pipeline.h"
-#include "buffer.h"
-#include "texture.h"
-#include "user.h"
-#include "framebuffer.h"
-#include "text.h"
-#include "texarray.h"
-#include "camera.h"
-#include "misc.h"
+/*
+#include "ll/pipeline.h"
+#include "ll/buffer.h"
+#include "ll/texture.h"
+#include "ll/framebuffer.h"
+#include "ll/texarray.h"
+#include "ll/misc.h"
+
+#include "hl/user.h"
+#include "hl/text.h"
+#include "hl/camera.h"
+*/
+
 
 void
 ear_init(

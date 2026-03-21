@@ -41,19 +41,23 @@ target_sources(ceat
         core/eaw/eaw.c
         core/eaw/window.c
         core/eaw/input.c
+        core/eaw/vk.c
 
         core/ear/ear.c
-        core/ear/gl.c
-        core/ear/pipeline.c
-        core/ear/buffer.c
-        core/ear/framebuffer.c
-        core/ear/texarray.c
-        core/ear/text.c
-        core/ear/texture.c
-        core/ear/camera.c
-        core/ear/misc.c
-        core/ear/data.c
-        core/ear/user.c
+        #core/ear/ll/gl/gl.c
+        core/ear/ll/vk/vk.c
+        core/ear/ll/vk/validation.c
+        core/ear/ll/vk/instance.c
+        #core/ear/ll/pipeline.c
+        #core/ear/ll/buffer.c
+        #core/ear/ll/framebuffer.c
+        #core/ear/ll/texarray.c
+        #core/ear/ll/texture.c
+        #core/ear/ll/misc.c
+        #core/ear/hl/text.c
+        #core/ear/hl/camera.c
+        #core/ear/hl/data.c
+        #core/ear/hl/user.c
 
         core/eau/file.c
         core/eau/mat4.c
@@ -91,15 +95,17 @@ if(BUILD_LINUX)
     find_package(OpenGL REQUIRED)
     target_link_libraries(ceat
         PRIVATE
-            GL
-            GLX
-            EGL
+            #GL
+            #GLX
+            #EGL
+            vulkan
             m
     )
 else()
     target_link_libraries(ceat
         PRIVATE
-            opengl32
+            #opengl32
+            vulkan1
             gdi32
             user32
             shell32
@@ -112,6 +118,7 @@ else()
     )
 endif()
 
+#[[
 add_library(ceat_cpp STATIC)
 target_sources(ceat_cpp
     PRIVATE
@@ -125,6 +132,7 @@ target_compile_options(ceat_cpp
     PRIVATE
         -std=c++20
 )
+]]#
 
 if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
     add_executable(ex_window)
@@ -137,6 +145,7 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
             ceat
     )
 
+    #[[
     add_executable(ex_triangle)
     target_sources(ex_triangle
             PRIVATE
@@ -290,4 +299,5 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
             ceat
             ceat_cpp
     )
+    ]]#
 endif()

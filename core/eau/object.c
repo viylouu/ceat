@@ -1,7 +1,7 @@
 #include "object.h"
 #include "../cutil.h"
 
-#include "../ear/text.h"
+//#include "../ear/text.h"
 
 eau_object_ll* eau_object_ll_first = NULL;
 eau_object_ll* eau_object_ll_last = NULL;
@@ -236,6 +236,7 @@ _eau_debug_object_window(
     eat_debug_theme t,
     int32_t* sel
     ) {
+    /*
     eau_object* obj = _obj;
 
     float offy = 0;
@@ -288,4 +289,5 @@ _eau_debug_object_window(
     pos("rot", 2d64, 1);
     pos("rot", 3d, 3);
     pos("rot", 3d64, 3);
+    */
 }

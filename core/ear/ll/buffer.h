@@ -3,13 +3,22 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "../eau/arena.h"
-#include "../debug/debug.h"
+#include "../../eau/arena.h"
+#include "../../debug/debug.h"
 
 typedef struct ear_buffer ear_buffer;
 typedef struct ear_buffer_desc ear_buffer_desc;
-//typedef enum ear_buffer_type ear_buffer_type;
-//typedef enum ear_buffer_usage ear_buffer_usage;
+
+typedef enum ear_buffer_type{
+    EAR_BUF_UNIFORM,
+    EAR_BUF_STORAGE,
+    EAR_BUF_VERTEX,
+} ear_buffer_type;
+
+typedef enum ear_buffer_usage{
+    EAR_USAGE_DYNAMIC,
+    EAR_USAGE_STATIC,
+} ear_buffer_usage;
 
 
 ear_buffer*
@@ -36,17 +45,6 @@ ear_update_buffer(
     ear_buffer* buffer
     );
 
-
-typedef enum ear_buffer_type{
-    EAR_BUF_UNIFORM,
-    EAR_BUF_STORAGE,
-    EAR_BUF_VERTEX,
-} ear_buffer_type;
-
-typedef enum ear_buffer_usage{
-    EAR_USAGE_DYNAMIC,
-    EAR_USAGE_STATIC,
-} ear_buffer_usage;
 
 struct ear_buffer_desc{
     ear_buffer_type type;

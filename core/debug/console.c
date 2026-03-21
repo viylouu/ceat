@@ -30,6 +30,7 @@ void
 eat_console_try_do(
     void
     ) {
+    /*
     if (!eaw_is_key_pressed(console.key)) return;
 
     ear_frame();
@@ -90,4 +91,5 @@ eat_console_try_do(
             return;
         }
     }
+    */
 }

@@ -1,7 +1,7 @@
 #include "arena.h"
 #include "../cutil.h"
 
-#include "../ear/text.h"
+//#include "../ear/text.h"
 #include "conv.h"
 
 void
@@ -84,6 +84,7 @@ _eau_debug_arena_window(
     eat_debug_theme t,
     int32_t* sel
     ) {
+    /*
     eau_arena* arena = _arena;
 
     float offy = 0;
@@ -94,4 +95,5 @@ _eau_debug_arena_window(
     snprintf(buf, sizeof(buf), "items: %d", arena->dest_amt);
     ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
     offy += off;
+    */
 }

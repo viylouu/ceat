@@ -23,7 +23,7 @@ eat_debug_init(
     };
 
     debug_theme = (eat_debug_theme){
-        .font = ear_load_truetype_font(tex_data, sizeof(tex_data), NULL),
+        //.font = ear_load_truetype_font(tex_data, sizeof(tex_data), NULL),
 
         .bg_col      = { .15, .15, .15, 1 },
         .text_col    = { 1,   1,   1,   1 },
@@ -36,13 +36,14 @@ void
 eat_debug_stop(
     void
     ) {
-    ear_delete_font(debug_theme.font);
+    //ear_delete_font(debug_theme.font);
 }
 
 void
 eat_debug_try_do(
     void
     ) {
+    /*
     if (eaw_is_key_pressed(debug.key)) {
         eat_debug_toggled = !eat_debug_toggled;
         selected = -1;
@@ -160,6 +161,7 @@ eat_debug_try_do(
     if (prev_sel == selected && eaw_is_mouse_pressed(EAW_MOUSE_LEFT)) selected = -1;
 
     ear_tex(_eat_screen_color, eaw_window_width / 2.f, 18, eaw_window_width / 2.f, eaw_window_height - 256 - 16 - 4, 0,0,eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
+    */
 }
 
 
