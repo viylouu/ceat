@@ -48,6 +48,7 @@ target_sources(ceat
         core/ear/ll/vk/vk.c
         core/ear/ll/vk/validation.c
         core/ear/ll/vk/instance.c
+        core/ear/ll/vk/surface.c
         #core/ear/ll/pipeline.c
         #core/ear/ll/buffer.c
         #core/ear/ll/framebuffer.c

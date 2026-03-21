@@ -3,11 +3,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-extern int32_t eaw_window_width;
-extern int32_t eaw_window_height;
+extern int32_t _eaw_window_width;
+extern int32_t _eaw_window_height;
 
 typedef struct GLFWwindow GLFWwindow;
-extern GLFWwindow* eaw_window;
+extern GLFWwindow* _eaw_glfw_window;
 
 void
 eaw_window_init(

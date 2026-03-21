@@ -3,10 +3,10 @@
 
 #include <GLFW/glfw3.h>
 
-int32_t eaw_window_width;
-int32_t eaw_window_height;
+int32_t _eaw_window_width;
+int32_t _eaw_window_height;
 
-GLFWwindow* eaw_window;
+GLFWwindow* _eaw_glfw_window;
 
 void
 eaw_window_init(
@@ -28,25 +28,25 @@ eaw_window_init(
 
     eat_assert(glfwInit(), "glfw failed to init");
 
-    eaw_window_width  = width;
-    eaw_window_height = height;
+    _eaw_window_width  = width;
+    _eaw_window_height = height;
 
-    eaw_window = glfwCreateWindow(width, height, title, NULL,NULL);
-    eat_assert(eaw_window != NULL, "failed to create window");
+    _eaw_glfw_window = glfwCreateWindow(width, height, title, NULL,NULL);
+    eat_assert(_eaw_glfw_window != NULL, "failed to create window");
 
-    //glfwMakeContextCurrent(eaw_window);
+    //glfwMakeContextCurrent(_eaw_glfw_window);
     //glfwSwapInterval(vsync);
 
     // widnows
-    glfwSetWindowSize(eaw_window, width + 1, height);
-    glfwSetWindowSize(eaw_window, width, height);
+    glfwSetWindowSize(_eaw_glfw_window, width + 1, height);
+    glfwSetWindowSize(_eaw_glfw_window, width, height);
 }
 
 void 
 eaw_window_stop(
     void
     ) {
-    glfwDestroyWindow(eaw_window);
+    glfwDestroyWindow(_eaw_glfw_window);
     glfwTerminate();
 }
 
@@ -54,14 +54,14 @@ void
 eaw_window_frame(
     void
     ) {
-    //glfwSwapBuffers(eaw_window);
+    //glfwSwapBuffers(_eaw_glfw_window);
 
-    glfwGetWindowSize(eaw_window, &eaw_window_width, &eaw_window_height);
+    glfwGetWindowSize(_eaw_glfw_window, &_eaw_window_width, &_eaw_window_height);
 }
 
 bool
 eaw_window_is_open(
     void
     ) {
-    return !glfwWindowShouldClose(eaw_window);
+    return !glfwWindowShouldClose(_eaw_glfw_window);
 }
