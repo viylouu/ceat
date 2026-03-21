@@ -1,6 +1,8 @@
 #include "vk.h"
 #include "../../../cutil.h"
 
+#include "device_log.h"
+#include "device_phys.h"
 #include "surface.h"
 #include "validation.h"
 #include "instance.h"
@@ -21,11 +23,18 @@ ear_vk_init(
     _ear_vk_create_instance();
 
     _ear_vk_create_surface();
+
+    _ear_vk_pick_physical_device();
+    _ear_vk_create_logical_device();
+
+    eat_warn("vulkan init complete!");
 }
 void
 ear_vk_exit(
     void
     ) {
+    _ear_vk_delete_logical_device();
+
     _ear_vk_delete_surface();
 
     _ear_vk_delete_instance();
