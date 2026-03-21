@@ -3,6 +3,7 @@
 
 #include "comm_pool.h"
 #include "comm_buffer.h"
+#include "render_pass.h"
 #include "swapchain.h"
 #include "device_log.h"
 #include "device_phys.h"
@@ -38,6 +39,7 @@ ear_vk_init(
 
     _ear_vk_create_swapchain();
     _ear_vk_create_image_views();
+    _ear_vk_create_render_pass();
 
     eat_warn("vk init!");
 }
@@ -45,6 +47,7 @@ void
 ear_vk_exit(
     void
     ) {
+    _ear_vk_delete_render_pass();
     _ear_vk_delete_image_views();
     _ear_vk_delete_swapchain();
 
