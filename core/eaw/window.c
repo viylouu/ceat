@@ -3,6 +3,9 @@
 
 #include <GLFW/glfw3.h>
 
+#include <vulkan/vulkan.h>
+#include <vulkan/vulkan_core.h>
+
 int32_t _eaw_window_width;
 int32_t _eaw_window_height;
 
@@ -14,15 +17,6 @@ eaw_window_init(
     int32_t width, int32_t height,
     bool vsync
     ) {
-    //glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
-
-    /*
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-    */
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
@@ -40,6 +34,9 @@ eaw_window_init(
     // widnows
     glfwSetWindowSize(_eaw_glfw_window, width + 1, height);
     glfwSetWindowSize(_eaw_glfw_window, width, height);
+
+    glfwShowWindow(_eaw_glfw_window);
+    glfwPollEvents();
 }
 
 void 

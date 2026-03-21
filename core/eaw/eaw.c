@@ -9,6 +9,7 @@ double eaw_time;
     double eaw_last_time;
 double eaw_delta;
 
+
 void
 eaw_init(
     const char* title,

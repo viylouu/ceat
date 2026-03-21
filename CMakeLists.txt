@@ -49,6 +49,10 @@ target_sources(ceat
         core/ear/ll/vk/validation.c
         core/ear/ll/vk/instance.c
         core/ear/ll/vk/surface.c
+        core/ear/ll/vk/device_phys.c
+        core/ear/ll/vk/device_log.c
+        core/ear/ll/vk/queue_fam.c
+        core/ear/ll/vk/swapchain.c
         #core/ear/ll/pipeline.c
         #core/ear/ll/buffer.c
         #core/ear/ll/framebuffer.c

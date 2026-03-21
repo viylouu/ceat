@@ -6,14 +6,16 @@
 
 void
 ear_init(
-    void
+    const char* title,
+    int32_t width, int32_t height,
+    bool vsync
     ) {
     //ear_gl_init();
     //ear_user_init();
 
     //gl.enable(GL_SCISSOR_TEST);
     
-    ear_vk_init();
+    ear_vk_init(title, width, height, vsync);
 }
 
 void 

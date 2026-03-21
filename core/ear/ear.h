@@ -19,7 +19,9 @@
 
 void
 ear_init(
-    void
+    const char* title,
+    int32_t width, int32_t height,
+    bool vsync
     );
 
 void 

@@ -12,8 +12,9 @@ void
 _ear_vk_create_surface(
     void
     ) {
-    eat_assert(glfwCreateWindowSurface(_ear_vk_instance, _eaw_glfw_window, NULL, &_ear_vk_surface) == VK_SUCCESS,
-        "failed to create window surface!");
+    VkResult r = glfwCreateWindowSurface(_ear_vk_instance, _eaw_glfw_window, NULL, &_ear_vk_surface);
+    eat_assert(r == VK_SUCCESS,
+        "failed to create window surface! (error %d)", r);
 }
 void
 _ear_vk_delete_surface(
