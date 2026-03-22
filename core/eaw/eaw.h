@@ -12,8 +12,7 @@ extern double eaw_delta;
 void
 eaw_init(
     const char* title,
-    int32_t width, int32_t height,
-    bool vsync
+    int32_t width, int32_t height
     );
 
 void 

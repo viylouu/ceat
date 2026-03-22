@@ -13,10 +13,9 @@ double eaw_delta;
 void
 eaw_init(
     const char* title,
-    int32_t width, int32_t height,
-    bool vsync
+    int32_t width, int32_t height
     ) {
-    eaw_window_init(title, width, height, vsync);
+    eaw_window_init(title, width, height);
     eaw_input_init();
 
     eaw_time = glfwGetTime();

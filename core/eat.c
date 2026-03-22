@@ -22,7 +22,7 @@ eat_init(
     int32_t width, int32_t height,
     eat_init_opts opts
     ) {
-    eaw_init(title, width, height, opts.vsync);
+    eaw_init(title, width, height);
     ear_init(title, width, height, opts.vsync);
     eaa_init();
 

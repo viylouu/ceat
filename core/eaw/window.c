@@ -16,8 +16,7 @@ GLFWwindow* _eaw_glfw_window;
 void
 eaw_window_init(
     const char* title,
-    int32_t width, int32_t height,
-    bool vsync
+    int32_t width, int32_t height
     ) {
     eat_assert(glfwInit(), "glfw failed to init");
 
@@ -29,9 +28,6 @@ eaw_window_init(
 
     _eaw_glfw_window = glfwCreateWindow(width, height, title, NULL,NULL);
     eat_assert(_eaw_glfw_window != NULL, "failed to create window");
-
-    //glfwMakeContextCurrent(_eaw_glfw_window);
-    //glfwSwapInterval(vsync);
 
     // widnows
     glfwSetWindowSize(_eaw_glfw_window, width + 1, height);
@@ -53,11 +49,9 @@ void
 eaw_window_frame(
     void
     ) {
-    //glfwSwapBuffers(_eaw_glfw_window);
-
-    //uint32_t prevw = _eaw_window_width; uint32_t prevh = _eaw_window_height;
+    uint32_t prevw = _eaw_window_width; uint32_t prevh = _eaw_window_height;
     glfwGetWindowSize(_eaw_glfw_window, &_eaw_window_width, &_eaw_window_height);
-    //if (prevw != _eaw_window_width || prevh != _eaw_window_height) ear_framebuffer_resize = true;
+    if (prevw != _eaw_window_width || prevh != _eaw_window_height) ear_framebuffer_resize = true;
 }
 
 bool
