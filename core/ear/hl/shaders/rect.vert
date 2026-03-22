@@ -1,4 +1,4 @@
-#version 430 core
+#version 450
 
 struct InstData {
     vec2 pos;
@@ -21,11 +21,11 @@ layout(std140, binding = 1) uniform uni {
     mat4 proj;
 };
 
-flat out vec4 fCol;
+layout(location = 0) flat out vec4 fCol;
 
 void main() {
-    vec2 vert = verts[gl_VertexID];
-    InstData inst = insts[gl_InstanceID];
+    vec2 vert = verts[gl_VertexIndex];
+    InstData inst = insts[gl_InstanceIndex];
 
     gl_Position = proj * inst.transf * vec4(vert * inst.size + inst.pos, 0,1);
 

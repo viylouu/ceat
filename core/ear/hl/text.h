@@ -3,12 +3,12 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "../../include/stb_truetype.h"
+#include "../../../include/stb_truetype.h"
 
-#include "../eau/arena.h"
-#include "../debug/debug.h"
-#include "texture.h"
-#include "../eau/conv.h"
+#include "../../eau/arena.h"
+#include "../../debug/debug.h"
+#include "../ll/texture.h"
+#include "../../eau/conv.h"
 
 typedef struct ear_font ear_font;
 

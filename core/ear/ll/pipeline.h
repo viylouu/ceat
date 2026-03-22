@@ -6,6 +6,8 @@
 #include "../../eau/arena.h"
 #include "../../debug/debug.h"
 
+#include "buffer.h"
+
 typedef struct ear_pipeline ear_pipeline;
 typedef struct ear_pipeline_desc ear_pipeline_desc;
 
@@ -54,6 +56,11 @@ typedef enum ear_fill_mode{
     EAR_FILL_LINE,
 } ear_fill_mode;
 
+typedef enum ear_topology{
+    EAR_TOP_TRIS,
+    EAR_TOP_LINES,
+} ear_topology;
+
 
 ear_pipeline*
 ear_create_pipeline(
@@ -99,10 +106,13 @@ struct ear_pipeline_desc{
     ear_shader_desc vertex;
     ear_shader_desc fragment;
 
+    ear_buffer** vertex_buffers;
+        uint32_t vertex_buffer_amt;
     ear_vertex_attrib_desc* vertex_attribs;
         uint32_t vertex_attrib_amt;
 
     bool depth;
+    bool depth_clamp;
 
     ear_cull_mode cull_mode;
     ear_front_face front_face;
@@ -111,6 +121,8 @@ struct ear_pipeline_desc{
         bool has_blend_state;
 
     ear_fill_mode fill_mode;
+
+    ear_topology topology;
 };
 
 struct ear_pipeline{

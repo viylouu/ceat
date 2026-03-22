@@ -1,8 +1,8 @@
 #include "camera.h"
-#include "../cutil.h"
+#include "../../cutil.h"
 
-#include "../eaw/window.h"
-#include "../eau/coll.h"
+#include "../../eaw/window.h"
+#include "../../eau/coll.h"
 #include "text.h"
 #include "user.h"
 
@@ -117,8 +117,8 @@ _ear_camera_update(
             centerx = cam->desc.fb->desc.width * .5;
             centery = cam->desc.fb->desc.height * .5;
         } else {
-            centerx = eaw_window_width * .5;
-            centery = eaw_window_height * .5;
+            centerx = _eaw_window_width * .5;
+            centery = _eaw_window_height * .5;
         }
 
         mat4 o;

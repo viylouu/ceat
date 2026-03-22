@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "../eau/arena.h"
-#include "../debug/debug.h"
+#include "../../eau/arena.h"
+#include "../../debug/debug.h"
 #include "texture.h"
 
 typedef struct ear_framebuffer ear_framebuffer;

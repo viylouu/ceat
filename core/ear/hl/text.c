@@ -1,11 +1,11 @@
 #include "text.h"
-#include "../cutil.h"
+#include "../../cutil.h"
 
 #define STB_TRUETYPE_IMPLEMENTATION
-#include "../../include/stb_truetype.h"
+#include "../../../include/stb_truetype.h"
 
 #include "user.h"
-#include "../eau/coll.h"
+#include "../../eau/coll.h"
 
 void
 _ear_arena_font_delete(

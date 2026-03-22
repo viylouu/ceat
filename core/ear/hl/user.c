@@ -1,5 +1,5 @@
 #include "user.h"
-#include "../cutil.h"
+#include "../../cutil.h"
 
 #include "data.h"
 #include "camera.h"
@@ -11,7 +11,7 @@ ear_flush(
     void
     ) {
     ear_rect_rend_flush();
-    ear_tex_rend_flush();
+    //ear_tex_rend_flush();
 }
 
 
@@ -50,6 +50,7 @@ ear_rect(
     ++ear_rr.ssbo_i;
 }
 
+/*
 void
 ear_tex(
     ear_texture* tex,
@@ -83,6 +84,7 @@ ear_tex(
     memcpy((uint8_t*)(&ear_tr.ssbo_d[ear_tr.ssbo_i]) + sizeof(ear_tr.ssbo_d[0]) - sizeof(float)*16, mat, sizeof(float)*16);
     ++ear_tr.ssbo_i;
 }
+*/
 
 
 void
@@ -159,8 +161,3 @@ ear_load_transform(
     ) {
     eau_mat4_copy(mat, &transf);
 }
-
-
-
-
-

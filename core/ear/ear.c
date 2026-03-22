@@ -26,7 +26,7 @@ ear_exit(
     ) {
     ear_vk_exit();
 
-    //ear_user_stop();
+    //ear_user_exit();
 }
 
 void

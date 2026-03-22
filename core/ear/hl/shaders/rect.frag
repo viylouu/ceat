@@ -1,8 +1,8 @@
-#version 330 core
+#version 450
 
-flat in vec4 fCol;
+layout(location = 0) flat in vec4 fCol;
 
-out vec4 oCol;
+layout(location = 0) out vec4 oCol;
 
 void main() {
     if (fCol.a == 0)

@@ -1,11 +1,9 @@
 #include "data.h"
 //#include "../cutil.h"
 
-#include "../eau/arena.h"
+#include "../../eau/arena.h"
 
-#include "pipeline.h"
-#include "buffer.h"
-#include "misc.h"
+#include "../ll/misc.h"
 
 mat4 proj;
 mat4 transf;
@@ -19,22 +17,23 @@ ear_rect_rend_create(
     void
     ) {
     static const char vert[] = {
-    #embed "shaders/rect.vert"
+    #embed "shaders/rect_v.spv"
     , 0
     };
     static const char frag[] = {
-    #embed "shaders/rect.frag"
+    #embed "shaders/rect_f.spv"
     , 0
     };
 
     ear_rr.pln = ear_create_pipeline((ear_pipeline_desc){
             .vertex = (ear_shader_desc){ .source = (char*)vert },
             .fragment = (ear_shader_desc){ .source = (char*)frag },
-            .blend_state = { true, (ear_blend_state){ 
+            .has_blend_state = true,
+            .blend_state = (ear_blend_state){ 
                 .src_color = EAR_FAC_SRC_ALPHA, .dst_color = EAR_FAC_INV_SRC_ALPHA,
                 .src_alpha = EAR_FAC_ONE,       .dst_alpha = EAR_FAC_INV_SRC_ALPHA,
                 .color_op = EAR_OP_ADD, .alpha_op = EAR_OP_ADD,
-            }, },
+                },
         }, arena);
 
     ear_rr.ubo = ear_create_buffer((ear_buffer_desc){
@@ -65,12 +64,13 @@ ear_rect_rend_flush(
     ear_bind_buffer(ear_rr.ssbo, 0);
     ear_bind_buffer(ear_rr.ubo, 1);
 
-    ear_draw(6, ear_rr.ssbo_i, EAR_MODE_TRIANGLES);
+    ear_draw(6, ear_rr.ssbo_i);
 
     ear_rr.ssbo_i = 0;
 }
 
 
+/*
 ear_tex_rend ear_tr;
 
 void
@@ -129,6 +129,7 @@ ear_tex_rend_flush(
 
     ear_tr.ssbo_i = 0;
 }
+*/
 
 
 void
@@ -138,11 +139,11 @@ ear_user_init(
     arena = eau_create_arena();
 
     ear_rect_rend_create();
-    ear_tex_rend_create();
+    //ear_tex_rend_create();
 }
 
 void 
-ear_user_stop(
+ear_user_exit(
     void
     ) {
     eau_delete_arena(arena);

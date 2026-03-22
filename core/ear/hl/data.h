@@ -3,11 +3,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "pipeline.h"
-#include "buffer.h"
-#include "texture.h"
+#include "../ll/pipeline.h"
+#include "../ll/buffer.h"
+//#include "../ll/texture.h"
 
-#include "../eau/mat4.h"
+#include "../../eau/mat4.h"
 
 extern mat4 proj;
 extern mat4 transf;
@@ -18,7 +18,7 @@ ear_user_init(
     );
 
 void 
-ear_user_stop(
+ear_user_exit(
     void
     );
 
@@ -44,6 +44,7 @@ ear_rect_rend_flush(
     );
 
 
+/*
 typedef struct ear_tex_rend{
     ear_pipeline* pln;
     ear_buffer* ubo;
@@ -65,3 +66,4 @@ void
 ear_tex_rend_flush(
     void
     );
+*/

@@ -3,10 +3,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "../eau/arena.h"
-#include "../debug/debug.h"
-#include "../eau/mat4.h"
-#include "framebuffer.h"
+#include "../../eau/arena.h"
+#include "../../debug/debug.h"
+#include "../../eau/mat4.h"
+#include "../ll/framebuffer.h"
 
 typedef struct ear_camera ear_camera;
 typedef struct ear_camera_desc ear_camera_desc;

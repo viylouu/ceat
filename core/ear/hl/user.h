@@ -1,8 +1,8 @@
 #pragma once
 
-#include "texture.h"
-#include "../eau/mat4.h"
-#include "../eau/conv.h"
+#include "../ll/texture.h"
+#include "../../eau/mat4.h"
+#include "../../eau/conv.h"
 
 #include <stdint.h>
 #include <stdbool.h>

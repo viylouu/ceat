@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-#include "../eau/arena.h"
-#include "../debug/debug.h"
+#include "../../eau/arena.h"
+#include "../../debug/debug.h"
 
 typedef struct ear_texture ear_texture;
 typedef struct ear_texture_desc ear_texture_desc;

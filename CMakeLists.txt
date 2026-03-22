@@ -44,6 +44,15 @@ endfunction()
 #add_compile_options(-fsanitize=address -g)
 #add_link_options(-fsanitize=address)
 
+compile_shader(core/ear/hl/shaders rect.vert rect_v.spv)
+compile_shader(core/ear/hl/shaders rect.frag rect_f.spv)
+
+add_custom_target(ceat_shad ALL
+    DEPENDS
+        core/ear/hl/shaders/rect_v.spv
+        core/ear/hl/shaders/rect_f.spv
+)
+
 add_library(ceat STATIC)
 target_sources(ceat 
     PRIVATE 
