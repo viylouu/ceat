@@ -4,6 +4,9 @@
 
 #define EAR_VK_MAX_FRAMES_IN_FLIGHT 3
 
+extern uint32_t ear_surface_width;
+extern uint32_t ear_surface_height;
+
 void 
 ear_vk_init(
     const char* title,

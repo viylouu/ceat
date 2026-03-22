@@ -9,10 +9,11 @@
 #include "init/validation.h"
 #include "init/instance.h"
 #include "init/sync.h"
-#include "sc/render_pass.h"
 #include "sc/swapchain.h"
-#include "sc/image_views.h"
-#include "sc/framebuffer.h"
+#include "sc/render_pass.h"
+
+uint32_t ear_surface_width;
+uint32_t ear_surface_height;
 
 void 
 ear_vk_init(
@@ -34,10 +35,7 @@ ear_vk_init(
 
     _ear_vk_create_sync_objects();
 
-    _ear_vk_create_swapchain();
-    _ear_vk_create_image_views();
-    _ear_vk_create_render_pass();
-    _ear_vk_create_framebuffers();
+    _ear_vk_create_full_swapchain();
 
     eat_warn("vk init!");
 }
@@ -47,10 +45,7 @@ ear_vk_exit(
     ) {
     _ear_vk_device_wait_idle();
 
-    _ear_vk_delete_framebuffers();
-    _ear_vk_delete_render_pass();
-    _ear_vk_delete_image_views();
-    _ear_vk_delete_swapchain();
+    _ear_vk_delete_full_swapchain();
 
     _ear_vk_delete_sync_objects();
 
@@ -81,8 +76,13 @@ ear_vk_frame(
     if (_ear_vk_cur_frame >= EAR_VK_MAX_FRAMES_IN_FLIGHT) _ear_vk_cur_frame = 0;
 
     _ear_vk_wait_for_fences(_ear_vk_cur_frame);
-    _ear_vk_cur_img_index = _ear_vk_acquire_swapchain_image(_ear_vk_cur_frame);
+    int32_t index = _ear_vk_acquire_swapchain_image(_ear_vk_cur_frame);
+    if (index == -1) { _ear_vk_first_frame = true; ear_vk_frame(); return; }
+    _ear_vk_cur_img_index = index;
 
     _ear_vk_start_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame], _ear_vk_cur_img_index);
     _ear_vk_start_render_pass(_ear_vk_cur_img_index, _ear_vk_cur_frame);
+
+    ear_surface_width  = _ear_vk_swapchain_extent.width;
+    ear_surface_height = _ear_vk_swapchain_extent.height;
 }

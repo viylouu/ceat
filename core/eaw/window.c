@@ -23,7 +23,7 @@ eaw_window_init(
     _eaw_window_height = height;
 
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
     _eaw_glfw_window = glfwCreateWindow(width, height, title, NULL,NULL);
     eat_assert(_eaw_glfw_window != NULL, "failed to create window");
