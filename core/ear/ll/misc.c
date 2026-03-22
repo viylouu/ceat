@@ -12,14 +12,6 @@
 #include <vulkan/vulkan_core.h>
 
 
-void 
-ear_clear(
-    float r, float g, float b, float a
-    ) {
-    //gl.clearColor(col[0], col[1], col[2], 1);
-    //gl.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
 void
 ear_draw(
     int32_t vertices, int32_t instances
