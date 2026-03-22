@@ -48,5 +48,10 @@ _ear_vk_wait_for_fences(
     uint32_t frame
     ) {
     vkWaitForFences(_ear_vk_device, 1, &_ear_vk_inflight_fences[frame], VK_TRUE, UINT64_MAX);
+}
+void
+_ear_vk_reset_fences(
+    uint32_t frame
+    ) {
     vkResetFences(_ear_vk_device, 1, &_ear_vk_inflight_fences[frame]);
 }

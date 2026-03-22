@@ -14,6 +14,7 @@
 
 uint32_t ear_surface_width;
 uint32_t ear_surface_height;
+bool ear_framebuffer_resize;
 
 void 
 ear_vk_init(
@@ -74,9 +75,16 @@ ear_vk_frame(
     if (_ear_vk_cur_frame >= EAR_VK_MAX_FRAMES_IN_FLIGHT) _ear_vk_cur_frame = 0;
 
     _ear_vk_wait_for_fences(_ear_vk_cur_frame);
+
     int32_t index = _ear_vk_acquire_swapchain_image(_ear_vk_cur_frame);
     if (index == -1) { _ear_vk_first_frame = true; ear_vk_frame(); return; }
     _ear_vk_cur_img_index = index;
+
+    if (_ear_vk_images_inflight[_ear_vk_cur_img_index] != NULL)
+        vkWaitForFences(_ear_vk_device, 1, &_ear_vk_images_inflight[_ear_vk_cur_img_index], VK_TRUE, UINT64_MAX);
+    _ear_vk_images_inflight[_ear_vk_cur_img_index] = _ear_vk_inflight_fences[_ear_vk_cur_frame];
+
+    _ear_vk_reset_fences(_ear_vk_cur_frame);
 
     _ear_vk_start_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame], _ear_vk_cur_img_index);
     _ear_vk_start_render_pass(_ear_vk_cur_img_index, _ear_vk_cur_frame);

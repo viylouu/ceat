@@ -6,6 +6,7 @@
 
 extern uint32_t ear_surface_width;
 extern uint32_t ear_surface_height;
+extern bool ear_framebuffer_resize;
 
 void 
 ear_vk_init(

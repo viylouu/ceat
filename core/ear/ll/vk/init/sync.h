@@ -24,3 +24,7 @@ void
 _ear_vk_wait_for_fences(
     uint32_t frame
     );
+void
+_ear_vk_reset_fences(
+    uint32_t frame
+    );

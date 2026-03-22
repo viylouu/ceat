@@ -3,6 +3,7 @@
 
 #include "../../../../eaw/window.h"
 
+#include "core/ear/ll/vk/vk.h"
 #include "framebuffer.h"
 #include "image_views.h"
 #include "render_pass.h"
@@ -22,6 +23,7 @@ VkImage* _ear_vk_swapchain_imgs;
     uint32_t _ear_vk_swapchain_img_amt;
 VkFormat _ear_vk_swapchain_img_fmt;
 VkExtent2D _ear_vk_swapchain_extent;
+VkFence* _ear_vk_images_inflight;
 
 _ear_vk_swapchain_support_details
 _ear_vk_query_swapchain_support(
@@ -158,12 +160,17 @@ _ear_vk_create_swapchain(
 
     _ear_vk_swapchain_img_fmt = surface_fmt.format;
     _ear_vk_swapchain_extent = extent;
+
+    _ear_vk_images_inflight = malloc(sizeof(VkFence) * _ear_vk_swapchain_img_amt);
+    for (uint32_t i = 0; i < _ear_vk_swapchain_img_amt; ++i)
+        _ear_vk_images_inflight[i] = NULL;
 }
 void
 _ear_vk_delete_swapchain(
     void
     ) {
     free(_ear_vk_swapchain_imgs);
+    free(_ear_vk_images_inflight);
     vkDestroySwapchainKHR(_ear_vk_device, _ear_vk_swapchain, NULL);
 }
 
@@ -174,8 +181,11 @@ _ear_vk_acquire_swapchain_image(
     uint32_t index;
     VkResult res = vkAcquireNextImageKHR(_ear_vk_device, _ear_vk_swapchain, UINT64_MAX, _ear_vk_image_available_sems[frame], NULL, &frame);
 
-    if (res == VK_ERROR_OUT_OF_DATE_KHR) { _ear_vk_recreate_swapchain(); return -1; }
-    else eat_assert(res == VK_SUCCESS, "failed to acquire swapchain image!");
+    if (res == VK_ERROR_OUT_OF_DATE_KHR || ear_framebuffer_resize) { 
+        ear_framebuffer_resize = false; 
+        _ear_vk_recreate_swapchain(); 
+        return -1; 
+    } else eat_assert(res == VK_SUCCESS, "failed to acquire swapchain image!");
 
     return index;
 }
