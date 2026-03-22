@@ -1,9 +1,9 @@
 #include "device_phys.h"
-#include "../../../cutil.h"
+#include "../../../../cutil.h"
 
 #include "queue_fam.h"
 #include "instance.h"
-#include "sc/swapchain.h"
+#include "../sc/swapchain.h"
 
 #include <string.h>
 

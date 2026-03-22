@@ -1,5 +1,5 @@
 #include "sync.h"
-#include "../../../cutil.h"
+#include "../../../../cutil.h"
 
 #include "device_log.h"
 
@@ -26,10 +26,10 @@ _ear_vk_create_sync_objects(
         };
 
     for (uint32_t i = 0; i < EAR_VK_MAX_FRAMES_IN_FLIGHT; ++i) {
-        eat_assert(vkCreateSemaphore(_ear_vk_device, &semaphoreinfo, NULL, &_ear_vk_image_available_sems[i]) == VK_SUCCESS
-                && vkCreateSemaphore(_ear_vk_device, &semaphoreinfo, NULL, &_ear_vk_render_finish_sems[i]) == VK_SUCCESS
-                && vkCreateFence(_ear_vk_device, &fenceinfo, NULL, &_ear_vk_inflight_fences[i]) == VK_SUCCESS,
-                "failed to create sync objects!");
+        eat_assert(vkCreateSemaphore(_ear_vk_device, &semaphoreinfo, NULL, &_ear_vk_image_available_sems[i]) == VK_SUCCESS &&
+                   vkCreateSemaphore(_ear_vk_device, &semaphoreinfo, NULL, &_ear_vk_render_finish_sems[i])   == VK_SUCCESS &&
+                   vkCreateFence    (_ear_vk_device, &fenceinfo,     NULL, &_ear_vk_inflight_fences[i])      == VK_SUCCESS,
+            "failed to create sync objects!");
     }
 }
 void

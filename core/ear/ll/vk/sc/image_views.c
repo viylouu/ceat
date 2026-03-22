@@ -2,7 +2,7 @@
 #include "../../../../cutil.h"
 
 #include "swapchain.h"
-#include "../device_log.h"
+#include "../init/device_log.h"
 
 VkImageView* _ear_vk_swapchain_img_views;
 

@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "../eau/arena.h"
-#include "../debug/debug.h"
+#include "../../eau/arena.h"
+#include "../../debug/debug.h"
 
 typedef struct ear_pipeline ear_pipeline;
 typedef struct ear_pipeline_desc ear_pipeline_desc;
@@ -13,16 +13,46 @@ typedef struct ear_shader_desc ear_shader_desc;
 
 typedef struct ear_vertex_attrib_desc ear_vertex_attrib_desc;
 
-//typedef enum ear_primitive_type ear_primitive_type;
+typedef enum ear_primitive_type{
+    EAR_PRIM_FLOAT,
+    EAR_PRIM_INT,
+} ear_primitive_type;
 
-//typedef enum ear_cull_mode ear_cull_mode;
-//typedef enum ear_front_face ear_front_face;
+typedef enum ear_cull_mode{
+    EAR_CULL_NONE,
+    EAR_CULL_FRONT,
+    EAR_CULL_BACK,
+} ear_cull_mode;
+typedef enum ear_front_face{
+    EAR_FRONT_CW,
+    EAR_FRONT_CCW,
+} ear_front_face;
 
 typedef struct ear_blend_state ear_blend_state;
-//typedef enum ear_blend_factor ear_blend_factor;
-//typedef enum ear_blend_op ear_blend_op;
+typedef enum ear_blend_factor{
+    EAR_FAC_ZERO,
+    EAR_FAC_ONE,
+    EAR_FAC_SRC_COLOR,
+    EAR_FAC_INV_SRC_COLOR,
+    EAR_FAC_DST_COLOR,
+    EAR_FAC_INV_DST_COLOR,
+    EAR_FAC_SRC_ALPHA,
+    EAR_FAC_INV_SRC_ALPHA,
+    EAR_FAC_DST_ALPHA,
+    EAR_FAC_INV_DST_ALPHA,
+} ear_blend_factor;
+typedef enum ear_blend_op{
+    EAR_OP_ADD,
+    EAR_OP_SUBTRACT,
+    EAR_OP_REV_SUBTRACT,
+    EAR_OP_MIN,
+    EAR_OP_MAX,
+} ear_blend_op;
 
-//typedef enum ear_fill_mode ear_fill_mode;
+typedef enum ear_fill_mode{
+    EAR_FILL_FILL,
+    EAR_FILL_LINE,
+} ear_fill_mode;
 
 
 ear_pipeline*
@@ -42,50 +72,9 @@ ear_bind_pipeline(
     );
 
 
-typedef enum ear_primitive_type{
-    EAR_PRIM_FLOAT,
-    EAR_PRIM_INT,
-} ear_primitive_type;
-
-typedef enum ear_cull_mode{
-    EAR_CULL_NONE,
-    EAR_CULL_FRONT,
-    EAR_CULL_BACK,
-} ear_cull_mode;
-
-typedef enum ear_front_face{
-    EAR_FRONT_CW,
-    EAR_FRONT_CCW,
-} ear_front_face;
-
-typedef enum ear_blend_factor{
-    EAR_FAC_ZERO,
-    EAR_FAC_ONE,
-    EAR_FAC_SRC_COLOR,
-    EAR_FAC_INV_SRC_COLOR,
-    EAR_FAC_DST_COLOR,
-    EAR_FAC_INV_DST_COLOR,
-    EAR_FAC_SRC_ALPHA,
-    EAR_FAC_INV_SRC_ALPHA,
-    EAR_FAC_DST_ALPHA,
-    EAR_FAC_INV_DST_ALPHA,
-} ear_blend_factor;
-
-typedef enum ear_blend_op{
-    EAR_OP_ADD,
-    EAR_OP_SUBTRACT,
-    EAR_OP_REV_SUBTRACT,
-    EAR_OP_MIN,
-    EAR_OP_MAX,
-} ear_blend_op;
-
-typedef enum ear_fill_mode{
-    EAR_FILL_FILL,
-    EAR_FILL_LINE,
-} ear_fill_mode;
-
 struct ear_shader_desc{
-    char* source;
+    const char* source;
+    uint32_t source_size;
 };
 
 struct ear_vertex_attrib_desc{
@@ -111,21 +100,21 @@ struct ear_pipeline_desc{
     ear_shader_desc fragment;
 
     ear_vertex_attrib_desc* vertex_attribs;
-    uint32_t vertex_attrib_amt;
+        uint32_t vertex_attrib_amt;
 
     bool depth;
 
     ear_cull_mode cull_mode;
     ear_front_face front_face;
 
-    struct{ bool has_state; ear_blend_state state; } blend_state;
+    ear_blend_state blend_state;
+        bool has_blend_state;
 
     ear_fill_mode fill_mode;
 };
 
 struct ear_pipeline{
-    uint32_t id;
-    uint32_t vao;
+    void* vk;
 
     ear_pipeline_desc desc;
 

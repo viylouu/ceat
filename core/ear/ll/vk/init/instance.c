@@ -1,7 +1,7 @@
 #include "instance.h"
-#include "../../../cutil.h"
+#include "../../../../cutil.h"
 
-#include "../../../eaw/vk.h"
+#include "../../../../eaw/vk.h"
 
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>

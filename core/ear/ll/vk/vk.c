@@ -1,22 +1,18 @@
 #include "vk.h"
 #include "../../../cutil.h"
 
-#include "comm_pool.h"
-#include "comm_buffer.h"
+#include "init/comm_pool.h"
+#include "init/comm_buffer.h"
+#include "init/device_log.h"
+#include "init/device_phys.h"
+#include "init/surface.h"
+#include "init/validation.h"
+#include "init/instance.h"
+#include "init/sync.h"
 #include "sc/render_pass.h"
 #include "sc/swapchain.h"
-#include "device_log.h"
-#include "device_phys.h"
-#include "surface.h"
-#include "validation.h"
-#include "instance.h"
-#include "sync.h"
 #include "sc/image_views.h"
 #include "sc/framebuffer.h"
-
-uint32_t cur_frame = EAR_VK_MAX_FRAMES_IN_FLIGHT;
-uint32_t cur_img_index;
-bool first_frame = true;
 
 void 
 ear_vk_init(
@@ -71,22 +67,22 @@ void
 ear_vk_frame(
     void
     ) {
-    if (!first_frame) {
-        _ear_vk_end_render_pass(cur_frame);
-        _ear_vk_end_command_buffer(_ear_vk_comm_buffers[cur_frame]);
+    if (!_ear_vk_first_frame) {
+        _ear_vk_end_render_pass(_ear_vk_cur_frame);
+        _ear_vk_end_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame]);
 
-        _ear_vk_submit_command_buffer(&_ear_vk_comm_buffers[cur_frame], cur_frame);
-        _ear_vk_present_swapchain(cur_img_index, cur_frame);
+        _ear_vk_submit_command_buffer(&_ear_vk_comm_buffers[_ear_vk_cur_frame], _ear_vk_cur_frame);
+        _ear_vk_present_swapchain(_ear_vk_cur_img_index, _ear_vk_cur_frame);
     }
 
-    first_frame = false;
+    _ear_vk_first_frame = false;
 
-    ++cur_frame;
-    if (cur_frame >= EAR_VK_MAX_FRAMES_IN_FLIGHT) cur_frame = 0;
+    ++_ear_vk_cur_frame;
+    if (_ear_vk_cur_frame >= EAR_VK_MAX_FRAMES_IN_FLIGHT) _ear_vk_cur_frame = 0;
 
-    _ear_vk_wait_for_fences(cur_frame);
-    cur_img_index = _ear_vk_acquire_swapchain_image(cur_frame);
+    _ear_vk_wait_for_fences(_ear_vk_cur_frame);
+    _ear_vk_cur_img_index = _ear_vk_acquire_swapchain_image(_ear_vk_cur_frame);
 
-    _ear_vk_start_command_buffer(_ear_vk_comm_buffers[cur_frame], cur_img_index);
-    _ear_vk_start_render_pass(cur_img_index, cur_frame);
+    _ear_vk_start_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame], _ear_vk_cur_img_index);
+    _ear_vk_start_render_pass(_ear_vk_cur_img_index, _ear_vk_cur_frame);
 }

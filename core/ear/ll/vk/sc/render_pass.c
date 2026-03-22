@@ -1,10 +1,10 @@
 #include "render_pass.h"
 #include "../../../../cutil.h"
 
-#include "../comm_buffer.h"
+#include "../init/comm_buffer.h"
 #include "framebuffer.h"
 #include "swapchain.h"
-#include "../device_log.h"
+#include "../init/device_log.h"
 
 VkRenderPass _ear_vk_renderpass;
 

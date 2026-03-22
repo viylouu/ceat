@@ -44,27 +44,28 @@ target_sources(ceat
         core/eaw/vk.c
 
         core/ear/ear.c
-        #core/ear/ll/gl/gl.c
         core/ear/ll/vk/vk.c
-        core/ear/ll/vk/validation.c
-        core/ear/ll/vk/instance.c
-        core/ear/ll/vk/surface.c
-        core/ear/ll/vk/device_phys.c
-        core/ear/ll/vk/device_log.c
-        core/ear/ll/vk/queue_fam.c
-        core/ear/ll/vk/comm_pool.c
-        core/ear/ll/vk/comm_buffer.c
-        core/ear/ll/vk/sync.c
+        core/ear/ll/vk/init/validation.c
+        core/ear/ll/vk/init/instance.c
+        core/ear/ll/vk/init/surface.c
+        core/ear/ll/vk/init/device_phys.c
+        core/ear/ll/vk/init/device_log.c
+        core/ear/ll/vk/init/queue_fam.c
+        core/ear/ll/vk/init/comm_pool.c
+        core/ear/ll/vk/init/comm_buffer.c
+        core/ear/ll/vk/init/sync.c
         core/ear/ll/vk/sc/swapchain.c
         core/ear/ll/vk/sc/image_views.c
         core/ear/ll/vk/sc/render_pass.c
         core/ear/ll/vk/sc/framebuffer.c
-        #core/ear/ll/pipeline.c
+        core/ear/ll/vk/eng/pipeline.c
+        core/ear/ll/vk/eng/shader_mod.c
+        core/ear/ll/pipeline.c
+        core/ear/ll/misc.c
         #core/ear/ll/buffer.c
         #core/ear/ll/framebuffer.c
         #core/ear/ll/texarray.c
         #core/ear/ll/texture.c
-        #core/ear/ll/misc.c
         #core/ear/hl/text.c
         #core/ear/hl/camera.c
         #core/ear/hl/data.c
@@ -156,7 +157,6 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
             ceat
     )
 
-    #[[
     add_executable(ex_triangle)
     target_sources(ex_triangle
             PRIVATE
@@ -167,6 +167,7 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
             ceat
     )
 
+    #[[
     add_executable(ex_texture)
     target_sources(ex_texture
             PRIVATE

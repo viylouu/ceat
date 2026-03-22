@@ -5,6 +5,10 @@
 
 typedef struct _ear_vk_swapchain_support_details _ear_vk_swapchain_support_details;
 
+extern uint32_t _ear_vk_cur_frame;
+extern uint32_t _ear_vk_cur_img_index;
+extern bool _ear_vk_first_frame;
+
 extern VkSwapchainKHR _ear_vk_swapchain;
 extern VkImage* _ear_vk_swapchain_imgs;
     extern uint32_t _ear_vk_swapchain_img_amt;

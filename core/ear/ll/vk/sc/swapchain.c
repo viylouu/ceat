@@ -3,11 +3,15 @@
 
 #include "../../../../eaw/window.h"
 
-#include "../sync.h"
-#include "../queue_fam.h"
-#include "../device_phys.h"
-#include "../device_log.h"
-#include "../surface.h"
+#include "../init/sync.h"
+#include "../init/queue_fam.h"
+#include "../init/device_phys.h"
+#include "../init/device_log.h"
+#include "../init/surface.h"
+
+uint32_t _ear_vk_cur_frame = EAR_VK_MAX_FRAMES_IN_FLIGHT;
+uint32_t _ear_vk_cur_img_index;
+bool _ear_vk_first_frame = true;
 
 VkSwapchainKHR _ear_vk_swapchain;
 VkImage* _ear_vk_swapchain_imgs;

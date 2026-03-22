@@ -4,7 +4,7 @@
 char*
 eau_load_file(
     const char* path,
-    uint64_t* out_size
+    uint32_t* out_size
     ) {
     FILE* f = fopen(path, "rb");
     eat_assert(f, "cannot find file at path \"%s\"!", path);

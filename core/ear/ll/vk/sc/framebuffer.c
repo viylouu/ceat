@@ -4,7 +4,7 @@
 #include "image_views.h"
 #include "swapchain.h"
 #include "render_pass.h"
-#include "../device_log.h"
+#include "../init/device_log.h"
 
 VkFramebuffer* _ear_vk_swapchain_fbufs;
 

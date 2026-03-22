@@ -5,7 +5,7 @@
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
 
-#include "vk.h"
+#include "../vk.h"
 
 extern VkSemaphore _ear_vk_image_available_sems[EAR_VK_MAX_FRAMES_IN_FLIGHT];
 extern VkSemaphore _ear_vk_render_finish_sems[EAR_VK_MAX_FRAMES_IN_FLIGHT];
