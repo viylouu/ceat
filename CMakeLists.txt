@@ -34,7 +34,7 @@ endif()
 
 function(compile_shader BASE IN OUT)
     add_custom_command(
-        OUTPUT ${BASE}/${OUT}
+        OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${BASE}/${OUT}
         COMMAND ${GLSLC} ${CMAKE_CURRENT_SOURCE_DIR}/${BASE}/${IN} -o ${CMAKE_CURRENT_SOURCE_DIR}/${BASE}/${OUT}
         DEPENDS ${BASE}/${IN}
         COMMENT "in ${BASE}: compiling ${IN} to ${OUT}"
