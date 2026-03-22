@@ -36,8 +36,6 @@ ear_vk_init(
     _ear_vk_create_sync_objects();
 
     _ear_vk_create_full_swapchain();
-
-    eat_warn("vk init!");
 }
 void
 ear_vk_exit(
