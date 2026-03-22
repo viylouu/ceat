@@ -198,6 +198,8 @@ void
 _ear_vk_delete_pipeline(
     _ear_vk_pipeline* pln
     ) {
+    _ear_vk_device_wait_idle();
+
     vkDestroyPipeline(_ear_vk_device, pln->pipeline, NULL);
     vkDestroyPipelineLayout(_ear_vk_device, pln->layout, NULL);
 
