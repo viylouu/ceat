@@ -6,7 +6,7 @@
 #include <math.h>
 
 void
-_ear_vk_set_viewport(
+ear_vk_set_viewport(
     float x, float y,
     float w, float h
     ) {
@@ -22,7 +22,7 @@ _ear_vk_set_viewport(
     vkCmdSetViewport(_ear_vk_comm_buffers[_ear_vk_cur_frame], 0,1, &viewport);
 }
 void
-_ear_vk_set_scissor(
+ear_vk_set_scissor(
     float x, float y,
     float w, float h
     ) {

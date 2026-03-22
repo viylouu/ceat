@@ -27,6 +27,20 @@ else()
     find_package(glfw3 REQUIRED)
 endif()
 
+find_program(GLSLC glslc)
+if (NOT GLSLC)
+    message(FATAL_ERROR "glslc not found! make sure it is in your path or you have it installed!")
+endif()
+
+function(compile_shader BASE IN OUT)
+    add_custom_command(
+        OUTPUT ${BASE}/${OUT}
+        COMMAND ${GLSLC} ${CMAKE_CURRENT_SOURCE_DIR}/${BASE}/${IN} -o ${CMAKE_CURRENT_SOURCE_DIR}/${BASE}/${OUT}
+        DEPENDS ${BASE}/${IN}
+        COMMENT "in ${BASE}: compiling ${IN} to ${OUT}"
+    )
+endfunction()
+
 #add_compile_options(-fsanitize=address -g)
 #add_link_options(-fsanitize=address)
 
@@ -60,6 +74,7 @@ target_sources(ceat
         core/ear/ll/vk/sc/framebuffer.c
         core/ear/ll/vk/eng/pipeline.c
         core/ear/ll/vk/eng/shader_mod.c
+        core/ear/ll/vk/eng/screen.c
         core/ear/ll/pipeline.c
         core/ear/ll/misc.c
         #core/ear/ll/buffer.c
@@ -155,6 +170,15 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
     target_link_libraries(ex_window
         PRIVATE
             ceat
+    )
+
+    compile_shader(examples/triangle shad.vert shad_v.spv)
+    compile_shader(examples/triangle shad.frag shad_f.spv)
+
+    add_custom_target(ex_triangle_shad ALL
+        DEPENDS
+            examples/triangle/shad_v.spv
+            examples/triangle/shad_f.spv
     )
 
     add_executable(ex_triangle)

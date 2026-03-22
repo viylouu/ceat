@@ -7,6 +7,7 @@ int main(void) {
     eat_init("triangle", 1600,900, (eat_init_opts){});
 
     // shaders compiled from source to spirv via glslc
+    // see command in CMakeLists.txt on ex_triangle
 
     uint32_t vertex_len; uint32_t fragment_len;
     char* vertex   = eau_load_file("examples/triangle/shad_v.spv", &vertex_len);

@@ -7,11 +7,11 @@
 #include "../sc/swapchain.h"
 #include "../init/device_log.h"
 
-_ear_vk_pipeline*
-_ear_vk_create_pipeline(
+ear_vk_pipeline*
+ear_vk_create_pipeline(
     ear_pipeline_desc desc
     ) {
-    _ear_vk_pipeline* pln = malloc(sizeof(_ear_vk_pipeline));
+    ear_vk_pipeline* pln = malloc(sizeof(ear_vk_pipeline));
 
     VkShaderModule vertex   = _ear_vk_create_shader_module(desc.vertex.source,   desc.vertex.source_size);
     VkShaderModule fragment = _ear_vk_create_shader_module(desc.fragment.source, desc.fragment.source_size);
@@ -195,8 +195,8 @@ _ear_vk_create_pipeline(
     return pln;
 }
 void
-_ear_vk_delete_pipeline(
-    _ear_vk_pipeline* pln
+ear_vk_delete_pipeline(
+    ear_vk_pipeline* pln
     ) {
     _ear_vk_device_wait_idle();
 
@@ -207,8 +207,8 @@ _ear_vk_delete_pipeline(
 }
 
 void
-_ear_vk_bind_pipeline(
-    _ear_vk_pipeline* pln
+ear_vk_bind_pipeline(
+    ear_vk_pipeline* pln
     ) {
     vkCmdBindPipeline(_ear_vk_comm_buffers[_ear_vk_cur_frame], VK_PIPELINE_BIND_POINT_GRAPHICS, pln->pipeline);
 }

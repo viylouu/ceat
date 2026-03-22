@@ -4,12 +4,12 @@
 #include <vulkan/vulkan_core.h>
 
 void
-_ear_vk_set_viewport(
+ear_vk_set_viewport(
     float x, float y,
     float w, float h
     );
 void
-_ear_vk_set_scissor(
+ear_vk_set_scissor(
     float x, float y,
     float w, float h
     );
