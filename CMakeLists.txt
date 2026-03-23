@@ -93,8 +93,8 @@ target_sources(ceat
         
         #core/ear/hl/text.c
         #core/ear/hl/camera.c
-        #core/ear/hl/data.c
-        #core/ear/hl/user.c
+        core/ear/hl/data.c
+        core/ear/hl/user.c
 
         core/eau/file.c
         core/eau/mat4.c

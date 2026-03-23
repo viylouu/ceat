@@ -28,6 +28,26 @@ ear_rect_rend_create(
     ear_rr.pln = ear_create_pipeline((ear_pipeline_desc){
             .vertex = (ear_shader_desc){ .source = (char*)vert },
             .fragment = (ear_shader_desc){ .source = (char*)frag },
+
+            .buffer_attrib_set_amt = 1,
+            .buffer_attrib_sets = (ear_buffer_attrib_desc_set[]){
+                (ear_buffer_attrib_desc_set){
+                    .buffer_attrib_amt = 2,
+                    .buffer_attribs = (ear_buffer_attrib_desc[]){
+                        (ear_buffer_attrib_desc){
+                            .binding = 0,
+                            .type  = EAR_BUF_STORAGE,
+                            .stage = EAR_STAGE_VERTEX,
+                            },
+                        (ear_buffer_attrib_desc){
+                            .binding = 1,
+                            .type  = EAR_BUF_UNIFORM,
+                            .stage = EAR_STAGE_VERTEX,
+                            },
+                        },
+                    }
+                },
+
             .has_blend_state = true,
             .blend_state = (ear_blend_state){ 
                 .src_color = EAR_FAC_SRC_ALPHA, .dst_color = EAR_FAC_INV_SRC_ALPHA,
@@ -36,6 +56,7 @@ ear_rect_rend_create(
                 },
         }, arena);
 
+    /*
     ear_rr.ubo = ear_create_buffer((ear_buffer_desc){
             .type = EAR_BUF_UNIFORM,
             .usage = EAR_USAGE_DYNAMIC,
@@ -47,6 +68,7 @@ ear_rect_rend_create(
             .usage = EAR_USAGE_DYNAMIC,
             .stride = sizeof(ear_rr.ssbo_d[0]),
         }, &ear_rr.ssbo_d, sizeof(ear_rr.ssbo_d), arena);
+    */
 }
 
 void
@@ -57,12 +79,12 @@ ear_rect_rend_flush(
 
     eau_mat4_copy(proj, &ear_rr.ubo_d.proj);
 
-    ear_update_buffer(ear_rr.ubo);
-    ear_update_buffer(ear_rr.ssbo);
+    //ear_update_buffer(ear_rr.ubo);
+    //ear_update_buffer(ear_rr.ssbo);
 
     ear_bind_pipeline(ear_rr.pln);
-    ear_bind_buffer(ear_rr.ssbo, 0);
-    ear_bind_buffer(ear_rr.ubo, 1);
+    //ear_bind_buffer(ear_rr.ssbo, 0);
+    //ear_bind_buffer(ear_rr.ubo, 1);
 
     ear_draw(6, ear_rr.ssbo_i);
 

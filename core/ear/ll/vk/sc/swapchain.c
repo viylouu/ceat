@@ -221,7 +221,7 @@ void
 _ear_vk_cleanup_swapchain(
     void
     ) {
-    for (uint32_t i = 0; i < EAR_VK_MAX_FRAMES_IN_FLIGHT; ++i) {
+    for (uint32_t i = 0; i < _ear_vk_swapchain_img_amt; ++i) {
         vkDestroyFramebuffer(_ear_vk_device, _ear_vk_swapchain_fbufs[i], NULL);
         vkDestroyImageView(_ear_vk_device, _ear_vk_swapchain_img_views[i], NULL);
     }

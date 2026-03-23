@@ -4,6 +4,7 @@
 #include "../../pipeline.h"
 
 #include "../sc/render_pass.h"
+#include "core/ear/ll/buffer.h"
 #include "shader_mod.h"
 #include "../init/comm_buffer.h"
 #include "../sc/swapchain.h"
@@ -120,6 +121,19 @@ _ear_vk_convert_blend_op(
     case EAR_OP_REV_SUBTRACT: return VK_BLEND_OP_REVERSE_SUBTRACT;
     case EAR_OP_MIN:          return VK_BLEND_OP_MIN;
     case EAR_OP_MAX:          return VK_BLEND_OP_MAX;
+    }
+
+    eat_unreachable();
+}
+
+VkDescriptorType
+_ear_vk_convert_desc_type(
+    ear_buffer_type type
+    ) {
+    switch (type) {
+    case EAR_BUF_VERTEX:  eat_error("shader pipeline buffer attribs cannot be vertex buffers!");
+    case EAR_BUF_UNIFORM: return VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    case EAR_BUF_STORAGE: return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
     }
 
     eat_unreachable();
@@ -279,14 +293,50 @@ ear_vk_create_pipeline(
         .blendConstants[3] = 0,
         };
 
+    pln->setlayouts = malloc(sizeof(VkDescriptorSetLayout) * desc.buffer_attrib_set_amt);
+    pln->setlayout_amt = desc.buffer_attrib_set_amt;
+
+    for (uint32_t i = 0; i < desc.buffer_attrib_set_amt; ++i) {
+        ear_buffer_attrib_desc_set set = desc.buffer_attrib_sets[i];
+        VkDescriptorSetLayoutBinding* bindings = malloc(sizeof(VkDescriptorSetLayoutBinding) * set.buffer_attrib_amt);
+        for (uint32_t j = 0; j < set.buffer_attrib_amt; ++j) {
+            ear_buffer_attrib_desc attrib = set.buffer_attribs[j];
+            bindings[j] = (VkDescriptorSetLayoutBinding){
+                .binding = attrib.binding,
+
+                .descriptorType = _ear_vk_convert_desc_type(attrib.type),
+                .descriptorCount = 1,
+
+                .stageFlags = VK_SHADER_STAGE_VERTEX_BIT,
+
+                .pImmutableSamplers = NULL,
+                };
+        }
+
+        VkDescriptorSetLayoutCreateInfo createinfo = {
+            .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
+            .pNext = NULL,
+
+            .flags = 0,
+
+            .bindingCount = set.buffer_attrib_amt,
+            .pBindings    = bindings,
+            };
+
+        eat_assert(vkCreateDescriptorSetLayout(_ear_vk_device, &createinfo, NULL, &pln->setlayouts[i]) == VK_SUCCESS,
+            "failed to create descriptor set layout!");
+
+        free(bindings);
+    }
+
     VkPipelineLayoutCreateInfo layoutinfo = {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
         .pNext = NULL,
 
         .flags = 0,
 
-        .setLayoutCount = 0,
-        .pSetLayouts    = NULL,
+        .setLayoutCount = pln->setlayout_amt,
+        .pSetLayouts    = pln->setlayouts,
 
         .pushConstantRangeCount = 0,
         .pPushConstantRanges    = NULL,
@@ -342,6 +392,10 @@ ear_vk_delete_pipeline(
 
     vkDestroyPipeline(_ear_vk_device, pln->pipeline, NULL);
     vkDestroyPipelineLayout(_ear_vk_device, pln->layout, NULL);
+
+    for (uint32_t i = 0; i < pln->setlayout_amt; ++i)
+        vkDestroyDescriptorSetLayout(_ear_vk_device, pln->setlayouts[i], NULL);
+    free(pln->setlayouts);
 
     free(pln);
 }

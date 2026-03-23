@@ -15,6 +15,9 @@ typedef struct ear_shader_desc ear_shader_desc;
 
 typedef struct ear_vertex_attrib_desc ear_vertex_attrib_desc;
 
+typedef struct ear_buffer_attrib_desc ear_buffer_attrib_desc;
+typedef struct ear_buffer_attrib_desc_set ear_buffer_attrib_desc_set;
+
 typedef enum ear_primitive_type{
     EAR_PRIM_FLOAT,
     EAR_PRIM_INT,
@@ -61,6 +64,11 @@ typedef enum ear_topology{
     EAR_TOP_LINES,
 } ear_topology;
 
+typedef enum ear_shader_stage{
+    EAR_STAGE_VERTEX,
+    EAR_STAGE_FRAGMENT,
+} ear_shader_stage;
+
 
 ear_pipeline*
 ear_create_pipeline(
@@ -102,6 +110,17 @@ struct ear_blend_state{
     ear_blend_op alpha_op;
 };
 
+struct ear_buffer_attrib_desc{
+    uint32_t binding;
+    ear_buffer_type type;
+    ear_shader_stage stage;
+};
+
+struct ear_buffer_attrib_desc_set{
+    ear_buffer_attrib_desc* buffer_attribs;
+        uint32_t buffer_attrib_amt;
+};
+
 struct ear_pipeline_desc{
     ear_shader_desc vertex;
     ear_shader_desc fragment;
@@ -110,6 +129,9 @@ struct ear_pipeline_desc{
         uint32_t vertex_buffer_amt;
     ear_vertex_attrib_desc* vertex_attribs;
         uint32_t vertex_attrib_amt;
+
+    ear_buffer_attrib_desc_set* buffer_attrib_sets;
+        uint32_t buffer_attrib_set_amt;
 
     bool depth;
     bool depth_clamp;

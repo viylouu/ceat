@@ -24,4 +24,7 @@ ear_vk_bind_pipeline(
 struct ear_vk_pipeline{
     VkPipelineLayout layout;
     VkPipeline pipeline;
+
+    VkDescriptorSetLayout* setlayouts;
+        uint32_t setlayout_amt;
 };

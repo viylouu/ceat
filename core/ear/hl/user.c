@@ -36,9 +36,9 @@ ear_rect(
     rect = eau_rect_topleftify(rect);
 
     mat4 mat;
-    if (!ear_bound_camera_ui_mode && ear_bound_camera)
-        eau_mat4_mult(&mat, transf, ear_bound_camera->matrix);
-    else
+    //if (!ear_bound_camera_ui_mode && ear_bound_camera)
+    //    eau_mat4_mult(&mat, transf, ear_bound_camera->matrix);
+    //else
         eau_mat4_copy(transf, &mat);
 
     ear_rr.ssbo_d[ear_rr.ssbo_i] = (typeof(ear_rr.ssbo_d[0])){ 
