@@ -3,36 +3,11 @@
 
 #include <string.h>
 
+#include "../util/buffer.h"
+
 #include "../init/device_log.h"
-#include "../init/device_phys.h"
 #include "../init/comm_buffer.h"
 #include "../sc/swapchain.h"
-
-VkBufferUsageFlags
-_ear_vk_convert_buf_type(
-    ear_buffer_type type
-    ) {
-    switch (type) {
-    case EAR_BUF_VERTEX:  return VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
-    case EAR_BUF_UNIFORM: return VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
-    case EAR_BUF_STORAGE: return VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
-    }
-
-    eat_unreachable();
-}
-
-uint32_t 
-_ear_vk_find_memory_type(
-    uint32_t type_filter,
-    VkMemoryPropertyFlags props
-    ) {
-    VkPhysicalDeviceMemoryProperties memprops;
-    vkGetPhysicalDeviceMemoryProperties(_ear_vk_physical_device, &memprops);
-
-    for (uint32_t i = 0; i < memprops.memoryTypeCount; ++i) if (type_filter & (1 << i) && (memprops.memoryTypes[i].propertyFlags & props) == props) return i;
-
-    eat_error("failed to find suitable memory type for buffer!");
-}
 
 ear_vk_buffer*
 ear_vk_create_buffer(
@@ -43,46 +18,28 @@ ear_vk_create_buffer(
     ear_vk_buffer* buf = malloc(sizeof(ear_vk_buffer));
     buf->type = desc.type;
 
-    VkBufferCreateInfo bufferinfo = {
-        .sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
-        .pNext = NULL,
+    VkBuffer stagbuf;
+    VkDeviceMemory stagmem;
+    _ear_vk_make_buf(
+        size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+        &stagbuf, &stagmem
+        );
 
-        .flags = 0,
+    vkMapMemory(_ear_vk_device, stagmem, 0, size, 0, &buf->data);
+    memcpy(buf->data, data, size);
+    vkUnmapMemory(_ear_vk_device, stagmem);
 
-        .size = size,
+    _ear_vk_make_buf(
+        size, _ear_vk_convert_buf_type(desc.type), 
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+        &buf->buffer, &buf->memory
+        );
 
-        .usage = _ear_vk_convert_buf_type(desc.type),
+    _ear_vk_copy_buf(stagbuf, buf->buffer, size);
 
-        .sharingMode = VK_SHARING_MODE_EXCLUSIVE,
-        .queueFamilyIndexCount = 0,
-        .pQueueFamilyIndices   = NULL,
-        };
-
-    eat_assert(vkCreateBuffer(_ear_vk_device, &bufferinfo, NULL, &buf->buffer) == VK_SUCCESS,
-        "failed to create buffer!");
-
-    VkMemoryRequirements memreqs;
-    vkGetBufferMemoryRequirements(_ear_vk_device, buf->buffer, &memreqs);
-
-    VkMemoryAllocateInfo allocinfo = {
-        .sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
-        .pNext = NULL,
-
-        .allocationSize = memreqs.size,
-        .memoryTypeIndex = _ear_vk_find_memory_type(
-            memreqs.memoryTypeBits, 
-            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
-            ),
-        };
-
-    eat_assert(vkAllocateMemory(_ear_vk_device, &allocinfo, NULL, &buf->memory) == VK_SUCCESS,
-        "failed to allocate buffer memory!");
-
-    vkBindBufferMemory(_ear_vk_device, buf->buffer, buf->memory, 0);
-
-    vkMapMemory(_ear_vk_device, buf->memory, 0, bufferinfo.size, 0, &buf->data);
-    memcpy(buf->data, data, bufferinfo.size);
-    vkUnmapMemory(_ear_vk_device, buf->memory);
+    vkDestroyBuffer(_ear_vk_device, stagbuf, NULL);
+    vkFreeMemory(_ear_vk_device, stagmem, NULL);
 
     return buf;
 }

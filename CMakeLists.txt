@@ -81,6 +81,7 @@ target_sources(ceat
         core/ear/ll/vk/sc/image_views.c
         core/ear/ll/vk/sc/render_pass.c
         core/ear/ll/vk/sc/framebuffer.c
+        core/ear/ll/vk/util/buffer.c
         core/ear/ll/vk/eng/pipeline.c
         core/ear/ll/vk/eng/shader_mod.c
         core/ear/ll/vk/eng/screen.c

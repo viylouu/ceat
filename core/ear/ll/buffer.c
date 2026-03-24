@@ -44,8 +44,6 @@ ear_create_buffer(
             ),
         };
 
-    
-
     if (arena != NULL) eau_add_to_arena(arena, &buf->dest, buf, _ear_arena_buffer_delete);
     return buf;
 }
