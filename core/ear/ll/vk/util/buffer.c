@@ -4,6 +4,10 @@
 #include "../init/device_log.h"
 #include "../init/device_phys.h"
 #include "../init/comm_pool.h"
+#include "../vk.h"
+#include "core/ear/ll/vk/sc/swapchain.h"
+
+#include <string.h>
 
 uint32_t 
 _ear_vk_find_memory_type(
@@ -122,6 +126,63 @@ _ear_vk_copy_buf(
     vkQueueWaitIdle(_ear_vk_graphics_queue);
 
     vkFreeCommandBuffers(_ear_vk_device, _ear_vk_comm_pool, 1, &commbuf);
+}
+
+void
+_ear_vk_make_buf_vi(
+    ear_vk_buffer* buf,
+    ear_buffer_desc desc,
+    void* data,
+    uint32_t size
+    ) {
+    VkBuffer stagbuf;
+    VkDeviceMemory stagmem;
+    _ear_vk_make_buf(
+        size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+        &stagbuf, &stagmem
+        );
+
+    vkMapMemory(_ear_vk_device, stagmem, 0, size, 0, &buf->gen.data);
+    memcpy(buf->gen.data, data, size);
+    vkUnmapMemory(_ear_vk_device, stagmem);
+
+    _ear_vk_make_buf(
+        size, _ear_vk_convert_buf_type(desc.type), 
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+        &buf->gen.buffer, &buf->gen.memory
+        );
+
+    _ear_vk_copy_buf(stagbuf, buf->gen.buffer, size);
+
+    vkDestroyBuffer(_ear_vk_device, stagbuf, NULL);
+    vkFreeMemory(_ear_vk_device, stagmem, NULL);
+}
+void
+_ear_vk_make_buf_u(
+    ear_vk_buffer* buf,
+    ear_buffer_desc desc,
+    void* data,
+    uint32_t size
+    ) {
+    for (uint32_t i = 0; i < EAR_VK_MAX_FRAMES_IN_FLIGHT; ++i) {
+        _ear_vk_make_buf(
+            size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+            &buf->ubuf.buffers[i], &buf->ubuf.memories[i]
+            );
+
+        vkMapMemory(_ear_vk_device, buf->ubuf.memories[i], 0, size, 0, &buf->ubuf.datas[i]);
+    }
+}
+
+void
+_ear_vk_update_buf_u(
+    ear_vk_buffer* buf,
+    void* data,
+    uint32_t size
+    ) {
+    memcpy(buf->ubuf.datas[_ear_vk_cur_img_index], data, size);
 }
 
 VkBufferUsageFlags

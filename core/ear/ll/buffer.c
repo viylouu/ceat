@@ -72,20 +72,9 @@ void
 ear_update_buffer(
     ear_buffer* buf
     ) {
-    /*
-    if (buf->prev_size != 0) eat_assert(buf->desc.usage == EAR_USAGE_DYNAMIC, "cant update a static buffer!");
+    eat_assert(buf->size == buf->prev_size, "buffer resizing unsupported!");
 
-    GLenum targ = _TYPECONV_buffer_type(buf->desc.type);
-
-    gl.bindBuffer(targ, buf->id);
-
-    if (buf->size > buf->prev_size) {
-        buf->prev_size = buf->size;
-        gl.bufferData(targ, buf->size, buf->data, GL_DYNAMIC_DRAW);
-    } else gl.bufferSubData(targ, 0, buf->size, buf->data);
-
-    gl.bindBuffer(targ, 0);
-    */
+    ear_vk_update_buffer(buf->vk, buf->data, buf->size);
 }
 
 

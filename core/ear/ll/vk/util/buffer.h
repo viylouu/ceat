@@ -4,6 +4,7 @@
 #include <vulkan/vulkan_core.h>
 
 #include "../../buffer.h"
+#include "../eng/buffer.h"
 
 uint32_t 
 _ear_vk_find_memory_type(
@@ -25,6 +26,28 @@ _ear_vk_copy_buf(
     VkBuffer src,
     VkBuffer dst,
     VkDeviceSize size
+    );
+
+void
+_ear_vk_make_buf_vi(
+    ear_vk_buffer* buf,
+    ear_buffer_desc desc,
+    void* data,
+    uint32_t size
+    );
+void
+_ear_vk_make_buf_u(
+    ear_vk_buffer* buf,
+    ear_buffer_desc desc,
+    void* data,
+    uint32_t size
+    );
+
+void
+_ear_vk_update_buf_u(
+    ear_vk_buffer* buf,
+    void* data,
+    uint32_t size
     );
 
 VkBufferUsageFlags

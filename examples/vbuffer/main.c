@@ -29,7 +29,7 @@ int main(void) {
         .fragment = (ear_shader_desc){ .source = fragment, .source_size = fragment_len },
 
         .vertex_buffer_amt = 1,
-        .vertex_buffers = (ear_buffer*[]){ vbuf },
+        .vertex_buffers = &vbuf,
 
         .vertex_attrib_amt = 2,
         .vertex_attribs = (ear_vertex_attrib_desc[]){

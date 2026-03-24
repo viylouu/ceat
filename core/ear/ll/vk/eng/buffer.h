@@ -4,6 +4,7 @@
 #include <vulkan/vulkan_core.h>
 
 #include "../../buffer.h"
+#include "../vk.h"
 
 typedef struct ear_vk_buffer ear_vk_buffer;
 
@@ -24,9 +25,25 @@ ear_vk_bind_buffer(
     uint32_t slot
     );
 
+void
+ear_vk_update_buffer(
+    ear_vk_buffer* buf,
+    void* data,
+    uint32_t size
+    );
+
 struct ear_vk_buffer{
-    VkBuffer buffer;
-    VkDeviceMemory memory;
-    void* data;
     ear_buffer_type type;
+    union{
+    struct{
+        VkBuffer buffer;
+        VkDeviceMemory memory;
+        void* data;
+        } gen;
+    struct{
+        VkBuffer buffers[EAR_VK_MAX_FRAMES_IN_FLIGHT];
+        VkDeviceMemory memories[EAR_VK_MAX_FRAMES_IN_FLIGHT];
+        void* datas[EAR_VK_MAX_FRAMES_IN_FLIGHT];
+        } ubuf;
+    };
 };
