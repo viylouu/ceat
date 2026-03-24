@@ -53,7 +53,7 @@ struct ear_buffer_desc{
 };
 
 struct ear_buffer{
-    uint32_t id;
+    void* vk;
 
     uint32_t size;
         uint32_t prev_size;

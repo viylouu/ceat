@@ -84,10 +84,11 @@ target_sources(ceat
         core/ear/ll/vk/eng/pipeline.c
         core/ear/ll/vk/eng/shader_mod.c
         core/ear/ll/vk/eng/screen.c
+        core/ear/ll/vk/eng/buffer.c
         core/ear/ll/misc.c
         core/ear/ll/pipeline.c
         #core/ear/ll/texture.c
-        #core/ear/ll/buffer.c
+        core/ear/ll/buffer.c
         #core/ear/ll/framebuffer.c
         #core/ear/ll/texarray.c
         
