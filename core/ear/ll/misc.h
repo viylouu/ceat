@@ -5,7 +5,11 @@
 
 void
 ear_draw(
-    int32_t vertices, int32_t instances
+    uint32_t vertices, uint32_t instances
+    );
+void
+ear_draw_idx(
+    uint32_t indices, uint32_t instances
     );
 
 void

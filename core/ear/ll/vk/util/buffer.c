@@ -134,6 +134,7 @@ _ear_vk_convert_buf_type(
     case EAR_BUF_VERTEX:  return flags | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
     case EAR_BUF_UNIFORM: return flags | VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
     case EAR_BUF_STORAGE: return flags | VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
+    case EAR_BUF_INDEX:   return flags | VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
     }
 
     eat_unreachable();

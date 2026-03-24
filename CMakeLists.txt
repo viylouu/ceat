@@ -222,6 +222,25 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
             ceat
     )
 
+    compile_shader(examples/ibuffer shad.vert shad_v.spv)
+    compile_shader(examples/ibuffer shad.frag shad_f.spv)
+
+    add_custom_target(ex_ibuffer_shad ALL
+        DEPENDS
+            examples/ibuffer/shad_v.spv
+            examples/ibuffer/shad_f.spv
+    )
+
+    add_executable(ex_ibuffer)
+    target_sources(ex_ibuffer
+            PRIVATE
+                examples/ibuffer/main.c
+        )
+    target_link_libraries(ex_ibuffer
+        PRIVATE
+            ceat
+    )
+
     #[[
     add_executable(ex_texture)
     target_sources(ex_texture

@@ -60,7 +60,20 @@ ear_vk_bind_buffer(
     ) {
     switch (buf->type) {
     case EAR_BUF_VERTEX:
-        vkCmdBindVertexBuffers(_ear_vk_comm_buffers[_ear_vk_cur_frame], slot, 1, &buf->buffer, &(VkDeviceSize){0});
+        vkCmdBindVertexBuffers(
+            _ear_vk_comm_buffers[_ear_vk_cur_frame], 
+            slot, 
+            1, &buf->buffer, 
+            &(VkDeviceSize){0}
+            );
+        break;
+    case EAR_BUF_INDEX:
+        vkCmdBindIndexBuffer(
+            _ear_vk_comm_buffers[_ear_vk_cur_frame],
+            buf->buffer,
+            0,
+            VK_INDEX_TYPE_UINT32
+            );
         break;
     }
 }

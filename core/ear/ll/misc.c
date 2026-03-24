@@ -14,9 +14,15 @@
 
 void
 ear_draw(
-    int32_t vertices, int32_t instances
+    uint32_t vertices, uint32_t instances
     ) {
     vkCmdDraw(_ear_vk_comm_buffers[_ear_vk_cur_frame], vertices, instances, 0,0);
+}
+void
+ear_draw_idx(
+    uint32_t indices, uint32_t instances
+    ) {
+    vkCmdDrawIndexed(_ear_vk_comm_buffers[_ear_vk_cur_frame], indices, instances, 0,0,0);
 }
 
 void

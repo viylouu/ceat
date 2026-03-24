@@ -13,6 +13,7 @@ typedef enum ear_buffer_type{
     EAR_BUF_UNIFORM,
     EAR_BUF_STORAGE,
     EAR_BUF_VERTEX,
+    EAR_BUF_INDEX,
 } ear_buffer_type;
 
 typedef enum ear_buffer_usage{
