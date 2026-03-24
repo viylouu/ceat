@@ -77,7 +77,7 @@ ear_vk_frame(
     _ear_vk_wait_for_fences(_ear_vk_cur_frame);
 
     int32_t index = _ear_vk_acquire_swapchain_image(_ear_vk_cur_frame);
-    if (index == -1) { _ear_vk_first_frame = true; ear_vk_frame(); return; }
+    if (index == -1) { _ear_vk_first_frame = true; /*ear_vk_frame();*/ return; }
     _ear_vk_cur_img_index = index;
 
     if (_ear_vk_images_inflight[_ear_vk_cur_img_index] != NULL)
@@ -86,7 +86,7 @@ ear_vk_frame(
 
     _ear_vk_reset_fences(_ear_vk_cur_frame);
 
-    _ear_vk_start_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame], _ear_vk_cur_img_index);
+    _ear_vk_start_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame]);
     _ear_vk_start_render_pass(_ear_vk_cur_img_index, _ear_vk_cur_frame);
 
     ear_surface_width  = _ear_vk_swapchain_extent.width;

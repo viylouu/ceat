@@ -14,8 +14,8 @@ int main(void) {
     char* fragment = eau_load_file("examples/triangle/shad_f.spv", &fragment_len);
 
     ear_pipeline* pln = ear_create_pipeline((ear_pipeline_desc){
-            .vertex   = (ear_shader_desc){ .source = vertex,   .source_size = vertex_len },
-            .fragment = (ear_shader_desc){ .source = fragment, .source_size = fragment_len },
+        .vertex   = (ear_shader_desc){ .source = vertex,   .source_size = vertex_len },
+        .fragment = (ear_shader_desc){ .source = fragment, .source_size = fragment_len },
         }, NULL);
 
     free(vertex);

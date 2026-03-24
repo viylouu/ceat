@@ -1,4 +1,4 @@
-#version 330 core
+#version 450
 
 const vec2 verts[3] = vec2[](
         vec2(0,-.5), vec2(.5,.5), vec2(-.5,.5)

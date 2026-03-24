@@ -203,6 +203,25 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
             ceat
     )
 
+    compile_shader(examples/vbuffer shad.vert shad_v.spv)
+    compile_shader(examples/vbuffer shad.frag shad_f.spv)
+
+    add_custom_target(ex_vbuffer_shad ALL
+        DEPENDS
+            examples/vbuffer/shad_v.spv
+            examples/vbuffer/shad_f.spv
+    )
+
+    add_executable(ex_vbuffer)
+    target_sources(ex_vbuffer
+            PRIVATE
+                examples/vbuffer/main.c
+        )
+    target_link_libraries(ex_vbuffer
+        PRIVATE
+            ceat
+    )
+
     #[[
     add_executable(ex_texture)
     target_sources(ex_texture

@@ -14,8 +14,7 @@ _ear_vk_create_command_buffers(
 
 void
 _ear_vk_start_command_buffer(
-    VkCommandBuffer buffer, 
-    uint32_t index
+    VkCommandBuffer buffer
     );
 void
 _ear_vk_end_command_buffer(
