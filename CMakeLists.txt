@@ -174,235 +174,90 @@ target_compile_options(ceat_cpp
 ]]#
 
 if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
-    add_executable(ex_window)
-    target_sources(ex_window
-            PRIVATE
-                examples/window/main.c
-        )
-    target_link_libraries(ex_window
-        PRIVATE
-            ceat
-    )
-
     compile_shader(examples/triangle shad.vert shad_v.spv)
     compile_shader(examples/triangle shad.frag shad_f.spv)
-
-    add_custom_target(ex_triangle_shad ALL
-        DEPENDS
-            examples/triangle/shad_v.spv
-            examples/triangle/shad_f.spv
-    )
-
-    add_executable(ex_triangle)
-    target_sources(ex_triangle
-            PRIVATE
-                examples/triangle/main.c
-        )
-    target_link_libraries(ex_triangle
-        PRIVATE
-            ceat
-    )
-
     compile_shader(examples/vbuffer shad.vert shad_v.spv)
     compile_shader(examples/vbuffer shad.frag shad_f.spv)
-
-    add_custom_target(ex_vbuffer_shad ALL
-        DEPENDS
-            examples/vbuffer/shad_v.spv
-            examples/vbuffer/shad_f.spv
-    )
-
-    add_executable(ex_vbuffer)
-    target_sources(ex_vbuffer
-            PRIVATE
-                examples/vbuffer/main.c
-        )
-    target_link_libraries(ex_vbuffer
-        PRIVATE
-            ceat
-    )
-
     compile_shader(examples/ibuffer shad.vert shad_v.spv)
     compile_shader(examples/ibuffer shad.frag shad_f.spv)
-
-    add_custom_target(ex_ibuffer_shad ALL
-        DEPENDS
-            examples/ibuffer/shad_v.spv
-            examples/ibuffer/shad_f.spv
-    )
-
-    add_executable(ex_ibuffer)
-    target_sources(ex_ibuffer
-            PRIVATE
-                examples/ibuffer/main.c
-        )
-    target_link_libraries(ex_ibuffer
-        PRIVATE
-            ceat
-    )
-
     compile_shader(examples/ubuffer shad.vert shad_v.spv)
     compile_shader(examples/ubuffer shad.frag shad_f.spv)
 
-    add_custom_target(ex_ubuffer_shad ALL
-        DEPENDS
-            examples/ubuffer/shad_v.spv
-            examples/ubuffer/shad_f.spv
-    )
-
-    add_executable(ex_ubuffer)
-    target_sources(ex_ubuffer
-            PRIVATE
-                examples/ubuffer/main.c
+    function(sex exname)
+        add_executable(${exname})
+        set_target_properties(${exname}
+            PROPERTIES
+                OUTPUT_NAME ex_${exname}
         )
-    target_link_libraries(ex_ubuffer
-        PRIVATE
-            ceat
-    )
+        target_sources(${exname}
+                PRIVATE
+                    examples/${exname}/main.c
+            )
+        target_link_libraries(${exname}
+            PRIVATE
+                ceat
+        )
+        target_compile_options(${exname}
+           PRIVATE
+            -std=c23
+        )
+    endfunction()
 
+    sex(window)
+    sex(triangle)
+    sex(vbuffer)
+    sex(ubuffer)
+    sex(ibuffer)
     #[[
-    add_executable(ex_texture)
-    target_sources(ex_texture
-            PRIVATE
-                examples/texture/main.c
-        )
-    target_link_libraries(ex_texture
-        PRIVATE
-            ceat
-    )
-    target_compile_options(ex_texture
-        PRIVATE
-            -std=c23
-    )
-
-    add_executable(ex_framebuffer)
-    target_sources(ex_framebuffer
-            PRIVATE
-                examples/framebuffer/main.c
-        )
-    target_link_libraries(ex_framebuffer
-        PRIVATE
-            ceat
-    )
-    target_compile_options(ex_framebuffer
-        PRIVATE
-            -std=c23
-    )
-
-    add_executable(ex_text)
-    target_sources(ex_text
-            PRIVATE
-                examples/text/main.c
-        )
-    target_link_libraries(ex_text
-        PRIVATE
-            ceat
-    )
-    target_compile_options(ex_text
-        PRIVATE
-            -std=c23
-    )
-
-    add_executable(ex_input)
-    target_sources(ex_input
-        PRIVATE
-            examples/input/main.c
-    )
-    target_link_libraries(ex_input
-        PRIVATE
-            ceat
-    )
-
-    add_executable(ex_object)
-    target_sources(ex_object
-        PRIVATE
-            examples/object/main.c
-    )
-    target_link_libraries(ex_object
-        PRIVATE
-            ceat
-    )
-
-    add_executable(ex_clock)
-    target_sources(ex_clock
-        PRIVATE
-            examples/clock/main.c
-    )
-    target_link_libraries(ex_clock
-        PRIVATE
-            ceat
-    )
-
-    add_executable(ex_console)
-    target_sources(ex_console
-        PRIVATE
-            examples/console/main.c
-    )
-    target_link_libraries(ex_console
-        PRIVATE
-            ceat
-    )
-
-    add_executable(ex_audio)
-    target_sources(ex_audio
-        PRIVATE
-            examples/audio/main.c
-    )
-    target_link_libraries(ex_audio
-        PRIVATE
-            ceat
-    )
-
-    add_executable(ex_camera)
-    target_sources(ex_camera
-        PRIVATE
-            examples/camera/main.c
-    )
-    target_link_libraries(ex_camera
-        PRIVATE
-            ceat
-    )
-
-    add_executable(ex_debug)
-    target_sources(ex_debug
-        PRIVATE
-            examples/debug/main.c
-    )
-    target_link_libraries(ex_debug
-        PRIVATE
-            ceat
-    )
-
-    add_executable(ex_timer)
-    target_sources(ex_timer
-        PRIVATE
-            examples/timer/main.c
-    )
-    target_link_libraries(ex_timer
-        PRIVATE
-            ceat
-    )
-
-    add_executable(ex_cpp_window)
-    target_sources(ex_cpp_window
-        PRIVATE
-            examples/foreign/cpp/window/main.cpp
-    )
-    target_link_libraries(ex_cpp_window
-        PRIVATE
-            ceat
-            ceat_cpp
-    )
-
-    add_executable(ex_cpp_object)
-    target_sources(ex_cpp_object
-        PRIVATE
-            examples/foreign/cpp/object/main.cpp
-    )
-    target_link_libraries(ex_cpp_object
-        PRIVATE
-            ceat
-            ceat_cpp
-    )
+    sex(texture)
+    sex(framebuffer)
+    sex(text)
+    sex(input)
+    sex(object)
+    sex(clock)
+    sex(console)
+    sex(audio)
+    sex(camera)
+    sex(debug)
+    sex(timer)
     ]]#
+
+    function(cppex exname)
+        add_executable(cpp_${exname})
+        set_target_properties(cpp_${exname}
+            PROPERTIES
+                OUTPUT_NAME ex_cpp_${exname}
+        )
+        target_sources(cpp_${exname}
+            PRIVATE
+                examples/foreign/cpp/${exname}/main.cpp
+        )
+        target_link_libraries(cpp_${exname}
+            PRIVATE
+                ceat
+                ceat_cpp
+        )
+    endfunction()
+
+    #cppex(window)
+    #cppex(object)
+
+    function(odindindone exname)
+        set(out ${CMAKE_BINARY_DIR}/ex_odin_${exname})
+        set(in ${CMAKE_SOURCE_DIR}/examples/foreign/odin/${exname})
+        add_custom_command(
+            OUTPUT ${out}
+            COMMAND odin build ${in} -out:${out}
+            DEPENDS ${in}/main.odin
+            #BYPRODUCTS ${out}
+            COMMENT "building odin example: ${exname}"
+        )
+
+        add_custom_target(odin_${exname} ALL
+            DEPENDS ${out}
+        )
+    endfunction()
+
+    #odindindone(window)
+    #odindindone(object)
 endif()
