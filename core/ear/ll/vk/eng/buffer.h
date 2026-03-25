@@ -33,6 +33,8 @@ ear_vk_update_buffer(
     );
 
 struct ear_vk_buffer{
+    uint32_t stride;
+
     ear_buffer_type type;
     union{
     struct{

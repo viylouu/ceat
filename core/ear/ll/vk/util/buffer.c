@@ -237,6 +237,32 @@ _ear_vk_make_buf_u(
 
     eat_assert(vkAllocateDescriptorSets(_ear_vk_device, &allocinfo, buf->ubuf.sets) == VK_SUCCESS,
         "failed to create descriptor sets!");
+
+    for (uint32_t i = 0; i < EAR_VK_MAX_FRAMES_IN_FLIGHT; ++i) {
+        VkDescriptorBufferInfo bufferinfo = {
+            .buffer = buf->ubuf.buffers[i],
+            .offset = 0,
+            .range  = buf->stride,
+            };
+
+        VkWriteDescriptorSet descwrite = {
+            .sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
+            .pNext = NULL,
+
+            .dstSet          = buf->ubuf.sets[i],
+            .dstBinding      = 0,
+            .dstArrayElement = 0,
+
+            .descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+            .descriptorCount = 1,
+
+            .pBufferInfo      = &bufferinfo,
+            .pImageInfo       = NULL,
+            .pTexelBufferView = NULL,
+            };
+
+        vkUpdateDescriptorSets(_ear_vk_device, 1, &descwrite, 0, NULL);
+    }
 }
 
 void

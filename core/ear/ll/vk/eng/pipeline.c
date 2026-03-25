@@ -11,6 +11,8 @@
 #include "../sc/swapchain.h"
 #include "../init/device_log.h"
 
+ear_vk_pipeline* _ear_vk_cur_pipeline;
+
 VkFormat
 _ear_vk_convert_prim_fmt(
     ear_primitive_type type,
@@ -386,4 +388,6 @@ ear_vk_bind_pipeline(
     ear_vk_pipeline* pln
     ) {
     vkCmdBindPipeline(_ear_vk_comm_buffers[_ear_vk_cur_frame], VK_PIPELINE_BIND_POINT_GRAPHICS, pln->pipeline);
+
+    _ear_vk_cur_pipeline = pln;
 }

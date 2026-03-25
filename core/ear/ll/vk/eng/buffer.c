@@ -7,6 +7,7 @@
 #include "../init/comm_buffer.h"
 #include "../sc/swapchain.h"
 #include "../vk.h"
+#include "../eng/pipeline.h"
 
 ear_vk_buffer*
 ear_vk_create_buffer(
@@ -16,6 +17,7 @@ ear_vk_create_buffer(
     ) {
     ear_vk_buffer* buf = malloc(sizeof(ear_vk_buffer));
     buf->type = desc.type;
+    buf->stride = desc.stride;
 
     switch (desc.type) {
     case EAR_BUF_VERTEX: case EAR_BUF_INDEX: _ear_vk_make_buf_vi(buf, desc, data, size); break;
@@ -70,6 +72,18 @@ ear_vk_bind_buffer(
             buf->gen.buffer,
             0,
             VK_INDEX_TYPE_UINT32
+            );
+        break;
+    case EAR_BUF_UNIFORM:
+        vkCmdBindDescriptorSets(
+            _ear_vk_comm_buffers[_ear_vk_cur_frame],
+            VK_PIPELINE_BIND_POINT_GRAPHICS,
+            _ear_vk_cur_pipeline->layout,
+            0,
+            1,
+            &buf->ubuf.sets[_ear_vk_cur_frame],
+            0,
+            NULL
             );
         break;
     default: eat_unreachable();

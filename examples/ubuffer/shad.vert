@@ -9,5 +9,6 @@ const vec2 verts[3] = vec2[](
     );
 
 void main() {
-    gl_Position = vec4(verts[gl_VertexIndex] + sin(ubo.time), 0,1);
+    vec2 pos = verts[gl_VertexIndex];
+    gl_Position = vec4(pos + sin(ubo.time + pos.x + pos.y) * .25, 0,1);
 }
