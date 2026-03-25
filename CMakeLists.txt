@@ -39,6 +39,11 @@ function(compile_shader BASE IN OUT)
         DEPENDS ${BASE}/${IN}
         COMMENT "in ${BASE}: compiling ${IN} to ${OUT}"
     )
+    set(targname shad_${BASE}_${IN})
+    string(REGEX REPLACE "[^A-Za-z0-9_]" "_" targname_conv "${targname}")
+    add_custom_target(${targname_conv} ALL
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${BASE}/${OUT}
+    )
 endfunction()
 
 #add_compile_options(-fsanitize=address -g)
@@ -190,16 +195,16 @@ if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
                 OUTPUT_NAME ex_${exname}
         )
         target_sources(${exname}
-                PRIVATE
-                    examples/${exname}/main.c
-            )
+            PRIVATE
+                examples/${exname}/main.c
+        )
         target_link_libraries(${exname}
             PRIVATE
                 ceat
         )
         target_compile_options(${exname}
-           PRIVATE
-            -std=c23
+            PRIVATE
+                -std=c23
         )
     endfunction()
 

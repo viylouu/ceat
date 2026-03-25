@@ -25,37 +25,6 @@ ear_rect_rend_create(
     , 0
     };
 
-    ear_rr.pln = ear_create_pipeline((ear_pipeline_desc){
-            .vertex = (ear_shader_desc){ .source = (char*)vert },
-            .fragment = (ear_shader_desc){ .source = (char*)frag },
-
-            .buffer_attrib_set_amt = 1,
-            .buffer_attrib_sets = (ear_buffer_attrib_desc_set[]){
-                (ear_buffer_attrib_desc_set){
-                    .buffer_attrib_amt = 2,
-                    .buffer_attribs = (ear_buffer_attrib_desc[]){
-                        (ear_buffer_attrib_desc){
-                            .binding = 0,
-                            .type  = EAR_BUF_STORAGE,
-                            .stage = EAR_STAGE_VERTEX,
-                            },
-                        (ear_buffer_attrib_desc){
-                            .binding = 1,
-                            .type  = EAR_BUF_UNIFORM,
-                            .stage = EAR_STAGE_VERTEX,
-                            },
-                        },
-                    }
-                },
-
-            .has_blend_state = true,
-            .blend_state = (ear_blend_state){ 
-                .src_color = EAR_FAC_SRC_ALPHA, .dst_color = EAR_FAC_INV_SRC_ALPHA,
-                .src_alpha = EAR_FAC_ONE,       .dst_alpha = EAR_FAC_INV_SRC_ALPHA,
-                .color_op = EAR_OP_ADD, .alpha_op = EAR_OP_ADD,
-                },
-        }, arena);
-
     /*
     ear_rr.ubo = ear_create_buffer((ear_buffer_desc){
             .type = EAR_BUF_UNIFORM,
@@ -69,6 +38,25 @@ ear_rect_rend_create(
             .stride = sizeof(ear_rr.ssbo_d[0]),
         }, &ear_rr.ssbo_d, sizeof(ear_rr.ssbo_d), arena);
     */
+
+
+    ear_rr.pln = ear_create_pipeline((ear_pipeline_desc){
+            .vertex = (ear_shader_desc){ .source = (char*)vert },
+            .fragment = (ear_shader_desc){ .source = (char*)frag },
+
+            .bound_buffer_amt = 2,
+            .bound_buffers = (ear_buffer*[]){
+                ear_rr.ubo,
+                ear_rr.ssbo,
+                },
+
+            .has_blend_state = true,
+            .blend_state = (ear_blend_state){ 
+                .src_color = EAR_FAC_SRC_ALPHA, .dst_color = EAR_FAC_INV_SRC_ALPHA,
+                .src_alpha = EAR_FAC_ONE,       .dst_alpha = EAR_FAC_INV_SRC_ALPHA,
+                .color_op = EAR_OP_ADD, .alpha_op = EAR_OP_ADD,
+                },
+        }, arena);
 }
 
 void

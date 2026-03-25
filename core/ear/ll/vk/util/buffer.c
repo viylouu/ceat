@@ -4,8 +4,10 @@
 #include "../init/device_log.h"
 #include "../init/device_phys.h"
 #include "../init/comm_pool.h"
+#include "../sc/swapchain.h"
 #include "../vk.h"
-#include "core/ear/ll/vk/sc/swapchain.h"
+
+#include "../../buffer.h"
 
 #include <string.h>
 
@@ -195,11 +197,33 @@ _ear_vk_make_buf_u(
     eat_assert(vkCreateDescriptorPool(_ear_vk_device, &poolinfo, NULL, &buf->ubuf.pool) == VK_SUCCESS,
         "failed to create descriptor pool!");
 
+    VkDescriptorSetLayoutBinding layoutbind = {
+        .binding = desc.binding,
+
+        .descriptorType  = _ear_vk_convert_desc_type(desc.type),
+        .descriptorCount = 1,
+
+        .stageFlags = _ear_vk_convert_stage(desc.stage),
+
+        .pImmutableSamplers = NULL,
+        };
+
+    VkDescriptorSetLayoutCreateInfo createinfo = {
+        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
+        .pNext = NULL,
+
+        .flags = 0,
+
+        .bindingCount = 1,
+        .pBindings    = &layoutbind,
+        };
+
+    eat_assert(vkCreateDescriptorSetLayout(_ear_vk_device, &createinfo, NULL, &buf->ubuf.layout) == VK_SUCCESS,
+        "failed to create descriptor set layout!");
+
     VkDescriptorSetLayout chips[EAR_VK_MAX_FRAMES_IN_FLIGHT];
     for (uint32_t i = 0; i < EAR_VK_MAX_FRAMES_IN_FLIGHT; ++i)
-        chips[i] = (VkDescriptorSetLayout){
-            .
-            };
+        chips[i] = buf->ubuf.layout;
 
     VkDescriptorSetAllocateInfo allocinfo = {
         .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
@@ -235,6 +259,31 @@ _ear_vk_convert_buf_type(
     case EAR_BUF_UNIFORM: return flags | VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
     case EAR_BUF_STORAGE: return flags | VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
     case EAR_BUF_INDEX:   return flags | VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
+    }
+
+    eat_unreachable();
+}
+VkDescriptorType
+_ear_vk_convert_desc_type(
+    ear_buffer_type type
+    ) {
+    switch (type) {
+    case EAR_BUF_VERTEX:  
+    case EAR_BUF_INDEX: eat_error("shader pipeline buffer attribs cannot be vertex/index buffers!");
+
+    case EAR_BUF_UNIFORM: return VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    case EAR_BUF_STORAGE: return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+    }
+
+    eat_unreachable();
+}
+VkShaderStageFlags
+_ear_vk_convert_stage(
+    ear_shader_stage stage
+    ) {
+    switch (stage) {
+    case EAR_STAGE_VERTEX:   return VK_SHADER_STAGE_VERTEX_BIT;
+    case EAR_STAGE_FRAGMENT: return VK_SHADER_STAGE_FRAGMENT_BIT;
     }
 
     eat_unreachable();

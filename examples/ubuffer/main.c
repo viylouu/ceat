@@ -11,31 +11,26 @@ int main(void) {
     } ubo_data = {};
 
     ear_buffer* ubo = ear_create_buffer((ear_buffer_desc){
-        .type = EAR_BUF_UNIFORM,
+        .type   = EAR_BUF_UNIFORM,
         .stride = sizeof(ubo_data),
+
+        .binding = 0,
+        .stage   = EAR_STAGE_VERTEX,
         }, &ubo_data, sizeof(ubo_data), NULL);
 
     // shaders compiled from source to spirv via glslc
     // see command in CMakeLists.txt on ex_triangle
 
     uint32_t vertex_len; uint32_t fragment_len;
-    char* vertex   = eau_load_file("examples/triangle/shad_v.spv", &vertex_len);
-    char* fragment = eau_load_file("examples/triangle/shad_f.spv", &fragment_len);
+    char* vertex   = eau_load_file("examples/ubuffer/shad_v.spv", &vertex_len);
+    char* fragment = eau_load_file("examples/ubuffer/shad_f.spv", &fragment_len);
 
     ear_pipeline* pln = ear_create_pipeline((ear_pipeline_desc){
         .vertex   = (ear_shader_desc){ .source = vertex,   .source_size = vertex_len },
         .fragment = (ear_shader_desc){ .source = fragment, .source_size = fragment_len },
 
-        // sets are used to group similar data in the pipeline for update speed
-        .buffer_attrib_set_amt = 1,
-        .buffer_attrib_sets = &(ear_buffer_attrib_desc_set){
-            .buffer_attrib_amt = 1,
-            .buffer_attribs = &(ear_buffer_attrib_desc){
-                .type = EAR_BUF_UNIFORM,
-                .binding = 0,
-                .stage = EAR_STAGE_VERTEX,
-                },
-            },
+        .bound_buffer_amt = 1,
+        .bound_buffers    = &ubo,
         }, NULL);
 
     free(vertex);

@@ -54,3 +54,11 @@ VkBufferUsageFlags
 _ear_vk_convert_buf_type(
     ear_buffer_type type
     );
+VkDescriptorType
+_ear_vk_convert_desc_type(
+    ear_buffer_type type
+    );
+VkShaderStageFlags
+_ear_vk_convert_stage(
+    ear_shader_stage stage
+    );
