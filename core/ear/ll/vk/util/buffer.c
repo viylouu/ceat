@@ -174,6 +174,45 @@ _ear_vk_make_buf_u(
 
         vkMapMemory(_ear_vk_device, buf->ubuf.memories[i], 0, size, 0, &buf->ubuf.datas[i]);
     }
+
+    VkDescriptorPoolSize poolsize = {
+        .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+        .descriptorCount = EAR_VK_MAX_FRAMES_IN_FLIGHT,
+        };
+
+    VkDescriptorPoolCreateInfo poolinfo = {
+        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
+        .pNext = NULL,
+
+        .flags = 0,
+
+        .poolSizeCount = 1,
+        .pPoolSizes    = &poolsize,
+
+        .maxSets = EAR_VK_MAX_FRAMES_IN_FLIGHT,
+        };
+
+    eat_assert(vkCreateDescriptorPool(_ear_vk_device, &poolinfo, NULL, &buf->ubuf.pool) == VK_SUCCESS,
+        "failed to create descriptor pool!");
+
+    VkDescriptorSetLayout chips[EAR_VK_MAX_FRAMES_IN_FLIGHT];
+    for (uint32_t i = 0; i < EAR_VK_MAX_FRAMES_IN_FLIGHT; ++i)
+        chips[i] = (VkDescriptorSetLayout){
+            .
+            };
+
+    VkDescriptorSetAllocateInfo allocinfo = {
+        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
+        .pNext = NULL,
+
+        .descriptorPool = buf->ubuf.pool,
+
+        .descriptorSetCount = EAR_VK_MAX_FRAMES_IN_FLIGHT,
+        .pSetLayouts = chips,
+        };
+
+    eat_assert(vkAllocateDescriptorSets(_ear_vk_device, &allocinfo, buf->ubuf.sets) == VK_SUCCESS,
+        "failed to create descriptor sets!");
 }
 
 void

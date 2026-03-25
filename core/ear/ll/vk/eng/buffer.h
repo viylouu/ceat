@@ -44,6 +44,9 @@ struct ear_vk_buffer{
         VkBuffer buffers[EAR_VK_MAX_FRAMES_IN_FLIGHT];
         VkDeviceMemory memories[EAR_VK_MAX_FRAMES_IN_FLIGHT];
         void* datas[EAR_VK_MAX_FRAMES_IN_FLIGHT];
+
+        VkDescriptorPool pool;
+        VkDescriptorSet sets[EAR_VK_MAX_FRAMES_IN_FLIGHT];
         } ubuf;
     };
 };

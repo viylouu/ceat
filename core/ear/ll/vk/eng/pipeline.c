@@ -304,7 +304,7 @@ ear_vk_create_pipeline(
             bindings[j] = (VkDescriptorSetLayoutBinding){
                 .binding = attrib.binding,
 
-                .descriptorType = _ear_vk_convert_desc_type(attrib.type),
+                .descriptorType  = _ear_vk_convert_desc_type(attrib.type),
                 .descriptorCount = 1,
 
                 .stageFlags = VK_SHADER_STAGE_VERTEX_BIT,
