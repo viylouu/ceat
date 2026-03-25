@@ -1,39 +1,12 @@
 #include "texture.h"
-#include "../cutil.h"
-#include "core/eau/conv.h"
+#include "../../cutil.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "../../include/stb_image.h"
+#include "../../../include/stb_image.h"
 
-#include "text.h"
-#include "user.h"
-#include "gl.h"
-
-GLenum 
-_TYPECONV_texture_filter(
-    ear_texture_filter filter
-    );
-
-GLenum
-_TYPECONV_texture_wrap(
-    ear_texture_wrap wrap
-    );
-
-GLenum
-_TYPECONV_texture_type_as_intf(
-    ear_texture_type type
-    );
-
-GLenum
-_TYPECONV_texture_type_as_f(
-    ear_texture_type type
-    );
-
-GLenum
-_TYPECONV_texture_type_as_type(
-    ear_texture_type type
-    );
-
+//#include "text.h"
+//#include "user.h"
+//#include "gl.h"
 
 void
 _ear_arena_texture_delete(
@@ -73,6 +46,7 @@ ear_create_texture(
             ),
         };
 
+    /*
     gl.genTextures(1, &tex->id);
     eat_assert(tex->id != 0, "failed to create opengl texture!");
 
@@ -97,6 +71,7 @@ ear_create_texture(
         _TYPECONV_texture_type_as_type(tex->desc.type),
         pixels
         );
+    */
 
     if (arena != NULL) eau_add_to_arena(arena, &tex->dest, tex, _ear_arena_texture_delete);
     return tex;
@@ -126,7 +101,7 @@ ear_delete_texture(
     ) {
     eat_debug_remove_obj(tex->deb_obj);
 
-    gl.deleteTextures(1, &tex->id);
+    //gl.deleteTextures(1, &tex->id);
     if (tex->stbi_pixels) stbi_image_free(tex->pixels);
 
     if (tex->dest != NULL) tex->dest->data = NULL;
@@ -138,9 +113,11 @@ ear_bind_texture(
     ear_texture* tex,
     uint32_t slot
     ) {
+    /*
     gl.activeTexture(GL_TEXTURE0 + slot);
     gl.bindTexture(GL_TEXTURE_2D, tex->id);
     gl.uniform1i(slot, slot);
+    */
 }
 
 void
@@ -151,6 +128,7 @@ ear_resize_texture(
     tex->width = width;
     tex->height = height;
 
+    /*
     gl.bindTexture(GL_TEXTURE_2D, tex->id);
 
     gl.texImage2D(
@@ -163,6 +141,7 @@ ear_resize_texture(
         _TYPECONV_texture_type_as_type(tex->desc.type),
         tex->pixels
         );
+    */
 }
 
 
@@ -196,6 +175,7 @@ void
 ear_update_texture(
     ear_texture* tex
     ) {
+    /*
     gl.bindTexture(GL_TEXTURE_2D, tex->id);
 
     gl.texSubImage2D(
@@ -209,6 +189,7 @@ ear_update_texture(
         );
 
     gl.bindTexture(GL_TEXTURE_2D, 0);
+    */
 }
 
 
@@ -219,6 +200,7 @@ _ear_debug_texture_window(
     eat_debug_theme t,
     int32_t* sel
     ) {
+    /*
     ear_texture* tex = _tex;
 
     float offy = 0;
@@ -269,74 +251,5 @@ _ear_debug_texture_window(
 
     ear_rect(rect.x, rect.y, rect.w, rect.h, (float[4]){ 0,0,0,1 }, EAU_ALIGN_TOP_LEFT);
     ear_tex(tex, rect.x, rect.y, rect.w, rect.h, 0,0,tex->width,tex->height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
-}
-
-
-
-
-GLenum 
-_TYPECONV_texture_filter(
-    ear_texture_filter filter
-    ) {
-    switch (filter) {
-    case EAR_FILTER_NEAREST: return GL_NEAREST;
-    case EAR_FILTER_LINEAR:  return GL_LINEAR;
-    }
-
-    eat_unreachable();
-}
-
-GLenum
-_TYPECONV_texture_wrap(
-    ear_texture_wrap wrap
-    ) {
-    switch (wrap) {
-    case EAR_WRAP_REPEAT: return GL_REPEAT;
-    case EAR_WRAP_CLAMP:  return GL_CLAMP_TO_EDGE;
-    case EAR_WRAP_COLOR:  return GL_CLAMP_TO_BORDER;
-    }
-
-    eat_unreachable();
-}
-
-GLenum
-_TYPECONV_texture_type_as_intf(
-    ear_texture_type type
-    ) {
-    switch (type) {
-    case EAR_TEX_COLOR: return GL_RGBA8;
-    case EAR_TEX_DEPTH: return GL_DEPTH_COMPONENT24;
-    case EAR_TEX_HDR:   return GL_RGBA16F;
-    case EAR_TEX_HDR32: return GL_RGBA32F;
-    }
-
-    eat_unreachable();
-}
-
-GLenum
-_TYPECONV_texture_type_as_f(
-    ear_texture_type type
-    ) {
-    switch (type) {
-    case EAR_TEX_COLOR: return GL_RGBA;
-    case EAR_TEX_DEPTH: return GL_DEPTH_COMPONENT;
-    case EAR_TEX_HDR:   return GL_RGBA;
-    case EAR_TEX_HDR32: return GL_RGBA;
-    }
-
-    eat_unreachable();
-}
-
-GLenum
-_TYPECONV_texture_type_as_type(
-    ear_texture_type type
-    ) {
-    switch (type) {
-    case EAR_TEX_COLOR: return GL_UNSIGNED_BYTE;
-    case EAR_TEX_DEPTH: return GL_UNSIGNED_INT;
-    case EAR_TEX_HDR:   return GL_HALF_FLOAT;
-    case EAR_TEX_HDR32: return GL_FLOAT;
-    }
-
-    eat_unreachable();
+    */
 }
