@@ -127,167 +127,76 @@ target_compile_options(ceat_cpp
 )
 
 if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
-    add_executable(ex_window)
-    target_sources(ex_window
-            PRIVATE
-                examples/window/main.c
+    function(sex exname)
+        add_executable(${exname})
+        set_target_properties(${exname}
+            PROPERTIES
+                OUTPUT_NAME ex_${exname}
         )
-    target_link_libraries(ex_window
-        PRIVATE
-            ceat
-    )
-
-    add_executable(ex_triangle)
-    target_sources(ex_triangle
+        target_sources(${exname}
+                PRIVATE
+                    examples/${exname}/main.c
+            )
+        target_link_libraries(${exname}
             PRIVATE
-                examples/triangle/main.c
+                ceat
         )
-    target_link_libraries(ex_triangle
-        PRIVATE
-            ceat
-    )
-
-    add_executable(ex_texture)
-    target_sources(ex_texture
+        target_compile_options(${exname}
             PRIVATE
-                examples/texture/main.c
+                -std=c23
         )
-    target_link_libraries(ex_texture
-        PRIVATE
-            ceat
-    )
-    target_compile_options(ex_texture
-        PRIVATE
-            -std=c23
-    )
+    endfunction()
 
-    add_executable(ex_framebuffer)
-    target_sources(ex_framebuffer
+    sex(window)
+    sex(triangle)
+    sex(texture)
+    sex(framebuffer)
+    sex(text)
+    sex(input)
+    sex(object)
+    sex(clock)
+    sex(console)
+    sex(audio)
+    sex(camera)
+    sex(debug)
+    sex(timer)
+
+    function(cppex exname)
+        add_executable(cpp_${exname})
+        set_target_properties(cpp_${exname}
+            PROPERTIES
+                OUTPUT_NAME ex_cpp_${exname}
+        )
+        target_sources(cpp_${exname}
             PRIVATE
-                examples/framebuffer/main.c
+                examples/foreign/cpp/${exname}/main.cpp
         )
-    target_link_libraries(ex_framebuffer
-        PRIVATE
-            ceat
-    )
-    target_compile_options(ex_framebuffer
-        PRIVATE
-            -std=c23
-    )
-
-    add_executable(ex_text)
-    target_sources(ex_text
+        target_link_libraries(cpp_${exname}
             PRIVATE
-                examples/text/main.c
+                ceat
+                ceat_cpp
         )
-    target_link_libraries(ex_text
-        PRIVATE
-            ceat
-    )
-    target_compile_options(ex_text
-        PRIVATE
-            -std=c23
-    )
+    endfunction()
 
-    add_executable(ex_input)
-    target_sources(ex_input
-        PRIVATE
-            examples/input/main.c
-    )
-    target_link_libraries(ex_input
-        PRIVATE
-            ceat
-    )
+    cppex(window)
+    cppex(object)
 
-    add_executable(ex_object)
-    target_sources(ex_object
-        PRIVATE
-            examples/object/main.c
-    )
-    target_link_libraries(ex_object
-        PRIVATE
-            ceat
-    )
+    function(odindindone exname)
+        set(out ${CMAKE_BINARY_DIR}/ex_odin_${exname})
+        set(in ${CMAKE_SOURCE_DIR}/examples/foreign/odin/${exname})
+        add_custom_command(
+            OUTPUT ${out}
+            COMMAND odin build ${in} -out:${out}
+            DEPENDS ${in}/main.odin
+            #BYPRODUCTS ${out}
+            COMMENT "building odin example: ${exname}"
+        )
 
-    add_executable(ex_clock)
-    target_sources(ex_clock
-        PRIVATE
-            examples/clock/main.c
-    )
-    target_link_libraries(ex_clock
-        PRIVATE
-            ceat
-    )
+        add_custom_target(odin_${exname} ALL
+            DEPENDS ${out}
+        )
+    endfunction()
 
-    add_executable(ex_console)
-    target_sources(ex_console
-        PRIVATE
-            examples/console/main.c
-    )
-    target_link_libraries(ex_console
-        PRIVATE
-            ceat
-    )
-
-    add_executable(ex_audio)
-    target_sources(ex_audio
-        PRIVATE
-            examples/audio/main.c
-    )
-    target_link_libraries(ex_audio
-        PRIVATE
-            ceat
-    )
-
-    add_executable(ex_camera)
-    target_sources(ex_camera
-        PRIVATE
-            examples/camera/main.c
-    )
-    target_link_libraries(ex_camera
-        PRIVATE
-            ceat
-    )
-
-    add_executable(ex_debug)
-    target_sources(ex_debug
-        PRIVATE
-            examples/debug/main.c
-    )
-    target_link_libraries(ex_debug
-        PRIVATE
-            ceat
-    )
-
-    add_executable(ex_timer)
-    target_sources(ex_timer
-        PRIVATE
-            examples/timer/main.c
-    )
-    target_link_libraries(ex_timer
-        PRIVATE
-            ceat
-    )
-
-    add_executable(ex_cpp_window)
-    target_sources(ex_cpp_window
-        PRIVATE
-            examples/foreign/cpp/window/main.cpp
-    )
-    target_link_libraries(ex_cpp_window
-        PRIVATE
-            ceat
-            ceat_cpp
-    )
-
-    add_executable(ex_cpp_object)
-    target_sources(ex_cpp_object
-        PRIVATE
-            examples/foreign/cpp/object/main.cpp
-    )
-    target_link_libraries(ex_cpp_object
-        PRIVATE
-            ceat
-            ceat_cpp
-    )
+    odindindone(window)
+    odindindone(object)
 endif()

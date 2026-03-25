@@ -461,8 +461,6 @@ create_object :: proc(desc: ObjectDesc, data: $T, arena: ^Arena = nil) -> ^Objec
             },
 
         delete = delete_object,
-        set_tickrate = set_object_tickrate,
-        reset_tickrate = reset_object_tickrate,
         init = init_object,
         stop = stop_object,
         draw = draw_object,
