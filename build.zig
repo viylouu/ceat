@@ -62,6 +62,8 @@ const csource = [_][]const u8{
 
 const cflags = [_][]const u8{
     "-std=c23",
+    //"-g",
+    //"-O0",
 };
 
 var target: std.Build.ResolvedTarget = undefined;
