@@ -43,8 +43,8 @@ ear_vk_delete_buffer(
             vkFreeMemory(_ear_vk_device, buf->ubuf.memories[i], NULL);
         }
 
-        vkDestroyDescriptorPool(_ear_vk_device, buf->ubuf.pool, NULL);
-        //vkDestroyDescriptorSetLayout(_ear_vk_device, buf->ubuf.layout, NULL);
+        if (buf->ubuf.has_sets)
+            vkDestroyDescriptorPool(_ear_vk_device, buf->ubuf.pool, NULL);
         break;
     default: eat_unreachable();
     }
@@ -105,4 +105,16 @@ ear_vk_update_buffer(
     }
 
     eat_unreachable();
+}
+
+void
+ear_vk_attach_buffer_bind_set(
+    ear_vk_buffer* buf,
+    ear_buffer_bind_set set
+    ) {
+    if (buf->ubuf.has_sets)
+        vkDestroyDescriptorPool(_ear_vk_device, buf->ubuf.pool, NULL);
+
+    buf->ubuf.has_sets = true;
+    _ear_vk_make_buf_u_set(buf, set);
 }

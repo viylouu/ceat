@@ -6,10 +6,11 @@
 #include "../../eau/arena.h"
 #include "../../debug/debug.h"
 
-#include "pipeline.h"
-
 typedef struct ear_buffer ear_buffer;
 typedef struct ear_buffer_desc ear_buffer_desc;
+
+typedef struct ear_buffer_bind_set ear_buffer_bind_set;
+typedef struct ear_buffer_bind_desc ear_buffer_bind_desc;
 
 typedef enum ear_buffer_type{
     EAR_BUF_UNIFORM,
@@ -22,6 +23,11 @@ typedef enum ear_buffer_usage{
     EAR_USAGE_DYNAMIC,
     EAR_USAGE_STATIC,
 } ear_buffer_usage;
+
+typedef enum ear_shader_stage{
+    EAR_STAGE_VERTEX,
+    EAR_STAGE_FRAGMENT,
+} ear_shader_stage;
 
 ear_buffer*
 ear_create_buffer(
@@ -47,14 +53,30 @@ ear_update_buffer(
     ear_buffer* buffer
     );
 
+void
+ear_attach_buffer_bind_set(
+    ear_buffer* buffer,
+    ear_buffer_bind_set set
+    );
+
+
+struct ear_buffer_bind_set{
+    ear_buffer_bind_desc* bindings;
+        uint32_t binding_amt;
+};
+
+struct ear_buffer_bind_desc{
+    ear_buffer* buffer;
+    uint32_t binding;
+    ear_shader_stage stage;
+};
 
 struct ear_buffer_desc{
     ear_buffer_type type;
     //ear_buffer_usage usage;
     uint32_t stride;
 
-    ear_shader_stage stage;
-    uint32_t binding;
+    ear_buffer_bind_set bind_set;
 };
 
 struct ear_buffer{

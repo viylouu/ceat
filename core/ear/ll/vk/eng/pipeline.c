@@ -5,7 +5,7 @@
 
 #include "../sc/render_pass.h"
 #include "../../buffer.h"
-#include "../eng/buffer.h"
+#include "../util/buffer.h"
 #include "shader_mod.h"
 #include "../init/comm_buffer.h"
 #include "../sc/swapchain.h"
@@ -168,14 +168,17 @@ ear_vk_create_pipeline(
         .blendConstants[3] = 0,
         };
 
-    pln->chips = malloc(sizeof(VkDescriptorSetLayout) * desc.bound_buffer_amt);
-    pln->chip_amt = desc.bound_buffer_amt;
+    pln->chips = malloc(sizeof(VkDescriptorSetLayout) * desc.bind_set_amt);
+    pln->chip_amt = desc.bind_set_amt;
+    for (uint32_t i = 0; i < desc.bind_set_amt; ++i)
+        pln->chips[i] = _ear_vk_convert_bind_set(desc.bind_sets[i]);
 
-    for (uint32_t i = 0; i < desc.bound_buffer_amt; ++i) {
-        ear_buffer* buf = desc.bound_buffers[i];
+        /*
+        ear_buffer* buf = desc.bind_sets[i];
         ear_vk_buffer* vkbuf = buf->vk;
 
         eat_assert(vkbuf->type == EAR_BUF_UNIFORM, "bound buffers must be uniforms!");
+        */
 
         //pln->chips[i] = vkbuf->ubuf.layout;
 /*
@@ -184,22 +187,8 @@ ear_vk_create_pipeline(
             bindings[j] = 
         }
 
-        VkDescriptorSetLayoutCreateInfo createinfo = {
-            .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
-            .pNext = NULL,
-
-            .flags = 0,
-
-            .bindingCount = 1,
-            .pBindings    = vkbuf->ubuf.layout,
-            };
-
-        eat_assert(vkCreateDescriptorSetLayout(_ear_vk_device, &createinfo, NULL, &pln->setlayouts[i]) == VK_SUCCESS,
-            "failed to create descriptor set layout!");
-
-        free(bindings);
+        
         */
-    }
 
     VkPipelineLayoutCreateInfo layoutinfo = {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,

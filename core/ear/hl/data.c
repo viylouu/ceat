@@ -28,26 +28,35 @@ ear_rect_rend_create(
     /*
     ear_rr.ubo = ear_create_buffer((ear_buffer_desc){
             .type = EAR_BUF_UNIFORM,
-            .usage = EAR_USAGE_DYNAMIC,
+            //.usage = EAR_USAGE_DYNAMIC,
             .stride = sizeof(ear_rr.ubo_d),
         }, &ear_rr.ubo_d, sizeof(ear_rr.ubo_d), arena);
 
     ear_rr.ssbo = ear_create_buffer((ear_buffer_desc){
             .type = EAR_BUF_STORAGE,
-            .usage = EAR_USAGE_DYNAMIC,
+            //.usage = EAR_USAGE_DYNAMIC,
             .stride = sizeof(ear_rr.ssbo_d[0]),
         }, &ear_rr.ssbo_d, sizeof(ear_rr.ssbo_d), arena);
-    */
-
 
     ear_rr.pln = ear_create_pipeline((ear_pipeline_desc){
             .vertex = (ear_shader_desc){ .source = (char*)vert },
             .fragment = (ear_shader_desc){ .source = (char*)frag },
 
-            .bound_buffer_amt = 2,
-            .bound_buffers = (ear_buffer*[]){
-                ear_rr.ubo,
-                ear_rr.ssbo,
+            .bind_set_amt = 1,
+            .bind_sets = &(ear_buffer_bind_set){
+                .binding_amt = 2,
+                .bindings = (ear_buffer_bind_desc[]){
+                    (ear_buffer_bind_desc){
+                        .buffer = ear_rr.ssbo,
+                        .binding = 0,
+                        .stage = EAR_STAGE_VERTEX,
+                        },
+                    (ear_buffer_bind_desc){
+                        .buffer = ear_rr.ubo,
+                        .binding = 1,
+                        .stage = EAR_STAGE_VERTEX,
+                        },
+                    },
                 },
 
             .has_blend_state = true,
@@ -57,6 +66,7 @@ ear_rect_rend_create(
                 .color_op = EAR_OP_ADD, .alpha_op = EAR_OP_ADD,
                 },
         }, arena);
+    */
 }
 
 void

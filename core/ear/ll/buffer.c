@@ -77,6 +77,16 @@ ear_update_buffer(
     ear_vk_update_buffer(buf->vk, buf->data, buf->size);
 }
 
+void
+ear_attach_buffer_bind_set(
+    ear_buffer* buf,
+    ear_buffer_bind_set set
+    ) {
+    eat_assert(buf->desc.type == EAR_BUF_UNIFORM, "only uniform buffers need bind sets!");
+
+    ear_vk_attach_buffer_bind_set(buf->vk, set);
+}
+
 
 void
 _ear_debug_buffer_window(

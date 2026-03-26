@@ -169,6 +169,8 @@ _ear_vk_make_buf_u(
     void* data,
     uint32_t size
     ) {
+    buf->ubuf.has_sets = false;
+
     for (uint32_t i = 0; i < EAR_VK_MAX_FRAMES_IN_FLIGHT; ++i) {
         _ear_vk_make_buf(
             size, VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
@@ -178,8 +180,12 @@ _ear_vk_make_buf_u(
 
         vkMapMemory(_ear_vk_device, buf->ubuf.memories[i], 0, size, 0, &buf->ubuf.datas[i]);
     }
-
-    /*
+}
+void
+_ear_vk_make_buf_u_set(
+    ear_vk_buffer* buf,
+    ear_buffer_bind_set set
+    ) {
     VkDescriptorPoolSize poolsize = {
         .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
         .descriptorCount = EAR_VK_MAX_FRAMES_IN_FLIGHT,
@@ -200,33 +206,9 @@ _ear_vk_make_buf_u(
     eat_assert(vkCreateDescriptorPool(_ear_vk_device, &poolinfo, NULL, &buf->ubuf.pool) == VK_SUCCESS,
         "failed to create descriptor pool!");
 
-    VkDescriptorSetLayoutBinding layoutbind = {
-        .binding = desc.binding,
-
-        .descriptorType  = _ear_vk_convert_desc_type(desc.type),
-        .descriptorCount = 1,
-
-        .stageFlags = _ear_vk_convert_stage(desc.stage),
-
-        .pImmutableSamplers = NULL,
-        };
-
-    VkDescriptorSetLayoutCreateInfo createinfo = {
-        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
-        .pNext = NULL,
-
-        .flags = 0,
-
-        .bindingCount = 1,
-        .pBindings    = &layoutbind,
-        };
-
-    eat_assert(vkCreateDescriptorSetLayout(_ear_vk_device, &createinfo, NULL, &buf->ubuf.layout) == VK_SUCCESS,
-        "failed to create descriptor set layout!");
-
     VkDescriptorSetLayout chips[EAR_VK_MAX_FRAMES_IN_FLIGHT];
     for (uint32_t i = 0; i < EAR_VK_MAX_FRAMES_IN_FLIGHT; ++i)
-        chips[i] = buf->ubuf.layout;
+        chips[i] = _ear_vk_convert_bind_set(set);
 
     VkDescriptorSetAllocateInfo allocinfo = {
         .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
@@ -265,8 +247,10 @@ _ear_vk_make_buf_u(
             };
 
         vkUpdateDescriptorSets(_ear_vk_device, 1, &descwrite, 0, NULL);
+
+        vkDestroyDescriptorSetLayout(_ear_vk_device, chips[i], NULL);
     }
-*/
+
 }
 
 void
@@ -275,7 +259,7 @@ _ear_vk_update_buf_u(
     void* data,
     uint32_t size
     ) {
-    memcpy(buf->ubuf.datas[_ear_vk_cur_img_index], data, size);
+    memcpy(buf->ubuf.datas[_ear_vk_cur_frame], data, size);
 }
 
 VkBufferUsageFlags
@@ -306,4 +290,41 @@ _ear_vk_convert_desc_type(
     }
 
     eat_unreachable();
+}
+VkDescriptorSetLayout
+_ear_vk_convert_bind_set(
+    ear_buffer_bind_set set
+    ) {
+    VkDescriptorSetLayoutBinding* bindings = malloc(sizeof(VkDescriptorSetLayoutBinding) * set.binding_amt);
+    for (uint32_t i = 0; i < set.binding_amt; ++i) {
+        ear_buffer_bind_desc bind_desc = set.bindings[i];
+        bindings[i] = (VkDescriptorSetLayoutBinding){
+            .binding = bind_desc.binding,
+
+            .descriptorType  = _ear_vk_convert_desc_type(bind_desc.buffer->desc.type),
+            .descriptorCount = 1,
+
+            .stageFlags = _ear_vk_convert_stage(bind_desc.stage),
+
+            .pImmutableSamplers = NULL,
+            };
+    }
+
+    VkDescriptorSetLayoutCreateInfo createinfo = {
+        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
+        .pNext = NULL,
+
+        .flags = 0,
+
+        .bindingCount = set.binding_amt,
+        .pBindings    = bindings,
+        };
+
+    VkDescriptorSetLayout out;
+    eat_assert(vkCreateDescriptorSetLayout(_ear_vk_device, &createinfo, NULL, &out) == VK_SUCCESS,
+        "failed to create descriptor set layout!");
+
+    free(bindings);
+
+    return out;
 }

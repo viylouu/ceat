@@ -42,6 +42,11 @@ _ear_vk_make_buf_u(
     void* data,
     uint32_t size
     );
+void
+_ear_vk_make_buf_u_set(
+    ear_vk_buffer* buf,
+    ear_buffer_bind_set set
+    );
 
 void
 _ear_vk_update_buf_u(
@@ -57,4 +62,8 @@ _ear_vk_convert_buf_type(
 VkDescriptorType
 _ear_vk_convert_desc_type(
     ear_buffer_type type
+    );
+VkDescriptorSetLayout
+_ear_vk_convert_bind_set(
+    ear_buffer_bind_set set
     );

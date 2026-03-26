@@ -9,14 +9,21 @@ int main(void) {
     struct{
         float time;
     } ubo_data = {};
-
+    
     ear_buffer* ubo = ear_create_buffer((ear_buffer_desc){
-        .type   = EAR_BUF_UNIFORM,
-        .stride = sizeof(ubo_data),
-
-        .binding = 0,
-        .stage   = EAR_STAGE_VERTEX,
+        .type     = EAR_BUF_UNIFORM,
+        .stride   = sizeof(ubo_data),
         }, &ubo_data, sizeof(ubo_data), NULL);
+
+    ear_buffer_bind_set bind_set = {
+        .binding_amt = 1,
+        .bindings    = &(ear_buffer_bind_desc){
+            .buffer  = ubo,
+            .binding = 0,
+            .stage   = EAR_STAGE_VERTEX,
+            },
+        };
+    ear_attach_buffer_bind_set(ubo, bind_set);
 
     // shaders compiled from source to spirv via glslc
     // see command in CMakeLists.txt on ex_triangle
@@ -29,8 +36,8 @@ int main(void) {
         .vertex   = (ear_shader_desc){ .source = vertex,   .source_size = vertex_len },
         .fragment = (ear_shader_desc){ .source = fragment, .source_size = fragment_len },
 
-        .bound_buffer_amt = 1,
-        .bound_buffers    = &ubo,
+        .bind_set_amt = 1,
+        .bind_sets    = &bind_set,
         }, NULL);
 
     free(vertex);

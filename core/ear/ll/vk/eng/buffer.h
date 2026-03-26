@@ -32,6 +32,12 @@ ear_vk_update_buffer(
     uint32_t size
     );
 
+void
+ear_vk_attach_buffer_bind_set(
+    ear_vk_buffer* buf,
+    ear_buffer_bind_set set
+    );
+
 struct ear_vk_buffer{
     uint32_t stride;
 
@@ -47,9 +53,9 @@ struct ear_vk_buffer{
         VkDeviceMemory memories[EAR_VK_MAX_FRAMES_IN_FLIGHT];
         void* datas[EAR_VK_MAX_FRAMES_IN_FLIGHT];
 
+        bool has_sets;
         VkDescriptorPool pool;
         VkDescriptorSet sets[EAR_VK_MAX_FRAMES_IN_FLIGHT];
-        //VkDescriptorSetLayout layout;
         } ubuf;
     };
 };

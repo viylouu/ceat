@@ -6,8 +6,7 @@
 #include "../../eau/arena.h"
 #include "../../debug/debug.h"
 
-//#include "buffer.h"
-typedef struct ear_buffer ear_buffer;
+#include "buffer.h"
 
 typedef struct ear_pipeline ear_pipeline;
 typedef struct ear_pipeline_desc ear_pipeline_desc;
@@ -15,9 +14,6 @@ typedef struct ear_pipeline_desc ear_pipeline_desc;
 typedef struct ear_shader_desc ear_shader_desc;
 
 typedef struct ear_vertex_attrib_desc ear_vertex_attrib_desc;
-
-typedef struct ear_buffer_bind_set ear_buffer_bind_set;
-typedef struct ear_buffer_bind_desc ear_buffer_bind_desc;
 
 typedef enum ear_primitive_type{
     EAR_PRIM_FLOAT,
@@ -65,12 +61,6 @@ typedef enum ear_topology{
     EAR_TOP_LINES,
 } ear_topology;
 
-typedef enum ear_shader_stage{
-    EAR_STAGE_VERTEX,
-    EAR_STAGE_FRAGMENT,
-} ear_shader_stage;
-
-
 ear_pipeline*
 ear_create_pipeline(
     ear_pipeline_desc desc,
@@ -111,16 +101,6 @@ struct ear_blend_state{
     ear_blend_op alpha_op;
 };
 
-struct ear_buffer_bind_set{
-    ear_buffer_bind_desc* bindings;
-        uint32_t binding_amt;
-};
-
-struct ear_buffer_bind_desc{
-    uint32_t binding;
-    ear_shader_stage stage;
-};
-
 struct ear_pipeline_desc{
     ear_shader_desc vertex;
     ear_shader_desc fragment;
@@ -132,8 +112,6 @@ struct ear_pipeline_desc{
 
     ear_buffer_bind_set* bind_sets;
         uint32_t bind_set_amt;
-    ear_buffer** bound_buffers;
-        uint32_t bound_buffer_amt;
 
     bool depth;
     bool depth_clamp;
