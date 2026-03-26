@@ -5,3 +5,4 @@
 *.spv
 /zig-out/
 /build.zig
+/.zig-cache
