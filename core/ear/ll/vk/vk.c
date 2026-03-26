@@ -34,8 +34,6 @@ ear_vk_init(
     _ear_vk_create_command_pool();
     _ear_vk_create_command_buffers();
 
-    _ear_vk_create_sync_objects();
-
     _ear_vk_create_full_swapchain();
 }
 void
@@ -45,8 +43,6 @@ ear_vk_exit(
     _ear_vk_device_wait_idle();
 
     _ear_vk_delete_full_swapchain();
-
-    _ear_vk_delete_sync_objects();
 
     _ear_vk_delete_command_pool();
 
@@ -65,26 +61,22 @@ ear_vk_frame(
         _ear_vk_end_render_pass(_ear_vk_cur_frame);
         _ear_vk_end_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame]);
 
-        _ear_vk_submit_command_buffer(&_ear_vk_comm_buffers[_ear_vk_cur_frame], _ear_vk_cur_frame);
-        _ear_vk_present_swapchain(_ear_vk_cur_img_index, _ear_vk_cur_frame);
+        _ear_vk_submit_command_buffer(&_ear_vk_comm_buffers[_ear_vk_cur_frame], _ear_vk_cur_img_index, _ear_vk_cur_frame);
+        _ear_vk_present_swapchain(_ear_vk_cur_img_index);
     }
-
-    _ear_vk_first_frame = false;
 
     ++_ear_vk_cur_frame;
     if (_ear_vk_cur_frame >= EAR_VK_MAX_FRAMES_IN_FLIGHT) _ear_vk_cur_frame = 0;
 
-    _ear_vk_wait_for_fences(_ear_vk_cur_frame);
+    _ear_vk_wait_for_fences(_ear_vk_cur_img_index);
 
     int32_t index = _ear_vk_acquire_swapchain_image(_ear_vk_cur_frame);
-    if (index == -1) { _ear_vk_first_frame = true; /*ear_vk_frame();*/ return; }
+    if (index < 0) { _ear_vk_first_frame = true; ear_vk_frame(); return; }
     _ear_vk_cur_img_index = index;
 
-    if (_ear_vk_images_inflight[_ear_vk_cur_img_index] != NULL)
-        vkWaitForFences(_ear_vk_device, 1, &_ear_vk_images_inflight[_ear_vk_cur_img_index], VK_TRUE, UINT64_MAX);
-    _ear_vk_images_inflight[_ear_vk_cur_img_index] = _ear_vk_inflight_fences[_ear_vk_cur_frame];
+    _ear_vk_reset_fences(_ear_vk_cur_img_index);
 
-    _ear_vk_reset_fences(_ear_vk_cur_frame);
+    _ear_vk_first_frame = false;
 
     _ear_vk_start_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame]);
     _ear_vk_start_render_pass(_ear_vk_cur_img_index, _ear_vk_cur_frame);

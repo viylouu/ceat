@@ -44,7 +44,7 @@ ear_vk_delete_buffer(
         }
 
         vkDestroyDescriptorPool(_ear_vk_device, buf->ubuf.pool, NULL);
-        vkDestroyDescriptorSetLayout(_ear_vk_device, buf->ubuf.layout, NULL);
+        //vkDestroyDescriptorSetLayout(_ear_vk_device, buf->ubuf.layout, NULL);
         break;
     default: eat_unreachable();
     }

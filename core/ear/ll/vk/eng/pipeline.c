@@ -4,8 +4,8 @@
 #include "../../pipeline.h"
 
 #include "../sc/render_pass.h"
-#include "core/ear/ll/buffer.h"
-#include "core/ear/ll/vk/eng/buffer.h"
+#include "../../buffer.h"
+#include "../eng/buffer.h"
 #include "shader_mod.h"
 #include "../init/comm_buffer.h"
 #include "../sc/swapchain.h"
@@ -168,8 +168,8 @@ ear_vk_create_pipeline(
         .blendConstants[3] = 0,
         };
 
-    pln->setlayouts = malloc(sizeof(VkDescriptorSetLayout) * desc.bound_buffer_amt);
-    pln->setlayout_amt = desc.bound_buffer_amt;
+    pln->chips = malloc(sizeof(VkDescriptorSetLayout) * desc.bound_buffer_amt);
+    pln->chip_amt = desc.bound_buffer_amt;
 
     for (uint32_t i = 0; i < desc.bound_buffer_amt; ++i) {
         ear_buffer* buf = desc.bound_buffers[i];
@@ -177,7 +177,7 @@ ear_vk_create_pipeline(
 
         eat_assert(vkbuf->type == EAR_BUF_UNIFORM, "bound buffers must be uniforms!");
 
-        pln->setlayouts[i] = vkbuf->ubuf.layout;
+        //pln->chips[i] = vkbuf->ubuf.layout;
 /*
         for (uint32_t j = 0; j < set.buffer_attrib_amt;++j) {
             ear_buffer_attrib_desc attrib = set.buffer_attribs[j];
@@ -207,8 +207,8 @@ ear_vk_create_pipeline(
 
         .flags = 0,
 
-        .setLayoutCount = pln->setlayout_amt,
-        .pSetLayouts    = pln->setlayouts,
+        .setLayoutCount = pln->chip_amt,
+        .pSetLayouts    = pln->chips,
 
         .pushConstantRangeCount = 0,
         .pPushConstantRanges    = NULL,

@@ -35,3 +35,7 @@ VkBlendOp
 _ear_vk_convert_blend_op(
     ear_blend_op op
     );
+VkShaderStageFlags
+_ear_vk_convert_stage(
+    ear_shader_stage stage
+    );

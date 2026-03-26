@@ -52,12 +52,13 @@ _ear_vk_end_command_buffer(
 void
 _ear_vk_submit_command_buffer(
     VkCommandBuffer* buffer,
+    uint32_t image,
     uint32_t frame
     ) {
     VkSemaphore waitsemaphores[] = { _ear_vk_image_available_sems[frame] };
     VkPipelineStageFlags waitstages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
 
-    VkSemaphore signalsemaphores[] = { _ear_vk_render_finish_sems[frame] };
+    VkSemaphore signalsemaphores[] = { _ear_vk_render_finish_sems[image] };
 
     VkSubmitInfo submitinfo = {
         .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
@@ -74,6 +75,6 @@ _ear_vk_submit_command_buffer(
         .pSignalSemaphores    = signalsemaphores,
         };
 
-    eat_assert(vkQueueSubmit(_ear_vk_graphics_queue, 1, &submitinfo, _ear_vk_inflight_fences[frame]) == VK_SUCCESS,
+    eat_assert(vkQueueSubmit(_ear_vk_graphics_queue, 1, &submitinfo, _ear_vk_inflight_fences[image]) == VK_SUCCESS,
         "failed to submit command buffer!");
 }

@@ -132,12 +132,11 @@ target_link_libraries(ceat
 target_compile_options(ceat
     PRIVATE
         -std=c23
-        #-g
-        #-O0
+        -g
+        -O0
 )
 
 if(BUILD_LINUX)
-    find_package(OpenGL REQUIRED)
     target_link_libraries(ceat
         PRIVATE
             #GL
@@ -154,7 +153,6 @@ else()
             gdi32
             user32
             shell32
-            glfw
     )
     target_compile_definitions(ceat 
         PRIVATE 

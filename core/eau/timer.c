@@ -2,7 +2,7 @@
 #include "../cutil.h"
 
 #include "../eaw/eaw.h"
-#include "core/eau/object.h"
+#include "object.h"
 
 eau_timer_ll* eau_timer_ll_first;
 eau_timer_ll* eau_timer_ll_last;

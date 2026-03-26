@@ -49,7 +49,7 @@ struct ear_vk_buffer{
 
         VkDescriptorPool pool;
         VkDescriptorSet sets[EAR_VK_MAX_FRAMES_IN_FLIGHT];
-        VkDescriptorSetLayout layout;
+        //VkDescriptorSetLayout layout;
         } ubuf;
     };
 };

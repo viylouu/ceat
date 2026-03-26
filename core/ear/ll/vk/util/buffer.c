@@ -1,6 +1,8 @@
 #include "buffer.h"
 #include "../../../../cutil.h"
 
+#include "pipeline.h"
+
 #include "../init/device_log.h"
 #include "../init/device_phys.h"
 #include "../init/comm_pool.h"
@@ -177,6 +179,7 @@ _ear_vk_make_buf_u(
         vkMapMemory(_ear_vk_device, buf->ubuf.memories[i], 0, size, 0, &buf->ubuf.datas[i]);
     }
 
+    /*
     VkDescriptorPoolSize poolsize = {
         .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
         .descriptorCount = EAR_VK_MAX_FRAMES_IN_FLIGHT,
@@ -263,6 +266,7 @@ _ear_vk_make_buf_u(
 
         vkUpdateDescriptorSets(_ear_vk_device, 1, &descwrite, 0, NULL);
     }
+*/
 }
 
 void
@@ -299,17 +303,6 @@ _ear_vk_convert_desc_type(
 
     case EAR_BUF_UNIFORM: return VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
     case EAR_BUF_STORAGE: return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
-    }
-
-    eat_unreachable();
-}
-VkShaderStageFlags
-_ear_vk_convert_stage(
-    ear_shader_stage stage
-    ) {
-    switch (stage) {
-    case EAR_STAGE_VERTEX:   return VK_SHADER_STAGE_VERTEX_BIT;
-    case EAR_STAGE_FRAGMENT: return VK_SHADER_STAGE_FRAGMENT_BIT;
     }
 
     eat_unreachable();

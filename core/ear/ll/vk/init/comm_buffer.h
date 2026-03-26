@@ -24,5 +24,6 @@ _ear_vk_end_command_buffer(
 void
 _ear_vk_submit_command_buffer(
     VkCommandBuffer* buffer,
+    uint32_t index,
     uint32_t frame
     );

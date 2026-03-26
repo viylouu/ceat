@@ -3,3 +3,5 @@
 /build_win/
 /compile_commands.json
 *.spv
+/zig-out/
+/build.zig

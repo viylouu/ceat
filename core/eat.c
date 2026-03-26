@@ -1,6 +1,6 @@
 #include "../eat.h"
 
-#include "core/eaw/window.h"
+#include "eaw/window.h"
 #include "debug/console.h"
 #include "debug/debug.h"
 
