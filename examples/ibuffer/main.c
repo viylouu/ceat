@@ -74,7 +74,7 @@ int main(void) {
         ear_bind_buffer(ibuf, 0); // slot is unused here
         ear_draw_idx(6, 1);
 
-        //printf("%.3f FPS\n", 1./eat_delta64);
+        printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     ear_delete_pipeline(pln);
