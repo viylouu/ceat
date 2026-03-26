@@ -4,5 +4,4 @@
 /compile_commands.json
 *.spv
 /zig-out/
-/build.zig
 /.zig-cache

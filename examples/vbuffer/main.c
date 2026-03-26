@@ -62,7 +62,7 @@ int main(void) {
         ear_bind_buffer(vbuf, 0);
         ear_draw(3, 1);
 
-        //printf("%.3f FPS\n", 1./eat_delta64);
+        printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     ear_delete_pipeline(pln);
