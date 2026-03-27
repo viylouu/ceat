@@ -29,27 +29,37 @@ _ear_vk_copy_buf(
     );
 
 void
-_ear_vk_make_buf_vi(
+_ear_vk_make_buf_stage(
     ear_vk_buffer* buf,
     ear_buffer_desc desc,
     void* data,
     uint32_t size
     );
 void
-_ear_vk_make_buf_u(
+_ear_vk_make_buf_pers(
     ear_vk_buffer* buf,
     ear_buffer_desc desc,
     void* data,
     uint32_t size
     );
+
 void
-_ear_vk_make_buf_u_set(
+_ear_vk_del_buf_stage(
+    ear_vk_buffer* buf
+    );
+void
+_ear_vk_del_buf_pers(
+    ear_vk_buffer* buf
+    );
+
+void
+_ear_vk_make_buf_set(
     ear_vk_buffer* buf,
     ear_buffer_bind_set set
     );
 
 void
-_ear_vk_update_buf_u(
+_ear_vk_update_buf_pers(
     ear_vk_buffer* buf,
     void* data,
     uint32_t size

@@ -104,13 +104,14 @@ pub fn build(b: *std.Build) void {
         .linkage = .static,
         .name = "ceat",
         .root_module = b.createModule(.{
-            //.root_source_file = b.path("core/ear/ll/vk/util/pipeline.zig"),
+            .root_source_file = b.path("core/root.zig"),
             .target = target,
             .optimize = optimize,
             .link_libc = true,
         }),
     });
 
+    lib.root_module.addIncludePath(b.path("core"));
     lib.root_module.addCSourceFiles(.{ .files = &csource, .flags = &cflags });
 
     b.installArtifact(lib);

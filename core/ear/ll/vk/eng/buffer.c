@@ -6,7 +6,7 @@
 #include "../init/device_log.h"
 #include "../init/comm_buffer.h"
 #include "../sc/swapchain.h"
-#include "../vk.h"
+//#include "../vk.h"
 #include "../eng/pipeline.h"
 
 ear_vk_buffer*
@@ -20,8 +20,13 @@ ear_vk_create_buffer(
     buf->stride = desc.stride;
 
     switch (desc.type) {
-    case EAR_BUF_VERTEX: case EAR_BUF_INDEX: _ear_vk_make_buf_vi(buf, desc, data, size); break;
-    case EAR_BUF_UNIFORM: _ear_vk_make_buf_u(buf, desc, data, size); break;
+    case EAR_BUF_STORAGE_STAGING:
+    case EAR_BUF_VERTEX: 
+    case EAR_BUF_INDEX: 
+        _ear_vk_make_buf_stage(buf, desc, data, size); break;
+    case EAR_BUF_UNIFORM:
+    case EAR_BUF_STORAGE_PERSISTENT: 
+        _ear_vk_make_buf_pers(buf, desc, data, size); break;
     default: eat_unreachable();
     }
 
@@ -34,18 +39,11 @@ ear_vk_delete_buffer(
     switch (buf->type) {
     case EAR_BUF_VERTEX:
     case EAR_BUF_INDEX:
-        vkDestroyBuffer(_ear_vk_device, buf->gen.buffer, NULL);
-        vkFreeMemory(_ear_vk_device, buf->gen.memory, NULL);
-        break;
+    case EAR_BUF_STORAGE_STAGING:
+        _ear_vk_del_buf_stage(buf); break;
+    case EAR_BUF_STORAGE_PERSISTENT:
     case EAR_BUF_UNIFORM:
-        for (uint32_t i = 0; i < EAR_VK_MAX_FRAMES_IN_FLIGHT; ++i) {
-            vkDestroyBuffer(_ear_vk_device, buf->ubuf.buffers[i], NULL);
-            vkFreeMemory(_ear_vk_device, buf->ubuf.memories[i], NULL);
-        }
-
-        if (buf->ubuf.has_sets)
-            vkDestroyDescriptorPool(_ear_vk_device, buf->ubuf.pool, NULL);
-        break;
+        _ear_vk_del_buf_pers(buf); break;
     default: eat_unreachable();
     }
 
@@ -75,6 +73,8 @@ ear_vk_bind_buffer(
             );
         break;
     case EAR_BUF_UNIFORM:
+    case EAR_BUF_STORAGE_PERSISTENT:
+    case EAR_BUF_STORAGE_STAGING:
         vkCmdBindDescriptorSets(
             _ear_vk_comm_buffers[_ear_vk_cur_frame],
             VK_PIPELINE_BIND_POINT_GRAPHICS,
@@ -97,11 +97,13 @@ ear_vk_update_buffer(
     uint32_t size
     ) {
     switch (buf->type) {
-    case EAR_BUF_UNIFORM: _ear_vk_update_buf_u(buf, data, size); return;
+    case EAR_BUF_UNIFORM: 
+    case EAR_BUF_STORAGE_PERSISTENT:
+        _ear_vk_update_buf_pers(buf, data, size); return;
     case EAR_BUF_VERTEX:
     case EAR_BUF_INDEX:
-    case EAR_BUF_STORAGE: 
-        eat_error("updating vertex/index/storage buffers is unsupported!");
+    case EAR_BUF_STORAGE_STAGING:
+        eat_error("updating vertex/index buffers is unsupported!");
     }
 
     eat_unreachable();
@@ -116,5 +118,5 @@ ear_vk_attach_buffer_bind_set(
         vkDestroyDescriptorPool(_ear_vk_device, buf->ubuf.pool, NULL);
 
     buf->ubuf.has_sets = true;
-    _ear_vk_make_buf_u_set(buf, set);
+    _ear_vk_make_buf_set(buf, set);
 }

@@ -3,8 +3,8 @@
 
 #include "vk/eng/buffer.h"
 
-#include "../hl/user.h"
-#include "../hl/text.h"
+//#include "../hl/user.h"
+//#include "../hl/text.h"
 
 void
 _ear_arena_buffer_delete(
@@ -82,7 +82,14 @@ ear_attach_buffer_bind_set(
     ear_buffer* buf,
     ear_buffer_bind_set set
     ) {
-    eat_assert(buf->desc.type == EAR_BUF_UNIFORM, "only uniform buffers need bind sets!");
+    switch (buf->desc.type) {
+    case EAR_BUF_UNIFORM:
+    case EAR_BUF_STORAGE_PERSISTENT:
+    case EAR_BUF_STORAGE_STAGING:
+        break;
+    default:
+        eat_error("only uniform buffers need bind sets!");
+    }
 
     ear_vk_attach_buffer_bind_set(buf->vk, set);
 }

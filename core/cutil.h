@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 
 #define eat_assert(cond, ...) do { \
     if (!(cond)) { \

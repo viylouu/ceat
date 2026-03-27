@@ -173,23 +173,6 @@ ear_vk_create_pipeline(
     for (uint32_t i = 0; i < desc.bind_set_amt; ++i)
         pln->chips[i] = _ear_vk_convert_bind_set(desc.bind_sets[i]);
 
-        /*
-        ear_buffer* buf = desc.bind_sets[i];
-        ear_vk_buffer* vkbuf = buf->vk;
-
-        eat_assert(vkbuf->type == EAR_BUF_UNIFORM, "bound buffers must be uniforms!");
-        */
-
-        //pln->chips[i] = vkbuf->ubuf.layout;
-/*
-        for (uint32_t j = 0; j < set.buffer_attrib_amt;++j) {
-            ear_buffer_attrib_desc attrib = set.buffer_attribs[j];
-            bindings[j] = 
-        }
-
-        
-        */
-
     VkPipelineLayoutCreateInfo layoutinfo = {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
         .pNext = NULL,
@@ -253,6 +236,10 @@ ear_vk_delete_pipeline(
 
     vkDestroyPipeline(_ear_vk_device, pln->pipeline, NULL);
     vkDestroyPipelineLayout(_ear_vk_device, pln->layout, NULL);
+
+    for (uint32_t i = 0; i < pln->chip_amt; ++i)
+        vkDestroyDescriptorSetLayout(_ear_vk_device, pln->chips[i], NULL);
+    free(pln->chips);
 
     free(pln);
 }

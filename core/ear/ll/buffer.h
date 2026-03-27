@@ -14,15 +14,11 @@ typedef struct ear_buffer_bind_desc ear_buffer_bind_desc;
 
 typedef enum ear_buffer_type{
     EAR_BUF_UNIFORM,
-    EAR_BUF_STORAGE,
+    EAR_BUF_STORAGE_STAGING, // infrequent updates
+    EAR_BUF_STORAGE_PERSISTENT, // frequent updates
     EAR_BUF_VERTEX,
     EAR_BUF_INDEX,
 } ear_buffer_type;
-
-typedef enum ear_buffer_usage{
-    EAR_USAGE_DYNAMIC,
-    EAR_USAGE_STATIC,
-} ear_buffer_usage;
 
 typedef enum ear_shader_stage{
     EAR_STAGE_VERTEX,
@@ -76,7 +72,7 @@ struct ear_buffer_desc{
     //ear_buffer_usage usage;
     uint32_t stride;
 
-    ear_buffer_bind_set bind_set;
+    //ear_buffer_bind_set bind_set;
 };
 
 struct ear_buffer{

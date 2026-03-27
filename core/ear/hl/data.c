@@ -28,36 +28,39 @@ ear_rect_rend_create(
     /*
     ear_rr.ubo = ear_create_buffer((ear_buffer_desc){
             .type = EAR_BUF_UNIFORM,
-            //.usage = EAR_USAGE_DYNAMIC,
             .stride = sizeof(ear_rr.ubo_d),
         }, &ear_rr.ubo_d, sizeof(ear_rr.ubo_d), arena);
 
     ear_rr.ssbo = ear_create_buffer((ear_buffer_desc){
-            .type = EAR_BUF_STORAGE,
-            //.usage = EAR_USAGE_DYNAMIC,
+            .type = EAR_BUF_STORAGE_PERSISTENT,
             .stride = sizeof(ear_rr.ssbo_d[0]),
         }, &ear_rr.ssbo_d, sizeof(ear_rr.ssbo_d), arena);
+
+    ear_buffer_bind_set bind_set = {
+        .binding_amt = 2,
+        .bindings = (ear_buffer_bind_desc[]){
+            (ear_buffer_bind_desc){
+                .buffer = ear_rr.ssbo,
+                .binding = 0,
+                .stage = EAR_STAGE_VERTEX,
+                },
+            (ear_buffer_bind_desc){
+                .buffer = ear_rr.ubo,
+                .binding = 1,
+                .stage = EAR_STAGE_VERTEX,
+                },
+            },
+        };
+
+    ear_attach_buffer_bind_set(ear_rr.ubo,  bind_set);
+    ear_attach_buffer_bind_set(ear_rr.ssbo, bind_set);
 
     ear_rr.pln = ear_create_pipeline((ear_pipeline_desc){
             .vertex = (ear_shader_desc){ .source = (char*)vert },
             .fragment = (ear_shader_desc){ .source = (char*)frag },
 
             .bind_set_amt = 1,
-            .bind_sets = &(ear_buffer_bind_set){
-                .binding_amt = 2,
-                .bindings = (ear_buffer_bind_desc[]){
-                    (ear_buffer_bind_desc){
-                        .buffer = ear_rr.ssbo,
-                        .binding = 0,
-                        .stage = EAR_STAGE_VERTEX,
-                        },
-                    (ear_buffer_bind_desc){
-                        .buffer = ear_rr.ubo,
-                        .binding = 1,
-                        .stage = EAR_STAGE_VERTEX,
-                        },
-                    },
-                },
+            .bind_sets = &bind_set,
 
             .has_blend_state = true,
             .blend_state = (ear_blend_state){ 
@@ -77,12 +80,12 @@ ear_rect_rend_flush(
 
     eau_mat4_copy(proj, &ear_rr.ubo_d.proj);
 
-    //ear_update_buffer(ear_rr.ubo);
-    //ear_update_buffer(ear_rr.ssbo);
+    ear_update_buffer(ear_rr.ubo);
+    ear_update_buffer(ear_rr.ssbo);
 
     ear_bind_pipeline(ear_rr.pln);
-    //ear_bind_buffer(ear_rr.ssbo, 0);
-    //ear_bind_buffer(ear_rr.ubo, 1);
+    ear_bind_buffer(ear_rr.ssbo, 0);
+    ear_bind_buffer(ear_rr.ubo, 1);
 
     ear_draw(6, ear_rr.ssbo_i);
 

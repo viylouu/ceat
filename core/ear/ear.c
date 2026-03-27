@@ -1,7 +1,7 @@
 #include "ear.h"
 //#include "../cutil.h"
 
-//#include "data.h"
+#include "hl/data.h"
 //#include "../eaw/window.h"
 #include "ll/vk/vk.h"
 #include "ll/vk/eng/screen.h"
@@ -12,21 +12,18 @@ ear_init(
     int32_t width, int32_t height,
     bool vsync
     ) {
-    //ear_gl_init();
-    //ear_user_init();
-
-    //gl.enable(GL_SCISSOR_TEST);
-    
     ear_vk_init(title, width, height, vsync);
+
+    ear_user_init();
 }
 
 void 
 ear_exit(
     void
     ) {
-    ear_vk_exit();
+    ear_user_exit();
 
-    //ear_user_exit();
+    ear_vk_exit();
 }
 
 void
