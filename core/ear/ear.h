@@ -6,6 +6,7 @@
 #include "ll/pipeline.h"
 #include "ll/misc.h"
 #include "ll/buffer.h"
+#include "ll/bindset.h"
 /*
 #include "ll/texture.h"
 #include "ll/framebuffer.h"

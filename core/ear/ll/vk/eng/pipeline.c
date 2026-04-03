@@ -5,8 +5,8 @@
 
 #include "../sc/render_pass.h"
 #include "../../buffer.h"
-#include "../util/buffer.h"
-#include "shader_mod.h"
+#include "bindset.h"
+#include "../util/shader_mod.h"
 #include "../init/comm_buffer.h"
 #include "../sc/swapchain.h"
 #include "../init/device_log.h"
@@ -168,10 +168,10 @@ ear_vk_create_pipeline(
         .blendConstants[3] = 0,
         };
 
-    pln->chips = malloc(sizeof(VkDescriptorSetLayout) * desc.bind_set_amt);
-    pln->chip_amt = desc.bind_set_amt;
-    for (uint32_t i = 0; i < desc.bind_set_amt; ++i)
-        pln->chips[i] = _ear_vk_convert_bind_set(desc.bind_sets[i]);
+    pln->chips = malloc(sizeof(VkDescriptorSetLayout) * desc.bindset_amt);
+    pln->chip_amt = desc.bindset_amt;
+    for (uint32_t i = 0; i < desc.bindset_amt; ++i)
+        pln->chips[i] = ((ear_vk_bindset*)desc.bindsets[i]->vk)->lay;
 
     VkPipelineLayoutCreateInfo layoutinfo = {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,

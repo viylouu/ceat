@@ -78,9 +78,9 @@ ear_update_buffer(
 }
 
 void
-ear_attach_buffer_bind_set(
+ear_attach_buffer_bindset(
     ear_buffer* buf,
-    ear_buffer_bind_set set
+    ear_bindset* set
     ) {
     switch (buf->desc.type) {
     case EAR_BUF_UNIFORM:
@@ -88,10 +88,10 @@ ear_attach_buffer_bind_set(
     case EAR_BUF_STORAGE_STAGING:
         break;
     default:
-        eat_error("only uniform buffers need bind sets!");
+        eat_error("only uniform/storage buffers need bind sets!");
     }
 
-    ear_vk_attach_buffer_bind_set(buf->vk, set);
+    ear_vk_attach_buffer_bindset(buf->vk, set->vk);
 }
 
 

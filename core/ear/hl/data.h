@@ -25,6 +25,7 @@ ear_user_exit(
 
 typedef struct ear_rect_rend{
     ear_pipeline* pln;
+        ear_bindset* set;
     ear_buffer* ubo;
         struct{ mat4 proj; } ubo_d;
     ear_buffer* ssbo;

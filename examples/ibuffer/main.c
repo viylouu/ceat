@@ -31,13 +31,16 @@ int main(void) {
     // shaders compiled from source to spirv via glslc
     // see command in CMakeLists.txt on ex_vbuffer
 
-    uint32_t vertex_len; uint32_t fragment_len;
-    char* vertex   = eau_load_file("examples/vbuffer/shad_v.spv", &vertex_len);
-    char* fragment = eau_load_file("examples/vbuffer/shad_f.spv", &fragment_len);
+    static const char vert[] = {
+        #embed "shad_v.spv"
+        };
+    static const char frag[] = {
+        #embed "shad_f.spv"
+        };
 
     ear_pipeline* pln = ear_create_pipeline((ear_pipeline_desc){
-        .vertex   = (ear_shader_desc){ .source = vertex,   .source_size = vertex_len },
-        .fragment = (ear_shader_desc){ .source = fragment, .source_size = fragment_len },
+        .vertex   = (ear_shader_desc){ .source = vert, .source_size = sizeof(vert) },
+        .fragment = (ear_shader_desc){ .source = frag, .source_size = sizeof(frag) },
 
         .vertex_buffer_amt = 1,
         .vertex_buffers = &vbuf,
@@ -62,9 +65,6 @@ int main(void) {
                 },
             },
         }, NULL);
-
-    free(vertex);
-    free(fragment);
 
     while (eat_frame()) {
         //ear_clear((float[3]){ .2f, .4f, .3f });

@@ -15,33 +15,33 @@ int main(void) {
         .stride   = sizeof(ubo_data),
         }, &ubo_data, sizeof(ubo_data), NULL);
 
-    ear_buffer_bind_set bind_set = {
+    ear_bindset* set = ear_create_bindset((ear_bindset_desc){
         .binding_amt = 1,
-        .bindings    = &(ear_buffer_bind_desc){
+        .bindings    = &(ear_bind_desc){
             .buffer  = ubo,
             .binding = 0,
             .stage   = EAR_STAGE_VERTEX,
             },
-        };
-    ear_attach_buffer_bind_set(ubo, bind_set);
+        }, NULL);
+    ear_attach_buffer_bindset(ubo, set);
 
     // shaders compiled from source to spirv via glslc
     // see command in CMakeLists.txt on ex_triangle
 
-    uint32_t vertex_len; uint32_t fragment_len;
-    char* vertex   = eau_load_file("examples/ubuffer/shad_v.spv", &vertex_len);
-    char* fragment = eau_load_file("examples/ubuffer/shad_f.spv", &fragment_len);
+    static const char vert[] = {
+        #embed "shad_v.spv"
+        };
+    static const char frag[] = {
+        #embed "shad_f.spv"
+        };
 
     ear_pipeline* pln = ear_create_pipeline((ear_pipeline_desc){
-        .vertex   = (ear_shader_desc){ .source = vertex,   .source_size = vertex_len },
-        .fragment = (ear_shader_desc){ .source = fragment, .source_size = fragment_len },
+        .vertex   = (ear_shader_desc){ .source = vert, .source_size = sizeof(vert) },
+        .fragment = (ear_shader_desc){ .source = frag, .source_size = sizeof(frag) },
 
-        .bind_set_amt = 1,
-        .bind_sets    = &bind_set,
+        .bindset_amt = 1,
+        .bindsets    = &set,
         }, NULL);
-
-    free(vertex);
-    free(fragment);
 
     while (eat_frame()) {
         //ear_clear((float[3]){ .2f, .4f, .3f });
@@ -57,6 +57,7 @@ int main(void) {
     }
 
     ear_delete_pipeline(pln);
+    ear_delete_bindset(set);
     ear_delete_buffer(ubo);
 
     eat_exit();

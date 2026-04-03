@@ -17,59 +17,55 @@ ear_rect_rend_create(
     void
     ) {
     static const char vert[] = {
-    #embed "shaders/rect_v.spv"
-    , 0
-    };
+        #embed "shaders/rect_v.spv"
+        , 0 };
     static const char frag[] = {
-    #embed "shaders/rect_f.spv"
-    , 0
-    };
+        #embed "shaders/rect_f.spv"
+        , 0 };
 
-    /*
     ear_rr.ubo = ear_create_buffer((ear_buffer_desc){
-            .type = EAR_BUF_UNIFORM,
-            .stride = sizeof(ear_rr.ubo_d),
+        .type   = EAR_BUF_UNIFORM,
+        .stride = sizeof(ear_rr.ubo_d),
         }, &ear_rr.ubo_d, sizeof(ear_rr.ubo_d), arena);
 
     ear_rr.ssbo = ear_create_buffer((ear_buffer_desc){
-            .type = EAR_BUF_STORAGE_PERSISTENT,
-            .stride = sizeof(ear_rr.ssbo_d[0]),
+        .type   = EAR_BUF_STORAGE_PERSISTENT,
+        .stride = sizeof(ear_rr.ssbo_d[0]),
         }, &ear_rr.ssbo_d, sizeof(ear_rr.ssbo_d), arena);
 
-    ear_buffer_bind_set bind_set = {
+    ear_rr.set = ear_create_bindset((ear_bindset_desc){
         .binding_amt = 2,
-        .bindings = (ear_buffer_bind_desc[]){
-            (ear_buffer_bind_desc){
-                .buffer = ear_rr.ssbo,
+        .bindings    = (ear_bind_desc[]){
+            (ear_bind_desc){
+                .buffer  = ear_rr.ssbo,
                 .binding = 0,
-                .stage = EAR_STAGE_VERTEX,
+                .stage   = EAR_STAGE_VERTEX,
                 },
-            (ear_buffer_bind_desc){
-                .buffer = ear_rr.ubo,
+            (ear_bind_desc){
+                .buffer  = ear_rr.ubo,
                 .binding = 1,
-                .stage = EAR_STAGE_VERTEX,
+                .stage   = EAR_STAGE_VERTEX,
                 },
             },
-        };
+        }, arena);
 
-    ear_attach_buffer_bind_set(ear_rr.ubo,  bind_set);
-    ear_attach_buffer_bind_set(ear_rr.ssbo, bind_set);
+    ear_attach_buffer_bindset(ear_rr.ubo,  ear_rr.set);
+    ear_attach_buffer_bindset(ear_rr.ssbo, ear_rr.set);
 
     ear_rr.pln = ear_create_pipeline((ear_pipeline_desc){
-            .vertex = (ear_shader_desc){ .source = (char*)vert },
-            .fragment = (ear_shader_desc){ .source = (char*)frag },
+        .vertex   = (ear_shader_desc){ .source = vert, .source_size = sizeof(vert) },
+        .fragment = (ear_shader_desc){ .source = frag, .source_size = sizeof(frag) },
 
-            .bind_set_amt = 1,
-            .bind_sets = &bind_set,
+        .bindset_amt = 1,
+        .bindsets    = &ear_rr.set,
 
-            .has_blend_state = true,
-            .blend_state = (ear_blend_state){ 
-                .src_color = EAR_FAC_SRC_ALPHA, .dst_color = EAR_FAC_INV_SRC_ALPHA,
-                .src_alpha = EAR_FAC_ONE,       .dst_alpha = EAR_FAC_INV_SRC_ALPHA,
-                .color_op = EAR_OP_ADD, .alpha_op = EAR_OP_ADD,
-                },
+        .has_blend_state = true,
+        .blend_state     = (ear_blend_state){ 
+            .src_color = EAR_FAC_SRC_ALPHA, .dst_color = EAR_FAC_INV_SRC_ALPHA,
+            .src_alpha = EAR_FAC_ONE,       .dst_alpha = EAR_FAC_INV_SRC_ALPHA,
+            .color_op  = EAR_OP_ADD, .alpha_op = EAR_OP_ADD,
+            },
         }, arena);
-    */
 }
 
 void

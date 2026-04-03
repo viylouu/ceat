@@ -3,11 +3,11 @@
 
 #include "../util/buffer.h"
 
-#include "../init/device_log.h"
+//#include "../init/device_log.h"
 #include "../init/comm_buffer.h"
 #include "../sc/swapchain.h"
+#include "pipeline.h"
 //#include "../vk.h"
-#include "../eng/pipeline.h"
 
 ear_vk_buffer*
 ear_vk_create_buffer(
@@ -18,6 +18,7 @@ ear_vk_create_buffer(
     ear_vk_buffer* buf = malloc(sizeof(ear_vk_buffer));
     buf->type = desc.type;
     buf->stride = desc.stride;
+    buf->size = size;
 
     switch (desc.type) {
     case EAR_BUF_STORAGE_STAGING:
@@ -81,7 +82,7 @@ ear_vk_bind_buffer(
             _ear_vk_cur_pipeline->layout,
             0,
             1,
-            &buf->ubuf.sets[_ear_vk_cur_frame],
+            &buf->cur_set->sets[_ear_vk_cur_frame],
             0,
             NULL
             );
@@ -110,13 +111,9 @@ ear_vk_update_buffer(
 }
 
 void
-ear_vk_attach_buffer_bind_set(
+ear_vk_attach_buffer_bindset(
     ear_vk_buffer* buf,
-    ear_buffer_bind_set set
+    ear_vk_bindset* set
     ) {
-    if (buf->ubuf.has_sets)
-        vkDestroyDescriptorPool(_ear_vk_device, buf->ubuf.pool, NULL);
-
-    buf->ubuf.has_sets = true;
-    _ear_vk_make_buf_set(buf, set);
+    buf->cur_set = set;
 }

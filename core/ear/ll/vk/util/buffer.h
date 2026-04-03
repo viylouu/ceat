@@ -52,11 +52,7 @@ _ear_vk_del_buf_pers(
     ear_vk_buffer* buf
     );
 
-void
-_ear_vk_make_buf_set(
-    ear_vk_buffer* buf,
-    ear_buffer_bind_set set
-    );
+
 
 void
 _ear_vk_update_buf_pers(
@@ -73,7 +69,11 @@ VkDescriptorType
 _ear_vk_convert_desc_type(
     ear_buffer_type type
     );
-VkDescriptorSetLayout
-_ear_vk_convert_bind_set(
-    ear_buffer_bind_set set
+VkShaderStageFlags
+_ear_vk_convert_stage(
+    ear_shader_stage stage
     );
+//VkDescriptorSetLayout
+//_ear_vk_convert_bindset(
+//    ear_bindset* set
+//    );

@@ -6,7 +6,7 @@
 #include "../../eau/arena.h"
 #include "../../debug/debug.h"
 
-#include "buffer.h"
+#include "bindset.h"
 
 typedef struct ear_pipeline ear_pipeline;
 typedef struct ear_pipeline_desc ear_pipeline_desc;
@@ -110,8 +110,8 @@ struct ear_pipeline_desc{
     ear_vertex_attrib_desc* vertex_attribs;
         uint32_t vertex_attrib_amt;
 
-    ear_buffer_bind_set* bind_sets;
-        uint32_t bind_set_amt;
+    ear_bindset** bindsets;
+        uint32_t bindset_amt;
 
     bool depth;
     bool depth_clamp;

@@ -9,9 +9,6 @@
 typedef struct ear_buffer ear_buffer;
 typedef struct ear_buffer_desc ear_buffer_desc;
 
-typedef struct ear_buffer_bind_set ear_buffer_bind_set;
-typedef struct ear_buffer_bind_desc ear_buffer_bind_desc;
-
 typedef enum ear_buffer_type{
     EAR_BUF_UNIFORM,
     EAR_BUF_STORAGE_STAGING, // infrequent updates
@@ -49,30 +46,16 @@ ear_update_buffer(
     ear_buffer* buffer
     );
 
+typedef struct ear_bindset ear_bindset;
 void
-ear_attach_buffer_bind_set(
+ear_attach_buffer_bindset(
     ear_buffer* buffer,
-    ear_buffer_bind_set set
+    ear_bindset* set
     );
-
-
-struct ear_buffer_bind_set{
-    ear_buffer_bind_desc* bindings;
-        uint32_t binding_amt;
-};
-
-struct ear_buffer_bind_desc{
-    ear_buffer* buffer;
-    uint32_t binding;
-    ear_shader_stage stage;
-};
 
 struct ear_buffer_desc{
     ear_buffer_type type;
-    //ear_buffer_usage usage;
     uint32_t stride;
-
-    //ear_buffer_bind_set bind_set;
 };
 
 struct ear_buffer{

@@ -1,7 +1,7 @@
 #include "buffer.h"
 #include "../../../../cutil.h"
 
-#include "pipeline.h"
+//#include "pipeline.h"
 
 #include "../init/device_log.h"
 #include "../init/device_phys.h"
@@ -197,117 +197,6 @@ _ear_vk_del_buf_pers(
         vkDestroyBuffer(_ear_vk_device, buf->ubuf.buffers[i], NULL);
         vkFreeMemory(_ear_vk_device, buf->ubuf.memories[i], NULL);
     }
-
-    if (buf->ubuf.has_sets)
-        vkDestroyDescriptorPool(_ear_vk_device, buf->ubuf.pool, NULL);
-}
-
-void
-_ear_vk_make_buf_set(
-    ear_vk_buffer* buf,
-    ear_buffer_bind_set set
-    ) {
-    uint32_t sizes = 0;
-    ear_buffer_type size_types[2];
-    uint32_t sbuf_amt = 0; uint32_t ubuf_amt = 0;
-
-    for (uint32_t i = 0; i < set.binding_amt; ++i) {
-        uint32_t pubuf = ubuf_amt;
-        uint32_t psbuf = sbuf_amt;
-
-        switch(set.bindings[i].buffer->desc.type) {
-        case EAR_BUF_UNIFORM: ++ubuf_amt; break;
-        case EAR_BUF_STORAGE_PERSISTENT:
-        case EAR_BUF_STORAGE_STAGING: ++sbuf_amt; break;
-        default: eat_unreachable();
-        }
-
-        if (pubuf != ubuf_amt && pubuf == 0 ||
-            psbuf != sbuf_amt && psbuf == 0) {
-            size_types[sizes] = pubuf == 0? EAR_BUF_UNIFORM :
-                                psbuf == 0? EAR_BUF_STORAGE_PERSISTENT : // goon
-                                0;
-            ++sizes;
-        }
-    }
-
-    VkDescriptorPoolSize* poolsizes = malloc(sizeof(VkDescriptorPoolSize) * sizes); 
-    for (uint32_t i = 0; i < sizes; ++i) {
-        poolsizes[i] = (VkDescriptorPoolSize){
-            .type = _ear_vk_convert_desc_type(size_types[i]),
-            .descriptorCount = EAR_VK_MAX_FRAMES_IN_FLIGHT * (
-                                size_types[i] == EAR_BUF_UNIFORM? ubuf_amt :
-                                size_types[i] == EAR_BUF_STORAGE_PERSISTENT? sbuf_amt :
-                                0
-                                ),
-            };
-    }
-
-    VkDescriptorPoolCreateInfo poolinfo = {
-        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
-        .pNext = NULL,
-
-        .flags = 0,
-
-        .poolSizeCount = sizes,
-        .pPoolSizes    = poolsizes,
-
-        .maxSets = EAR_VK_MAX_FRAMES_IN_FLIGHT,
-        };
-
-    eat_assert(vkCreateDescriptorPool(_ear_vk_device, &poolinfo, NULL, &buf->ubuf.pool) == VK_SUCCESS,
-        "failed to create descriptor pool!");
-
-    VkDescriptorSetLayout lay = _ear_vk_convert_bind_set(set);
-
-    VkDescriptorSetLayout chips[EAR_VK_MAX_FRAMES_IN_FLIGHT];
-    for (uint32_t i = 0; i < EAR_VK_MAX_FRAMES_IN_FLIGHT; ++i)
-        chips[i] = lay;
-
-    VkDescriptorSetAllocateInfo allocinfo = {
-        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
-        .pNext = NULL,
-
-        .descriptorPool = buf->ubuf.pool,
-
-        .descriptorSetCount = EAR_VK_MAX_FRAMES_IN_FLIGHT,
-        .pSetLayouts = chips,
-        };
-
-    eat_assert(vkAllocateDescriptorSets(_ear_vk_device, &allocinfo, buf->ubuf.sets) == VK_SUCCESS,
-        "failed to create descriptor sets!");
-
-    for (uint32_t b = 0; b < set.binding_amt; ++b)
-        for (uint32_t i = 0; i < EAR_VK_MAX_FRAMES_IN_FLIGHT; ++i) {
-            ear_vk_buffer* bbuf = set.bindings[b].buffer->vk;
-
-            VkDescriptorBufferInfo bufferinfo = {
-                .buffer = bbuf->ubuf.buffers[i],
-                .offset = 0,
-                .range  = bbuf->stride,
-                };
-
-            VkWriteDescriptorSet descwrite = {
-                .sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
-                .pNext = NULL,
-
-                .dstSet          = buf->ubuf.sets[i],
-                .dstBinding      = set.bindings[b].binding,
-                .dstArrayElement = 0,
-
-                .descriptorType  = _ear_vk_convert_desc_type(bbuf->type),
-                .descriptorCount = 1,
-
-                .pBufferInfo      = &bufferinfo,
-                .pImageInfo       = NULL,
-                .pTexelBufferView = NULL,
-                };
-
-            vkUpdateDescriptorSets(_ear_vk_device, 1, &descwrite, 0, NULL);
-        }
-
-    vkDestroyDescriptorSetLayout(_ear_vk_device, lay, NULL);
-    free(poolsizes);
 }
 
 void
@@ -349,40 +238,20 @@ _ear_vk_convert_desc_type(
 
     eat_unreachable();
 }
-VkDescriptorSetLayout
-_ear_vk_convert_bind_set(
-    ear_buffer_bind_set set
+VkShaderStageFlags
+_ear_vk_convert_stage(
+    ear_shader_stage stage
     ) {
-    VkDescriptorSetLayoutBinding* bindings = malloc(sizeof(VkDescriptorSetLayoutBinding) * set.binding_amt);
-    for (uint32_t i = 0; i < set.binding_amt; ++i) {
-        ear_buffer_bind_desc bind_desc = set.bindings[i];
-        bindings[i] = (VkDescriptorSetLayoutBinding){
-            .binding = bind_desc.binding,
-
-            .descriptorType  = _ear_vk_convert_desc_type(bind_desc.buffer->desc.type),
-            .descriptorCount = 1,
-
-            .stageFlags = _ear_vk_convert_stage(bind_desc.stage),
-
-            .pImmutableSamplers = NULL,
-            };
+    switch (stage) {
+    case EAR_STAGE_VERTEX:   return VK_SHADER_STAGE_VERTEX_BIT;
+    case EAR_STAGE_FRAGMENT: return VK_SHADER_STAGE_FRAGMENT_BIT;
     }
 
-    VkDescriptorSetLayoutCreateInfo createinfo = {
-        .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
-        .pNext = NULL,
-
-        .flags = 0,
-
-        .bindingCount = set.binding_amt,
-        .pBindings    = bindings,
-        };
-
-    VkDescriptorSetLayout out;
-    eat_assert(vkCreateDescriptorSetLayout(_ear_vk_device, &createinfo, NULL, &out) == VK_SUCCESS,
-        "failed to create descriptor set layout!");
-
-    free(bindings);
-
-    return out;
+    eat_unreachable();
 }
+/*VkDescriptorSetLayout
+_ear_vk_convert_bind_set(
+    ear_bindset set
+    ) {
+        return out;
+}*/

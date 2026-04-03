@@ -110,14 +110,3 @@ _ear_vk_convert_blend_op(
 
     eat_unreachable();
 }
-VkShaderStageFlags
-_ear_vk_convert_stage(
-    ear_shader_stage stage
-    ) {
-    switch (stage) {
-    case EAR_STAGE_VERTEX:   return VK_SHADER_STAGE_VERTEX_BIT;
-    case EAR_STAGE_FRAGMENT: return VK_SHADER_STAGE_FRAGMENT_BIT;
-    }
-
-    eat_unreachable();
-}
