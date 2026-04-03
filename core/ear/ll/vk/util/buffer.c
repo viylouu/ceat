@@ -224,20 +224,6 @@ _ear_vk_convert_buf_type(
 
     eat_unreachable();
 }
-VkDescriptorType
-_ear_vk_convert_desc_type(
-    ear_buffer_type type
-    ) {
-    switch (type) {
-    case EAR_BUF_VERTEX:  
-    case EAR_BUF_INDEX: eat_error("shader pipeline buffer attribs cannot be vertex/index buffers!");
-    case EAR_BUF_UNIFORM:            return VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-    case EAR_BUF_STORAGE_STAGING: 
-    case EAR_BUF_STORAGE_PERSISTENT: return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
-    }
-
-    eat_unreachable();
-}
 VkShaderStageFlags
 _ear_vk_convert_stage(
     ear_shader_stage stage
@@ -249,9 +235,3 @@ _ear_vk_convert_stage(
 
     eat_unreachable();
 }
-/*VkDescriptorSetLayout
-_ear_vk_convert_bind_set(
-    ear_bindset set
-    ) {
-        return out;
-}*/

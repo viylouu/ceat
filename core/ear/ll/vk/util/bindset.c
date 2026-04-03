@@ -133,3 +133,18 @@ _ear_vk_make_bindset_sets(
             vkUpdateDescriptorSets(_ear_vk_device, 1, &descwrite, 0, NULL);
         }
 }
+
+VkDescriptorType
+_ear_vk_convert_desc_type(
+    ear_buffer_type type
+    ) {
+    switch (type) {
+    case EAR_BUF_VERTEX:  
+    case EAR_BUF_INDEX: eat_error("shader pipeline buffer attribs cannot be vertex/index buffers!");
+    case EAR_BUF_UNIFORM:            return VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    case EAR_BUF_STORAGE_STAGING: 
+    case EAR_BUF_STORAGE_PERSISTENT: return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+    }
+
+    eat_unreachable();
+}

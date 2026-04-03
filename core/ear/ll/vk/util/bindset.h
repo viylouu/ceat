@@ -21,3 +21,8 @@ _ear_vk_make_bindset_sets(
     ear_vk_bindset* set,
     ear_bindset_desc desc
     );
+
+VkDescriptorType
+_ear_vk_convert_desc_type(
+    ear_buffer_type type
+    );
