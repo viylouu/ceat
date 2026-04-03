@@ -10,7 +10,7 @@ typedef enum _ear_vk_shader_type{
 
 VkShaderModule
 _ear_vk_create_shader_module(
-    const char* code,
+    const uint32_t* code,
     uint32_t amt
     );
 void

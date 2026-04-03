@@ -98,6 +98,17 @@ fn ex_c(b: *std.Build, lib: *std.Build.Step.Compile, comptime name: []const u8) 
 
 }
 
+fn glslc(b: *std.Build, step: *std.Build.Step, 
+         comptime base: []const u8, 
+         comptime in:   []const u8, 
+         comptime out:  []const u8) void {
+    const glc = b.addSystemCommand(&[_][]const u8{
+        "glslc", base ++ in,
+        "-o", base ++ out,
+        });
+    step.dependOn(&glc.step);
+}
+
 pub fn build(b: *std.Build) void {
     target = b.standardTargetOptions(.{});
     optimize = b.standardOptimizeOption(.{});
@@ -117,6 +128,19 @@ pub fn build(b: *std.Build) void {
     lib.root_module.addCSourceFiles(.{ .files = &csource, .flags = &cflags });
 
     b.installArtifact(lib);
+
+    const shadstep = b.step("shaders", "compile shaders");
+    glslc(b, shadstep, "core/ear/hl/shaders/", "rect.vert", "rect_v.spv");
+    glslc(b, shadstep, "core/ear/hl/shaders/", "rect.frag", "rect_f.spv");
+
+    glslc(b, shadstep, "examples/triangle/", "shad.vert", "shad_v.spv");
+    glslc(b, shadstep, "examples/triangle/", "shad.frag", "shad_f.spv");
+    glslc(b, shadstep, "examples/vbuffer/",  "shad.vert", "shad_v.spv");
+    glslc(b, shadstep, "examples/vbuffer/",  "shad.frag", "shad_f.spv");
+    glslc(b, shadstep, "examples/ubuffer/",  "shad.vert", "shad_v.spv");
+    glslc(b, shadstep, "examples/ubuffer/",  "shad.frag", "shad_f.spv");
+    glslc(b, shadstep, "examples/ibuffer/",  "shad.vert", "shad_v.spv");
+    glslc(b, shadstep, "examples/ibuffer/",  "shad.frag", "shad_f.spv");
 
     ex_c(b,lib, "window");
     ex_c(b,lib, "triangle");

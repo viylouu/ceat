@@ -5,9 +5,11 @@
 
 VkShaderModule
 _ear_vk_create_shader_module(
-    const char* code,
+    const uint32_t* code,
     uint32_t amt
     ) {
+    if (amt % 4 != 0) eat_warn("spirv file not 4 byte aligned! possible errors!");
+
     VkShaderModuleCreateInfo createinfo = {
         .sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO,
         .pNext = NULL,
@@ -15,11 +17,12 @@ _ear_vk_create_shader_module(
         .flags = 0,
 
         .codeSize = amt,
-        .pCode    = (const uint32_t*)code,
+        .pCode    = code,
         };
 
     VkShaderModule mod;
-    eat_assert(vkCreateShaderModule(_ear_vk_device, &createinfo, NULL, &mod) == VK_SUCCESS, "failed to create shader module!");
+    eat_assert(vkCreateShaderModule(_ear_vk_device, &createinfo, NULL, &mod) == VK_SUCCESS, 
+        "failed to create shader module!");
 
     return mod;
 }

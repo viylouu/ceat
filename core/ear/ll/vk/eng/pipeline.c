@@ -20,8 +20,8 @@ ear_vk_create_pipeline(
     ) {
     ear_vk_pipeline* pln = malloc(sizeof(ear_vk_pipeline));
 
-    VkShaderModule vertex   = _ear_vk_create_shader_module(desc.vertex.source,   desc.vertex.source_size);
-    VkShaderModule fragment = _ear_vk_create_shader_module(desc.fragment.source, desc.fragment.source_size);
+    VkShaderModule vertex   = _ear_vk_create_shader_module((const uint32_t*)desc.vertex.source,   desc.vertex.source_size);
+    VkShaderModule fragment = _ear_vk_create_shader_module((const uint32_t*)desc.fragment.source, desc.fragment.source_size);
 
     VkPipelineShaderStageCreateInfo stages[] = {
         _ear_vk_shader_module_info(vertex,   EAR_VK_SHADER_VERTEX),
@@ -237,8 +237,8 @@ ear_vk_delete_pipeline(
     vkDestroyPipeline(_ear_vk_device, pln->pipeline, NULL);
     vkDestroyPipelineLayout(_ear_vk_device, pln->layout, NULL);
 
-    for (uint32_t i = 0; i < pln->chip_amt; ++i)
-        vkDestroyDescriptorSetLayout(_ear_vk_device, pln->chips[i], NULL);
+    //for (uint32_t i = 0; i < pln->chip_amt; ++i)
+    //    vkDestroyDescriptorSetLayout(_ear_vk_device, pln->chips[i], NULL);
     free(pln->chips);
 
     free(pln);
