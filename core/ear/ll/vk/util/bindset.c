@@ -21,15 +21,18 @@ _ear_vk_make_bindset_pool(
         }
     }
 
-    VkDescriptorPoolSize sizes[2] = {
-        (VkDescriptorPoolSize){
-            .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
-            .descriptorCount = ubufs * EAR_VK_MAX_FRAMES_IN_FLIGHT,
-            }, 
-        (VkDescriptorPoolSize){
-            .type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
-            .descriptorCount = sbufs * EAR_VK_MAX_FRAMES_IN_FLIGHT,
-            },
+    bool has_ubufs = ubufs > 0; bool has_sbufs = sbufs > 0;
+    uint32_t size_amt = has_ubufs + has_sbufs;
+    VkDescriptorPoolSize* sizes = malloc(sizeof(VkDescriptorPoolSize) * size_amt);
+
+    uint32_t assidx = 0;
+    if (has_ubufs) sizes[assidx++] = (VkDescriptorPoolSize){
+        .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+        .descriptorCount = ubufs * EAR_VK_MAX_FRAMES_IN_FLIGHT,
+        };
+    if (has_sbufs) sizes[assidx++] = (VkDescriptorPoolSize){
+        .type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
+        .descriptorCount = sbufs * EAR_VK_MAX_FRAMES_IN_FLIGHT,
         };
 
     VkDescriptorPoolCreateInfo poolinfo = {
@@ -38,7 +41,7 @@ _ear_vk_make_bindset_pool(
 
         .flags = 0,
 
-        .poolSizeCount = 2,
+        .poolSizeCount = size_amt,
         .pPoolSizes    = sizes,
 
         .maxSets = EAR_VK_MAX_FRAMES_IN_FLIGHT,
@@ -46,6 +49,8 @@ _ear_vk_make_bindset_pool(
 
     eat_assert(vkCreateDescriptorPool(_ear_vk_device, &poolinfo, NULL, &set->pool) == VK_SUCCESS,
         "failed to create descriptor pool!");
+
+    free(sizes);
 }
 void
 _ear_vk_make_bindset_lay(

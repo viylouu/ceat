@@ -18,10 +18,10 @@ ear_rect_rend_create(
     ) {
     static const char vert[] = {
         #embed "shaders/rect_v.spv"
-        , 0 };
+        };
     static const char frag[] = {
         #embed "shaders/rect_f.spv"
-        , 0 };
+        };
 
     ear_rr.ubo = ear_create_buffer((ear_buffer_desc){
         .type   = EAR_BUF_UNIFORM,
