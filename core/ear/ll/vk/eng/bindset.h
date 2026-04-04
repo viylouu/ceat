@@ -14,7 +14,12 @@ ear_vk_create_bindset(
     );
 void
 ear_vk_delete_bindset(
-    ear_vk_bindset* pln
+    ear_vk_bindset* set
+    );
+
+void
+ear_vk_bind_bindset(
+    ear_vk_bindset* set
     );
 
 struct ear_vk_bindset{

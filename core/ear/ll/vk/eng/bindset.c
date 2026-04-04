@@ -3,6 +3,9 @@
 
 #include "../util/bindset.h"
 #include "../init/device_log.h"
+#include "../init/comm_buffer.h"
+#include "../sc/swapchain.h"
+#include "pipeline.h"
 
 ear_vk_bindset*
 ear_vk_create_bindset(
@@ -24,4 +27,20 @@ ear_vk_delete_bindset(
     vkDestroyDescriptorPool(_ear_vk_device, set->pool, NULL);
 
     free(set);
+}
+
+void
+ear_vk_bind_bindset(
+    ear_vk_bindset* set
+    ) {
+    vkCmdBindDescriptorSets(
+        _ear_vk_comm_buffers[_ear_vk_cur_frame],
+        VK_PIPELINE_BIND_POINT_GRAPHICS,
+        _ear_vk_cur_pipeline->layout,
+        0,
+        1,
+        &set->sets[_ear_vk_cur_frame],
+        0,
+        NULL
+        );
 }

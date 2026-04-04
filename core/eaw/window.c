@@ -18,6 +18,8 @@ eaw_window_init(
     const char* title,
     int32_t width, int32_t height
     ) {
+    //glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
+
     eat_assert(glfwInit(), "glfw failed to init");
 
     _eaw_window_width  = width;

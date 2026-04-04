@@ -27,6 +27,11 @@ ear_delete_bindset(
     ear_bindset* set
     );
 
+void
+ear_bind_bindset(
+    ear_bindset* set
+    );
+
 struct ear_bindset_desc{
     ear_bind_desc* bindings;
         uint32_t binding_amt;

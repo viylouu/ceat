@@ -80,8 +80,9 @@ ear_rect_rend_flush(
     ear_update_buffer(ear_rr.ssbo);
 
     ear_bind_pipeline(ear_rr.pln);
-    ear_bind_buffer(ear_rr.ssbo, 0);
-    ear_bind_buffer(ear_rr.ubo, 1);
+    //ear_bind_buffer(ear_rr.ssbo, 0);
+    //ear_bind_buffer(ear_rr.ubo, 1);
+    ear_bind_bindset(ear_rr.set);
 
     ear_draw(6, ear_rr.ssbo_i);
 

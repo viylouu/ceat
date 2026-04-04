@@ -76,16 +76,7 @@ ear_vk_bind_buffer(
     case EAR_BUF_UNIFORM:
     case EAR_BUF_STORAGE_PERSISTENT:
     case EAR_BUF_STORAGE_STAGING:
-        vkCmdBindDescriptorSets(
-            _ear_vk_comm_buffers[_ear_vk_cur_frame],
-            VK_PIPELINE_BIND_POINT_GRAPHICS,
-            _ear_vk_cur_pipeline->layout,
-            0,
-            1,
-            &buf->cur_set->sets[_ear_vk_cur_frame],
-            0,
-            NULL
-            );
+        eat_warn("binding buffers dont need to be bound, bind the bindset instead!");
         break;
     default: eat_unreachable();
     }

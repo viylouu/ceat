@@ -52,6 +52,13 @@ ear_delete_bindset(
     free(set);
 }
 
+void
+ear_bind_bindset(
+    ear_bindset* set
+    ) {
+    ear_vk_bind_bindset(set->vk);
+}
+
 
 void
 _ear_debug_bindset_window(
