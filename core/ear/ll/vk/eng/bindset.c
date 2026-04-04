@@ -31,13 +31,14 @@ ear_vk_delete_bindset(
 
 void
 ear_vk_bind_bindset(
-    ear_vk_bindset* set
+    ear_vk_bindset* set,
+    uint32_t slot
     ) {
     vkCmdBindDescriptorSets(
         _ear_vk_comm_buffers[_ear_vk_cur_frame],
         VK_PIPELINE_BIND_POINT_GRAPHICS,
         _ear_vk_cur_pipeline->layout,
-        0,
+        slot,
         1,
         &set->sets[_ear_vk_cur_frame],
         0,

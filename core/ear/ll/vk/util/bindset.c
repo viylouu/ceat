@@ -3,26 +3,26 @@
 
 #include "buffer.h"
 #include "../init/device_log.h"
+#include "../../texture.h"
+#include "../eng/texture.h"
 
 void
 _ear_vk_make_bindset_pool(
     ear_vk_bindset* set,
     ear_bindset_desc desc
     ) {
-    uint32_t ubufs = 0; uint32_t sbufs = 0;
+    uint32_t ubufs = 0; uint32_t sbufs = 0; uint32_t samps = 0;
     for (uint32_t i = 0; i < desc.binding_amt; ++i) {
-        switch (desc.bindings[i].buffer->desc.type) {
-            case EAR_BUF_UNIFORM:
-                ubufs++; break;
-            case EAR_BUF_STORAGE_PERSISTENT:
-            case EAR_BUF_STORAGE_STAGING:
-                sbufs++; break;
+        switch (desc.bindings[i].type) {
+            case EAR_BIND_UNIFORM:   ubufs++; break;
+            case EAR_BIND_STORAGE:   sbufs++; break;
+            case EAR_BIND_TEXTURE2D: samps++; break;
             default: eat_unreachable();
         }
     }
 
-    bool has_ubufs = ubufs > 0; bool has_sbufs = sbufs > 0;
-    uint32_t size_amt = has_ubufs + has_sbufs;
+    bool has_ubufs = ubufs > 0; bool has_sbufs = sbufs > 0; bool has_samps = samps > 0;
+    uint32_t size_amt = has_ubufs + has_sbufs + has_samps;
     VkDescriptorPoolSize* sizes = malloc(sizeof(VkDescriptorPoolSize) * size_amt);
 
     uint32_t assidx = 0;
@@ -33,6 +33,10 @@ _ear_vk_make_bindset_pool(
     if (has_sbufs) sizes[assidx++] = (VkDescriptorPoolSize){
         .type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
         .descriptorCount = sbufs * EAR_VK_MAX_FRAMES_IN_FLIGHT,
+        };
+    if (has_samps) sizes[assidx++] = (VkDescriptorPoolSize){
+        .type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
+        .descriptorCount = samps * EAR_VK_MAX_FRAMES_IN_FLIGHT,
         };
 
     VkDescriptorPoolCreateInfo poolinfo = {
@@ -63,7 +67,7 @@ _ear_vk_make_bindset_lay(
         bindings[i] = (VkDescriptorSetLayoutBinding){
             .binding = bind_desc.binding,
 
-            .descriptorType  = _ear_vk_convert_desc_type(bind_desc.buffer->desc.type),
+            .descriptorType  = _ear_vk_convert_desc_type(bind_desc.type),
             .descriptorCount = 1,
 
             .stageFlags = _ear_vk_convert_stage(bind_desc.stage),
@@ -111,13 +115,30 @@ _ear_vk_make_bindset_sets(
 
     for (uint32_t b = 0; b < desc.binding_amt; ++b)
         for (uint32_t i = 0; i < EAR_VK_MAX_FRAMES_IN_FLIGHT; ++i) {
-            ear_vk_buffer* bbuf = desc.bindings[b].buffer->vk;
+            bool is_buffer = desc.bindings[b].type != EAR_BIND_TEXTURE2D;
 
-            VkDescriptorBufferInfo bufferinfo = {
-                .buffer = bbuf->ubuf.buffers[i],
-                .offset = 0,
-                .range  = bbuf->size,
-                };
+            VkDescriptorBufferInfo bufferinfo;
+            VkDescriptorImageInfo imageinfo;
+
+            if (is_buffer) {
+                ear_buffer*    buf  = desc.bindings[b].object;
+                ear_vk_buffer* vbuf = buf->vk;
+
+                bufferinfo = (VkDescriptorBufferInfo){
+                    .buffer = vbuf->ubuf.buffers[i],
+                    .offset = 0,
+                    .range  = vbuf->size,
+                    };
+            } else {
+                ear_texture*    tex  = desc.bindings[b].object;
+                ear_vk_texture* vtex = tex->vk;
+
+                imageinfo = (VkDescriptorImageInfo){
+                    .imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+                    .imageView = vtex->imgview,
+                    .sampler   = vtex->samp,
+                    };
+            }
 
             VkWriteDescriptorSet descwrite = {
                 .sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
@@ -127,11 +148,11 @@ _ear_vk_make_bindset_sets(
                 .dstBinding      = desc.bindings[b].binding,
                 .dstArrayElement = 0,
 
-                .descriptorType  = _ear_vk_convert_desc_type(bbuf->type),
+                .descriptorType  = _ear_vk_convert_desc_type(desc.bindings[b].type),
                 .descriptorCount = 1,
 
-                .pBufferInfo      = &bufferinfo,
-                .pImageInfo       = NULL,
+                .pBufferInfo      = is_buffer?  &bufferinfo : NULL,
+                .pImageInfo       = !is_buffer? &imageinfo  : NULL,
                 .pTexelBufferView = NULL,
                 };
 
@@ -141,14 +162,12 @@ _ear_vk_make_bindset_sets(
 
 VkDescriptorType
 _ear_vk_convert_desc_type(
-    ear_buffer_type type
+    ear_bind_type type
     ) {
     switch (type) {
-    case EAR_BUF_VERTEX:  
-    case EAR_BUF_INDEX: eat_error("shader pipeline buffer attribs cannot be vertex/index buffers!");
-    case EAR_BUF_UNIFORM:            return VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-    case EAR_BUF_STORAGE_STAGING: 
-    case EAR_BUF_STORAGE_PERSISTENT: return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+    case EAR_BIND_UNIFORM:   return VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+    case EAR_BIND_STORAGE:   return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+    case EAR_BIND_TEXTURE2D: return VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
     }
 
     eat_unreachable();

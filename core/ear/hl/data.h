@@ -5,12 +5,14 @@
 
 #include "../ll/pipeline.h"
 #include "../ll/buffer.h"
-//#include "../ll/texture.h"
+#include "../ll/texture.h"
 
 #include "../../eau/mat4.h"
 
 extern mat4 proj;
 extern mat4 transf;
+
+extern eau_arena** _ear_data_arena;
 
 void
 ear_user_init(
@@ -45,9 +47,9 @@ ear_rect_rend_flush(
     );
 
 
-/*
 typedef struct ear_tex_rend{
     ear_pipeline* pln;
+        ear_bindset* set;
     ear_buffer* ubo;
         struct{ mat4 proj; } ubo_d;
     ear_buffer* ssbo;
@@ -60,6 +62,7 @@ typedef struct ear_tex_rend{
         } ssbo_d[4096];
         uint32_t ssbo_i;
     ear_texture* cur_tex;
+        ear_bindset* texset;
 } ear_tex_rend;
 extern ear_tex_rend ear_tr;
 
@@ -67,4 +70,3 @@ void
 ear_tex_rend_flush(
     void
     );
-*/

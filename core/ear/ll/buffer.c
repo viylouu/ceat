@@ -77,23 +77,6 @@ ear_update_buffer(
     ear_vk_update_buffer(buf->vk, buf->data, buf->size);
 }
 
-void
-ear_attach_buffer_bindset(
-    ear_buffer* buf,
-    ear_bindset* set
-    ) {
-    switch (buf->desc.type) {
-    case EAR_BUF_UNIFORM:
-    case EAR_BUF_STORAGE_PERSISTENT:
-    case EAR_BUF_STORAGE_STAGING:
-        break;
-    default:
-        eat_error("only uniform/storage buffers need bind sets!");
-    }
-
-    ear_vk_attach_buffer_bindset(buf->vk, set->vk);
-}
-
 
 void
 _ear_debug_buffer_window(

@@ -46,13 +46,6 @@ ear_update_buffer(
     ear_buffer* buffer
     );
 
-typedef struct ear_bindset ear_bindset;
-void
-ear_attach_buffer_bindset(
-    ear_buffer* buffer,
-    ear_bindset* set
-    );
-
 struct ear_buffer_desc{
     ear_buffer_type type;
     uint32_t stride;

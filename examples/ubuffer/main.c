@@ -18,12 +18,12 @@ int main(void) {
     ear_bindset* set = ear_create_bindset((ear_bindset_desc){
         .binding_amt = 1,
         .bindings    = &(ear_bind_desc){
-            .buffer  = ubo,
+            .object  = ubo,
+            .type    = EAR_BIND_UNIFORM,
             .binding = 0,
             .stage   = EAR_STAGE_VERTEX,
             },
         }, NULL);
-    ear_attach_buffer_bindset(ubo, set);
 
     // shaders compiled from source to spirv via glslc
     // see command in CMakeLists.txt on ex_triangle
@@ -50,7 +50,7 @@ int main(void) {
         ear_update_buffer(ubo);
 
         ear_bind_pipeline(pln);
-        ear_bind_bindset(set);
+        ear_bind_bindset(set, 0);
         ear_draw(3, 1);
 
         //printf("%.3f FPS\n", 1./eat_delta64);

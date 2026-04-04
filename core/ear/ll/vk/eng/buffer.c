@@ -100,11 +100,3 @@ ear_vk_update_buffer(
 
     eat_unreachable();
 }
-
-void
-ear_vk_attach_buffer_bindset(
-    ear_vk_buffer* buf,
-    ear_vk_bindset* set
-    ) {
-    buf->cur_set = set;
-}

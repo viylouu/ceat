@@ -135,6 +135,9 @@ pub fn build(b: *std.Build) void {
     const shadstep = b.step("shaders", "compile shaders");
     glslc(b, shadstep, "core/ear/hl/shaders/", "rect.vert", "rect_v.spv");
     glslc(b, shadstep, "core/ear/hl/shaders/", "rect.frag", "rect_f.spv");
+    glslc(b, shadstep, "core/ear/hl/shaders/", "tex.vert",  "tex_v.spv");
+    glslc(b, shadstep, "core/ear/hl/shaders/", "tex.frag",  "tex_f.spv");
+
 
     glslc(b, shadstep, "examples/triangle/", "shad.vert", "shad_v.spv");
     glslc(b, shadstep, "examples/triangle/", "shad.frag", "shad_f.spv");

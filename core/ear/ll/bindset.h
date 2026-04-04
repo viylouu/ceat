@@ -12,10 +12,11 @@ typedef struct ear_bindset ear_bindset;
 typedef struct ear_bindset_desc ear_bindset_desc;
 typedef struct ear_bind_desc ear_bind_desc;
 
-/*typedef enum ear_bind_type{
+typedef enum ear_bind_type{
     EAR_BIND_UNIFORM,
     EAR_BIND_STORAGE,
-} ear_bind_type;*/
+    EAR_BIND_TEXTURE2D,
+} ear_bind_type;
 
 ear_bindset*
 ear_create_bindset(
@@ -29,7 +30,8 @@ ear_delete_bindset(
 
 void
 ear_bind_bindset(
-    ear_bindset* set
+    ear_bindset* set,
+    uint32_t slot
     );
 
 struct ear_bindset_desc{
@@ -38,7 +40,8 @@ struct ear_bindset_desc{
 };
 
 struct ear_bind_desc{
-    ear_buffer* buffer;
+    void* object;
+    ear_bind_type type;
     uint32_t binding;
     ear_shader_stage stage;
 };

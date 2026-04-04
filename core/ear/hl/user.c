@@ -11,7 +11,7 @@ ear_flush(
     void
     ) {
     ear_rect_rend_flush();
-    //ear_tex_rend_flush();
+    ear_tex_rend_flush();
 }
 
 
@@ -50,7 +50,6 @@ ear_rect(
     ++ear_rr.ssbo_i;
 }
 
-/*
 void
 ear_tex(
     ear_texture* tex,
@@ -63,16 +62,31 @@ ear_tex(
     if (ear_tr.ssbo_i == sizeof(ear_tr.ssbo_d)/sizeof(ear_tr.ssbo_d[0])) ear_tex_rend_flush();
     if (last_used != EAR_INT_LU_TEX) ear_flush();
     last_used = EAR_INT_LU_TEX;
-    if (ear_tr.cur_tex != tex) ear_tex_rend_flush();
-    ear_tr.cur_tex = tex;
+    if (ear_tr.cur_tex != tex) {
+        ear_tex_rend_flush();
+
+        ear_tr.cur_tex = tex;
+
+        ear_delete_bindset(ear_tr.texset);
+        ear_tr.texset = ear_create_bindset((ear_bindset_desc){
+            .binding_amt = 1,
+            .bindings    = &(ear_bind_desc){
+                .object  = ear_tr.cur_tex,
+                .type    = EAR_BIND_TEXTURE2D,
+                .binding = 0,
+                .stage   = EAR_STAGE_FRAGMENT,
+                },
+            }, *_ear_data_arena);
+    }
+    
 
     eau_rect rect = (eau_rect){ x,y,w,h, align };
     rect = eau_rect_topleftify(rect);
 
     mat4 mat;
-    if (!ear_bound_camera_ui_mode && ear_bound_camera)
-        eau_mat4_mult(&mat, transf, ear_bound_camera->matrix);
-    else
+    //if (!ear_bound_camera_ui_mode && ear_bound_camera)
+    //    eau_mat4_mult(&mat, transf, ear_bound_camera->matrix);
+    //else
         eau_mat4_copy(transf, &mat);
 
     ear_tr.ssbo_d[ear_tr.ssbo_i] = (typeof(ear_tr.ssbo_d[0])){ 
@@ -84,7 +98,6 @@ ear_tex(
     memcpy((uint8_t*)(&ear_tr.ssbo_d[ear_tr.ssbo_i]) + sizeof(ear_tr.ssbo_d[0]) - sizeof(float)*16, mat, sizeof(float)*16);
     ++ear_tr.ssbo_i;
 }
-*/
 
 
 void

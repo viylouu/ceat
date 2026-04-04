@@ -54,9 +54,10 @@ ear_delete_bindset(
 
 void
 ear_bind_bindset(
-    ear_bindset* set
+    ear_bindset* set,
+    uint32_t slot
     ) {
-    ear_vk_bind_bindset(set->vk);
+    ear_vk_bind_bindset(set->vk, slot);
 }
 
 

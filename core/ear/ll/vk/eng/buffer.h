@@ -34,12 +34,6 @@ ear_vk_update_buffer(
     uint32_t size
     );
 
-void
-ear_vk_attach_buffer_bindset(
-    ear_vk_buffer* buf,
-    ear_vk_bindset* set
-    );
-
 struct ear_vk_buffer{
     uint32_t size;
     uint32_t stride;

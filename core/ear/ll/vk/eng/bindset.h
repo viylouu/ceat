@@ -19,7 +19,8 @@ ear_vk_delete_bindset(
 
 void
 ear_vk_bind_bindset(
-    ear_vk_bindset* set
+    ear_vk_bindset* set,
+    uint32_t slot
     );
 
 struct ear_vk_bindset{
