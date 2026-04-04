@@ -5,11 +5,12 @@
 
 #include "../init/device_log.h"
 #include "../init/device_phys.h"
-#include "../init/comm_pool.h"
+//#include "../init/comm_pool.h"
 #include "../sc/swapchain.h"
 #include "../vk.h"
 
 #include "../../buffer.h"
+#include "commbuf.h"
 
 #include <string.h>
 
@@ -78,28 +79,7 @@ _ear_vk_copy_buf(
     VkBuffer dst,
     VkDeviceSize size
     ) {
-    VkCommandBufferAllocateInfo allocinfo = {
-        .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
-        .pNext = NULL,
-
-        .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
-
-        .commandPool        = _ear_vk_comm_pool,
-        .commandBufferCount = 1,
-        };
-
-    VkCommandBuffer commbuf;
-    vkAllocateCommandBuffers(_ear_vk_device, &allocinfo, &commbuf);
-
-    VkCommandBufferBeginInfo begininfo = {
-        .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
-        .pNext = NULL,
-
-        .flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT,
-
-        .pInheritanceInfo = NULL,
-        };
-    vkBeginCommandBuffer(commbuf, &begininfo);
+    VkCommandBuffer commbuf = _ear_vk_begin_stcomms();
 
     VkBufferCopy copyregion = {
         .srcOffset = 0,
@@ -108,28 +88,7 @@ _ear_vk_copy_buf(
         };
     vkCmdCopyBuffer(commbuf, src, dst, 1, &copyregion);
 
-    vkEndCommandBuffer(commbuf);
-
-    VkSubmitInfo submitinfo = {
-        .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
-        .pNext = NULL,
-
-        .waitSemaphoreCount = 0,
-        .pWaitSemaphores    = NULL,
-
-        .pWaitDstStageMask = NULL,
-
-        .commandBufferCount = 1,
-        .pCommandBuffers    = &commbuf,
-
-        .signalSemaphoreCount = 0,
-        .pSignalSemaphores    = NULL,
-        };
-
-    vkQueueSubmit(_ear_vk_graphics_queue, 1, &submitinfo, NULL);
-    vkQueueWaitIdle(_ear_vk_graphics_queue);
-
-    vkFreeCommandBuffers(_ear_vk_device, _ear_vk_comm_pool, 1, &commbuf);
+    _ear_vk_end_stcomms(commbuf);
 }
 
 void

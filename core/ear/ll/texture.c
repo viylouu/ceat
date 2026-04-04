@@ -8,6 +8,8 @@
 //#include "user.h"
 //#include "gl.h"
 
+#include "vk/eng/texture.h"
+
 void
 _ear_arena_texture_delete(
     void* tex
@@ -32,6 +34,8 @@ ear_create_texture(
     ) {
     ear_texture* tex = malloc(sizeof(ear_texture));
     *tex = (ear_texture){
+        .vk = ear_vk_create_texture(desc, pixels, width, height),
+
         .desc = desc,
         .width = width, .height = height,
 
@@ -45,33 +49,6 @@ ear_create_texture(
             arena
             ),
         };
-
-    /*
-    gl.genTextures(1, &tex->id);
-    eat_assert(tex->id != 0, "failed to create opengl texture!");
-
-    gl.bindTexture(GL_TEXTURE_2D, tex->id);
-
-    GLenum sampling = _TYPECONV_texture_filter(tex->desc.filter);
-    GLenum wrap = _TYPECONV_texture_wrap(tex->desc.wrap);
-
-    gl.texParameterI(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, sampling);
-    gl.texParameterI(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, sampling);
-    gl.texParameterI(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap);
-    gl.texParameterI(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrap);
-    gl.texParameterFv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, tex->desc.wrap_color);
-
-    gl.texImage2D(
-        GL_TEXTURE_2D,
-        0,
-        _TYPECONV_texture_type_as_intf(tex->desc.type),
-        width, height,
-        0,
-        _TYPECONV_texture_type_as_f(tex->desc.type),
-        _TYPECONV_texture_type_as_type(tex->desc.type),
-        pixels
-        );
-    */
 
     if (arena != NULL) eau_add_to_arena(arena, &tex->dest, tex, _ear_arena_texture_delete);
     return tex;
@@ -101,7 +78,7 @@ ear_delete_texture(
     ) {
     eat_debug_remove_obj(tex->deb_obj);
 
-    //gl.deleteTextures(1, &tex->id);
+    ear_vk_delete_texture(tex->vk);
     if (tex->stbi_pixels) stbi_image_free(tex->pixels);
 
     if (tex->dest != NULL) tex->dest->data = NULL;

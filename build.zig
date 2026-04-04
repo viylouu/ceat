@@ -31,10 +31,13 @@ const csource = [_][]const u8{
     "core/ear/ll/vk/util/pipeline.c",
     "core/ear/ll/vk/util/bindset.c",
     "core/ear/ll/vk/util/shader_mod.c",
+    "core/ear/ll/vk/util/texture.c",
+    "core/ear/ll/vk/util/commbuf.c",
     "core/ear/ll/vk/eng/pipeline.c",
     "core/ear/ll/vk/eng/screen.c",
     "core/ear/ll/vk/eng/buffer.c",
     "core/ear/ll/vk/eng/bindset.c",
+    "core/ear/ll/vk/eng/texture.c",
     "core/ear/ll/misc.c",
     "core/ear/ll/pipeline.c",
     "core/ear/ll/texture.c",
@@ -147,7 +150,7 @@ pub fn build(b: *std.Build) void {
     ex_c(b,lib, "vbuffer");
     ex_c(b,lib, "ubuffer");
     ex_c(b,lib, "ibuffer");
-    //ex_c(b,lib, "texture");
+    ex_c(b,lib, "texture");
     //ex_c(b,lib, "framebuffer");
     //ex_c(b,lib, "text");
     //ex_c(b,lib, "input");

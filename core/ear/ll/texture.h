@@ -94,7 +94,7 @@ struct ear_texture_desc{
 };
 
 struct ear_texture{
-    uint32_t id;
+    void* vk;
 
     uint8_t* pixels;
         bool stbi_pixels;
