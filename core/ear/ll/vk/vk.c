@@ -79,6 +79,6 @@ ear_vk_frame(
     _ear_vk_start_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame]);
     _ear_vk_start_render_pass(_ear_vk_cur_img_index, _ear_vk_cur_frame);
 
-    ear_surface_width  = _ear_vk_swapchain_extent.width;
-    ear_surface_height = _ear_vk_swapchain_extent.height;
+    //ear_surface_width  = _ear_vk_swapchain_extent.width;
+    //ear_surface_height = _ear_vk_swapchain_extent.height;
 }

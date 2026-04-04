@@ -7,8 +7,8 @@
 #include <GLFW/glfw3.h>
 
 VkSurfaceKHR _ear_vk_surface;
-uint32_t ear_surface_width;
-uint32_t ear_surface_height;
+//uint32_t ear_surface_width;
+//uint32_t ear_surface_height;
 
 void
 _ear_vk_create_surface(
