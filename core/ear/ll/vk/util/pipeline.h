@@ -4,6 +4,41 @@
 #include <vulkan/vulkan_core.h>
 
 #include "../../pipeline.h"
+#include "../eng/pipeline.h"
+
+VkPipelineVertexInputStateCreateInfo
+_ear_vk_make_pln_vertexinput(
+    ear_pipeline_desc desc,
+    VkVertexInputBindingDescription** binds,
+    VkVertexInputAttributeDescription** attribs
+    );
+VkPipelineInputAssemblyStateCreateInfo
+_ear_vk_make_pln_inputass(
+    ear_pipeline_desc desc
+    );
+VkPipelineViewportStateCreateInfo
+_ear_vk_make_pln_viewport(
+    void
+    );
+VkPipelineRasterizationStateCreateInfo
+_ear_vk_make_pln_rasterizer(
+    ear_pipeline_desc desc
+    );
+VkPipelineMultisampleStateCreateInfo
+_ear_vk_make_pln_multisample(
+    void
+    );
+VkPipelineColorBlendStateCreateInfo
+_ear_vk_make_pln_blend(
+    ear_pipeline_desc desc,
+    VkPipelineColorBlendAttachmentState* attach
+    );
+
+void
+_ear_vk_make_pln_layout(
+    ear_vk_pipeline* pln,
+    ear_pipeline_desc desc
+    );
 
 VkFormat
 _ear_vk_convert_prim_fmt(
