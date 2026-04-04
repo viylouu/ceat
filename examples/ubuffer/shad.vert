@@ -1,11 +1,11 @@
 #version 450
 
-layout (binding = 0) uniform ubuf {
+layout(std140, set = 0, binding = 0) uniform ubuf {
     float time;
 } ubo;
 
 const vec2 verts[3] = vec2[](
-        vec2(0,-.5), vec2(.5,.5), vec2(-.5,.5)
+    vec2(0,-.5), vec2(.5,.5), vec2(-.5,.5)
     );
 
 void main() {
