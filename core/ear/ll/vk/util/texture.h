@@ -3,6 +3,8 @@
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
 
+#include "../eng/texture.h"
+
 void
 _ear_vk_make_img(
     uint32_t width, uint32_t height,
@@ -22,4 +24,9 @@ void
 _ear_vk_copy_buf_img(
     VkBuffer buf, VkImage img,
     uint32_t width, uint32_t height
+    );
+void
+_ear_vk_make_imgview(
+    VkImage image, VkFormat format,
+    VkImageView* view
     );

@@ -52,12 +52,19 @@ ear_vk_create_texture(
         VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
         );
 
+    _ear_vk_make_imgview(
+        tex->img, VK_FORMAT_R8G8B8A8_SRGB,
+        &tex->imgview
+        );
+
     return tex;
 }
 void
 ear_vk_delete_texture(
     ear_vk_texture* tex
     ) {
+    vkDestroyImageView(_ear_vk_device, tex->imgview, NULL);
+
     vkDestroyImage(_ear_vk_device, tex->img, NULL);
     vkFreeMemory(_ear_vk_device, tex->imgmem, NULL);
 

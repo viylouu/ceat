@@ -3,6 +3,8 @@
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
 
+#include <stdbool.h>
+
 typedef struct _ear_vk_swapchain_support_details _ear_vk_swapchain_support_details;
 
 extern uint32_t _ear_vk_cur_frame;

@@ -150,3 +150,34 @@ _ear_vk_copy_buf_img(
 
     _ear_vk_end_stcomms(commbuf);
 }
+void
+_ear_vk_make_imgview(
+    VkImage image, VkFormat format,
+    VkImageView* view
+    ) {
+    VkImageViewCreateInfo viewinfo = {
+        .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
+        .pNext = NULL,
+
+        .flags = 0,
+
+        .image = image,
+
+        .viewType = VK_IMAGE_VIEW_TYPE_2D,
+        .format = format,
+
+        .components.r = VK_COMPONENT_SWIZZLE_IDENTITY,
+        .components.g = VK_COMPONENT_SWIZZLE_IDENTITY,
+        .components.b = VK_COMPONENT_SWIZZLE_IDENTITY,
+        .components.a = VK_COMPONENT_SWIZZLE_IDENTITY,
+
+        .subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT,
+        .subresourceRange.baseMipLevel   = 0,
+        .subresourceRange.levelCount     = 1,
+        .subresourceRange.baseArrayLayer = 0,
+        .subresourceRange.layerCount     = 1,
+        };
+
+    eat_assert(vkCreateImageView(_ear_vk_device, &viewinfo, NULL, view) == VK_SUCCESS,
+        "failed to create image view!");
+}

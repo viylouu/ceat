@@ -25,4 +25,6 @@ struct ear_vk_texture{
 
     VkImage img;
     VkDeviceMemory imgmem;
+    
+    VkImageView imgview;
 };
