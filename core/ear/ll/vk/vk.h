@@ -5,8 +5,6 @@
 
 #define EAR_VK_MAX_FRAMES_IN_FLIGHT 2
 
-extern uint32_t ear_surface_width;
-extern uint32_t ear_surface_height;
 extern bool ear_framebuffer_resize;
 
 void 

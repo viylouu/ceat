@@ -12,8 +12,6 @@
 #include "sc/swapchain.h"
 #include "sc/render_pass.h"
 
-uint32_t ear_surface_width;
-uint32_t ear_surface_height;
 bool ear_framebuffer_resize;
 
 void 
