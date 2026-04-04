@@ -117,7 +117,7 @@ pub fn build(b: *std.Build) void {
         .linkage = .static,
         .name = "ceat",
         .root_module = b.createModule(.{
-            .root_source_file = b.path("core/root.zig"),
+            //.root_source_file = b.path("core/root.zig"),
             .target = target,
             .optimize = optimize,
             .link_libc = true,
