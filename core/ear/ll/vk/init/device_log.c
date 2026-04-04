@@ -36,7 +36,9 @@ _ear_vk_create_logical_device(
             };
     }
 
-    VkPhysicalDeviceFeatures devicefeatures = {0};
+    VkPhysicalDeviceFeatures devicefeatures = {
+        .vertexPipelineStoresAndAtomics = true,
+        };
 
     VkDeviceCreateInfo createinfo = {
         .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
