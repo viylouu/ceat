@@ -20,7 +20,7 @@ int main(void) {
 
         ear_tex(tex, 0,0, 512,512, 0,0,299,291, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
 
-        //printf("%.3f FPS\n", 1./eat_delta64);
+        printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     ear_delete_texture(tex);

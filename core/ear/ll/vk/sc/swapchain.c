@@ -32,7 +32,7 @@ _ear_vk_query_swapchain_support(
     VkPhysicalDevice device
     ) {
     _ear_vk_swapchain_support_details details = {
-        .capabilities = 0,
+        .capabilities = {0},
         
         .formats = NULL,
         .format_amt = 0,

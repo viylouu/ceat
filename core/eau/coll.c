@@ -428,7 +428,7 @@ eau_epa3d(
         1, 3, 2,
     }, sizeof(uint32_t) * 12);
 
-    float (*normals)[4]; uint32_t normal_amt;
+    float (*normals)[4] = {0}; uint32_t normal_amt;
     uint32_t minface;
     _eau_get_face_normals(polytope, polytope_size, faces, face_amt, normals, &normal_amt, &minface);
 
@@ -480,7 +480,7 @@ eau_epa3d(
             polytope = realloc(polytope, sizeof(float) * 3 * polytope_size);
             memcpy(polytope[polytope_size-1], supp, sizeof(float)*3);
 
-            float (*new_normals)[4]; uint32_t new_normal_amt;
+            float (*new_normals)[4] = {0}; uint32_t new_normal_amt;
             uint32_t new_minface;
             _eau_get_face_normals(polytope, polytope_size, faces, face_amt, new_normals, &new_normal_amt, &new_minface);
 
