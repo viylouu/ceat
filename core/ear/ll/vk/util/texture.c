@@ -2,6 +2,7 @@
 #include "../../../../cutil.h"
 
 #include "../init/device_log.h"
+#include "../init/device_phys.h"
 #include "buffer.h"
 #include "commbuf.h"
 
@@ -180,4 +181,44 @@ _ear_vk_make_imgview(
 
     eat_assert(vkCreateImageView(_ear_vk_device, &viewinfo, NULL, view) == VK_SUCCESS,
         "failed to create image view!");
+}
+void
+_ear_vk_make_sampler(
+    bool anisotropy,
+    VkSampler* sampler
+    ) {
+    VkPhysicalDeviceProperties props;
+    vkGetPhysicalDeviceProperties(_ear_vk_physical_device, &props);
+
+    VkSamplerCreateInfo sampinfo = {
+        .sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO,
+        .pNext = NULL,
+
+        .flags = 0,
+
+        .magFilter = VK_FILTER_NEAREST,
+        .minFilter = VK_FILTER_NEAREST,
+
+        .addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT,
+        .addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT,
+        .addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT,
+
+        .anisotropyEnable = anisotropy,
+        .maxAnisotropy    = anisotropy? props.limits.maxSamplerAnisotropy : 1,
+
+        .borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK,
+
+        .unnormalizedCoordinates = false,
+
+        .compareEnable = false,
+        .compareOp     = VK_COMPARE_OP_ALWAYS,
+
+        .mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR,
+        .mipLodBias = 0,
+        .minLod     = 0,
+        .maxLod     = 0,
+        };
+
+    eat_assert(vkCreateSampler(_ear_vk_device, &sampinfo, NULL, sampler) == VK_SUCCESS,
+        "failed to create texture sampler!");
 }

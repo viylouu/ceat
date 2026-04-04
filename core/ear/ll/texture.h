@@ -82,6 +82,7 @@ typedef enum ear_texture_type{
 
 typedef enum ear_texture_wrap{
     EAR_WRAP_REPEAT,
+    EAR_WRAP_MIRROR,
     EAR_WRAP_CLAMP,
     EAR_WRAP_COLOR,
 } ear_texture_wrap;
@@ -90,7 +91,8 @@ struct ear_texture_desc{
     ear_texture_filter filter;
     ear_texture_type type;
     ear_texture_wrap wrap;
-        float wrap_color[4];
+        //float wrap_color[4]; // vulkan doesent support arbitrary
+    bool anisotropy;
 };
 
 struct ear_texture{

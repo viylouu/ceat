@@ -48,7 +48,11 @@ _ear_vk_is_device_suitable(
         free(details.present_modes);
     }
 
-    return inds.complete && extensionssupp && goodswapchain;
+    VkPhysicalDeviceFeatures feats;
+    vkGetPhysicalDeviceFeatures(device, &feats);
+
+    return inds.complete && extensionssupp && goodswapchain &&
+        feats.samplerAnisotropy && feats.vertexPipelineStoresAndAtomics;
 }
 
 void

@@ -57,12 +57,20 @@ ear_vk_create_texture(
         &tex->imgview
         );
 
+    _ear_vk_make_sampler(
+        desc.anisotropy,
+        //VK_FILTER_NEAREST,
+        //VK_SAMPLER_ADDRESS_MODE_REPEAT,
+        &tex->samp
+        );
+
     return tex;
 }
 void
 ear_vk_delete_texture(
     ear_vk_texture* tex
     ) {
+    vkDestroySampler(_ear_vk_device, tex->samp, NULL);
     vkDestroyImageView(_ear_vk_device, tex->imgview, NULL);
 
     vkDestroyImage(_ear_vk_device, tex->img, NULL);

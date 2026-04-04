@@ -38,6 +38,7 @@ _ear_vk_create_logical_device(
 
     VkPhysicalDeviceFeatures devicefeatures = {
         .vertexPipelineStoresAndAtomics = true,
+        .samplerAnisotropy = true,
         };
 
     VkDeviceCreateInfo createinfo = {

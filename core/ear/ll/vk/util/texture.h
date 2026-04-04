@@ -30,3 +30,8 @@ _ear_vk_make_imgview(
     VkImage image, VkFormat format,
     VkImageView* view
     );
+void
+_ear_vk_make_sampler(
+    bool anisotropy,
+    VkSampler* sampler
+    );
