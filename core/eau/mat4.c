@@ -76,8 +76,8 @@ eau_mat4_ortho(
     eau_mat4_make(mat, 
         2/rl, 0, 0, 0,
         0, 2/tb, 0, 0,
-        0, 0,-2/fn, 0,
-        -(right+left) / rl, -(top+bottom) / tb, -(far+near) / fn, 1
+        0, 0, 1/fn, 0,
+        -(right+left) / rl, -(top+bottom) / tb, -near / fn, 1
         );
 }
 

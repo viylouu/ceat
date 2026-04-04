@@ -38,6 +38,6 @@ ear_frame(
 
     ear_vk_set_viewport(0,0, ear_surface_width, ear_surface_height);
     ear_vk_set_scissor (0,0, ear_surface_width, ear_surface_height);
-    eau_mat4_ortho(&proj, 0, ear_surface_width, ear_surface_height, 0, 0,1);
+    eau_mat4_ortho(&proj, 0, ear_surface_width, 0, ear_surface_height, 0,1);
     eau_mat4_identity(&transf);
 }
