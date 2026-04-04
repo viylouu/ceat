@@ -91,9 +91,26 @@ _ear_vk_trans_img(
         .dstAccessMask = 0,
         };
 
+    VkPipelineStageFlags src_stage;
+    VkPipelineStageFlags dst_stage;
+
+    if (oldlay == VK_IMAGE_LAYOUT_UNDEFINED && newlay == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL) {
+        barrier.srcAccessMask = 0;
+        barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+
+        src_stage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+        dst_stage = VK_PIPELINE_STAGE_TRANSFER_BIT;
+    } else if (oldlay == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL && newlay == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
+        barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+        barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+
+        src_stage = VK_PIPELINE_STAGE_TRANSFER_BIT;
+        dst_stage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+    } else eat_error("unsupported image layout transition!");
+
     vkCmdPipelineBarrier(
         commbuf,
-        0, 0,
+        src_stage, dst_stage,
         0,
         0, NULL,
         0, NULL,
