@@ -6,6 +6,7 @@
 #include "swapchain.h"
 #include "../init/device_log.h"
 #include "../../misc.h"
+#include <math.h>
 
 VkRenderPass _ear_vk_renderpass;
 
@@ -84,7 +85,17 @@ _ear_vk_start_render_pass(
     VkClearValue clearvalues[2];
 
     clearvalues[0].color = (VkClearColorValue){{
-        _ear_clear_color[0], _ear_clear_color[1], _ear_clear_color[2], 1}};
+        _ear_clear_color[0],
+        _ear_clear_color[1], 
+        _ear_clear_color[2], 
+        1}};
+
+    if (_ear_vk_swapchain_img_fmt == VK_FORMAT_B8G8R8A8_SRGB) {
+        clearvalues[0].color.float32[0] = pow(_ear_clear_color[0], 2.2);
+        clearvalues[0].color.float32[1] = pow(_ear_clear_color[1], 2.2);
+        clearvalues[0].color.float32[2] = pow(_ear_clear_color[2], 2.2);
+    }
+
     clearvalues[1].depthStencil = (VkClearDepthStencilValue){1,0};
 
     VkRenderPassBeginInfo renderpassinfo = {

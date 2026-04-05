@@ -61,7 +61,7 @@ _ear_vk_choose_swap_surface_format(
     ) {
     for (uint32_t i = 0; i < fmtamt; ++i) {
         VkSurfaceFormatKHR aft = availablefmts[i];
-        if (aft.format == VK_FORMAT_B8G8R8A8_UNORM && 
+        if (aft.format == VK_FORMAT_B8G8R8A8_SRGB && 
             aft.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
             return aft;
     }
