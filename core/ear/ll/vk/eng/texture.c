@@ -37,7 +37,7 @@ ear_vk_create_texture(
         );
 
     _ear_vk_trans_img(
-        tex->img, VK_FORMAT_R8G8B8A8_SRGB,
+        tex->img,
         VK_IMAGE_LAYOUT_UNDEFINED,
         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL
         );
@@ -47,7 +47,7 @@ ear_vk_create_texture(
         );
 
     _ear_vk_trans_img(
-        tex->img, VK_FORMAT_R8G8B8A8_SRGB,
+        tex->img,
         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
         VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
         );

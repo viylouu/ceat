@@ -16,7 +16,7 @@ _ear_vk_make_img(
     );
 void
 _ear_vk_trans_img(
-    VkImage img, VkFormat format,
+    VkImage img,
     VkImageLayout oldlay,
     VkImageLayout newlay
     );
@@ -34,4 +34,13 @@ void
 _ear_vk_make_sampler(
     bool anisotropy,
     VkSampler* sampler
+    );
+
+VkAccessFlags
+_ear_vk_convert_lay_access(
+    VkImageLayout lay
+    );
+VkPipelineStageFlags
+_ear_vk_convert_lay_stage(
+    VkImageLayout lay
     );

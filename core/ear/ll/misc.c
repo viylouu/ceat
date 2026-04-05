@@ -5,8 +5,10 @@
 //#include "user.h"
 //#include "framebuffer.h"
 
+#include "framebuffer.h"
 #include "vk/sc/swapchain.h"
 #include "vk/init/comm_buffer.h"
+#include "vk/eng/framebuffer.h"
 
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
@@ -20,6 +22,12 @@ ear_clear_color(
     _ear_clear_color[0] = r;
     _ear_clear_color[1] = g;
     _ear_clear_color[2] = b;
+}
+void
+ear_clear(
+    float r, float g, float b
+    ) {
+    ear_vk_clear_framebuffer(_ear_cur_framebuffer->vk, r,g,b);
 }
 
 void

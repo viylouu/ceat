@@ -1,14 +1,18 @@
 #include "framebuffer.h"
-#include "../cutil.h"
+#include "../../cutil.h"
 
-#include "../eaw/window.h"
-#include "../eau/mat4.h"
-#include "../eau/coll.h"
-#include "data.h"
-#include "user.h"
-#include "misc.h"
-#include "gl.h"
-#include "text.h"
+#include <string.h>
+
+//#include "../../eaw/window.h"
+//#include "../../eau/mat4.h"
+//#include "../../eau/coll.h"
+//#include "../hl/data.h"
+#include "../hl/user.h"
+//#include "misc.h"
+
+#include "vk/eng/framebuffer.h"
+
+//#include "text.h"
 
 ear_framebuffer* default_fb;
 ear_framebuffer* master_fb;
@@ -46,6 +50,14 @@ ear_create_framebuffer(
             ),
         };
 
+    if (desc.out_color_amt > 0) {
+        fb->desc.out_colors = malloc(sizeof(ear_texture*) * desc.out_color_amt);
+        memcpy(fb->desc.out_colors, desc.out_colors, sizeof(ear_texture*) * desc.out_color_amt);
+    }
+
+    fb->vk = ear_vk_create_framebuffer(desc);
+
+    /*
     gl.genFramebuffers(1, &fb->id);
     gl.bindFramebuffer(GL_FRAMEBUFFER, fb->id);
 
@@ -77,6 +89,7 @@ ear_create_framebuffer(
     free(dbufs);
 
     gl.bindFramebuffer(GL_FRAMEBUFFER, 0);
+    */
 
     if (arena != NULL) eau_add_to_arena(arena, &fb->dest, fb, _ear_arena_framebuffer_delete);
     return fb;
@@ -88,7 +101,9 @@ ear_delete_framebuffer(
     ) {
     eat_debug_remove_obj(fb->deb_obj);
 
-    gl.deleteFramebuffers(1, &fb->id);
+    ear_vk_delete_framebuffer(fb->vk);
+
+    if (fb->desc.out_color_amt > 0) free(fb->desc.out_colors);
 
     if (fb->dest != NULL) fb->dest->data = NULL;
     free(fb);
@@ -101,21 +116,27 @@ ear_bind_framebuffer(
     ear_flush();
 
     if (fb != NULL) {
+        ear_vk_bind_framebuffer(fb->vk);
+        _ear_cur_framebuffer = fb;
+        /*
         gl.bindFramebuffer(GL_FRAMEBUFFER, fb->id);
         eau_mat4_ortho(&proj, 0,fb->desc.width, 0,fb->desc.height, 0,1);
         gl.viewport(0,0, fb->desc.width, fb->desc.height);
-        _ear_cur_framebuffer = fb;
         ear_mask(0,0, fb->desc.width, fb->desc.height);
+        */
     } else if (default_fb != NULL) {
         ear_bind_framebuffer(default_fb); 
     } else if (master_fb != NULL) {
         ear_bind_framebuffer(master_fb);
     } else {
+        ear_vk_bind_framebuffer(NULL);
+        _ear_cur_framebuffer = NULL;
+        /*
         gl.bindFramebuffer(GL_FRAMEBUFFER, 0);
         eau_mat4_ortho(&proj, 0, eaw_window_width,eaw_window_height, 0, 0,1);
         gl.viewport(0,0, eaw_window_width,eaw_window_height);
-        _ear_cur_framebuffer = NULL;
         ear_mask(0,0, eaw_window_width,eaw_window_height);
+        */
     }
 }
 
@@ -150,6 +171,7 @@ _ear_debug_framebuffer_window(
     eat_debug_theme t,
     int32_t* selected
     ) {
+    /*
     ear_framebuffer* fb = _fb;
 
     float offy = 0;
@@ -208,4 +230,5 @@ _ear_debug_framebuffer_window(
 
         offy += 18;
     }
+    */
 }

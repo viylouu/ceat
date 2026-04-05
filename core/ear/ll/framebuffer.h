@@ -54,7 +54,7 @@ struct ear_framebuffer_desc{
 };
 
 struct ear_framebuffer{
-    uint32_t id;
+    void* vk;
 
     ear_framebuffer_desc desc;
 

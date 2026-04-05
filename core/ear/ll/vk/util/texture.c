@@ -64,7 +64,7 @@ _ear_vk_make_img(
 }
 void
 _ear_vk_trans_img(
-    VkImage img, VkFormat format,
+    VkImage img,
     VkImageLayout oldlay,
     VkImageLayout newlay
     ) {
@@ -88,30 +88,14 @@ _ear_vk_trans_img(
         .subresourceRange.baseArrayLayer = 0,
         .subresourceRange.layerCount     = 1,
 
-        .srcAccessMask = 0,
-        .dstAccessMask = 0,
+        .srcAccessMask = _ear_vk_convert_lay_access(oldlay),
+        .dstAccessMask = _ear_vk_convert_lay_access(newlay),
         };
-
-    VkPipelineStageFlags src_stage;
-    VkPipelineStageFlags dst_stage;
-
-    if (oldlay == VK_IMAGE_LAYOUT_UNDEFINED && newlay == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL) {
-        barrier.srcAccessMask = 0;
-        barrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-
-        src_stage = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-        dst_stage = VK_PIPELINE_STAGE_TRANSFER_BIT;
-    } else if (oldlay == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL && newlay == VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
-        barrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
-        barrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
-
-        src_stage = VK_PIPELINE_STAGE_TRANSFER_BIT;
-        dst_stage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-    } else eat_error("unsupported image layout transition!");
 
     vkCmdPipelineBarrier(
         commbuf,
-        src_stage, dst_stage,
+        _ear_vk_convert_lay_stage(oldlay),
+        _ear_vk_convert_lay_stage(newlay),
         0,
         0, NULL,
         0, NULL,
@@ -218,4 +202,31 @@ _ear_vk_make_sampler(
 
     eat_assert(vkCreateSampler(_ear_vk_device, &sampinfo, NULL, sampler) == VK_SUCCESS,
         "failed to create texture sampler!");
+}
+
+VkAccessFlags
+_ear_vk_convert_lay_access(
+    VkImageLayout lay
+    ) {
+    switch (lay) {
+    case VK_IMAGE_LAYOUT_UNDEFINED:                return 0;
+    case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:     return VK_ACCESS_TRANSFER_WRITE_BIT;
+    case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL: return VK_ACCESS_SHADER_READ_BIT;
+    default: eat_unreachable();
+    }
+
+    eat_unreachable();
+}
+VkPipelineStageFlags
+_ear_vk_convert_lay_stage(
+    VkImageLayout lay
+    ) {
+    switch (lay) {
+    case VK_IMAGE_LAYOUT_UNDEFINED:                return VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+    case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:     return VK_PIPELINE_STAGE_TRANSFER_BIT;
+    case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL: return VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+    default: eat_unreachable();
+    }
+
+    eat_unreachable();
 }

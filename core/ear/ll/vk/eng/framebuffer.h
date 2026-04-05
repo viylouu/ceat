@@ -13,14 +13,23 @@ ear_vk_create_framebuffer(
     );
 void
 ear_vk_delete_framebuffer(
-    ear_vk_framebuffer* pln
+    ear_vk_framebuffer* fb
+    );
+
+void
+ear_vk_clear_framebuffer(
+    ear_vk_framebuffer* fb,
+    float r, float g, float b
     );
 
 void
 ear_vk_bind_framebuffer(
-    ear_vk_framebuffer* pln
+    ear_vk_framebuffer* fb
     );
 
 struct ear_vk_framebuffer{
     VkRenderPass pass;
+    VkFramebuffer buffer;
+
+    ear_framebuffer_desc desc;
 };
