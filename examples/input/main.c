@@ -8,7 +8,7 @@ int main(void) {
     float x = 0; float y = 0;
 
     while (eat_frame()) {
-        ear_clear((float[3]){ .2f, .4f, .3f });
+        ear_clear_color((float[3]){ .2f, .4f, .3f });
 
         const float speed = 256;
 

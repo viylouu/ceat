@@ -47,7 +47,7 @@ int main(void) {
     eau_init_objects();
 
     while (eat_frame()) {
-        //ear_clear((float[3]){ .2f, .4f, .3f });
+        //ear_clear_color((float[3]){ .2f, .4f, .3f });
 
         eau_try_tick_objects();
         eau_draw_objects();

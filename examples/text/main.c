@@ -16,7 +16,7 @@ int main(void) {
     ear_font* truetype_font = ear_load_truetype_font(ttf_data, sizeof(ttf_data), NULL);
 
     while (eat_frame()) {
-        ear_clear(.2f, .4f, .3f);
+        ear_clear_color(.2f, .4f, .3f);
 
         ear_text(bmp_mono_font, "hello\n\tworld!!!!", 0,0, 8 * 4, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
         ear_text(truetype_font, "hello\n\tworld!!!!", 0,64, 8*4, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);

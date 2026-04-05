@@ -19,7 +19,7 @@ int main(void) {
         });
 
     while (eat_frame()) {
-        ear_clear((float[3]){ .2f, .4f, .3f });
+        ear_clear_color((float[3]){ .2f, .4f, .3f });
 
         ear_rect(0,0, 64,64, (float[4]){ 1,0,0,1 }, EAU_ALIGN_TOP_LEFT);
 

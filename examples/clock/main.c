@@ -17,7 +17,7 @@ int main(void) {
     float speed = 1;
 
     while (eat_frame()) {
-        ear_clear((float[3]){ .2f, .4f, .3f });
+        ear_clear_color((float[3]){ .2f, .4f, .3f });
 
         eau_update_clocks();
 

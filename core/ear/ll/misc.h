@@ -6,7 +6,7 @@
 extern float _ear_clear_color[3];
 
 void
-ear_clear(
+ear_clear_color(
     float r, float g, float b
     );
 
