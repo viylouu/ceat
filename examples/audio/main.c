@@ -16,7 +16,6 @@ int main(void) {
             .mixer = NULL,
         }, audio_data, sizeof(audio_data), NULL);
 
-
     while (eat_frame()) {
         ear_clear((float[3]){ .2f, .4f, .3f });
 
@@ -29,7 +28,7 @@ int main(void) {
 
     eaa_delete_sound(sound);
 
-    eat_stop();
+    eat_exit();
 
     return 0;
 }

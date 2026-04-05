@@ -11,6 +11,16 @@
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
 
+float _ear_clear_color[3] = {0};
+
+void
+ear_clear(
+    float r, float g, float b
+    ) {
+    _ear_clear_color[0] = r;
+    _ear_clear_color[1] = g;
+    _ear_clear_color[2] = b;
+}
 
 void
 ear_draw(

@@ -5,6 +5,7 @@
 #include "framebuffer.h"
 #include "swapchain.h"
 #include "../init/device_log.h"
+#include "../../misc.h"
 
 VkRenderPass _ear_vk_renderpass;
 
@@ -82,7 +83,8 @@ _ear_vk_start_render_pass(
     ) {
     VkClearValue clearvalues[2];
 
-    clearvalues[0].color = (VkClearColorValue){{ 0,0,0,1 }};
+    clearvalues[0].color = (VkClearColorValue){{
+        _ear_clear_color[0], _ear_clear_color[1], _ear_clear_color[2], 1}};
     clearvalues[1].depthStencil = (VkClearDepthStencilValue){1,0};
 
     VkRenderPassBeginInfo renderpassinfo = {

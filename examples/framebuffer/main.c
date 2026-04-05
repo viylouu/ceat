@@ -17,9 +17,9 @@ int main(void) {
             .width = 128, .height = 128,
         }, NULL);
 
-    static const uint8_t tex_data[] = {
-    #embed "tex.png"
-    };
+    static const char tex_data[] = {
+        #embed "tex.png"
+        };
 
     ear_texture* tex = ear_load_texture((ear_texture_desc){
             .filter = EAR_FILTER_NEAREST,
@@ -43,7 +43,7 @@ int main(void) {
     ear_delete_framebuffer(fb);
     ear_delete_texture(fbtex);
 
-    eat_stop();
+    eat_exit();
 
     return 0;
 }

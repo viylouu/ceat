@@ -67,7 +67,7 @@ int main(void) {
         }, NULL);
 
     while (eat_frame()) {
-        //ear_clear((float[3]){ .2f, .4f, .3f });
+        ear_clear(.2f, .4f, .3f);
 
         ear_bind_pipeline(pln);
         ear_bind_buffer(vbuf, 0);

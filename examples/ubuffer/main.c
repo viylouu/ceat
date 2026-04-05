@@ -44,7 +44,7 @@ int main(void) {
         }, NULL);
 
     while (eat_frame()) {
-        //ear_clear((float[3]){ .2f, .4f, .3f });
+        ear_clear(.2f, .4f, .3f);
 
         ubo_data.time = eat_time;
         ear_update_buffer(ubo);

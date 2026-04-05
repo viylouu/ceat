@@ -67,7 +67,7 @@ ear_bind_camera(
     ear_camera* cam,
     bool ui_mode
     ) {
-    if (ear_bound_camera != cam) ear_bind_framebuffer(cam->desc.fb);
+    //if (ear_bound_camera != cam) ear_bind_framebuffer(cam->desc.fb);
     ear_bound_camera_ui_mode = ui_mode;
     ear_bound_camera = cam;
 }
@@ -144,6 +144,7 @@ _ear_debug_camera_window(
     eat_debug_theme t,
     int32_t* selected
     ) {
+    /*
     ear_camera* cam = _cam;
 
     float offy = 0;
@@ -198,4 +199,5 @@ _ear_debug_camera_window(
     case EAR_CAMERA_3D:
         break;
     }
+    */
 }

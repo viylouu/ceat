@@ -13,8 +13,8 @@
 #include "ll/texarray.h"
 */
 #include "hl/user.h"
-//#include "hl/text.h"
-//#include "hl/camera.h"
+#include "hl/text.h"
+#include "hl/camera.h"
 
 
 
