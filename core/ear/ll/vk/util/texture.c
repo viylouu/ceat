@@ -187,9 +187,6 @@ _ear_vk_make_sampler(
     bool anisotropy,
     VkSampler* sampler
     ) {
-    VkPhysicalDeviceProperties props;
-    vkGetPhysicalDeviceProperties(_ear_vk_physical_device, &props);
-
     VkSamplerCreateInfo sampinfo = {
         .sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO,
         .pNext = NULL,
@@ -204,7 +201,7 @@ _ear_vk_make_sampler(
         .addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT,
 
         .anisotropyEnable = anisotropy,
-        .maxAnisotropy    = anisotropy? props.limits.maxSamplerAnisotropy : 1,
+        .maxAnisotropy    = anisotropy? _ear_vk_physical_device_props.limits.maxSamplerAnisotropy : 1,
 
         .borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK,
 

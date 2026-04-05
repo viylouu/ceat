@@ -8,6 +8,7 @@
 #include <string.h>
 
 VkPhysicalDevice _ear_vk_physical_device;
+VkPhysicalDeviceProperties _ear_vk_physical_device_props;
 
 bool
 _ear_vk_check_device_extension_support(
@@ -74,6 +75,8 @@ _ear_vk_pick_physical_device(
         _ear_vk_physical_device = device;
         break;
     }
+
+    vkGetPhysicalDeviceProperties(_ear_vk_physical_device, &_ear_vk_physical_device_props);
 
     eat_assert(_ear_vk_physical_device != NULL, "failed to find any suitable vulkan supported devices!");
 }
