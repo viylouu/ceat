@@ -13,7 +13,7 @@
 #include "../init/device_log.h"
 #include "../init/surface.h"
 
-uint32_t _ear_vk_cur_frame = EAR_VK_MAX_FRAMES_IN_FLIGHT;
+uint32_t _ear_vk_cur_frame = 0;
 uint32_t _ear_vk_cur_img_index = 0;
 bool _ear_vk_first_frame = true;
 

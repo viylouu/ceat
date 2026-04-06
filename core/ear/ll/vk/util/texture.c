@@ -5,6 +5,8 @@
 #include "../init/device_phys.h"
 #include "buffer.h"
 #include "commbuf.h"
+#include "../init/comm_buffer.h"
+#include "../sc/swapchain.h"
 
 void
 _ear_vk_make_img(
@@ -104,6 +106,49 @@ _ear_vk_trans_img(
         );
 
     _ear_vk_end_stcomms(commbuf);
+}
+void
+_ear_vk_trans_img_inplace(
+    VkImage img, bool depth,
+    VkImageLayout oldlay,
+    VkImageLayout newlay
+    ) {
+    //VkCommandBuffer commbuf = _ear_vk_begin_stcomms();
+
+    VkImageMemoryBarrier barrier = {
+        .sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,
+        .pNext = NULL,
+
+        .oldLayout = oldlay,
+        .newLayout = newlay,
+
+        .srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED,
+        .dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED,
+
+        .image = img,
+
+        .subresourceRange.aspectMask     = depth? VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT : 
+                                                  VK_IMAGE_ASPECT_COLOR_BIT,
+        .subresourceRange.baseMipLevel   = 0,
+        .subresourceRange.levelCount     = 1,
+        .subresourceRange.baseArrayLayer = 0,
+        .subresourceRange.layerCount     = 1,
+
+        .srcAccessMask = _ear_vk_convert_lay_access(oldlay),
+        .dstAccessMask = _ear_vk_convert_lay_access(newlay),
+        };
+
+    vkCmdPipelineBarrier(
+        _ear_vk_comm_buffers[_ear_vk_cur_frame],
+        _ear_vk_convert_lay_stage(oldlay),
+        _ear_vk_convert_lay_stage(newlay),
+        0,
+        0, NULL,
+        0, NULL,
+        1, &barrier
+        );
+
+    //_ear_vk_end_stcomms(commbuf);
 }
 void
 _ear_vk_copy_buf_img(

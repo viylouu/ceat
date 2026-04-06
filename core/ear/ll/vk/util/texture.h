@@ -21,6 +21,12 @@ _ear_vk_trans_img(
     VkImageLayout newlay
     );
 void
+_ear_vk_trans_img_inplace(
+    VkImage img, bool depth,
+    VkImageLayout oldlay,
+    VkImageLayout newlay
+    );
+void
 _ear_vk_copy_buf_img(
     VkBuffer buf, VkImage img,
     uint32_t width, uint32_t height
