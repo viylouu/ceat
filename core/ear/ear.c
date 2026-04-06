@@ -36,11 +36,9 @@ ear_frame(
 
     ear_vk_frame();
 
+    _ear_set_master_framebuffer(NULL);
     ear_set_default_framebuffer(NULL);
     ear_bind_framebuffer(NULL);
-
-    ear_vk_set_viewport(0,0, _eaw_window_width, _eaw_window_height);
-    ear_vk_set_scissor (0,0, _eaw_window_width, _eaw_window_height);
     
     eau_mat4_identity(&transf);
 
