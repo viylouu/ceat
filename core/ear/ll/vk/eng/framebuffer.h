@@ -7,6 +7,8 @@
 
 typedef struct ear_vk_framebuffer ear_vk_framebuffer;
 
+extern bool _ear_vk_is_first_fb;
+
 ear_vk_framebuffer*
 ear_vk_create_framebuffer(
     ear_framebuffer_desc desc
@@ -29,7 +31,7 @@ ear_vk_bind_framebuffer(
 
 struct ear_vk_framebuffer{
     VkRenderPass pass;
-    VkFramebuffer buffer;
+    VkFramebuffer fb;
 
     ear_framebuffer_desc desc;
 };

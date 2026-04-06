@@ -3,8 +3,10 @@
 
 #include "hl/data.h"
 #include "../eaw/window.h"
+#include "ll/framebuffer.h"
 #include "ll/vk/vk.h"
 #include "ll/vk/eng/screen.h"
+#include "ll/vk/sc/swapchain.h"
 
 void
 ear_init(
@@ -31,13 +33,17 @@ ear_frame(
     void
     ) {
     ear_flush();
+
     ear_vk_frame();
 
-    //ear_set_default_framebuffer(NULL);
-    //ear_bind_framebuffer(NULL);
+    ear_set_default_framebuffer(NULL);
+    ear_bind_framebuffer(NULL);
 
     ear_vk_set_viewport(0,0, _eaw_window_width, _eaw_window_height);
     ear_vk_set_scissor (0,0, _eaw_window_width, _eaw_window_height);
-    eau_mat4_ortho(&proj, 0, _eaw_window_width, 0, _eaw_window_height, 0,1);
+    
     eau_mat4_identity(&transf);
+
+    //ear_set_default_framebuffer(NULL);
+    //ear_bind_framebuffer(NULL);
 }

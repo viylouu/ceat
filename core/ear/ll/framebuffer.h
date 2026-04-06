@@ -10,6 +10,8 @@
 typedef struct ear_framebuffer ear_framebuffer;
 typedef struct ear_framebuffer_desc ear_framebuffer_desc;
 
+extern ear_framebuffer* _ear_default_fb;
+extern ear_framebuffer* _ear_master_fb;
 extern ear_framebuffer* _ear_cur_framebuffer;
 
 
@@ -51,6 +53,9 @@ struct ear_framebuffer_desc{
         uint32_t out_color_amt;
     ear_texture* out_depth;
     uint32_t width; uint32_t height;
+
+    bool clear;
+    float clear_color[4];
 };
 
 struct ear_framebuffer{

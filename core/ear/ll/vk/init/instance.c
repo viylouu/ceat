@@ -26,7 +26,7 @@ _ear_vk_create_instance(
         .pEngineName = "eat",
         .engineVersion = VK_MAKE_VERSION(1,0,0),
 
-        .apiVersion = VK_API_VERSION_1_0,
+        .apiVersion = VK_API_VERSION_1_3,
         };
 
     uint32_t extensionamt;

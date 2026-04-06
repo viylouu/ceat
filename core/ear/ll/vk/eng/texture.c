@@ -23,21 +23,50 @@ ear_vk_create_texture(
         &tex->stagbuf, &tex->stagmem
         );
 
+    if (pixels == NULL) {
+        tex->selfalloc = true;
+
+        uint32_t perpix;
+        switch (desc.type) {
+        case EAR_TEX_COLOR: perpix = sizeof(uint8_t)  * 4; break;
+        case EAR_TEX_DEPTH: perpix = sizeof(uint8_t)  * 4; break;
+        case EAR_TEX_HDR:   perpix = sizeof(uint16_t) * 4; break;
+        case EAR_TEX_HDR32: perpix = sizeof(uint32_t) * 4; break;
+        default: eat_unreachable();
+        }
+
+        tex->alloc = malloc(width * height * perpix);
+        pixels = tex->alloc;
+    } else tex->selfalloc = false;
+
     vkMapMemory(_ear_vk_device, tex->stagmem, 0, imgsize, 0, &tex->data);
+
+    uint32_t* px = (uint32_t*)pixels;
+    if (desc.type == EAR_TEX_COLOR) for (uint32_t i = 0; i < width * height; ++i) { 
+        uint32_t p = px[i];
+        px[i] = (
+            (p & 0xFF00FF00) |
+            (p & 0x00FF0000) >> 16 |
+            (p & 0x000000FF) << 16
+            );
+    }
+
     memcpy(tex->data, pixels, imgsize);
     vkUnmapMemory(_ear_vk_device, tex->stagmem);
 
     _ear_vk_make_img(
         width, height,
-        VK_FORMAT_R8G8B8A8_SRGB,
+        tex->format = _ear_vk_convert_tex_fmt(desc.type),
         VK_IMAGE_TILING_OPTIMAL,
-        VK_IMAGE_USAGE_TRANSFER_DST_BIT | VK_IMAGE_USAGE_SAMPLED_BIT,
+        VK_IMAGE_USAGE_TRANSFER_DST_BIT | 
+            VK_IMAGE_USAGE_SAMPLED_BIT | 
+            VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
         VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
         &tex->img, &tex->imgmem
         );
 
     _ear_vk_trans_img(
-        tex->img,
+        tex->img, desc.type == EAR_TEX_DEPTH,
         VK_IMAGE_LAYOUT_UNDEFINED,
         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL
         );
@@ -47,13 +76,13 @@ ear_vk_create_texture(
         );
 
     _ear_vk_trans_img(
-        tex->img,
+        tex->img, desc.type == EAR_TEX_DEPTH,
         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
         VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
         );
 
     _ear_vk_make_imgview(
-        tex->img, VK_FORMAT_R8G8B8A8_SRGB,
+        tex->img, tex->format,
         &tex->imgview
         );
 
@@ -79,5 +108,6 @@ ear_vk_delete_texture(
     vkDestroyBuffer(_ear_vk_device, tex->stagbuf, NULL);
     vkFreeMemory(_ear_vk_device, tex->stagmem, NULL);
 
+    if (tex->selfalloc) free(tex->alloc);
     free(tex);
 }

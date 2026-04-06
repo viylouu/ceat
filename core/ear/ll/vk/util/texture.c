@@ -64,7 +64,7 @@ _ear_vk_make_img(
 }
 void
 _ear_vk_trans_img(
-    VkImage img,
+    VkImage img, bool depth,
     VkImageLayout oldlay,
     VkImageLayout newlay
     ) {
@@ -82,7 +82,8 @@ _ear_vk_trans_img(
 
         .image = img,
 
-        .subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT,
+        .subresourceRange.aspectMask     = depth? VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT : 
+                                                  VK_IMAGE_ASPECT_COLOR_BIT,
         .subresourceRange.baseMipLevel   = 0,
         .subresourceRange.levelCount     = 1,
         .subresourceRange.baseArrayLayer = 0,
@@ -212,6 +213,9 @@ _ear_vk_convert_lay_access(
     case VK_IMAGE_LAYOUT_UNDEFINED:                return 0;
     case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:     return VK_ACCESS_TRANSFER_WRITE_BIT;
     case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL: return VK_ACCESS_SHADER_READ_BIT;
+    case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL: return VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT |
+                                                          VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
+    case VK_IMAGE_LAYOUT_PRESENT_SRC_KHR:          return 0;
     default: eat_unreachable();
     }
 
@@ -224,8 +228,23 @@ _ear_vk_convert_lay_stage(
     switch (lay) {
     case VK_IMAGE_LAYOUT_UNDEFINED:                return VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
     case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:     return VK_PIPELINE_STAGE_TRANSFER_BIT;
-    case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL: return VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+    case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL: return VK_PIPELINE_STAGE_ALL_GRAPHICS_BIT;
+    case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL: return VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+    case VK_IMAGE_LAYOUT_PRESENT_SRC_KHR:          return VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
     default: eat_unreachable();
+    }
+
+    eat_unreachable();
+}
+VkFormat
+_ear_vk_convert_tex_fmt(
+    ear_texture_type type
+    ) {
+    switch (type) {
+    case EAR_TEX_COLOR: return VK_FORMAT_B8G8R8A8_SRGB;
+    case EAR_TEX_DEPTH: return VK_FORMAT_D24_UNORM_S8_UINT;
+    case EAR_TEX_HDR:   return VK_FORMAT_R16G16B16A16_SFLOAT;
+    case EAR_TEX_HDR32: return VK_FORMAT_R32G32B32A32_SFLOAT;
     }
 
     eat_unreachable();

@@ -6,15 +6,6 @@
 extern VkRenderPass _ear_vk_renderpass;
 
 void
-_ear_vk_create_render_pass(
-    void
-    );
-void
-_ear_vk_delete_render_pass(
-    void
-    );
-
-void
 _ear_vk_start_render_pass(
     uint32_t index,
     uint32_t frame

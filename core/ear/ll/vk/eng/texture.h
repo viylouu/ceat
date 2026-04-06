@@ -23,10 +23,16 @@ struct ear_vk_texture{
     VkDeviceMemory stagmem;
     void* data;
 
+    // image layout should be SHADER_READ_ONLY_OPTIMAL between calls
     VkImage img;
     VkDeviceMemory imgmem;
     
     VkImageView imgview;
 
     VkSampler samp;
+
+    VkFormat format;
+
+    bool selfalloc;
+    void* alloc;
 };

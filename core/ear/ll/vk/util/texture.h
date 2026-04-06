@@ -16,7 +16,7 @@ _ear_vk_make_img(
     );
 void
 _ear_vk_trans_img(
-    VkImage img,
+    VkImage img, bool depth,
     VkImageLayout oldlay,
     VkImageLayout newlay
     );
@@ -43,4 +43,8 @@ _ear_vk_convert_lay_access(
 VkPipelineStageFlags
 _ear_vk_convert_lay_stage(
     VkImageLayout lay
+    );
+VkFormat
+_ear_vk_convert_tex_fmt(
+    ear_texture_type type
     );

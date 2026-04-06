@@ -22,7 +22,7 @@ int main(void) {
         }, NULL);
 
     while (eat_frame()) {
-        ear_clear_color(.2f, .4f, .3f);
+        ear_clear_color(NULL, .2f, .4f, .3f, 1);
 
         ear_bind_pipeline(pln);
         ear_draw(3, 1);

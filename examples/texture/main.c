@@ -16,7 +16,7 @@ int main(void) {
         }, tex_data, sizeof(tex_data), NULL);
 
     while (eat_frame()) {
-        ear_clear_color(.2f, .4f, .3f);
+        ear_clear_color(NULL, .2f, .4f, .3f, 1);
 
         ear_tex(tex, 0,0, 512,512, 0,0,299,291, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
 

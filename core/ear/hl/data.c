@@ -65,6 +65,9 @@ ear_rect_rend_create(
             .src_alpha = EAR_FAC_ONE,       .dst_alpha = EAR_FAC_INV_SRC_ALPHA,
             .color_op  = EAR_OP_ADD, .alpha_op = EAR_OP_ADD,
             },
+
+        .color_fmt_amt = 1,
+        .color_fmts    = (ear_texture_type[]){ EAR_TEX_COLOR },
         }, arena);
 }
 
@@ -129,14 +132,11 @@ ear_tex_rend_create(
             },
         }, arena);
 
-    void* temp = malloc(16*16);
-    ear_tr.cur_tex = ear_create_texture((ear_texture_desc){}, temp,16,16, NULL);
-    free(temp);
-
-    ear_tr.texset = ear_create_bindset((ear_bindset_desc){
+    ear_texture* temp = ear_create_texture((ear_texture_desc){}, NULL,16,16, NULL);
+    ear_bindset* tbind = ear_create_bindset((ear_bindset_desc){
         .binding_amt = 1,
         .bindings    = &(ear_bind_desc){
-            .object  = ear_tr.cur_tex,
+            .object  = temp,
             .type    = EAR_BIND_TEXTURE2D,
             .binding = 0,
             .stage   = EAR_STAGE_FRAGMENT,
@@ -150,7 +150,7 @@ ear_tex_rend_create(
         .bindset_amt = 2,
         .bindsets    = (ear_bindset*[]){ 
             ear_tr.set,
-            ear_tr.texset,
+            tbind,
             },
 
         .has_blend_state = true,
@@ -158,10 +158,14 @@ ear_tex_rend_create(
             .src_color = EAR_FAC_SRC_ALPHA, .dst_color = EAR_FAC_INV_SRC_ALPHA,
             .src_alpha = EAR_FAC_ONE,       .dst_alpha = EAR_FAC_INV_SRC_ALPHA,
             .color_op  = EAR_OP_ADD, .alpha_op = EAR_OP_ADD,
-            }, 
+            },
+
+        .color_fmt_amt = 1,
+        .color_fmts    = (ear_texture_type[]){ EAR_TEX_COLOR },
         }, arena);
 
-    ear_delete_texture(ear_tr.cur_tex);
+    ear_delete_bindset(tbind);
+    ear_delete_texture(temp);
 }
 
 void
@@ -175,9 +179,11 @@ ear_tex_rend_flush(
     ear_update_buffer(ear_tr.ubo);
     ear_update_buffer(ear_tr.ssbo);
 
+    eat_assert(ear_tr.cur_tex->hl_bindset != NULL, "texture has no hl bindset!");
+
     ear_bind_pipeline(ear_tr.pln);
     ear_bind_bindset(ear_tr.set, 0);
-    ear_bind_bindset(ear_tr.texset, 1);
+    ear_bind_bindset(ear_tr.cur_tex->hl_bindset, 1);
 
     ear_draw(6, ear_tr.ssbo_i);
 

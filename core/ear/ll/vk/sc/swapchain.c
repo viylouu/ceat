@@ -4,9 +4,8 @@
 #include "../../../../eaw/window.h"
 
 #include "../vk.h"
-#include "framebuffer.h"
 #include "image_views.h"
-#include "render_pass.h"
+//#include "render_pass.h"
 
 #include "../init/sync.h"
 #include "../init/queue_fam.h"
@@ -139,7 +138,7 @@ _ear_vk_create_swapchain(
         .imageColorSpace = surface_fmt.colorSpace,
         .imageExtent = extent,
         .imageArrayLayers = 1,
-        .imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+        .imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT,
 
         .imageSharingMode = issameboth? VK_SHARING_MODE_EXCLUSIVE : VK_SHARING_MODE_CONCURRENT,
         .queueFamilyIndexCount = issameboth? 0 : 2,
@@ -225,11 +224,8 @@ void
 _ear_vk_cleanup_swapchain(
     void
     ) {
-    for (uint32_t i = 0; i < _ear_vk_swapchain_img_amt; ++i) {
-        vkDestroyFramebuffer(_ear_vk_device, _ear_vk_swapchain_fbufs[i], NULL);
+    for (uint32_t i = 0; i < _ear_vk_swapchain_img_amt; ++i)
         vkDestroyImageView(_ear_vk_device, _ear_vk_swapchain_img_views[i], NULL);
-    }
-
     vkDestroySwapchainKHR(_ear_vk_device, _ear_vk_swapchain, NULL);
 }
 
@@ -240,15 +236,11 @@ _ear_vk_create_full_swapchain(
     _ear_vk_create_swapchain();
     _ear_vk_create_sync_objects();
     _ear_vk_create_image_views();
-    _ear_vk_create_render_pass();
-    _ear_vk_create_framebuffers();
 }
 void
 _ear_vk_delete_full_swapchain(
     void
     ) {
-    _ear_vk_delete_framebuffers();
-    _ear_vk_delete_render_pass();
     _ear_vk_delete_image_views();
     _ear_vk_delete_sync_objects();
     _ear_vk_delete_swapchain();
@@ -263,5 +255,4 @@ _ear_vk_recreate_swapchain(
 
     _ear_vk_create_swapchain();
     _ear_vk_create_image_views();
-    _ear_vk_create_framebuffers();
 }

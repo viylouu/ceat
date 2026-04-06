@@ -7,6 +7,8 @@
 #include "../../eau/arena.h"
 #include "../../debug/debug.h"
 
+#include "bindset.h"
+
 typedef struct ear_texture ear_texture;
 typedef struct ear_texture_desc ear_texture_desc;
 
@@ -103,6 +105,8 @@ struct ear_texture{
 
     uint32_t width;
     uint32_t height;
+
+    ear_bindset* hl_bindset;
 
     ear_texture_desc desc;
 

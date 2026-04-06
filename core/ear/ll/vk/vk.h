@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define EAR_VK_MAX_FRAMES_IN_FLIGHT 2
+#define EAR_VK_MAX_FRAMES_IN_FLIGHT 3
 
 extern bool ear_framebuffer_resize;
 

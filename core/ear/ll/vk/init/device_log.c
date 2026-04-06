@@ -41,9 +41,23 @@ _ear_vk_create_logical_device(
         .samplerAnisotropy = true,
         };
 
+    VkPhysicalDeviceDynamicRenderingFeatures vpddrf = {
+        .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DYNAMIC_RENDERING_FEATURES,
+        .pNext = NULL,
+
+        .dynamicRendering = true,
+        };
+
+    VkPhysicalDeviceFeatures2 feats2 = {
+        .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2,
+        .pNext = &vpddrf,
+
+        .features = devicefeatures,
+        };
+
     VkDeviceCreateInfo createinfo = {
         .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
-        .pNext = NULL,
+        .pNext = &feats2,
 
         .flags = 0,
 
@@ -56,7 +70,7 @@ _ear_vk_create_logical_device(
         .enabledExtensionCount   = _ear_vk_device_exension_amt,
         .ppEnabledExtensionNames = _ear_vk_device_extensions,
 
-        .pEnabledFeatures = &devicefeatures,
+        .pEnabledFeatures = NULL,
         };
 
     eat_assert(vkCreateDevice(_ear_vk_physical_device, &createinfo, NULL, &_ear_vk_device) == VK_SUCCESS, "failed to create logical device!");

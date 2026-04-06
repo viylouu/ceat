@@ -3,12 +3,14 @@
 
 #include "../../pipeline.h"
 
-#include "../sc/render_pass.h"
+//#include "../sc/render_pass.h"
 #include "../util/shader_mod.h"
 #include "../init/comm_buffer.h"
 #include "../sc/swapchain.h"
 #include "../init/device_log.h"
 #include "../util/pipeline.h"
+//#include "framebuffer.h"
+#include "../util/texture.h"
 
 ear_vk_pipeline* _ear_vk_cur_pipeline;
 
@@ -59,9 +61,25 @@ ear_vk_create_pipeline(
 
     _ear_vk_make_pln_layout(pln, desc);
 
+    VkFormat* colfmts = malloc(sizeof(VkFormat) * desc.color_fmt_amt);
+    for (uint32_t i = 0; i < desc.color_fmt_amt; ++i)
+        colfmts[i] = _ear_vk_convert_tex_fmt(desc.color_fmts[i]);
+
+    VkPipelineRenderingCreateInfo renderinfo = {
+        .sType = VK_STRUCTURE_TYPE_PIPELINE_RENDERING_CREATE_INFO,
+        .pNext = NULL,
+
+        .viewMask = 0,
+
+        .colorAttachmentCount    = desc.color_fmt_amt,
+        .pColorAttachmentFormats = colfmts,
+
+        .depthAttachmentFormat = desc.depth? _ear_vk_convert_tex_fmt(desc.depth_fmt) : VK_FORMAT_UNDEFINED,
+        };
+
     VkGraphicsPipelineCreateInfo createinfo = {
         .sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO,
-        .pNext = NULL,
+        .pNext = &renderinfo,
 
         .flags = 0,
 
@@ -80,7 +98,7 @@ ear_vk_create_pipeline(
 
         .layout = pln->layout,
 
-        .renderPass = _ear_vk_renderpass,
+        .renderPass = NULL,
         .subpass    = 0,
 
         .basePipelineHandle = NULL,
@@ -95,6 +113,7 @@ ear_vk_create_pipeline(
 
     free(bindingdescs);
     free(attribdescs);
+    free(colfmts);
 
     return pln;
 }

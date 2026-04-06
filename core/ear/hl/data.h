@@ -62,7 +62,6 @@ typedef struct ear_tex_rend{
         } ssbo_d[4096];
         uint32_t ssbo_i;
     ear_texture* cur_tex;
-        ear_bindset* texset;
 } ear_tex_rend;
 extern ear_tex_rend ear_tr;
 

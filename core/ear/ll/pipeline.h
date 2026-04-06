@@ -7,6 +7,7 @@
 #include "../../debug/debug.h"
 
 #include "bindset.h"
+#include "framebuffer.h"
 
 typedef struct ear_pipeline ear_pipeline;
 typedef struct ear_pipeline_desc ear_pipeline_desc;
@@ -125,6 +126,10 @@ struct ear_pipeline_desc{
     ear_fill_mode fill_mode;
 
     ear_topology topology;
+
+    ear_texture_type* color_fmts;
+        uint32_t color_fmt_amt;
+    ear_texture_type depth_fmt;
 };
 
 struct ear_pipeline{

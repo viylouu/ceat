@@ -39,6 +39,8 @@ ear_create_texture(
         .desc = desc,
         .width = width, .height = height,
 
+        .hl_bindset = NULL,
+
         .pixels = pixels,
         .stbi_pixels = false,
 
@@ -77,6 +79,8 @@ ear_delete_texture(
     ear_texture* tex
     ) {
     eat_debug_remove_obj(tex->deb_obj);
+
+    if (tex->hl_bindset != NULL) ear_delete_bindset(tex->hl_bindset);
 
     ear_vk_delete_texture(tex->vk);
     if (tex->stbi_pixels) stbi_image_free(tex->pixels);

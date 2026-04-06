@@ -3,19 +3,20 @@
 
 #include <string.h>
 
-//#include "../../eaw/window.h"
+#include "../../eaw/window.h"
 //#include "../../eau/mat4.h"
 //#include "../../eau/coll.h"
-//#include "../hl/data.h"
+#include "../hl/data.h"
 #include "../hl/user.h"
 //#include "misc.h"
 
 #include "vk/eng/framebuffer.h"
+#include "vk/eng/screen.h"
 
 //#include "text.h"
 
-ear_framebuffer* default_fb;
-ear_framebuffer* master_fb;
+ear_framebuffer* _ear_default_fb;
+ear_framebuffer* _ear_master_fb;
 ear_framebuffer* _ear_cur_framebuffer;
 
 void
@@ -118,22 +119,32 @@ ear_bind_framebuffer(
     if (fb != NULL) {
         ear_vk_bind_framebuffer(fb->vk);
         _ear_cur_framebuffer = fb;
+
+        eau_mat4_ortho(&proj, 0,fb->desc.width, 0,fb->desc.height, 0,1);
+
+        ear_vk_set_viewport(0,0, fb->desc.width,fb->desc.height);
+        ear_vk_set_scissor (0,0, fb->desc.width,fb->desc.height);
         /*
         gl.bindFramebuffer(GL_FRAMEBUFFER, fb->id);
-        eau_mat4_ortho(&proj, 0,fb->desc.width, 0,fb->desc.height, 0,1);
-        gl.viewport(0,0, fb->desc.width, fb->desc.height);
+                gl.viewport(0,0, fb->desc.width, fb->desc.height);
         ear_mask(0,0, fb->desc.width, fb->desc.height);
         */
-    } else if (default_fb != NULL) {
-        ear_bind_framebuffer(default_fb); 
-    } else if (master_fb != NULL) {
-        ear_bind_framebuffer(master_fb);
+    } else if (_ear_default_fb != NULL) {
+        ear_bind_framebuffer(_ear_default_fb); 
+    } else if (_ear_master_fb != NULL) {
+        ear_bind_framebuffer(_ear_master_fb);
     } else {
         ear_vk_bind_framebuffer(NULL);
         _ear_cur_framebuffer = NULL;
+
+        eau_mat4_ortho(&proj, 0, _eaw_window_width, 0, _eaw_window_height, 0,1);
+
+        ear_vk_set_viewport(0,0, _eaw_window_width,_eaw_window_height);
+        ear_vk_set_scissor (0,0, _eaw_window_width,_eaw_window_height);
+
         /*
         gl.bindFramebuffer(GL_FRAMEBUFFER, 0);
-        eau_mat4_ortho(&proj, 0, eaw_window_width,eaw_window_height, 0, 0,1);
+        
         gl.viewport(0,0, eaw_window_width,eaw_window_height);
         ear_mask(0,0, eaw_window_width,eaw_window_height);
         */
@@ -153,14 +164,14 @@ void
 ear_set_default_framebuffer(
     ear_framebuffer* fb
     ) {
-    default_fb = fb;
+    _ear_default_fb = fb;
 }
 
 void
 _ear_set_master_framebuffer(
     ear_framebuffer* fb
     ) {
-    master_fb = fb;
+    _ear_master_fb = fb;
 }
 
 

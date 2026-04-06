@@ -1,6 +1,7 @@
 #include "vk.h"
 #include "../../../cutil.h"
 
+#include "eng/framebuffer.h"
 #include "init/comm_pool.h"
 #include "init/comm_buffer.h"
 #include "init/device_log.h"
@@ -11,8 +12,27 @@
 #include "init/sync.h"
 #include "sc/swapchain.h"
 #include "sc/render_pass.h"
+#include "util/texture.h"
 
 bool ear_framebuffer_resize;
+
+void
+_ear_vk_frame_end(
+    void
+    ) {
+    _ear_vk_end_render_pass(_ear_vk_cur_frame);
+    _ear_vk_end_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame]);
+
+    _ear_vk_submit_command_buffer(&_ear_vk_comm_buffers[_ear_vk_cur_frame], _ear_vk_cur_img_index, _ear_vk_cur_frame);
+
+    _ear_vk_trans_img(
+        _ear_vk_swapchain_imgs[_ear_vk_cur_img_index], false,
+        VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+        VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
+        );
+
+    _ear_vk_present_swapchain(_ear_vk_cur_img_index);
+}
 
 void 
 ear_vk_init(
@@ -38,6 +58,8 @@ void
 ear_vk_exit(
     void
     ) {
+    _ear_vk_frame_end();
+
     _ear_vk_device_wait_idle();
 
     _ear_vk_delete_full_swapchain();
@@ -55,13 +77,7 @@ void
 ear_vk_frame(
     void
     ) {
-    if (!_ear_vk_first_frame) {
-        _ear_vk_end_render_pass(_ear_vk_cur_frame);
-        _ear_vk_end_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame]);
-
-        _ear_vk_submit_command_buffer(&_ear_vk_comm_buffers[_ear_vk_cur_frame], _ear_vk_cur_img_index, _ear_vk_cur_frame);
-        _ear_vk_present_swapchain(_ear_vk_cur_img_index);
-    }
+    if (!_ear_vk_first_frame) _ear_vk_frame_end();
 
     ++_ear_vk_cur_frame;
     if (_ear_vk_cur_frame >= EAR_VK_MAX_FRAMES_IN_FLIGHT) _ear_vk_cur_frame = 0;
@@ -74,10 +90,18 @@ ear_vk_frame(
 
     _ear_vk_reset_fences(_ear_vk_cur_img_index);
 
+    _ear_vk_trans_img(
+        _ear_vk_swapchain_imgs[_ear_vk_cur_img_index], false,
+        VK_IMAGE_LAYOUT_UNDEFINED,
+        VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+        );
+
     _ear_vk_first_frame = false;
 
     _ear_vk_start_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame]);
-    _ear_vk_start_render_pass(_ear_vk_cur_img_index, _ear_vk_cur_frame);
+    //_ear_vk_start_render_pass(_ear_vk_cur_img_index, _ear_vk_cur_frame);
+
+    _ear_vk_is_first_fb = true;
 
     //ear_surface_width  = _ear_vk_swapchain_extent.width;
     //ear_surface_height = _ear_vk_swapchain_extent.height;

@@ -66,17 +66,16 @@ ear_tex(
         ear_tex_rend_flush();
 
         ear_tr.cur_tex = tex;
-
-        ear_delete_bindset(ear_tr.texset);
-        ear_tr.texset = ear_create_bindset((ear_bindset_desc){
-            .binding_amt = 1,
-            .bindings    = &(ear_bind_desc){
-                .object  = ear_tr.cur_tex,
-                .type    = EAR_BIND_TEXTURE2D,
-                .binding = 0,
-                .stage   = EAR_STAGE_FRAGMENT,
-                },
-            }, *_ear_data_arena);
+        if (tex->hl_bindset == NULL)
+            tex->hl_bindset = ear_create_bindset((ear_bindset_desc){
+                .binding_amt = 1,
+                .bindings    = &(ear_bind_desc){
+                    .object  = tex,
+                    .type    = EAR_BIND_TEXTURE2D,
+                    .binding = 0,
+                    .stage   = EAR_STAGE_FRAGMENT,
+                    },
+                }, *_ear_data_arena);
     }
     
 
