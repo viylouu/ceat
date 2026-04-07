@@ -77,7 +77,6 @@ ear_tex(
                     },
                 }, *_ear_data_arena);
     }
-    
 
     eau_rect rect = (eau_rect){ x,y,w,h, align };
     rect = eau_rect_topleftify(rect);

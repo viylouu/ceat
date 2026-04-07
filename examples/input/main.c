@@ -8,7 +8,7 @@ int main(void) {
     float x = 0; float y = 0;
 
     while (eat_frame()) {
-        ear_clear_color((float[3]){ .2f, .4f, .3f });
+        ear_clear_color(NULL, .2f, .4f, .3f, 1);
 
         const float speed = 256;
 
@@ -17,12 +17,14 @@ int main(void) {
         if (eaw_is_key(EAW_KEY_UP)) y -= eat_delta * speed;
         if (eaw_is_key(EAW_KEY_DOWN)) y += eat_delta * speed;
 
+        ear_rect(0,0, 512,512, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
+
         ear_rect(x,y, 64,64, eaw_is_mouse(EAW_MOUSE_LEFT)? (float[4]){ 0,1,0,1 } : (float[4]){ 1,0,0,1 }, EAU_ALIGN_TOP_LEFT);
 
         printf("%.3f FPS\n", 1./eat_delta64);
     }
 
-    eat_stop();
+    eat_exit();
 
     return 0;
 }

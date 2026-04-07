@@ -33,7 +33,7 @@ int main(void) {
 
     while (eat_frame()) {
         ear_bind_framebuffer(fb);
-        ear_tex(tex, 0,0, 64,64, 0,0,299,291, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
+        ear_tex(tex, 0,0, 16,16, 0,0,299,291, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
 
         ear_bind_framebuffer(NULL);
         ear_tex(fbtex, 0,0, eat_width,eat_height, 0,0,128,128, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);

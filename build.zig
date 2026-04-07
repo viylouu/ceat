@@ -161,7 +161,7 @@ pub fn build(b: *std.Build) void {
     ex_c(b,lib, "texture");
     ex_c(b,lib, "framebuffer");
     //ex_c(b,lib, "text");
-    //ex_c(b,lib, "input");
+    ex_c(b,lib, "input");
     //ex_c(b,lib, "object");
     //ex_c(b,lib, "clock");
     //ex_c(b,lib, "console");
