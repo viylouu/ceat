@@ -17,7 +17,7 @@ ear_vk_create_framebuffer(
     ear_vk_framebuffer* fb = malloc(sizeof(ear_vk_framebuffer));
     fb->desc = desc;
 
-    uint32_t atch_amt = desc.out_color_amt + (desc.out_depth != NULL);
+    /*uint32_t atch_amt = desc.out_color_amt + (desc.out_depth != NULL);
     VkAttachmentDescription* attaches = malloc(sizeof(VkAttachmentDescription) * atch_amt);
 
     for (uint32_t i = 0; i < desc.out_color_amt; ++i)
@@ -142,7 +142,7 @@ ear_vk_create_framebuffer(
     eat_assert(vkCreateFramebuffer(_ear_vk_device, &createinfo, NULL, &fb->fb) == VK_SUCCESS,
         "failed to create framebuffer!");
 
-    free(views);
+    free(views);*/
 
     return fb;
 }
@@ -150,8 +150,8 @@ void
 ear_vk_delete_framebuffer(
     ear_vk_framebuffer* fb
     ) {
-    vkDestroyFramebuffer(_ear_vk_device, fb->fb, NULL);
-    vkDestroyRenderPass(_ear_vk_device, fb->pass, NULL);
+    //vkDestroyFramebuffer(_ear_vk_device, fb->fb, NULL);
+    //vkDestroyRenderPass(_ear_vk_device, fb->pass, NULL);
 
     free(fb);
 }
@@ -165,9 +165,60 @@ ear_vk_bind_framebuffer(
 
     if (fb == NULL) _ear_vk_start_render_pass(_ear_vk_cur_img_index, _ear_vk_cur_frame);
     else {
-        VkClearValue depth_clear;
-        depth_clear.depthStencil = (VkClearDepthStencilValue){1,0};
+        VkRenderingAttachmentInfo depth_atch;
+        if (fb->desc.out_depth != NULL) depth_atch = (VkRenderingAttachmentInfo){
+            .sType = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO,
+            .pNext = NULL,
 
+            .imageView   = ((ear_vk_texture*)fb->desc.out_depth->vk)->imgview,
+            .imageLayout = VK_IMAGE_LAYOUT_DEPTH_ATTACHMENT_OPTIMAL,
+
+            .loadOp  = VK_ATTACHMENT_LOAD_OP_CLEAR,
+            .storeOp = VK_ATTACHMENT_STORE_OP_STORE,
+
+            .clearValue.depthStencil = (VkClearDepthStencilValue){1,0},
+            };
+
+        VkRenderingAttachmentInfo* col_atchs = malloc(sizeof(VkRenderingAttachmentInfo) * fb->desc.out_color_amt);
+        for (uint32_t i = 0; i < fb->desc.out_color_amt; ++i)
+            col_atchs[i] = (VkRenderingAttachmentInfo){
+                .sType = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO,
+                .pNext = NULL,
+
+                .imageView   = ((ear_vk_texture*)fb->desc.out_colors[i]->vk)->imgview,
+                .imageLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+
+                .loadOp  = fb->desc.clear? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_LOAD,
+                .storeOp = VK_ATTACHMENT_STORE_OP_STORE,
+
+                .clearValue.color = fb->desc.clear? (VkClearColorValue){{
+                    fb->desc.clear_color[0],
+                    fb->desc.clear_color[1], 
+                    fb->desc.clear_color[2], 
+                    fb->desc.clear_color[3]
+                    }} : (VkClearColorValue){},
+                };
+
+        VkRenderingInfo renderinfo = {
+            .sType = VK_STRUCTURE_TYPE_RENDERING_INFO,
+            .pNext = NULL,
+
+            .renderArea.offset = {0,0},
+            .renderArea.extent = {fb->desc.width, fb->desc.height},
+            .layerCount = 1,
+
+            .colorAttachmentCount = fb->desc.out_color_amt,
+            .pColorAttachments    = col_atchs,
+
+            .pDepthAttachment   = fb->desc.out_depth != NULL? &depth_atch : NULL,
+            .pStencilAttachment = fb->desc.out_depth != NULL? &depth_atch : NULL,
+            };
+
+        vkCmdBeginRendering(_ear_vk_comm_buffers[_ear_vk_cur_frame], &renderinfo);
+
+        free(col_atchs);
+
+        /*
         VkRenderPassBeginInfo renderpassinfo = {
             .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
             .pNext = NULL,
@@ -199,8 +250,8 @@ ear_vk_bind_framebuffer(
             renderpassinfo.pClearValues    = clearvals;
         }
 
-        vkCmdBeginRenderPass(_ear_vk_comm_buffers[_ear_vk_cur_frame], &renderpassinfo, VK_SUBPASS_CONTENTS_INLINE);
+        vkCmdBeginRendering(_ear_vk_comm_buffers[_ear_vk_cur_frame], &renderpassinfo, VK_SUBPASS_CONTENTS_INLINE);
 
-        if (fb->desc.clear) free(clearvals);
+        if (fb->desc.clear) free(clearvals);*/
     }
 }

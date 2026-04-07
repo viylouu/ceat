@@ -30,8 +30,8 @@ ear_vk_bind_framebuffer(
     );
 
 struct ear_vk_framebuffer{
-    VkRenderPass pass;
-    VkFramebuffer fb;
+    //VkRenderPass pass;
+    //VkFramebuffer fb;
 
     ear_framebuffer_desc desc;
 };
