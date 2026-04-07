@@ -3,6 +3,7 @@
 
 #include "../eng/bindset.h"
 #include "../init/device_log.h"
+#include "macros.h"
 
 VkPipelineVertexInputStateCreateInfo
 _ear_vk_make_pln_vertexinput(
@@ -171,7 +172,7 @@ _ear_vk_make_pln_layout(
     pln->chips = malloc(sizeof(VkDescriptorSetLayout) * desc.bindset_amt);
     pln->chip_amt = desc.bindset_amt;
     for (uint32_t i = 0; i < desc.bindset_amt; ++i)
-        pln->chips[i] = ((ear_vk_bindset*)desc.bindsets[i]->vk)->lay;
+        pln->chips[i] = get_vk(bindset, desc.bindsets[i])->lay;
 
     VkPipelineLayoutCreateInfo layoutinfo = {
         .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
