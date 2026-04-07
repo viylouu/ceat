@@ -98,17 +98,15 @@ _ear_vk_make_buf_stage(
     void* data,
     uint32_t size
     ) {
-    VkBuffer stagbuf;
-    VkDeviceMemory stagmem;
     _ear_vk_make_buf(
         size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-        &stagbuf, &stagmem
+        &buf->gen.stagbuf, &buf->gen.stagmem
         );
 
-    vkMapMemory(_ear_vk_device, stagmem, 0, size, 0, &buf->gen.data);
+    vkMapMemory(_ear_vk_device, buf->gen.stagmem, 0, size, 0, &buf->gen.data);
     memcpy(buf->gen.data, data, size);
-    vkUnmapMemory(_ear_vk_device, stagmem);
+    //vkUnmapMemory(_ear_vk_device, buf->gen.stagmem);
 
     _ear_vk_make_buf(
         size, _ear_vk_convert_buf_type(desc.type), 
@@ -116,10 +114,7 @@ _ear_vk_make_buf_stage(
         &buf->gen.buffer, &buf->gen.memory
         );
 
-    _ear_vk_copy_buf(stagbuf, buf->gen.buffer, size);
-
-    vkDestroyBuffer(_ear_vk_device, stagbuf, NULL);
-    vkFreeMemory(_ear_vk_device, stagmem, NULL);
+    _ear_vk_copy_buf(buf->gen.stagbuf, buf->gen.buffer, size);
 }
 void
 _ear_vk_make_buf_pers(
@@ -138,6 +133,7 @@ _ear_vk_make_buf_pers(
             );
 
         vkMapMemory(_ear_vk_device, buf->ubuf.memories[i], 0, size, 0, &buf->ubuf.datas[i]);
+        memcpy(buf->ubuf.datas[_ear_vk_cur_frame], data, size);
     }
 }
 
@@ -147,6 +143,9 @@ _ear_vk_del_buf_stage(
     ) {
     vkDestroyBuffer(_ear_vk_device, buf->gen.buffer, NULL);
     vkFreeMemory(_ear_vk_device, buf->gen.memory, NULL);
+
+    vkDestroyBuffer(_ear_vk_device, buf->gen.stagbuf, NULL);
+    vkFreeMemory(_ear_vk_device, buf->gen.stagmem, NULL);
 }
 void
 _ear_vk_del_buf_pers(
@@ -166,6 +165,16 @@ _ear_vk_update_buf_pers(
     ) {
     memcpy(buf->ubuf.datas[_ear_vk_cur_frame], data, size);
 }
+void
+_ear_vk_update_buf_stage(
+    ear_vk_buffer* buf,
+    void* data,
+    uint32_t size
+    ) {
+    memcpy(buf->gen.data, data, size);
+
+    _ear_vk_copy_buf(buf->gen.stagbuf, buf->gen.buffer, size);
+}
 
 VkBufferUsageFlags
 _ear_vk_convert_buf_type(
@@ -175,7 +184,8 @@ _ear_vk_convert_buf_type(
 
     switch (type) {
     case EAR_BUF_VERTEX:             return flags | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
-    case EAR_BUF_UNIFORM:            return flags | VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
+    case EAR_BUF_UNIFORM_STAGING:
+    case EAR_BUF_UNIFORM_PERSISTENT: return flags | VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
     case EAR_BUF_STORAGE_STAGING:
     case EAR_BUF_STORAGE_PERSISTENT: return flags | VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
     case EAR_BUF_INDEX:              return flags | VK_BUFFER_USAGE_INDEX_BUFFER_BIT;

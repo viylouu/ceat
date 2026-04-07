@@ -52,10 +52,14 @@ _ear_vk_del_buf_pers(
     ear_vk_buffer* buf
     );
 
-
-
 void
 _ear_vk_update_buf_pers(
+    ear_vk_buffer* buf,
+    void* data,
+    uint32_t size
+    );
+void
+_ear_vk_update_buf_stage(
     ear_vk_buffer* buf,
     void* data,
     uint32_t size

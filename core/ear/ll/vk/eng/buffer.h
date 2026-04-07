@@ -45,6 +45,10 @@ struct ear_vk_buffer{
     struct{
         VkBuffer buffer;
         VkDeviceMemory memory;
+
+        VkBuffer stagbuf;
+        VkDeviceMemory stagmem;
+
         void* data;
         } gen;
     struct{

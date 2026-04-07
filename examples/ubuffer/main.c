@@ -11,7 +11,7 @@ int main(void) {
     } ubo_data = {};
     
     ear_buffer* ubo = ear_create_buffer((ear_buffer_desc){
-        .type     = EAR_BUF_UNIFORM,
+        .type     = EAR_BUF_UNIFORM_PERSISTENT,
         .stride   = sizeof(ubo_data),
         }, &ubo_data, sizeof(ubo_data), NULL);
 

@@ -25,7 +25,7 @@ ear_rect_rend_create(
         };
 
     ear_rr.ubo = ear_create_buffer((ear_buffer_desc){
-        .type   = EAR_BUF_UNIFORM,
+        .type   = EAR_BUF_UNIFORM_PERSISTENT,
         .stride = sizeof(ear_rr.ubo_d),
         }, &ear_rr.ubo_d, sizeof(ear_rr.ubo_d), arena);
 
@@ -105,7 +105,7 @@ ear_tex_rend_create(
         };
 
     ear_tr.ubo = ear_create_buffer((ear_buffer_desc){
-        .type = EAR_BUF_UNIFORM,
+        .type = EAR_BUF_UNIFORM_PERSISTENT,
         .stride = sizeof(ear_tr.ubo_d),
         }, &ear_tr.ubo_d, sizeof(ear_tr.ubo_d), arena);
 

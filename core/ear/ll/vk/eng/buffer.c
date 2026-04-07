@@ -21,11 +21,12 @@ ear_vk_create_buffer(
     buf->size = size;
 
     switch (desc.type) {
-    case EAR_BUF_STORAGE_STAGING:
     case EAR_BUF_VERTEX: 
-    case EAR_BUF_INDEX: 
+    case EAR_BUF_INDEX:
+    case EAR_BUF_UNIFORM_STAGING:
+    case EAR_BUF_STORAGE_STAGING:
         _ear_vk_make_buf_stage(buf, desc, data, size); break;
-    case EAR_BUF_UNIFORM:
+    case EAR_BUF_UNIFORM_PERSISTENT:
     case EAR_BUF_STORAGE_PERSISTENT: 
         _ear_vk_make_buf_pers(buf, desc, data, size); break;
     default: eat_unreachable();
@@ -41,9 +42,10 @@ ear_vk_delete_buffer(
     case EAR_BUF_VERTEX:
     case EAR_BUF_INDEX:
     case EAR_BUF_STORAGE_STAGING:
+    case EAR_BUF_UNIFORM_STAGING:
         _ear_vk_del_buf_stage(buf); break;
     case EAR_BUF_STORAGE_PERSISTENT:
-    case EAR_BUF_UNIFORM:
+    case EAR_BUF_UNIFORM_PERSISTENT:
         _ear_vk_del_buf_pers(buf); break;
     default: eat_unreachable();
     }
@@ -73,9 +75,10 @@ ear_vk_bind_buffer(
             VK_INDEX_TYPE_UINT32
             );
         break;
-    case EAR_BUF_UNIFORM:
-    case EAR_BUF_STORAGE_PERSISTENT:
+    case EAR_BUF_UNIFORM_STAGING:
+    case EAR_BUF_UNIFORM_PERSISTENT:
     case EAR_BUF_STORAGE_STAGING:
+    case EAR_BUF_STORAGE_PERSISTENT:
         eat_warn("binding buffers dont need to be bound, bind the bindset instead!");
         break;
     default: eat_unreachable();
@@ -89,13 +92,14 @@ ear_vk_update_buffer(
     uint32_t size
     ) {
     switch (buf->type) {
-    case EAR_BUF_UNIFORM: 
+    case EAR_BUF_UNIFORM_PERSISTENT: 
     case EAR_BUF_STORAGE_PERSISTENT:
         _ear_vk_update_buf_pers(buf, data, size); return;
     case EAR_BUF_VERTEX:
     case EAR_BUF_INDEX:
     case EAR_BUF_STORAGE_STAGING:
-        eat_error("updating vertex/index buffers is unsupported!");
+    case EAR_BUF_UNIFORM_STAGING:
+        _ear_vk_update_buf_stage(buf, data, size); return;
     }
 
     eat_unreachable();
