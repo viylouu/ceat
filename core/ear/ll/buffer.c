@@ -63,9 +63,10 @@ ear_delete_buffer(
 void
 ear_bind_buffer(
     ear_buffer* buf,
-    uint32_t slot
+    uint32_t slot,
+    uint32_t offset
     ) {
-    ear_vk_bind_buffer(buf->vk, slot);
+    ear_vk_bind_buffer(buf->vk, slot, offset);
 }
 
 void

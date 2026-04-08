@@ -24,7 +24,8 @@ ear_vk_delete_buffer(
 void
 ear_vk_bind_buffer(
     ear_vk_buffer* buf,
-    uint32_t slot
+    uint32_t slot,
+    uint32_t offset
     );
 
 void
@@ -45,10 +46,7 @@ struct ear_vk_buffer{
     struct{
         VkBuffer buffer;
         VkDeviceMemory memory;
-
-        VkBuffer stagbuf;
-        VkDeviceMemory stagmem;
-
+ 
         void* data;
         } gen;
     struct{

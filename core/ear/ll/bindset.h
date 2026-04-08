@@ -31,7 +31,8 @@ ear_delete_bindset(
 void
 ear_bind_bindset(
     ear_bindset* set,
-    uint32_t slot
+    uint32_t slot,
+    uint32_t offset // offset for every item in the bindset, measured in chunk size
     );
 
 struct ear_bindset_desc{

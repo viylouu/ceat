@@ -98,15 +98,16 @@ _ear_vk_make_buf_stage(
     void* data,
     uint32_t size
     ) {
+    VkBuffer stagbuf; VkDeviceMemory stagmem;
     _ear_vk_make_buf(
         size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
         VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
-        &buf->gen.stagbuf, &buf->gen.stagmem
+        &stagbuf, &stagmem
         );
 
-    vkMapMemory(_ear_vk_device, buf->gen.stagmem, 0, size, 0, &buf->gen.data);
+    vkMapMemory(_ear_vk_device, stagmem, 0, size, 0, &buf->gen.data);
     memcpy(buf->gen.data, data, size);
-    //vkUnmapMemory(_ear_vk_device, buf->gen.stagmem);
+    vkUnmapMemory(_ear_vk_device, stagmem);
 
     _ear_vk_make_buf(
         size, _ear_vk_convert_buf_type(desc.type), 
@@ -114,7 +115,10 @@ _ear_vk_make_buf_stage(
         &buf->gen.buffer, &buf->gen.memory
         );
 
-    _ear_vk_copy_buf(buf->gen.stagbuf, buf->gen.buffer, size);
+    _ear_vk_copy_buf(stagbuf, buf->gen.buffer, size);
+
+    vkDestroyBuffer(_ear_vk_device, stagbuf, NULL);
+    vkFreeMemory(_ear_vk_device, stagmem, NULL);
 }
 void
 _ear_vk_make_buf_pers(
@@ -143,9 +147,6 @@ _ear_vk_del_buf_stage(
     ) {
     vkDestroyBuffer(_ear_vk_device, buf->gen.buffer, NULL);
     vkFreeMemory(_ear_vk_device, buf->gen.memory, NULL);
-
-    vkDestroyBuffer(_ear_vk_device, buf->gen.stagbuf, NULL);
-    vkFreeMemory(_ear_vk_device, buf->gen.stagmem, NULL);
 }
 void
 _ear_vk_del_buf_pers(
@@ -171,9 +172,21 @@ _ear_vk_update_buf_stage(
     void* data,
     uint32_t size
     ) {
-    memcpy(buf->gen.data, data, size);
+    VkBuffer stagbuf; VkDeviceMemory stagmem;
+    _ear_vk_make_buf(
+        size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
+        VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+        &stagbuf, &stagmem
+        );
 
-    _ear_vk_copy_buf(buf->gen.stagbuf, buf->gen.buffer, size);
+    vkMapMemory(_ear_vk_device, stagmem, 0, size, 0, &buf->gen.data);
+    memcpy(buf->gen.data, data, size);
+    vkUnmapMemory(_ear_vk_device, stagmem);
+
+    _ear_vk_copy_buf(stagbuf, buf->gen.buffer, size);
+
+    vkDestroyBuffer(_ear_vk_device, stagbuf, NULL);
+    vkFreeMemory(_ear_vk_device, stagmem, NULL);
 }
 
 VkBufferUsageFlags

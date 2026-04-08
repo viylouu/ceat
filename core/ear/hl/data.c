@@ -27,11 +27,13 @@ ear_rect_rend_create(
     ear_rr.ubo = ear_create_buffer((ear_buffer_desc){
         .type   = EAR_BUF_UNIFORM_PERSISTENT,
         .stride = sizeof(ear_rr.ubo_d),
+        .chunk_size = 1,
         }, &ear_rr.ubo_d, sizeof(ear_rr.ubo_d), arena);
 
     ear_rr.ssbo = ear_create_buffer((ear_buffer_desc){
         .type   = EAR_BUF_STORAGE_PERSISTENT,
         .stride = sizeof(ear_rr.ssbo_d[0]),
+        .chunk_size = 4096,
         }, &ear_rr.ssbo_d, sizeof(ear_rr.ssbo_d), arena);
 
     ear_rr.set = ear_create_bindset((ear_bindset_desc){
@@ -83,7 +85,7 @@ ear_rect_rend_flush(
     ear_update_buffer(ear_rr.ssbo);
 
     ear_bind_pipeline(ear_rr.pln);
-    ear_bind_bindset(ear_rr.set, 0);
+    ear_bind_bindset(ear_rr.set, 0, 0);
 
     ear_draw(6, ear_rr.ssbo_i);
 
@@ -105,13 +107,15 @@ ear_tex_rend_create(
         };
 
     ear_tr.ubo = ear_create_buffer((ear_buffer_desc){
-        .type = EAR_BUF_UNIFORM_PERSISTENT,
+        .type   = EAR_BUF_UNIFORM_PERSISTENT,
         .stride = sizeof(ear_tr.ubo_d),
+        .chunk_size = 1,
         }, &ear_tr.ubo_d, sizeof(ear_tr.ubo_d), arena);
 
     ear_tr.ssbo = ear_create_buffer((ear_buffer_desc){
-        .type = EAR_BUF_STORAGE_PERSISTENT,
+        .type   = EAR_BUF_STORAGE_PERSISTENT,
         .stride = sizeof(ear_tr.ssbo_d[0]),
+        .chunk_size = 4096,
         }, &ear_tr.ssbo_d, sizeof(ear_tr.ssbo_d), arena);
 
     ear_tr.set = ear_create_bindset((ear_bindset_desc){
@@ -182,8 +186,8 @@ ear_tex_rend_flush(
     eat_assert(ear_tr.cur_tex->hl_bindset != NULL, "texture has no hl bindset!");
 
     ear_bind_pipeline(ear_tr.pln);
-    ear_bind_bindset(ear_tr.set, 0);
-    ear_bind_bindset(ear_tr.cur_tex->hl_bindset, 1);
+    ear_bind_bindset(ear_tr.set, 0, 0);
+    ear_bind_bindset(ear_tr.cur_tex->hl_bindset, 1, 0);
 
     ear_draw(6, ear_tr.ssbo_i);
 

@@ -39,7 +39,8 @@ ear_delete_buffer(
 void
 ear_bind_buffer(
     ear_buffer* buffer,
-    uint32_t slot
+    uint32_t slot,
+    uint32_t offset // measured in arr elems (off * stride is sent to vk)
     );
 
 void
@@ -50,6 +51,9 @@ ear_update_buffer(
 struct ear_buffer_desc{
     ear_buffer_type type;
     uint32_t stride;
+
+    uint32_t chunk_size; // elems per chunk of data (chunk_size * stride sent to vk)
+                         // may be set to 0 if you dont need offsets
 };
 
 struct ear_buffer{

@@ -56,7 +56,8 @@ ear_vk_delete_buffer(
 void
 ear_vk_bind_buffer(
     ear_vk_buffer* buf,
-    uint32_t slot
+    uint32_t slot,
+    uint32_t offset
     ) {
     switch (buf->type) {
     case EAR_BUF_VERTEX:
@@ -64,14 +65,14 @@ ear_vk_bind_buffer(
             _ear_vk_comm_buffers[_ear_vk_cur_frame], 
             slot, 
             1, &buf->gen.buffer, 
-            &(VkDeviceSize){0}
+            &(VkDeviceSize){offset * buf->stride}
             );
         break;
     case EAR_BUF_INDEX:
         vkCmdBindIndexBuffer(
             _ear_vk_comm_buffers[_ear_vk_cur_frame],
             buf->gen.buffer,
-            0,
+            offset * buf->stride,
             VK_INDEX_TYPE_UINT32
             );
         break;

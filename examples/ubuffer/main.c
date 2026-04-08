@@ -11,8 +11,8 @@ int main(void) {
     } ubo_data = {};
     
     ear_buffer* ubo = ear_create_buffer((ear_buffer_desc){
-        .type     = EAR_BUF_UNIFORM_PERSISTENT,
-        .stride   = sizeof(ubo_data),
+        .type   = EAR_BUF_UNIFORM_PERSISTENT,
+        .stride = sizeof(ubo_data),
         }, &ubo_data, sizeof(ubo_data), NULL);
 
     ear_bindset* set = ear_create_bindset((ear_bindset_desc){
@@ -50,7 +50,7 @@ int main(void) {
         ear_update_buffer(ubo);
 
         ear_bind_pipeline(pln);
-        ear_bind_bindset(set, 0);
+        ear_bind_bindset(set, 0, 0);
         ear_draw(3, 1);
 
         //printf("%.3f FPS\n", 1./eat_delta64);
