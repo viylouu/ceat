@@ -79,6 +79,7 @@ const cflags = [_][]const u8{
     "-Wpedantic",
 
     //"-g", "-O0", "-fsanitize=address,undefined",
+    //"-O3",
 };
 
 const cflags_vulkan = [_][]const u8{
@@ -88,6 +89,7 @@ const cflags_vulkan = [_][]const u8{
     "-Wpedantic",
 
     //"-g", "-O0", "-fsanitize=address,undefined",
+    //"-O3",
 };
 
 var target: std.Build.ResolvedTarget = undefined;
