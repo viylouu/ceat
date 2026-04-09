@@ -36,7 +36,7 @@ void
 ear_vk_bind_bindset(
     void* _set,
     uint32_t slot,
-    uint32_t offsets[],
+    const uint32_t* offsets,
     uint32_t offset_amt
     ) {
     ear_vk_bindset* set = _set;

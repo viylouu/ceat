@@ -12,7 +12,7 @@
 void*
 ear_vk_create_buffer(
     ear_buffer_desc desc,
-    void* data,
+    const void* data,
     uint32_t size
     ) {
     ear_vk_buffer* buf = malloc(sizeof(ear_vk_buffer));
@@ -94,7 +94,7 @@ ear_vk_bind_buffer(
 void
 ear_vk_update_buffer(
     void* _buf,
-    void* data,
+    const void* data,
     //uint32_t size,
     uint32_t offset
     ) {

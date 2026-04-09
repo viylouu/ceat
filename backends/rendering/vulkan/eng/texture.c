@@ -111,7 +111,7 @@ ear_vk_delete_texture(
 void
 ear_vk_update_texture(
     void* _tex,
-    uint8_t pixels[],
+    const uint8_t* pixels,
     uint32_t width, uint32_t height
     ) {
     ear_vk_texture* tex = _tex;

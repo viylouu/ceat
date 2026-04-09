@@ -63,7 +63,7 @@ typedef struct eat_backend_rendering_impl{
     struct{
         void* (*create)(
             ear_buffer_desc desc,
-            void* data, uint32_t size
+            const void* data, uint32_t size
             );
         void (*delete)(
             void* data
@@ -77,7 +77,7 @@ typedef struct eat_backend_rendering_impl{
 
         void (*update)(
             void* data,
-            void* buf_data,
+            const void* buf_data,
             uint32_t offset
             );
     } buffer;
@@ -92,7 +92,7 @@ typedef struct eat_backend_rendering_impl{
         void (*bind)(
             void* data,
             uint32_t slot,
-            uint32_t offsets[],
+            const uint32_t* offsets,
             uint32_t offset_amt
             );
     } bindset;
@@ -120,7 +120,7 @@ typedef struct eat_backend_rendering_impl{
 
         void (*update)(
             void* data,
-            uint8_t pixels[],
+            const uint8_t* pixels,
             uint32_t width,
             uint32_t height
             );
