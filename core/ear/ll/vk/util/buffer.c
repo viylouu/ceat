@@ -139,7 +139,9 @@ _ear_vk_make_buf_pers(
             );
 
         vkMapMemory(_ear_vk_device, buf->ubuf.memories[i], 0, size, 0, &buf->ubuf.datas[i]);
-        memcpy(buf->ubuf.datas[i], data, size);
+        uint32_t chunk_bytes = desc.chunk_size * desc.stride;
+        for (uint32_t j = 0; j < size/chunk_bytes; ++j)
+            memcpy((uint8_t*)buf->ubuf.datas[i] + j * chunk_bytes, data, chunk_bytes);
     }
 }
 

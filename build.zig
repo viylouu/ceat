@@ -75,9 +75,8 @@ const cflags = [_][]const u8{
     "-Wall",
     "-Wextra",
     "-Wpedantic",
-    //"-Werror",
-    //"-g",
-    //"-O0",
+
+    //"-g", "-O0", "-fsanitize=address,undefined",
 };
 
 const cflags_vulkan = [_][]const u8{
@@ -85,6 +84,8 @@ const cflags_vulkan = [_][]const u8{
     "-Wall",
     "-Wextra",
     "-Wpedantic",
+
+    //"-g", "-O0", "-fsanitize=address,undefined",
 };
 
 var target: std.Build.ResolvedTarget = undefined;
@@ -96,8 +97,12 @@ fn ex_c(b: *std.Build, lib: *std.Build.Step.Compile, comptime name: []const u8) 
         .root_module = b.createModule(.{
             .target = target,
             .optimize = optimize,
-        }),
-    });
+            .sanitize_c = .full,
+            }),
+        });
+    //ex.root_module.linkSystemLibrary("asan", .{});
+    //ex.root_module.linkSystemLibrary("ubsan", .{});
+
     ex.root_module.addCSourceFile(.{ .file = b.path("examples/" ++ name ++ "/main.c"), .flags = &cflags });
     ex.root_module.linkLibrary(lib);
 
@@ -139,6 +144,7 @@ pub fn build(b: *std.Build) void {
             .target    = target,
             .optimize  = optimize,
             .link_libc = true,
+            .sanitize_c = .full,
             }),
         });
     lib_vk.root_module.addIncludePath(b.path("core"));
@@ -152,6 +158,7 @@ pub fn build(b: *std.Build) void {
             .target = target,
             .optimize = optimize,
             .link_libc = true,
+            .sanitize_c = .full,
             }),
         });
 
