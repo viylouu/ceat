@@ -21,10 +21,15 @@ void
 ear_vk_bind_bindset(
     ear_vk_bindset* set,
     uint32_t slot,
-    uint32_t offset
+    uint32_t offsets[],
+    uint32_t offset_amt
     );
 
 struct ear_vk_bindset{
+    ear_bindset_desc desc;
+
+    uint32_t dynamics;
+
     VkDescriptorSetLayout lay;
     VkDescriptorPool pool;
     VkDescriptorSet sets[EAR_VK_MAX_FRAMES_IN_FLIGHT];

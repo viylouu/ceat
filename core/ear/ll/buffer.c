@@ -76,7 +76,7 @@ ear_update_buffer(
     ) {
     eat_assert(buf->size == buf->prev_size, "buffer resizing unsupported!");
 
-    ear_vk_update_buffer(buf->vk, buf->data, buf->size, offset);
+    ear_vk_update_buffer(buf->vk, buf->data, offset);
 }
 
 

@@ -1,6 +1,8 @@
 #include "framebuffer.h"
 #include "../../../../cutil.h"
 
+#include <math.h>
+
 #include "../init/comm_buffer.h"
 #include "../sc/swapchain.h"
 #include "../sc/render_pass.h"
@@ -89,6 +91,22 @@ gtfo:
                 VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
                 );
 
+            VkClearColorValue clearcol = {};
+            if (fb->desc.clear) { 
+                clearcol = (VkClearColorValue){{
+                    fb->desc.clear_color[0],
+                    fb->desc.clear_color[1], 
+                    fb->desc.clear_color[2], 
+                    fb->desc.clear_color[3]
+                    }};
+
+                if (fb->desc.out_colors[i]->desc.type == EAR_TEX_COLOR) {
+                    clearcol.float32[0] = pow(clearcol.float32[0], 2.2);
+                    clearcol.float32[1] = pow(clearcol.float32[1], 2.2);
+                    clearcol.float32[2] = pow(clearcol.float32[2], 2.2);
+                }
+            }
+
             col_atchs[i] = (VkRenderingAttachmentInfo){
                 .sType = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO,
                 .pNext = NULL,
@@ -99,12 +117,7 @@ gtfo:
                 .loadOp  = fb->desc.clear? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_LOAD,
                 .storeOp = VK_ATTACHMENT_STORE_OP_STORE,
 
-                .clearValue.color = fb->desc.clear? (VkClearColorValue){{
-                    fb->desc.clear_color[0],
-                    fb->desc.clear_color[1], 
-                    fb->desc.clear_color[2], 
-                    fb->desc.clear_color[3]
-                    }} : (VkClearColorValue){},
+                .clearValue.color = clearcol,
                 };
         }
 

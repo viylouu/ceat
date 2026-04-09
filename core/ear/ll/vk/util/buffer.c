@@ -139,7 +139,7 @@ _ear_vk_make_buf_pers(
             );
 
         vkMapMemory(_ear_vk_device, buf->ubuf.memories[i], 0, size, 0, &buf->ubuf.datas[i]);
-        memcpy(buf->ubuf.datas[_ear_vk_cur_frame], data, size);
+        memcpy(buf->ubuf.datas[i], data, size);
     }
 }
 
@@ -164,10 +164,10 @@ void
 _ear_vk_update_buf_pers(
     ear_vk_buffer* buf,
     void* data,
-    uint32_t size,
+    //uint32_t size,
     uint32_t off
     ) {
-    memcpy(buf->ubuf.datas[_ear_vk_cur_frame] + off*buf->chunk*buf->stride, data, size);
+    memcpy((uint8_t*)buf->ubuf.datas[_ear_vk_cur_frame] + off*buf->chunk*buf->stride, data, buf->chunk*buf->stride);
 }
 void
 _ear_vk_update_buf_stage(
@@ -176,6 +176,7 @@ _ear_vk_update_buf_stage(
     uint32_t size,
     uint32_t off
     ) {
+    /*
     VkBuffer stagbuf; VkDeviceMemory stagmem;
     _ear_vk_make_buf(
         size, VK_BUFFER_USAGE_TRANSFER_SRC_BIT,
@@ -191,6 +192,7 @@ _ear_vk_update_buf_stage(
 
     vkDestroyBuffer(_ear_vk_device, stagbuf, NULL);
     vkFreeMemory(_ear_vk_device, stagmem, NULL);
+    */
 }
 
 VkBufferUsageFlags

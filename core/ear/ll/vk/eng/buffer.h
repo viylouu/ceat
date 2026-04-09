@@ -32,7 +32,7 @@ void
 ear_vk_update_buffer(
     ear_vk_buffer* buf,
     void* data,
-    uint32_t size,
+    //uint32_t size,
     uint32_t offset
     );
 

@@ -91,18 +91,18 @@ void
 ear_vk_update_buffer(
     ear_vk_buffer* buf,
     void* data,
-    uint32_t size,
+    //uint32_t size,
     uint32_t offset
     ) {
     switch (buf->type) {
     case EAR_BUF_UNIFORM_PERSISTENT: 
     case EAR_BUF_STORAGE_PERSISTENT:
-        _ear_vk_update_buf_pers(buf, data, size, offset); return;
+        _ear_vk_update_buf_pers(buf, data, offset); return;
     case EAR_BUF_VERTEX:
     case EAR_BUF_INDEX:
     case EAR_BUF_STORAGE_STAGING:
     case EAR_BUF_UNIFORM_STAGING:
-        _ear_vk_update_buf_stage(buf, data, size, offset); return;
+        _ear_vk_update_buf_stage(buf, data, 0, offset); return;
     }
 
     eat_unreachable();

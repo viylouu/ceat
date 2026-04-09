@@ -21,17 +21,19 @@ _ear_vk_make_bindset_pool(
         }
     }
 
+    set->dynamics = ubufs + sbufs;
+
     bool has_ubufs = ubufs > 0; bool has_sbufs = sbufs > 0; bool has_samps = samps > 0;
     uint32_t size_amt = has_ubufs + has_sbufs + has_samps;
     VkDescriptorPoolSize* sizes = malloc(sizeof(VkDescriptorPoolSize) * size_amt);
 
     uint32_t assidx = 0;
     if (has_ubufs) sizes[assidx++] = (VkDescriptorPoolSize){
-        .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+        .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC,
         .descriptorCount = ubufs * EAR_VK_MAX_FRAMES_IN_FLIGHT,
         };
     if (has_sbufs) sizes[assidx++] = (VkDescriptorPoolSize){
-        .type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
+        .type = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC,
         .descriptorCount = sbufs * EAR_VK_MAX_FRAMES_IN_FLIGHT,
         };
     if (has_samps) sizes[assidx++] = (VkDescriptorPoolSize){
@@ -165,8 +167,8 @@ _ear_vk_convert_desc_type(
     ear_bind_type type
     ) {
     switch (type) {
-    case EAR_BIND_UNIFORM:   return VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-    case EAR_BIND_STORAGE:   return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
+    case EAR_BIND_UNIFORM:   return VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+    case EAR_BIND_STORAGE:   return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC;
     case EAR_BIND_TEXTURE2D: return VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
     }
 

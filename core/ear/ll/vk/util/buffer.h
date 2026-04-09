@@ -58,7 +58,7 @@ void
 _ear_vk_update_buf_pers(
     ear_vk_buffer* buf,
     void* data,
-    uint32_t size,
+    //uint32_t size,
     uint32_t off
     );
 void

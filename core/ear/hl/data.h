@@ -25,6 +25,9 @@ ear_user_exit(
     );
 
 
+#define EAR_HL_BATCH_OBJS 1024
+#define EAR_HL_RINGBUF_MULT 4
+
 typedef struct ear_rect_rend{
     ear_pipeline* pln;
         ear_bindset* set;
@@ -36,8 +39,9 @@ typedef struct ear_rect_rend{
             float w; float h; 
             float r; float g; float b; float a; 
             mat4 transf;
-        } ssbo_d[4096];
+        } ssbo_d[EAR_HL_BATCH_OBJS];
         uint32_t ssbo_i;
+    uint32_t off;
 } ear_rect_rend;
 extern ear_rect_rend ear_rr;
 
@@ -59,9 +63,10 @@ typedef struct ear_tex_rend{
             float r; float g; float b; float a;
             float sx; float sy; float sw; float sh;
             mat4 transf;
-        } ssbo_d[4096];
+        } ssbo_d[EAR_HL_BATCH_OBJS];
         uint32_t ssbo_i;
     ear_texture* cur_tex;
+    uint32_t off;
 } ear_tex_rend;
 extern ear_tex_rend ear_tr;
 

@@ -72,8 +72,8 @@ const cflags = [_][]const u8{
     //"-Wextra",
     //"-Wno-unused",
     //"-Werror",
-    //"-g",
-    //"-O0",
+    "-g",
+    "-O0",
 };
 
 var target: std.Build.ResolvedTarget = undefined;
