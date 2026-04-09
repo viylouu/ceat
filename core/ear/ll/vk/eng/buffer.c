@@ -19,6 +19,7 @@ ear_vk_create_buffer(
     buf->type = desc.type;
     buf->stride = desc.stride;
     buf->size = size;
+    buf->chunk = desc.chunk_size;
 
     switch (desc.type) {
     case EAR_BUF_VERTEX: 
@@ -65,14 +66,14 @@ ear_vk_bind_buffer(
             _ear_vk_comm_buffers[_ear_vk_cur_frame], 
             slot, 
             1, &buf->gen.buffer, 
-            &(VkDeviceSize){offset * buf->stride}
+            &(VkDeviceSize){offset * buf->chunk * buf->stride}
             );
         break;
     case EAR_BUF_INDEX:
         vkCmdBindIndexBuffer(
             _ear_vk_comm_buffers[_ear_vk_cur_frame],
             buf->gen.buffer,
-            offset * buf->stride,
+            offset * buf->chunk * buf->stride,
             VK_INDEX_TYPE_UINT32
             );
         break;
@@ -90,17 +91,18 @@ void
 ear_vk_update_buffer(
     ear_vk_buffer* buf,
     void* data,
-    uint32_t size
+    uint32_t size,
+    uint32_t offset
     ) {
     switch (buf->type) {
     case EAR_BUF_UNIFORM_PERSISTENT: 
     case EAR_BUF_STORAGE_PERSISTENT:
-        _ear_vk_update_buf_pers(buf, data, size); return;
+        _ear_vk_update_buf_pers(buf, data, size, offset); return;
     case EAR_BUF_VERTEX:
     case EAR_BUF_INDEX:
     case EAR_BUF_STORAGE_STAGING:
     case EAR_BUF_UNIFORM_STAGING:
-        _ear_vk_update_buf_stage(buf, data, size); return;
+        _ear_vk_update_buf_stage(buf, data, size, offset); return;
     }
 
     eat_unreachable();

@@ -81,8 +81,8 @@ ear_rect_rend_flush(
 
     eau_mat4_copy(proj, &ear_rr.ubo_d.proj);
 
-    ear_update_buffer(ear_rr.ubo);
-    ear_update_buffer(ear_rr.ssbo);
+    ear_update_buffer(ear_rr.ubo, 0);
+    ear_update_buffer(ear_rr.ssbo, 0);
 
     ear_bind_pipeline(ear_rr.pln);
     ear_bind_bindset(ear_rr.set, 0, 0);
@@ -180,8 +180,8 @@ ear_tex_rend_flush(
 
     eau_mat4_copy(proj, &ear_tr.ubo_d.proj);
 
-    ear_update_buffer(ear_tr.ubo);
-    ear_update_buffer(ear_tr.ssbo);
+    ear_update_buffer(ear_tr.ubo, 0);
+    ear_update_buffer(ear_tr.ssbo, 0);
 
     eat_assert(ear_tr.cur_tex->hl_bindset != NULL, "texture has no hl bindset!");
 

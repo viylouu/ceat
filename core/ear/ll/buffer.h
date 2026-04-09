@@ -40,12 +40,13 @@ void
 ear_bind_buffer(
     ear_buffer* buffer,
     uint32_t slot,
-    uint32_t offset // measured in arr elems (off * stride is sent to vk)
+    uint32_t offset // measured in arr elems (off * chunk_size * stride is sent to vk)
     );
 
 void
 ear_update_buffer(
-    ear_buffer* buffer
+    ear_buffer* buffer,
+    uint32_t offset
     );
 
 struct ear_buffer_desc{

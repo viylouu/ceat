@@ -71,11 +71,12 @@ ear_bind_buffer(
 
 void
 ear_update_buffer(
-    ear_buffer* buf
+    ear_buffer* buf,
+    uint32_t offset
     ) {
     eat_assert(buf->size == buf->prev_size, "buffer resizing unsupported!");
 
-    ear_vk_update_buffer(buf->vk, buf->data, buf->size);
+    ear_vk_update_buffer(buf->vk, buf->data, buf->size, offset);
 }
 
 

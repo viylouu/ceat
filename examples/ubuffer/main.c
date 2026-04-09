@@ -47,7 +47,7 @@ int main(void) {
         ear_clear_color(NULL, .2f, .4f, .3f, 1);
 
         ubo_data.time = eat_time;
-        ear_update_buffer(ubo);
+        ear_update_buffer(ubo, 0);
 
         ear_bind_pipeline(pln);
         ear_bind_bindset(set, 0, 0);

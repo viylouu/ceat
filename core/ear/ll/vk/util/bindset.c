@@ -127,7 +127,7 @@ _ear_vk_make_bindset_sets(
                 bufferinfo = (VkDescriptorBufferInfo){
                     .buffer = vbuf->ubuf.buffers[i],
                     .offset = 0,
-                    .range  = buf->desc.chunk_size == 0? vbuf->size : buf->desc.chunk_size * vbuf->stride,
+                    .range  = vbuf->chunk == 0? vbuf->size : vbuf->chunk * vbuf->stride,
                     };
             } else {
                 ear_texture*    tex  = desc.bindings[b].object;

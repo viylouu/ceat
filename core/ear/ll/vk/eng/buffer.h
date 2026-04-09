@@ -32,12 +32,14 @@ void
 ear_vk_update_buffer(
     ear_vk_buffer* buf,
     void* data,
-    uint32_t size
+    uint32_t size,
+    uint32_t offset
     );
 
 struct ear_vk_buffer{
     uint32_t size;
     uint32_t stride;
+    uint32_t chunk;
 
     ear_vk_bindset* cur_set;
 

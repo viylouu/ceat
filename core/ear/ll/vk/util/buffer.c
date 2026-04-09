@@ -76,14 +76,16 @@ _ear_vk_make_buf(
 void
 _ear_vk_copy_buf(
     VkBuffer src,
+    uint32_t srcoff,
     VkBuffer dst,
+    uint32_t dstoff,
     VkDeviceSize size
     ) {
     VkCommandBuffer commbuf = _ear_vk_begin_stcomms();
 
     VkBufferCopy copyregion = {
-        .srcOffset = 0,
-        .dstOffset = 0,
+        .srcOffset = srcoff,
+        .dstOffset = dstoff,
         .size = size,
         };
     vkCmdCopyBuffer(commbuf, src, dst, 1, &copyregion);
@@ -115,7 +117,7 @@ _ear_vk_make_buf_stage(
         &buf->gen.buffer, &buf->gen.memory
         );
 
-    _ear_vk_copy_buf(stagbuf, buf->gen.buffer, size);
+    _ear_vk_copy_buf(stagbuf, 0, buf->gen.buffer, 0, size);
 
     vkDestroyBuffer(_ear_vk_device, stagbuf, NULL);
     vkFreeMemory(_ear_vk_device, stagmem, NULL);
@@ -162,15 +164,17 @@ void
 _ear_vk_update_buf_pers(
     ear_vk_buffer* buf,
     void* data,
-    uint32_t size
+    uint32_t size,
+    uint32_t off
     ) {
-    memcpy(buf->ubuf.datas[_ear_vk_cur_frame], data, size);
+    memcpy(buf->ubuf.datas[_ear_vk_cur_frame] + off*buf->chunk*buf->stride, data, size);
 }
 void
 _ear_vk_update_buf_stage(
     ear_vk_buffer* buf,
     void* data,
-    uint32_t size
+    uint32_t size,
+    uint32_t off
     ) {
     VkBuffer stagbuf; VkDeviceMemory stagmem;
     _ear_vk_make_buf(
@@ -183,7 +187,7 @@ _ear_vk_update_buf_stage(
     memcpy(buf->gen.data, data, size);
     vkUnmapMemory(_ear_vk_device, stagmem);
 
-    _ear_vk_copy_buf(stagbuf, buf->gen.buffer, size);
+    _ear_vk_copy_buf(stagbuf, 0, buf->gen.buffer, buf->chunk*buf->stride, size);
 
     vkDestroyBuffer(_ear_vk_device, stagbuf, NULL);
     vkFreeMemory(_ear_vk_device, stagmem, NULL);
