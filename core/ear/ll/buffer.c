@@ -1,7 +1,7 @@
 #include "buffer.h"
 #include "../../cutil.h"
 
-#include "rendering/vulkan/eng/buffer.h"
+#include "rendering/impl.h"
 
 //#include "../hl/user.h"
 //#include "../hl/text.h"
@@ -30,7 +30,7 @@ ear_create_buffer(
     ) {
     ear_buffer* buf = malloc(sizeof(ear_buffer));
     *buf = (ear_buffer){
-        .vk = ear_vk_create_buffer(desc, data, size),
+        .vk = ear_backend->buffer.create(desc, data, size),
 
         .desc = desc,
         .data = data,
@@ -54,7 +54,7 @@ ear_delete_buffer(
     ) {
     eat_debug_remove_obj(buf->deb_obj);
 
-    ear_vk_delete_buffer(buf->vk);
+    ear_backend->buffer.delete(buf->vk);
 
     if (buf->dest != NULL) buf->dest->data = NULL;
     free(buf);
@@ -66,7 +66,7 @@ ear_bind_buffer(
     uint32_t slot,
     uint32_t offset
     ) {
-    ear_vk_bind_buffer(buf->vk, slot, offset);
+    ear_backend->buffer.bind(buf->vk, slot, offset);
 }
 
 void
@@ -76,7 +76,7 @@ ear_update_buffer(
     ) {
     eat_assert(buf->size == buf->prev_size, "buffer resizing unsupported!");
 
-    ear_vk_update_buffer(buf->vk, buf->data, offset);
+    ear_backend->buffer.update(buf->vk, buf->data, offset);
 }
 
 

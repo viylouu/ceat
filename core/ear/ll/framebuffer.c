@@ -11,8 +11,7 @@
 #include "../hl/user.h"
 //#include "misc.h"
 
-#include "rendering/vulkan/eng/framebuffer.h"
-#include "rendering/vulkan/eng/screen.h"
+#include "rendering/impl.h"
 
 //#include "text.h"
 
@@ -57,7 +56,7 @@ ear_create_framebuffer(
         memcpy(fb->desc.out_colors, desc.out_colors, sizeof(ear_texture*) * desc.out_color_amt);
     }
 
-    fb->vk = ear_vk_create_framebuffer(desc);
+    fb->vk = ear_backend->framebuffer.create(desc);
 
     /*
     gl.genFramebuffers(1, &fb->id);
@@ -103,7 +102,7 @@ ear_delete_framebuffer(
     ) {
     eat_debug_remove_obj(fb->deb_obj);
 
-    ear_vk_delete_framebuffer(fb->vk);
+    ear_backend->framebuffer.delete(fb->vk);
 
     if (fb->desc.out_color_amt > 0) free(fb->desc.out_colors);
 
@@ -118,13 +117,13 @@ ear_bind_framebuffer(
     ear_flush();
 
     if (fb != NULL) {
-        ear_vk_bind_framebuffer(fb->vk);
+        ear_backend->framebuffer.bind(fb->vk);
         _ear_cur_framebuffer = fb;
 
         eau_mat4_ortho(&proj, 0,fb->desc.width, 0,fb->desc.height, 0,1);
 
-        ear_vk_set_viewport(0,0, fb->desc.width,fb->desc.height);
-        ear_vk_set_scissor (0,0, fb->desc.width,fb->desc.height);
+        ear_backend->misc.viewport(0,0, fb->desc.width,fb->desc.height);
+        ear_backend->misc.scissor (0,0, fb->desc.width,fb->desc.height);
         /*
         gl.bindFramebuffer(GL_FRAMEBUFFER, fb->id);
                 gl.viewport(0,0, fb->desc.width, fb->desc.height);
@@ -135,13 +134,13 @@ ear_bind_framebuffer(
     } else if (_ear_master_fb != NULL) {
         ear_bind_framebuffer(_ear_master_fb);
     } else {
-        ear_vk_bind_framebuffer(NULL);
+        ear_backend->framebuffer.bind(NULL);
         _ear_cur_framebuffer = NULL;
 
         eau_mat4_ortho(&proj, 0, _eaw_window_width, 0, _eaw_window_height, 0,1);
 
-        ear_vk_set_viewport(0,0, _eaw_window_width,_eaw_window_height);
-        ear_vk_set_scissor (0,0, _eaw_window_width,_eaw_window_height);
+        ear_backend->misc.viewport(0,0, _eaw_window_width,_eaw_window_height);
+        ear_backend->misc.scissor (0,0, _eaw_window_width,_eaw_window_height);
 
         /*
         gl.bindFramebuffer(GL_FRAMEBUFFER, 0);

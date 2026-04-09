@@ -1,14 +1,14 @@
 #include "texture.h"
 #include "../../cutil.h"
 
+#include "rendering/impl.h"
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../../include/stb_image.h"
 
 //#include "text.h"
 //#include "user.h"
 //#include "gl.h"
-
-#include "rendering/vulkan/eng/texture.h"
 
 void
 _ear_arena_texture_delete(
@@ -52,7 +52,7 @@ ear_create_texture(
     }
 
     *tex = (ear_texture){
-        .vk = ear_vk_create_texture(desc, &tex->pixels, width, height),
+        .vk = ear_backend->texture.create(desc, &tex->pixels, width, height),
 
         .desc = desc,
         .width = width, .height = height,
@@ -103,7 +103,7 @@ ear_delete_texture(
 
     if (tex->hl_bindset != NULL) ear_delete_bindset(tex->hl_bindset);
 
-    ear_vk_delete_texture(tex->vk);
+    ear_backend->texture.delete(tex->vk);
     if (tex->stbi_pixels) stbi_image_free(tex->pixels);
     if (tex->self_pixels) free(tex->pixels);
 
@@ -178,7 +178,7 @@ void
 ear_update_texture(
     ear_texture* tex
     ) {
-    ear_vk_update_texture(tex->vk, tex->pixels, tex->width,tex->height);
+    ear_backend->texture.update(tex->vk, tex->pixels, tex->width,tex->height);
 }
 
 

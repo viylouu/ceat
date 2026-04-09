@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "rendering/vulkan/eng/bindset.h"
+#include "rendering/impl.h"
 
 void
 _ear_arena_bindset_delete(
@@ -32,7 +32,7 @@ ear_create_bindset(
 
     ear_bindset* set = malloc(sizeof(ear_bindset));
     *set = (ear_bindset){
-        .vk = ear_vk_create_bindset(desc),
+        .vk = ear_backend->bindset.create(desc),
 
         .desc = desc,
 
@@ -53,7 +53,7 @@ ear_delete_bindset(
     ) {
     eat_debug_remove_obj(set->deb_obj);
 
-    ear_vk_delete_bindset(set->vk);
+    ear_backend->bindset.delete(set->vk);
 
     free(set->desc.bindings);
 
@@ -68,7 +68,7 @@ ear_bind_bindset(
     uint32_t offsets[],
     uint32_t offset_amt
     ) {
-    ear_vk_bind_bindset(set->vk, slot, offsets, offset_amt);
+    ear_backend->bindset.bind(set->vk, slot, offsets, offset_amt);
 }
 
 

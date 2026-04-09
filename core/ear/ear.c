@@ -4,7 +4,7 @@
 #include "hl/data.h"
 //#include "../eaw/window.h"
 #include "ll/framebuffer.h"
-#include "rendering/vulkan/vk.h"
+#include "rendering/impl.h"
 //#include "ll/vk/eng/screen.h"
 //#include "ll/vk/sc/swapchain.h"
 
@@ -14,7 +14,7 @@ ear_init(
     int32_t width, int32_t height,
     bool vsync
     ) {
-    ear_vk_init(title, width, height, vsync);
+    ear_backend->main.init(title, width, height, vsync);
 
     ear_user_init();
 }
@@ -25,7 +25,7 @@ ear_exit(
     ) {
     ear_user_exit();
 
-    ear_vk_exit();
+    ear_backend->main.exit();
 }
 
 void
@@ -34,7 +34,7 @@ ear_frame(
     ) {
     ear_flush();
 
-    ear_vk_frame();
+    ear_backend->main.frame();
 
     _ear_set_master_framebuffer(NULL);
     ear_set_default_framebuffer(NULL);

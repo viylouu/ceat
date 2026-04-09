@@ -7,7 +7,7 @@
 //#include "../eau/arena.h"
 //#include "text.h"
 
-#include "rendering/vulkan/eng/pipeline.h"
+#include "rendering/impl.h"
 
 void
 _ear_arena_pipeline_delete(
@@ -31,7 +31,7 @@ ear_create_pipeline(
     ) {
     ear_pipeline* pln = malloc(sizeof(ear_pipeline));
     *pln = (ear_pipeline){
-        .vk = ear_vk_create_pipeline(desc),
+        .vk = ear_backend->pipeline.create(desc),
 
         .desc = desc,
 
@@ -53,7 +53,7 @@ ear_delete_pipeline(
     ) {
     eat_debug_remove_obj(pln->deb_obj);
 
-    ear_vk_delete_pipeline(pln->vk);
+    ear_backend->pipeline.delete(pln->vk);
 
     if (pln->dest != NULL) pln->dest->data = NULL;
     free(pln);
@@ -63,7 +63,7 @@ void
 ear_bind_pipeline(
     ear_pipeline* pln
     ) {
-    ear_vk_bind_pipeline(pln->vk);
+    ear_backend->pipeline.bind(pln->vk);
 }
 
 
