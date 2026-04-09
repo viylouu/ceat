@@ -6,19 +6,19 @@ int main(void) {
     eat_init("framebuffer", 1600,900, (eat_init_opts){});
 
     ear_texture* fbtex = ear_create_texture((ear_texture_desc){
-            .filter = EAR_FILTER_NEAREST,
-            .type   = EAR_TEX_COLOR,
-            .wrap   = EAR_WRAP_REPEAT,
+        .filter = EAR_FILTER_NEAREST,
+        .type   = EAR_TEX_COLOR,
+        .wrap   = EAR_WRAP_REPEAT,
         }, NULL, 128, 128, NULL);
     ear_framebuffer* fb = ear_create_framebuffer((ear_framebuffer_desc){
-            .out_color_amt = 1,
-            .out_colors    = &fbtex,            
-            .out_depth = NULL,
+        .out_color_amt = 1,
+        .out_colors    = &fbtex,            
+        .out_depth = NULL,
 
-            .width = 128, .height = 128,
+        .width = 128, .height = 128,
 
-            .clear = true,
-            .clear_color = { .2,.3,.4, 1 },
+        .clear = true,
+        .clear_color = { .2,.3,.4, 1 },
         }, NULL);
 
     static const char tex_data[] = {
@@ -26,9 +26,9 @@ int main(void) {
         };
 
     ear_texture* tex = ear_load_texture((ear_texture_desc){
-            .filter = EAR_FILTER_NEAREST,
-            .type = EAR_TEX_COLOR,
-            .wrap = EAR_WRAP_REPEAT,
+        .filter = EAR_FILTER_NEAREST,
+        .type = EAR_TEX_COLOR,
+        .wrap = EAR_WRAP_REPEAT,
         }, tex_data, sizeof(tex_data), NULL);
 
     while (eat_frame()) {
@@ -38,7 +38,7 @@ int main(void) {
         ear_bind_framebuffer(NULL);
         ear_tex(fbtex, 0,0, eat_width,eat_height, 0,0,128,-128, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
 
-        //printf("%.3f FPS\n", 1./eat_delta64);
+        printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     ear_delete_texture(tex);
