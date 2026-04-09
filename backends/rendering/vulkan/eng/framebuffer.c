@@ -1,5 +1,4 @@
 #include "framebuffer.h"
-//#include "../../../../cutil.h"
 
 #include <stdlib.h>
 #include <math.h>
@@ -9,7 +8,6 @@
 #include "../sc/render_pass.h"
 #include "texture.h"
 #include "../util/texture.h"
-//#include "../init/device_log.h"
 #include "../util/macros.h"
 
 bool _ear_vk_is_first_fb;

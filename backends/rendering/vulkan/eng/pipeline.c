@@ -1,13 +1,11 @@
 #include "pipeline.h"
 #include "cutil.h"
 
-//#include "../sc/render_pass.h"
 #include "../util/shader_mod.h"
 #include "../init/comm_buffer.h"
 #include "../sc/swapchain.h"
 #include "../init/device_log.h"
 #include "../util/pipeline.h"
-//#include "framebuffer.h"
 #include "../util/texture.h"
 
 ear_vk_pipeline* _ear_vk_cur_pipeline;

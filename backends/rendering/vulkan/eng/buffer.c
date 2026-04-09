@@ -3,11 +3,8 @@
 
 #include "../util/buffer.h"
 
-//#include "../init/device_log.h"
 #include "../init/comm_buffer.h"
 #include "../sc/swapchain.h"
-//#include "pipeline.h"
-//#include "../vk.h"
 
 void*
 ear_vk_create_buffer(

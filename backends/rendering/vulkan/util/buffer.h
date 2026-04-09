@@ -34,14 +34,14 @@ void
 _ear_vk_make_buf_stage(
     ear_vk_buffer* buf,
     ear_buffer_desc desc,
-    void* data,
+    const void* data,
     uint32_t size
     );
 void
 _ear_vk_make_buf_pers(
     ear_vk_buffer* buf,
     ear_buffer_desc desc,
-    void* data,
+    const void* data,
     uint32_t size
     );
 

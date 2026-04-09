@@ -5,7 +5,6 @@
 
 #include "../vk.h"
 #include "image_views.h"
-//#include "render_pass.h"
 
 #include "../init/sync.h"
 #include "../init/queue_fam.h"
@@ -22,9 +21,6 @@ VkImage* _ear_vk_swapchain_imgs;
     uint32_t _ear_vk_swapchain_img_amt;
 VkFormat _ear_vk_swapchain_img_fmt;
 VkExtent2D _ear_vk_swapchain_extent;
-
-//VkSemaphore* _ear_vk_img_rend_sems;
-//VkFence* _ear_vk_images_inflight;
 
 _ear_vk_swapchain_support_details
 _ear_vk_query_swapchain_support(
@@ -163,17 +159,12 @@ _ear_vk_create_swapchain(
 
     _ear_vk_swapchain_img_fmt = surface_fmt.format;
     _ear_vk_swapchain_extent = extent;
-
-    //_ear_vk_images_inflight = malloc(sizeof(VkFence) * _ear_vk_swapchain_img_amt);
-    //for (uint32_t i = 0; i < _ear_vk_swapchain_img_amt; ++i)
-    //    _ear_vk_images_inflight[i] = NULL;
 }
 void
 _ear_vk_delete_swapchain(
     void
     ) {
     free(_ear_vk_swapchain_imgs);
-    //free(_ear_vk_images_inflight);
     vkDestroySwapchainKHR(_ear_vk_device, _ear_vk_swapchain, NULL);
 }
 

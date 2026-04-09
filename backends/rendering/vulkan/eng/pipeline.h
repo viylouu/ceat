@@ -29,6 +29,4 @@ struct ear_vk_pipeline{
 
     VkDescriptorSetLayout* chips;
         uint32_t chip_amt;
-    //struct _ear_vk_pipeline_sets* sets;
-    //    uint32_t set_amt;
 };

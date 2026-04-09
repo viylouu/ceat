@@ -1,11 +1,8 @@
 #include "buffer.h"
 #include "cutil.h"
 
-//#include "pipeline.h"
-
 #include "../init/device_log.h"
 #include "../init/device_phys.h"
-//#include "../init/comm_pool.h"
 #include "../sc/swapchain.h"
 #include "../vk.h"
 #include "commbuf.h"
@@ -95,7 +92,7 @@ void
 _ear_vk_make_buf_stage(
     ear_vk_buffer* buf,
     ear_buffer_desc desc,
-    void* data,
+    const void* data,
     uint32_t size
     ) {
     VkBuffer stagbuf; VkDeviceMemory stagmem;
@@ -124,7 +121,7 @@ void
 _ear_vk_make_buf_pers(
     ear_vk_buffer* buf,
     ear_buffer_desc desc,
-    void* data,
+    const void* data,
     uint32_t size
     ) {
     buf->ubuf.has_sets = false;

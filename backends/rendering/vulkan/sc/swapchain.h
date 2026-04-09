@@ -17,8 +17,6 @@ extern VkImage* _ear_vk_swapchain_imgs;
 extern VkFormat _ear_vk_swapchain_img_fmt;
 extern VkExtent2D _ear_vk_swapchain_extent;
 
-//extern VkFence* _ear_vk_images_inflight;
-
 _ear_vk_swapchain_support_details
 _ear_vk_query_swapchain_support(
     VkPhysicalDevice device

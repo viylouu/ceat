@@ -1,10 +1,7 @@
 #include "render_pass.h"
-//#include "../../../../cutil.h"
 
 #include "../init/comm_buffer.h"
-//#include "framebuffer.h"
 #include "swapchain.h"
-//#include "../init/device_log.h"
 #include "image_views.h"
 #include "../eng/screen.h"
 #include <math.h>

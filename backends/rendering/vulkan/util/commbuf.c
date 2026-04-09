@@ -1,5 +1,4 @@
 #include "commbuf.h"
-//#include "../../../../cutil.h"
 
 #include "../init/device_log.h"
 #include "../init/comm_pool.h"
