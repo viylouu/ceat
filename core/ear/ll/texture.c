@@ -94,6 +94,9 @@ ear_bind_texture(
     ear_texture* tex,
     uint32_t slot
     ) {
+    (void)tex;
+    (void)slot;
+
     /*
     gl.activeTexture(GL_TEXTURE0 + slot);
     gl.bindTexture(GL_TEXTURE_2D, tex->id);
@@ -156,6 +159,8 @@ void
 ear_update_texture(
     ear_texture* tex
     ) {
+    (void)tex;
+
     /*
     gl.bindTexture(GL_TEXTURE_2D, tex->id);
 
@@ -181,6 +186,10 @@ _ear_debug_texture_window(
     eat_debug_theme t,
     int32_t* sel
     ) {
+    (void)_tex;
+    (void)x; (void)y; (void)w; (void)h;
+    (void)t; (void)sel;
+
     /*
     ear_texture* tex = _tex;
 

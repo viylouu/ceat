@@ -1,8 +1,10 @@
 #include "arena.h"
-#include "../cutil.h"
+//#include "../cutil.h"
+
+#include <stdlib.h>
 
 //#include "../ear/text.h"
-#include "conv.h"
+//#include "conv.h"
 
 void
 _eau_debug_arena_window(
@@ -84,6 +86,10 @@ _eau_debug_arena_window(
     eat_debug_theme t,
     int32_t* sel
     ) {
+    (void)_arena;
+    (void)x; (void)y; (void)w; (void)h;
+    (void)t; (void)sel;
+
     /*
     eau_arena* arena = _arena;
 

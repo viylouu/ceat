@@ -87,6 +87,10 @@ _ear_debug_buffer_window(
     eat_debug_theme t,
     int32_t* sel
     ) {
+    (void)_buffer;
+    (void)x; (void)y; (void)w; (void)h;
+    (void)t; (void)sel;
+
     /*
     ear_buffer* buffer = _buffer;
 

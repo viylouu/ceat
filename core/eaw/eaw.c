@@ -1,12 +1,14 @@
 #include "eaw.h"
 //#include "../cutil.h"
 
+#include "window.h"
+#include "input.h"
 #include "../eau/object.h"
 
 #include <GLFW/glfw3.h>
 
 double eaw_time;
-    double eaw_last_time;
+static double eaw_last_time;
 double eaw_delta;
 
 

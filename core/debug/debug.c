@@ -1,7 +1,9 @@
 #include "debug.h"
-#include "../cutil.h"
+//#include "../cutil.h"
 
-#include "../../eat.h"
+#include <stdlib.h>
+
+#include "../eaw/window.h"
 
 eat_debug_theme debug_theme;
 
@@ -18,9 +20,9 @@ void
 eat_debug_init(
     void
     ) {
-    static const char tex_data[] = {
-    #embed "verdana.ttf"
-    };
+    /*static const char tex_data[] = {
+        #embed "verdana.ttf"
+        };*/
 
     debug_theme = (eat_debug_theme){
         //.font = ear_load_truetype_font(tex_data, sizeof(tex_data), NULL),

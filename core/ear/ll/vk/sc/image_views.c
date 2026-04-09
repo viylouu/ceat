@@ -1,5 +1,7 @@
 #include "image_views.h"
-#include "../../../../cutil.h"
+//#include "../../../../cutil.h"
+
+#include <stdlib.h>
 
 #include "swapchain.h"
 #include "../init/device_log.h"

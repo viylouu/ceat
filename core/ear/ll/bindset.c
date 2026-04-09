@@ -1,6 +1,7 @@
 #include "bindset.h"
-#include "../../cutil.h"
+//#include "../../cutil.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 #include "vk/eng/bindset.h"
@@ -73,9 +74,12 @@ ear_bind_bindset(
 
 void
 _ear_debug_bindset_window(
-    void* bindset,
+    void* _bindset,
     float x, float y, float w, float h,
-    eat_debug_theme theme,
+    eat_debug_theme t,
     int32_t* sel
     ) {
+    (void)_bindset;
+    (void)x; (void)y; (void)w; (void)h;
+    (void)t; (void)sel;
 }

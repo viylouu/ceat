@@ -4,7 +4,7 @@
 #include <vulkan/vulkan_core.h>
 
 #include "../../buffer.h"
-#include "../../bindset.h"
+//#include "../../bindset.h"
 #include "bindset.h"
 #include "../vk.h"
 
@@ -44,7 +44,6 @@ struct ear_vk_buffer{
     ear_vk_bindset* cur_set;
 
     ear_buffer_type type;
-    union{
     struct{
         VkBuffer buffer;
         VkDeviceMemory memory;
@@ -58,5 +57,4 @@ struct ear_vk_buffer{
 
         bool has_sets;
         } ubuf;
-    };
 };

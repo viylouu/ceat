@@ -22,6 +22,7 @@ _ear_vk_validation_support(
         eat_warn("unsupported validation layer \"%s\"!", _ear_vk_validations[i]);
         return false;
 next:
+        continue;
     }
 
     return true;

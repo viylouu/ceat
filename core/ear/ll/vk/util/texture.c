@@ -17,6 +17,8 @@ _ear_vk_make_img(
     VkMemoryPropertyFlags props,
     VkImage* img, VkDeviceMemory* mem
     ) {
+    (void)props;
+
     VkImageCreateInfo imginfo = {
         .sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,
         .pNext = NULL,

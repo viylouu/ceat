@@ -3,8 +3,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "window.h"
-#include "input.h"
+
 
 extern double eaw_time;
 extern double eaw_delta;

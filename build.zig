@@ -1,5 +1,6 @@
 const std = @import("std");
 const builtin = @import("builtin");
+const zcc = @import("compile_commands");
 
 const csource = [_][]const u8{
     "core/eat.c",
@@ -13,32 +14,6 @@ const csource = [_][]const u8{
     "core/eaw/vk.c",
 
     "core/ear/ear.c",
-    "core/ear/ll/vk/vk.c",
-    "core/ear/ll/vk/init/validation.c",
-    "core/ear/ll/vk/init/instance.c",
-    "core/ear/ll/vk/init/surface.c",
-    "core/ear/ll/vk/init/device_phys.c",
-    "core/ear/ll/vk/init/device_log.c",
-    "core/ear/ll/vk/init/queue_fam.c",
-    "core/ear/ll/vk/init/comm_pool.c",
-    "core/ear/ll/vk/init/comm_buffer.c",
-    "core/ear/ll/vk/init/sync.c",
-    "core/ear/ll/vk/sc/swapchain.c",
-    "core/ear/ll/vk/sc/image_views.c",
-    "core/ear/ll/vk/sc/render_pass.c",
-    "core/ear/ll/vk/util/buffer.c",
-    "core/ear/ll/vk/util/pipeline.c",
-    "core/ear/ll/vk/util/bindset.c",
-    "core/ear/ll/vk/util/shader_mod.c",
-    "core/ear/ll/vk/util/texture.c",
-    "core/ear/ll/vk/util/commbuf.c",
-    "core/ear/ll/vk/util/framebuffer.c",
-    "core/ear/ll/vk/eng/pipeline.c",
-    "core/ear/ll/vk/eng/screen.c",
-    "core/ear/ll/vk/eng/buffer.c",
-    "core/ear/ll/vk/eng/bindset.c",
-    "core/ear/ll/vk/eng/texture.c",
-    "core/ear/ll/vk/eng/framebuffer.c",
     "core/ear/ll/misc.c",
     "core/ear/ll/pipeline.c",
     "core/ear/ll/texture.c",
@@ -66,14 +41,50 @@ const csource = [_][]const u8{
     "core/eaa/mixer.c",
 };
 
+const csource_vulkan = [_][]const u8{
+    "core/ear/ll/vk/vk.c",
+    "core/ear/ll/vk/init/validation.c",
+    "core/ear/ll/vk/init/instance.c",
+    "core/ear/ll/vk/init/surface.c",
+    "core/ear/ll/vk/init/device_phys.c",
+    "core/ear/ll/vk/init/device_log.c",
+    "core/ear/ll/vk/init/queue_fam.c",
+    "core/ear/ll/vk/init/comm_pool.c",
+    "core/ear/ll/vk/init/comm_buffer.c",
+    "core/ear/ll/vk/init/sync.c",
+    "core/ear/ll/vk/sc/swapchain.c",
+    "core/ear/ll/vk/sc/image_views.c",
+    "core/ear/ll/vk/sc/render_pass.c",
+    "core/ear/ll/vk/util/buffer.c",
+    "core/ear/ll/vk/util/pipeline.c",
+    "core/ear/ll/vk/util/bindset.c",
+    "core/ear/ll/vk/util/shader_mod.c",
+    "core/ear/ll/vk/util/texture.c",
+    "core/ear/ll/vk/util/commbuf.c",
+    "core/ear/ll/vk/util/framebuffer.c",
+    "core/ear/ll/vk/eng/pipeline.c",
+    "core/ear/ll/vk/eng/screen.c",
+    "core/ear/ll/vk/eng/buffer.c",
+    "core/ear/ll/vk/eng/bindset.c",
+    "core/ear/ll/vk/eng/texture.c",
+    "core/ear/ll/vk/eng/framebuffer.c",
+};
+
 const cflags = [_][]const u8{
     "-std=c23",
-    //"-Wall",
-    //"-Wextra",
-    //"-Wno-unused",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
     //"-Werror",
-    "-g",
-    "-O0",
+    //"-g",
+    //"-O0",
+};
+
+const cflags_vulkan = [_][]const u8{
+    "-std=c99",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
 };
 
 var target: std.Build.ResolvedTarget = undefined;
@@ -121,6 +132,18 @@ pub fn build(b: *std.Build) void {
     target = b.standardTargetOptions(.{});
     optimize = b.standardOptimizeOption(.{});
 
+    const lib_vk = b.addLibrary(.{
+        .linkage = .static,
+        .name    = "ceat_vk",
+        .root_module = b.createModule(.{
+            .target    = target,
+            .optimize  = optimize,
+            .link_libc = true,
+            }),
+        });
+    lib_vk.root_module.addIncludePath(b.path("core"));
+    lib_vk.root_module.addCSourceFiles(.{ .files = &csource_vulkan, .flags = &cflags_vulkan });
+
     const lib = b.addLibrary(.{
         .linkage = .static,
         .name = "ceat",
@@ -129,20 +152,24 @@ pub fn build(b: *std.Build) void {
             .target = target,
             .optimize = optimize,
             .link_libc = true,
-        }),
-    });
+            }),
+        });
 
+    lib.root_module.linkLibrary(lib_vk);
     lib.root_module.addIncludePath(b.path("core"));
     lib.root_module.addCSourceFiles(.{ .files = &csource, .flags = &cflags });
 
+    var targs = std.ArrayListUnmanaged(*std.Build.Step.Compile){};
     b.installArtifact(lib);
+    targs.append(b.allocator, lib) catch @panic("OOM");
+
+    _ = zcc.createStep(b, "cdb", targs.toOwnedSlice(b.allocator) catch @panic("OOM"));
 
     const shadstep = b.step("shaders", "compile shaders");
     glslc(b, shadstep, "core/ear/hl/shaders/", "rect.vert", "rect_v.spv");
     glslc(b, shadstep, "core/ear/hl/shaders/", "rect.frag", "rect_f.spv");
     glslc(b, shadstep, "core/ear/hl/shaders/", "tex.vert",  "tex_v.spv");
     glslc(b, shadstep, "core/ear/hl/shaders/", "tex.frag",  "tex_f.spv");
-
 
     glslc(b, shadstep, "examples/triangle/", "shad.vert", "shad_v.spv");
     glslc(b, shadstep, "examples/triangle/", "shad.frag", "shad_f.spv");

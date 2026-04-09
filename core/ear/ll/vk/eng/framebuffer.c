@@ -1,6 +1,7 @@
 #include "framebuffer.h"
-#include "../../../../cutil.h"
+//#include "../../../../cutil.h"
 
+#include <stdlib.h>
 #include <math.h>
 
 #include "../init/comm_buffer.h"
@@ -8,7 +9,7 @@
 #include "../sc/render_pass.h"
 #include "texture.h"
 #include "../util/texture.h"
-#include "../init/device_log.h"
+//#include "../init/device_log.h"
 #include "../util/macros.h"
 
 bool _ear_vk_is_first_fb;
@@ -53,8 +54,8 @@ ear_vk_bind_framebuffer(
                 VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
                 VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
                 );
-gtfo:
     }
+gtfo:
     _ear_vk_is_first_fb = false;
 
     last_fb = fb;
@@ -91,7 +92,7 @@ gtfo:
                 VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
                 );
 
-            VkClearColorValue clearcol = {};
+            VkClearColorValue clearcol = {0};
             if (fb->desc.clear) { 
                 clearcol = (VkClearColorValue){{
                     fb->desc.clear_color[0],

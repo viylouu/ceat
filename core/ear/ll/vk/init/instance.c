@@ -44,6 +44,7 @@ _ear_vk_create_instance(
             goto next;
         eat_error("unsupported extension \"%s\"!", extensions[i]);
 next:
+        continue;
     }
 
     free(properties);

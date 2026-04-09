@@ -1,7 +1,7 @@
 #include "console.h"
 
-#include "debug.h"
-#include "../../eat.h"
+//#include "debug.h"
+//#include "../../eat.h"
 
 eat_console_desc console;
 

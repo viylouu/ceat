@@ -27,6 +27,7 @@ _ear_vk_check_device_extension_support(
         free(properties);
         return false;
 next:
+        continue;
     }
 
     free(properties);

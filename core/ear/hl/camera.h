@@ -70,6 +70,7 @@ struct ear_camera_3d_desc{
     // float x; float y; float z;
     // float near; float far;
     // unimplemented due to lack of perspective matrix
+    uint32_t _;
 };
 
 struct ear_camera_desc{

@@ -91,8 +91,8 @@ eat_frame(
     if (debug.enabled) eat_debug_try_do();
     */
 
-    int prev_width = eat_width;
-    int prev_height = eat_height;
+    //int prev_width = eat_width;
+    //int prev_height = eat_height;
     ear_frame();
     eaw_frame();
 

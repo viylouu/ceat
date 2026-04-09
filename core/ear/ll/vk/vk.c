@@ -40,6 +40,9 @@ ear_vk_init(
     int32_t width, int32_t height,
     bool vsync
     ) {
+    (void)width; (void)height;
+    (void)vsync; // todo
+
     eat_assert(!_ear_vk_validation || _ear_vk_validation_support(), "validation layers unavailable!");
 
     _ear_vk_create_instance(title);

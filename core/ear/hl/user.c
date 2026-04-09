@@ -1,8 +1,8 @@
 #include "user.h"
-#include "../../cutil.h"
+//#include "../../cutil.h"
 
 #include "data.h"
-#include "camera.h"
+//#include "camera.h"
 
 #include <string.h>
 
@@ -44,7 +44,8 @@ ear_rect(
     ear_rr.ssbo_d[ear_rr.ssbo_i] = (typeof(ear_rr.ssbo_d[0])){ 
         rect.x,rect.y,
         rect.w,rect.h, 
-        col[0],col[1],col[2],col[3] 
+        col[0],col[1],col[2],col[3],
+        {0},
         };
     memcpy((uint8_t*)(&ear_rr.ssbo_d[ear_rr.ssbo_i]) + sizeof(ear_rr.ssbo_d[0]) - sizeof(float)*16, mat, sizeof(float)*16);
     ++ear_rr.ssbo_i;
@@ -91,7 +92,8 @@ ear_tex(
         rect.x,rect.y,
         rect.w,rect.h, 
         col[0],col[1],col[2],col[3], 
-        (float)sx/tex->width,1-(float)(sh+sy)/tex->height,(float)sw/tex->width,(float)sh/tex->height 
+        (float)sx/tex->width,1-(float)(sh+sy)/tex->height,(float)sw/tex->width,(float)sh/tex->height,
+        {0},
         };
     memcpy((uint8_t*)(&ear_tr.ssbo_d[ear_tr.ssbo_i]) + sizeof(ear_tr.ssbo_d[0]) - sizeof(float)*16, mat, sizeof(float)*16);
     ++ear_tr.ssbo_i;

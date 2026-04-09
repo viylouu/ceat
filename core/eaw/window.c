@@ -53,7 +53,7 @@ eaw_window_frame(
     ) {
     uint32_t prevw = _eaw_window_width; uint32_t prevh = _eaw_window_height;
     glfwGetWindowSize(_eaw_glfw_window, &_eaw_window_width, &_eaw_window_height);
-    if (prevw != _eaw_window_width || prevh != _eaw_window_height) ear_framebuffer_resize = true;
+    if (prevw != (uint32_t)_eaw_window_width || prevh != (uint32_t)_eaw_window_height) ear_framebuffer_resize = true;
 }
 
 bool

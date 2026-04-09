@@ -1,6 +1,7 @@
 #include "framebuffer.h"
-#include "../../cutil.h"
+//#include "../../cutil.h"
 
+#include <stdlib.h>
 #include <string.h>
 
 #include "../../eaw/window.h"
@@ -182,6 +183,10 @@ _ear_debug_framebuffer_window(
     eat_debug_theme t,
     int32_t* selected
     ) {
+    (void)_fb;
+    (void)x; (void)y; (void)w; (void)h;
+    (void)t; (void)selected;
+
     /*
     ear_framebuffer* fb = _fb;
 

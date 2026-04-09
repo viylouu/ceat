@@ -2,11 +2,11 @@
 //#include "../cutil.h"
 
 #include "hl/data.h"
-#include "../eaw/window.h"
+//#include "../eaw/window.h"
 #include "ll/framebuffer.h"
 #include "ll/vk/vk.h"
-#include "ll/vk/eng/screen.h"
-#include "ll/vk/sc/swapchain.h"
+//#include "ll/vk/eng/screen.h"
+//#include "ll/vk/sc/swapchain.h"
 
 void
 ear_init(

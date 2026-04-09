@@ -1,5 +1,7 @@
 #include "timer.h"
-#include "../cutil.h"
+//#include "../cutil.h"
+
+#include <stdlib.h>
 
 #include "../eaw/eaw.h"
 #include "object.h"
@@ -174,11 +176,13 @@ eau_update_timers(
 
 void
 _eau_debug_timer_window(
-    void* timer, 
+    void* _timer, 
     float x, float y, float w, float h,
     eat_debug_theme t,
     int32_t* sel
     ) {
-    printf("hi :3");
+    (void)_timer;
+    (void)x; (void)y; (void)w; (void)h;
+    (void)t; (void)sel;
 }
 

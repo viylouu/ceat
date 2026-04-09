@@ -176,6 +176,13 @@ _ear_vk_update_buf_stage(
     uint32_t size,
     uint32_t off
     ) {
+    (void)buf;
+    (void)data;
+    (void)size;
+    (void)off;
+
+    // todo
+
     /*
     VkBuffer stagbuf; VkDeviceMemory stagmem;
     _ear_vk_make_buf(

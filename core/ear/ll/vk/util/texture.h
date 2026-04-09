@@ -3,7 +3,9 @@
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
 
-#include "../eng/texture.h"
+#include <stdbool.h>
+
+#include "../../texture.h"
 
 void
 _ear_vk_make_img(

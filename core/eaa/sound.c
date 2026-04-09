@@ -1,5 +1,7 @@
 #include "sound.h"
-#include "../cutil.h"
+//#include "../cutil.h"
+
+#include <stdlib.h>
 
 #include "engine.h"
 
@@ -136,7 +138,7 @@ eaa_set_sound_pitch(
     float pitch
     ) {
     sound->desc.pitch = pitch;
-    float _pitch = pitch;
+    //float _pitch = pitch;
 
     for (eaa_mixer* mixer = sound->desc.mixer; mixer != NULL; mixer = mixer->desc.parent)
         pitch *= mixer->desc.pitch;
@@ -157,10 +159,12 @@ eaa_set_sound_loop(
 
 void
 _eaa_debug_sound_window(
-    void* sound,
+    void* _sound,
     float x, float y, float w, float h,
     eat_debug_theme t,
     int32_t* sel
     ) {
-    
+    (void)_sound;
+    (void)x; (void)y; (void)w; (void)h;
+    (void)t; (void)sel;
 }

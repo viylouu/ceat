@@ -98,7 +98,7 @@ _eau_furthest(
     float (*max)[3]
     ) {
     float maxdist = FLT_MIN;
-    for (int i = 0; i < hull_verts; ++i) {
+    for (uint32_t i = 0; i < hull_verts; ++i) {
         float vert[3] = { hull[i][0], hull[i][1], hull[i][2] };
         float dist = _eau_dot(vert, dir);
         if (dist > maxdist) {
@@ -349,6 +349,8 @@ _eau_get_face_normals(
     uint32_t* faces, uint32_t face_amt,
     float (*out_norms)[4], uint32_t* out_norm_amt, uint32_t* out_tri 
     ) {
+    (void)polytope_size;
+
     out_norms = malloc(sizeof(float)*4);
     *out_norm_amt = 1;
 
@@ -391,6 +393,8 @@ _eau_add_if_unique_edge(
     uint32_t *faces, uint32_t face_amt,
     uint32_t a, uint32_t b
     ) {
+    (void)face_amt;
+
     int32_t rev_ind = -1;
     for (uint32_t i = 0; i < *edge_amt; ++i) if (edges[i][0] == faces[b] && edges[i][1] == faces[a]) {
         rev_ind = i;
@@ -428,7 +432,7 @@ eau_epa3d(
         1, 3, 2,
     }, sizeof(uint32_t) * 12);
 
-    float (*normals)[4]; uint32_t normal_amt;
+    float (*normals)[4] = {}; uint32_t normal_amt;
     uint32_t minface;
     _eau_get_face_normals(polytope, polytope_size, faces, face_amt, normals, &normal_amt, &minface);
 
@@ -480,7 +484,7 @@ eau_epa3d(
             polytope = realloc(polytope, sizeof(float) * 3 * polytope_size);
             memcpy(polytope[polytope_size-1], supp, sizeof(float)*3);
 
-            float (*new_normals)[4]; uint32_t new_normal_amt;
+            float (*new_normals)[4] = {}; uint32_t new_normal_amt;
             uint32_t new_minface;
             _eau_get_face_normals(polytope, polytope_size, faces, face_amt, new_normals, &new_normal_amt, &new_minface);
 

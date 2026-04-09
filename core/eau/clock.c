@@ -1,5 +1,7 @@
 #include "clock.h"
-#include "../cutil.h"
+//#include "../cutil.h"
+
+#include <stdlib.h>
 
 #include "../eaw/eaw.h"
 #include "object.h"
@@ -144,5 +146,7 @@ _eau_debug_clock_window(
     eat_debug_theme t,
     int32_t* sel
     ) {
-    printf("hi :3");
+    (void)clock;
+    (void)x; (void)y; (void)w; (void)h;
+    (void)t; (void)sel;
 }

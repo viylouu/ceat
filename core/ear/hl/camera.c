@@ -2,9 +2,9 @@
 #include "../../cutil.h"
 
 #include "../../eaw/window.h"
-#include "../../eau/coll.h"
-#include "text.h"
-#include "user.h"
+//#include "../../eau/coll.h"
+//#include "text.h"
+//#include "user.h"
 
 ear_camera* ear_bound_camera = NULL;
 bool ear_bound_camera_ui_mode = false;
@@ -144,6 +144,10 @@ _ear_debug_camera_window(
     eat_debug_theme t,
     int32_t* selected
     ) {
+    (void)_cam;
+    (void)x; (void)y; (void)w; (void)h;
+    (void)t; (void)selected;
+
     /*
     ear_camera* cam = _cam;
 

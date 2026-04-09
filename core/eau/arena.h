@@ -9,7 +9,6 @@ typedef struct eau_arena eau_arena;
 
 typedef struct eau_destructor eau_destructor;
 
-
 eau_arena*
 eau_create_arena(
     void

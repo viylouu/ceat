@@ -59,6 +59,8 @@ ear_load_truetype_font(
     const char* data, size_t data_size,
     eau_arena* arena
     ) {
+    (void)data_size;
+
     ear_font* font = malloc(sizeof(ear_font));
     *font = (ear_font){
         .type = EAR_FONT_TRUETYPE,
@@ -318,7 +320,7 @@ _ear_truetype_text(
     rect = eau_rect_topleftify(rect);
 
     for (int i = 0; text[i] != '\0'; ++i) {
-        struct _ear_truetype_font_char* ch = &atlas->chars[text[i]];
+        struct _ear_truetype_font_char* ch = &atlas->chars[(uint8_t)text[i]];
 
         eau_rect indiv = (eau_rect){ 0,0, ch->adw * scale - ch->w, font->lineheight * height - (font->truetype.ascent - font->truetype.descent) * scale, align };
         indiv = eau_rect_topleftify(indiv);
@@ -389,7 +391,7 @@ _ear_truetype_text_size(
     float w = 0; float h = 0;
 
     for (uint32_t i = 0; text[i] != '\0'; ++i) {
-        struct _ear_truetype_font_char* ch = &atlas->chars[text[i]];
+        struct _ear_truetype_font_char* ch = &atlas->chars[(uint8_t)text[i]];
         if (!ch->exists && text[i] != '\n') {
             ch->exists = true;
 
@@ -413,7 +415,7 @@ _ear_truetype_text_size(
                 ch->x = atlas->lastx;
                 ch->y = atlas->lasty;
 
-                for (uint32_t y = 0; y < hei; ++y) for (uint32_t x = 0; x < wid; ++x) {
+                for (uint32_t y = 0; y < (uint32_t)hei; ++y) for (uint32_t x = 0; x < (uint32_t)wid; ++x) {
                     char a = glyph[y * wid + x];
                     ear_set_texture_color(atlas->atlas, ch->x + x, at_height - (ch->y + y) - 1, (float[4]){ 1,1,1,a/255.f });
                 }
@@ -487,7 +489,7 @@ _ear_debug_font_window(
         float width;
         ear_text_size(t.font, buf, 14, &width, NULL);
 
-        bool sel = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y+offy, width+8,16 });
+        bool sel = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y+offy, width+8,16, EAU_ALIGN_TOP_LEFT });
 
         ear_rect(x,y+offy, width+8, 16, sel? debug_theme.sel_but_col : debug_theme.but_col, EAU_ALIGN_TOP_LEFT);
         ear_rect(x+2,y+2+offy, width+4, 12, sel? debug_theme.but_col : debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);
@@ -536,7 +538,7 @@ _ear_debug_font_window(
                 float width;
                 ear_text_size(t.font, buf, 14, &width, NULL);
 
-                bool sel = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y+offy, width+8,16 });
+                bool sel = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y+offy, width+8,16, EAU_ALIGN_TOP_LEFT });
 
                 ear_rect(x,y+offy, width+8, 16, sel? debug_theme.sel_but_col : debug_theme.but_col, EAU_ALIGN_TOP_LEFT);
                 ear_rect(x+2,y+2+offy, width+4, 12, sel? debug_theme.but_col : debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);

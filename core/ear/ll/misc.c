@@ -1,17 +1,17 @@
 #include "misc.h"
-#include "../../cutil.h"
+//#include "../../cutil.h"
 
-#include <math.h>
+//#include <math.h>
 
 //#include "../../eaw/window.h"
 //#include "user.h"
 //#include "framebuffer.h"
 
 #include "framebuffer.h"
-#include "vk/sc/render_pass.h"
+//#include "vk/sc/render_pass.h"
 #include "vk/sc/swapchain.h"
 #include "vk/init/comm_buffer.h"
-#include "vk/eng/framebuffer.h"
+//#include "vk/eng/framebuffer.h"
 
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
@@ -69,6 +69,8 @@ void
 ear_mask(
     float x, float y, float w, float h
     ) {
+    (void)x; (void)y; (void)w; (void)h;
+
     //ear_flush();
 
     /*if (_ear_cur_framebuffer == NULL) {

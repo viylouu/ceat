@@ -1,5 +1,8 @@
 #include "pipeline.h"
-#include "../../cutil.h"
+//#include "../../cutil.h"
+
+#include <stdlib.h>
+#include <stdio.h>
 
 //#include "../eau/arena.h"
 //#include "text.h"
@@ -108,6 +111,10 @@ _ear_debug_pipeline_window(
     eat_debug_theme t,
     int32_t* sel
     ) {
+    (void)_pln;
+    (void)x; (void)y; (void)w; (void)h;
+    (void)t; (void)sel;
+
     /*ear_pipeline* pln = _pln;
 
     float offy = 0;

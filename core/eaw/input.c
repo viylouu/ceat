@@ -133,6 +133,8 @@ _scroll_cb(
     double xoff,
     double yoff
     ) {
+    (void)window;
+
     eaw_mouse_scroll_x = xoff;
     eaw_mouse_scroll_y = yoff;
     eaw_mouse_scroll_x64 = xoff;
@@ -144,6 +146,8 @@ _char_cb(
     GLFWwindow* window,
     unsigned int codepoint
     ) {
+    (void)window;
+
     if (eaw_text_input_chars >= 1024) return; // no clue how the fuck this would happen
 
     eaw_text_input[eaw_text_input_chars] = codepoint;
