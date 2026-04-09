@@ -1,7 +1,7 @@
 #include "window.h"
 #include "../cutil.h"
 
-#include "../ear/ll/vk/vk.h"
+#include "rendering/vulkan/vk.h"
 
 #include <GLFW/glfw3.h>
 

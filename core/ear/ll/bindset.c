@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "vk/eng/bindset.h"
+#include "rendering/vulkan/eng/bindset.h"
 
 void
 _ear_arena_bindset_delete(

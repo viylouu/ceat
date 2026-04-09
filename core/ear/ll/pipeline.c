@@ -7,7 +7,7 @@
 //#include "../eau/arena.h"
 //#include "text.h"
 
-#include "vk/eng/pipeline.h"
+#include "rendering/vulkan/eng/pipeline.h"
 
 void
 _ear_arena_pipeline_delete(

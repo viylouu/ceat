@@ -8,10 +8,10 @@
 //#include "framebuffer.h"
 
 #include "framebuffer.h"
-//#include "vk/sc/render_pass.h"
-#include "vk/sc/swapchain.h"
-#include "vk/init/comm_buffer.h"
-//#include "vk/eng/framebuffer.h"
+//#include "rendering/vulkan/sc/render_pass.h"
+#include "rendering/vulkan/sc/swapchain.h"
+#include "rendering/vulkan/init/comm_buffer.h"
+//#include "rendering/vulkan/eng/framebuffer.h"
 
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>

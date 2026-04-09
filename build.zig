@@ -42,32 +42,32 @@ const csource = [_][]const u8{
 };
 
 const csource_vulkan = [_][]const u8{
-    "core/ear/ll/vk/vk.c",
-    "core/ear/ll/vk/init/validation.c",
-    "core/ear/ll/vk/init/instance.c",
-    "core/ear/ll/vk/init/surface.c",
-    "core/ear/ll/vk/init/device_phys.c",
-    "core/ear/ll/vk/init/device_log.c",
-    "core/ear/ll/vk/init/queue_fam.c",
-    "core/ear/ll/vk/init/comm_pool.c",
-    "core/ear/ll/vk/init/comm_buffer.c",
-    "core/ear/ll/vk/init/sync.c",
-    "core/ear/ll/vk/sc/swapchain.c",
-    "core/ear/ll/vk/sc/image_views.c",
-    "core/ear/ll/vk/sc/render_pass.c",
-    "core/ear/ll/vk/util/buffer.c",
-    "core/ear/ll/vk/util/pipeline.c",
-    "core/ear/ll/vk/util/bindset.c",
-    "core/ear/ll/vk/util/shader_mod.c",
-    "core/ear/ll/vk/util/texture.c",
-    "core/ear/ll/vk/util/commbuf.c",
-    "core/ear/ll/vk/util/framebuffer.c",
-    "core/ear/ll/vk/eng/pipeline.c",
-    "core/ear/ll/vk/eng/screen.c",
-    "core/ear/ll/vk/eng/buffer.c",
-    "core/ear/ll/vk/eng/bindset.c",
-    "core/ear/ll/vk/eng/texture.c",
-    "core/ear/ll/vk/eng/framebuffer.c",
+    "backends/rendering/vulkan/vk.c",
+    "backends/rendering/vulkan/init/validation.c",
+    "backends/rendering/vulkan/init/instance.c",
+    "backends/rendering/vulkan/init/surface.c",
+    "backends/rendering/vulkan/init/device_phys.c",
+    "backends/rendering/vulkan/init/device_log.c",
+    "backends/rendering/vulkan/init/queue_fam.c",
+    "backends/rendering/vulkan/init/comm_pool.c",
+    "backends/rendering/vulkan/init/comm_buffer.c",
+    "backends/rendering/vulkan/init/sync.c",
+    "backends/rendering/vulkan/sc/swapchain.c",
+    "backends/rendering/vulkan/sc/image_views.c",
+    "backends/rendering/vulkan/sc/render_pass.c",
+    "backends/rendering/vulkan/util/buffer.c",
+    "backends/rendering/vulkan/util/pipeline.c",
+    "backends/rendering/vulkan/util/bindset.c",
+    "backends/rendering/vulkan/util/shader_mod.c",
+    "backends/rendering/vulkan/util/texture.c",
+    "backends/rendering/vulkan/util/commbuf.c",
+    "backends/rendering/vulkan/util/framebuffer.c",
+    "backends/rendering/vulkan/eng/pipeline.c",
+    "backends/rendering/vulkan/eng/screen.c",
+    "backends/rendering/vulkan/eng/buffer.c",
+    "backends/rendering/vulkan/eng/bindset.c",
+    "backends/rendering/vulkan/eng/texture.c",
+    "backends/rendering/vulkan/eng/framebuffer.c",
 };
 
 const cflags = [_][]const u8{
@@ -164,6 +164,7 @@ pub fn build(b: *std.Build) void {
 
     lib.root_module.linkLibrary(lib_vk);
     lib.root_module.addIncludePath(b.path("core"));
+    lib.root_module.addIncludePath(b.path("backends"));
     lib.root_module.addCSourceFiles(.{ .files = &csource, .flags = &cflags });
 
     var targs = std.ArrayListUnmanaged(*std.Build.Step.Compile){};

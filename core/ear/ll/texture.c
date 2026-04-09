@@ -8,7 +8,7 @@
 //#include "user.h"
 //#include "gl.h"
 
-#include "vk/eng/texture.h"
+#include "rendering/vulkan/eng/texture.h"
 
 void
 _ear_arena_texture_delete(

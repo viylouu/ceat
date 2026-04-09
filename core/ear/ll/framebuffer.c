@@ -11,8 +11,8 @@
 #include "../hl/user.h"
 //#include "misc.h"
 
-#include "vk/eng/framebuffer.h"
-#include "vk/eng/screen.h"
+#include "rendering/vulkan/eng/framebuffer.h"
+#include "rendering/vulkan/eng/screen.h"
 
 //#include "text.h"
 
