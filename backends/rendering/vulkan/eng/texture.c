@@ -34,14 +34,16 @@ ear_vk_create_texture(
 
     vkMapMemory(_ear_vk_device, tex->stagmem, 0, imgsize, 0, &tex->data);
 
-    uint32_t* px = (uint32_t*)*pixels;
-    if (desc.type == EAR_TEX_COLOR) for (uint32_t i = 0; i < width * height; ++i) { 
-        uint32_t p = px[i];
-        (*pixels)[i*4] = (
-            (p & 0xFF00FF00) |
-            (p & 0x00FF0000) >> 16 |
-            (p & 0x000000FF) << 16
-            );
+    if (desc.type == EAR_TEX_COLOR) for (uint32_t i = 0; i < width * height * 4; i += 4) { 
+        uint8_t r = (*pixels)[i+0];
+        uint8_t g = (*pixels)[i+1];
+        uint8_t b = (*pixels)[i+2];
+        uint8_t a = (*pixels)[i+3];
+
+        (*pixels)[i+0] = b;
+        (*pixels)[i+1] = g;
+        (*pixels)[i+2] = r;
+        (*pixels)[i+3] = a;
     }
 
     memcpy(tex->data, *pixels, imgsize);
