@@ -31,23 +31,19 @@ int main(void) {
         ear_set_camera_position_2d(cam, x,y);
 
         ear_bind_camera(cam, false);
-
-        ear_clear_color((float[3]){ .2f, .4f, .3f });
-
+        ear_clear_color(NULL, .2f, .4f, .3f, 1);
         ear_rect(0,0, 64,64, (float[4]){ 1,0,0,1 }, EAU_ALIGN_MID);
-
         ear_rect(256,256, 128,128, (float[4]){ 1,0,0,1 }, EAU_ALIGN_MID);
 
-        //ear_bind_camera(cam, true);
-
-        //ear_rect(0,0, 64,64, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
+        ear_bind_camera(cam, true);
+        ear_rect(0,0, 64,64, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
 
         printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     ear_delete_camera(cam);
 
-    eat_stop();
+    eat_exit();
 
     return 0;
 }

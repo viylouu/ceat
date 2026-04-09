@@ -22,7 +22,7 @@ const csource = [_][]const u8{
     "core/ear/ll/framebuffer.c",
     //"core/ear/ll/texarray.c",
     "core/ear/hl/text.c",
-    //"core/ear/hl/camera.c",
+    "core/ear/hl/camera.c",
     "core/ear/hl/data.c",
     "core/ear/hl/user.c",
 
@@ -200,7 +200,7 @@ pub fn build(b: *std.Build) void {
     //ex_c(b,lib, "clock");
     //ex_c(b,lib, "console");
     //ex_c(b,lib, "audio");
-    //ex_c(b,lib, "camera");
+    ex_c(b,lib, "camera");
     //ex_c(b,lib, "debug");
     //ex_c(b,lib, "timer");
 }
