@@ -38,12 +38,6 @@ ear_delete_texture(
     );
 
 void
-ear_bind_texture(
-    ear_texture* texture,
-    uint32_t slot
-    );
-
-void
 ear_resize_texture(
     ear_texture* texture,
     uint32_t width, uint32_t height
@@ -102,6 +96,8 @@ struct ear_texture{
 
     uint8_t* pixels;
         bool stbi_pixels;
+        bool self_pixels;
+        uint32_t perpix;
 
     uint32_t width;
     uint32_t height;

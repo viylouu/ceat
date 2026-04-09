@@ -28,9 +28,9 @@ ear_load_bitmap_mono_font(
     eau_arena* arena
     ) {
     ear_texture* atlas = ear_load_texture((ear_texture_desc){
-        .type = EAR_TEX_COLOR,
+        .type   = EAR_TEX_COLOR,
         .filter = EAR_FILTER_NEAREST,
-        .wrap = EAR_WRAP_REPEAT,
+        .wrap   = EAR_WRAP_REPEAT,
         }, data, data_size, arena);
 
     ear_font* font = malloc(sizeof(ear_font));
@@ -98,16 +98,21 @@ ear_delete_font(
     ) {
     eat_debug_remove_obj(font->deb_obj);
 
-    switch (font->type) {
-    case EAR_FONT_TRUETYPE: 
-        for (uint32_t i = 0; i < font->truetype.atlas_amt; ++i) {
-            struct _ear_truetype_font_atlas* atlas = &font->truetype.atlases[i];
+    if (font->dest == NULL) {
+        switch (font->type) {
+        case EAR_FONT_BITMAP_MONO:
+            ear_delete_texture(font->bitmap_mono.atlas);
+            break;
+        case EAR_FONT_TRUETYPE: 
+            for (uint32_t i = 0; i < font->truetype.atlas_amt; ++i) {
+                struct _ear_truetype_font_atlas* atlas = &font->truetype.atlases[i];
 
-            if (font->dest == NULL) ear_delete_texture(atlas->atlas);
-            free(atlas->pixbuf);
+                ear_delete_texture(atlas->atlas);
+                //free(atlas->pixbuf);
+            }
+            break;
+        default:
         }
-        break;
-    default:
     }
 
     if (font->dest != NULL) font->dest->data = NULL;
@@ -375,13 +380,13 @@ _ear_truetype_text_size(
         font->truetype.atlases = realloc(font->truetype.atlases, sizeof(struct _ear_truetype_font_atlas) * font->truetype.atlas_amt);
         idx = font->truetype.atlas_amt-1;
         atlas = &font->truetype.atlases[idx];
+        memset(atlas, 0, sizeof(*atlas));
 
-        atlas->pixbuf = malloc(sizeof(char) * at_width * at_height * 4);
         atlas->atlas = ear_create_texture((ear_texture_desc){
-            .type = EAR_TEX_COLOR,
+            .type   = EAR_TEX_COLOR,
             .filter = EAR_FILTER_NEAREST,
-            .wrap = EAR_WRAP_REPEAT,
-            }, atlas->pixbuf, at_width,at_height, font->dest == NULL? NULL : font->dest->arena);
+            .wrap   = EAR_WRAP_REPEAT,
+            }, NULL, at_width,at_height, font->dest == NULL? NULL : font->dest->arena);
         atlas->height = height;
     }
 
@@ -416,7 +421,7 @@ _ear_truetype_text_size(
                 ch->y = atlas->lasty;
 
                 for (uint32_t y = 0; y < (uint32_t)hei; ++y) for (uint32_t x = 0; x < (uint32_t)wid; ++x) {
-                    char a = glyph[y * wid + x];
+                    uint8_t a = glyph[y * wid + x];
                     ear_set_texture_color(atlas->atlas, ch->x + x, at_height - (ch->y + y) - 1, (float[4]){ 1,1,1,a/255.f });
                 }
 

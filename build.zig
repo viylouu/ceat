@@ -21,7 +21,7 @@ const csource = [_][]const u8{
     "core/ear/ll/bindset.c",
     "core/ear/ll/framebuffer.c",
     //"core/ear/ll/texarray.c",
-    //"core/ear/hl/text.c",
+    "core/ear/hl/text.c",
     //"core/ear/hl/camera.c",
     "core/ear/hl/data.c",
     "core/ear/hl/user.c",
@@ -194,7 +194,7 @@ pub fn build(b: *std.Build) void {
     ex_c(b,lib, "ibuffer");
     ex_c(b,lib, "texture");
     ex_c(b,lib, "framebuffer");
-    //ex_c(b,lib, "text");
+    ex_c(b,lib, "text");
     ex_c(b,lib, "input");
     //ex_c(b,lib, "object");
     //ex_c(b,lib, "clock");

@@ -77,7 +77,7 @@ struct _ear_truetype_font_atlas{
     ear_texture* atlas;
     struct _ear_truetype_font_char chars[256];
     float lastx; float lasty; float curmaxh;
-    uint8_t* pixbuf;
+    //uint8_t* pixbuf;
     float height;
 };
 

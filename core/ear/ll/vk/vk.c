@@ -93,8 +93,6 @@ ear_vk_frame(
 
     _ear_vk_reset_fences(_ear_vk_cur_img_index);
 
-    
-
     _ear_vk_first_frame = false;
 
     _ear_vk_start_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame]);

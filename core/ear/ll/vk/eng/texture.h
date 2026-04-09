@@ -10,12 +10,20 @@ typedef struct ear_vk_texture ear_vk_texture;
 ear_vk_texture*
 ear_vk_create_texture(
     ear_texture_desc desc,
-    uint8_t pixels[],
+    uint8_t** pixels,
     uint32_t width, uint32_t height
     );
 void
 ear_vk_delete_texture(
     ear_vk_texture* tex
+    );
+
+void
+ear_vk_update_texture(
+    ear_vk_texture* tex,
+    ear_texture_type type,
+    uint8_t pixels[],
+    uint32_t width, uint32_t height
     );
 
 struct ear_vk_texture{
@@ -32,7 +40,4 @@ struct ear_vk_texture{
     VkSampler samp;
 
     VkFormat format;
-
-    bool selfalloc;
-    void* alloc;
 };
