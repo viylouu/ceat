@@ -4,6 +4,8 @@
 extern "C" {
 #endif
 
+#include "backends/rendering/impl.h"
+
 #include "core/eaw/eaw.h"
 #include "core/ear/ear.h"
 #include "core/eau/eau.h"
@@ -34,6 +36,8 @@ typedef struct eat_init_opts {
     bool vsync;
     eat_console_desc console;
     eat_debug_desc debug;
+
+    eat_backend_rendering_impl* rendering_impl;
 } eat_init_opts;
 
 void 

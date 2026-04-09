@@ -12,7 +12,7 @@
 
 ear_vk_pipeline* _ear_vk_cur_pipeline;
 
-ear_vk_pipeline*
+void*
 ear_vk_create_pipeline(
     ear_pipeline_desc desc
     ) {
@@ -117,8 +117,10 @@ ear_vk_create_pipeline(
 }
 void
 ear_vk_delete_pipeline(
-    ear_vk_pipeline* pln
+    void* _pln
     ) {
+    ear_vk_pipeline* pln = _pln;
+
     _ear_vk_device_wait_idle();
 
     vkDestroyPipeline(_ear_vk_device, pln->pipeline, NULL);
@@ -130,8 +132,10 @@ ear_vk_delete_pipeline(
 
 void
 ear_vk_bind_pipeline(
-    ear_vk_pipeline* pln
+    void* _pln
     ) {
+    ear_vk_pipeline* pln = _pln;
+
     vkCmdBindPipeline(_ear_vk_comm_buffers[_ear_vk_cur_frame], VK_PIPELINE_BIND_POINT_GRAPHICS, pln->pipeline);
 
     _ear_vk_cur_pipeline = pln;

@@ -39,6 +39,8 @@ const csource = [_][]const u8{
     "core/eaa/engine.c",
     "core/eaa/sound.c",
     "core/eaa/mixer.c",
+
+    "backends/rendering/impl.c",
 };
 
 const csource_vulkan = [_][]const u8{

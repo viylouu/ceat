@@ -5,8 +5,6 @@
 
 #include "framebuffer.h"
 
-extern float _ear_clear_color[3];
-
 void
 ear_clear_color(
     ear_framebuffer* fb,

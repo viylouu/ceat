@@ -1,6 +1,7 @@
 #include "vk.h"
 #include "cutil.h"
 
+#include "eng/buffer.h"
 #include "eng/framebuffer.h"
 #include "init/comm_pool.h"
 #include "init/comm_buffer.h"
@@ -13,6 +14,58 @@
 #include "sc/swapchain.h"
 #include "sc/render_pass.h"
 #include "util/texture.h"
+#include "eng/screen.h"
+#include "eng/pipeline.h"
+#include "eng/texture.h"
+
+eat_backend_rendering_impl ear_vk_impl = {
+    .main = {
+        .init  = ear_vk_init,
+        .exit  = ear_vk_exit,
+        .frame = ear_vk_frame,
+        },
+    .misc = {
+        .draw     = ear_vk_draw,
+        .draw_idx = ear_vk_draw_idx,
+
+        .viewport = ear_vk_set_viewport,
+        .scissor  = ear_vk_set_scissor,
+
+        .clear = ear_vk_clear,
+        },
+    .pipeline = {
+        .create = ear_vk_create_pipeline,
+        .delete = ear_vk_delete_pipeline,
+
+        .bind = ear_vk_bind_pipeline,
+        },
+    .buffer = {
+        .create = ear_vk_create_buffer,
+        .delete = ear_vk_delete_buffer,
+
+        .bind = ear_vk_bind_buffer,
+
+        .update = ear_vk_update_buffer,
+        },
+    .bindset = {
+        .create = ear_vk_create_bindset,
+        .delete = ear_vk_delete_bindset,
+
+        .bind = ear_vk_bind_bindset,
+        },
+    .framebuffer = {
+        .create = ear_vk_create_framebuffer,
+        .delete = ear_vk_delete_framebuffer,
+
+        .bind = ear_vk_bind_framebuffer,
+        },
+    .texture = {
+        .create = ear_vk_create_texture,
+        .delete = ear_vk_delete_texture,
+
+        .update = ear_vk_update_texture,
+        },
+    };
 
 bool ear_framebuffer_resize;
 

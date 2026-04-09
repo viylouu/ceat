@@ -7,13 +7,14 @@
 #include "../init/device_log.h"
 #include "../util/texture.h"
 
-ear_vk_texture*
+void*
 ear_vk_create_texture(
     ear_texture_desc desc,
     uint8_t** pixels,
     uint32_t width, uint32_t height
     ) {
     ear_vk_texture* tex = malloc(sizeof(ear_vk_texture));
+    tex->type = desc.type;
 
     uint32_t perpix;
     switch (desc.type) {
@@ -89,8 +90,10 @@ ear_vk_create_texture(
 }
 void
 ear_vk_delete_texture(
-    ear_vk_texture* tex
+    void* _tex
     ) {
+    ear_vk_texture* tex = _tex;
+
     vkDestroySampler(_ear_vk_device, tex->samp, NULL);
     vkDestroyImageView(_ear_vk_device, tex->imgview, NULL);
 
@@ -105,13 +108,14 @@ ear_vk_delete_texture(
 
 void
 ear_vk_update_texture(
-    ear_vk_texture* tex,
-    ear_texture_type type,
+    void* _tex,
     uint8_t pixels[],
     uint32_t width, uint32_t height
     ) {
+    ear_vk_texture* tex = _tex;
+
     uint32_t perpix;
-    switch (type) {
+    switch (tex->type) {
     case EAR_TEX_COLOR: perpix = sizeof(uint8_t)  * 4; break;
     case EAR_TEX_DEPTH: perpix = sizeof(uint8_t)  * 4; break;
     case EAR_TEX_HDR:   perpix = sizeof(uint16_t) * 4; break;
@@ -125,7 +129,7 @@ ear_vk_update_texture(
     vkUnmapMemory(_ear_vk_device, tex->stagmem);
 
     _ear_vk_trans_img(
-        tex->img, type == EAR_TEX_DEPTH,
+        tex->img, tex->type == EAR_TEX_DEPTH,
         VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL
         );
@@ -134,7 +138,7 @@ ear_vk_update_texture(
         width, height
         );
     _ear_vk_trans_img(
-        tex->img, type == EAR_TEX_DEPTH,
+        tex->img, tex->type == EAR_TEX_DEPTH,
         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
         VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
         );

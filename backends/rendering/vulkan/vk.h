@@ -3,6 +3,9 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "../impl.h"
+extern eat_backend_rendering_impl ear_vk_impl;
+
 #define EAR_VK_MAX_FRAMES_IN_FLIGHT 3
 
 extern bool ear_framebuffer_resize;

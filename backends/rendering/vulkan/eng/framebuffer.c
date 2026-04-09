@@ -16,7 +16,7 @@ bool _ear_vk_is_first_fb;
 
 ear_vk_framebuffer* last_fb;
 
-ear_vk_framebuffer*
+void*
 ear_vk_create_framebuffer(
     ear_framebuffer_desc desc
     ) {
@@ -27,15 +27,17 @@ ear_vk_create_framebuffer(
 }
 void
 ear_vk_delete_framebuffer(
-    ear_vk_framebuffer* fb
+    void* fb
     ) {
     free(fb);
 }
 
 void
 ear_vk_bind_framebuffer(
-    ear_vk_framebuffer* fb
+    void* _fb
     ) {
+    ear_vk_framebuffer* fb = _fb;
+
     if (!_ear_vk_is_first_fb) {
         _ear_vk_end_render_pass(_ear_vk_cur_frame);
         if (last_fb == NULL) goto gtfo;

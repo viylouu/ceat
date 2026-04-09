@@ -9,18 +9,18 @@ typedef struct ear_vk_pipeline ear_vk_pipeline;
 
 extern ear_vk_pipeline* _ear_vk_cur_pipeline;
 
-ear_vk_pipeline*
+void*
 ear_vk_create_pipeline(
     ear_pipeline_desc desc
     );
 void
 ear_vk_delete_pipeline(
-    ear_vk_pipeline* pln
+    void* pln
     );
 
 void
 ear_vk_bind_pipeline(
-    ear_vk_pipeline* pln
+    void* pln
     );
 
 struct ear_vk_pipeline{

@@ -7,11 +7,10 @@
 #include "ll/misc.h"
 #include "ll/buffer.h"
 #include "ll/bindset.h"
-/*
 #include "ll/texture.h"
 #include "ll/framebuffer.h"
-#include "ll/texarray.h"
-*/
+//#include "ll/texarray.h"
+
 #include "hl/user.h"
 #include "hl/text.h"
 #include "hl/camera.h"

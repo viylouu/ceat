@@ -2,8 +2,11 @@
 
 #include "../sc/swapchain.h"
 #include "../init/comm_buffer.h"
+#include "framebuffer.h"
 
 #include <math.h>
+
+float _ear_clear_color[3] = {0};
 
 void
 ear_vk_set_viewport(
@@ -34,4 +37,35 @@ ear_vk_set_scissor(
             },
         };
     vkCmdSetScissor(_ear_vk_comm_buffers[_ear_vk_cur_frame], 0,1, &scissor);
+}
+
+void
+ear_vk_draw(
+    uint32_t vertices, uint32_t instances
+    ) {
+    vkCmdDraw(_ear_vk_comm_buffers[_ear_vk_cur_frame], vertices, instances, 0,0);
+}
+void
+ear_vk_draw_idx(
+    uint32_t indices, uint32_t instances
+    ) {
+    vkCmdDrawIndexed(_ear_vk_comm_buffers[_ear_vk_cur_frame], indices, instances, 0,0,0);
+}
+
+void
+ear_vk_clear(
+    void* _fb,
+    float r, float g, float b, float a
+    ) {
+    if (_fb == NULL) {
+        _ear_clear_color[0] = r;
+        _ear_clear_color[1] = g;
+        _ear_clear_color[2] = b;
+    } else {
+        ear_vk_framebuffer* fb = _fb;
+        fb->desc.clear_color[0] = r;
+        fb->desc.clear_color[1] = g;
+        fb->desc.clear_color[2] = b;
+        fb->desc.clear_color[3] = a;
+    }
 }

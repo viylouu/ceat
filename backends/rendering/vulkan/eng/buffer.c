@@ -9,7 +9,7 @@
 //#include "pipeline.h"
 //#include "../vk.h"
 
-ear_vk_buffer*
+void*
 ear_vk_create_buffer(
     ear_buffer_desc desc,
     void* data,
@@ -37,8 +37,10 @@ ear_vk_create_buffer(
 }
 void
 ear_vk_delete_buffer(
-    ear_vk_buffer* buf
+    void* _buf
     ) {
+    ear_vk_buffer* buf = _buf;
+
     switch (buf->type) {
     case EAR_BUF_VERTEX:
     case EAR_BUF_INDEX:
@@ -56,10 +58,12 @@ ear_vk_delete_buffer(
 
 void
 ear_vk_bind_buffer(
-    ear_vk_buffer* buf,
+    void* _buf,
     uint32_t slot,
     uint32_t offset
     ) {
+    ear_vk_buffer* buf = _buf;
+
     switch (buf->type) {
     case EAR_BUF_VERTEX:
         vkCmdBindVertexBuffers(
@@ -89,11 +93,13 @@ ear_vk_bind_buffer(
 
 void
 ear_vk_update_buffer(
-    ear_vk_buffer* buf,
+    void* _buf,
     void* data,
     //uint32_t size,
     uint32_t offset
     ) {
+    ear_vk_buffer* buf = _buf;
+
     switch (buf->type) {
     case EAR_BUF_UNIFORM_PERSISTENT: 
     case EAR_BUF_STORAGE_PERSISTENT:

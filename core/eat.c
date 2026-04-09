@@ -4,6 +4,9 @@
 #include "debug/console.h"
 #include "debug/debug.h"
 
+#include "../backends/rendering/impl.h"
+#include "../backends/rendering/vulkan/vk.h"
+
 int32_t eat_width;
 int32_t eat_height;
 
@@ -22,6 +25,9 @@ eat_init(
     int32_t width, int32_t height,
     eat_init_opts opts
     ) {
+    ear_backend = opts.rendering_impl;
+    if (ear_backend == NULL) ear_backend = &ear_vk_impl;
+
     eaw_init(title, width, height);
     ear_init(title, width, height, opts.vsync);
     eaa_init();

@@ -168,9 +168,6 @@ ear_set_texture_color(
     }
 
     uint32_t i = (x + y * tex->width) * tex->perpix;
-
-    printf("%p,%p [%dx%d] (%d,%d), %d,%d, (%.3f,%.3f,%.3f,%.3f), %d, (%d,%d,%d,%d)\n", (void*)tex, tex->vk, tex->width,tex->height, tex->desc.type,tex->perpix, x,y, col[0], col[1], col[2], col[3], i, tex_r,tex_g,tex_b,tex_a);
-
     tex->pixels[i + tex_r] = col[0] * 255;
     tex->pixels[i + tex_g] = col[1] * 255;
     tex->pixels[i + tex_b] = col[2] * 255;
@@ -181,7 +178,7 @@ void
 ear_update_texture(
     ear_texture* tex
     ) {
-    ear_vk_update_texture(tex->vk, tex->desc.type, tex->pixels, tex->width,tex->height);
+    ear_vk_update_texture(tex->vk, tex->pixels, tex->width,tex->height);
 }
 
 

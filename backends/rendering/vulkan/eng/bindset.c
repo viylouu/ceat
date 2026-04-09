@@ -7,7 +7,7 @@
 #include "../sc/swapchain.h"
 #include "pipeline.h"
 
-ear_vk_bindset*
+void*
 ear_vk_create_bindset(
     ear_bindset_desc desc
     ) {
@@ -22,8 +22,10 @@ ear_vk_create_bindset(
 }
 void
 ear_vk_delete_bindset(
-    ear_vk_bindset* set
+    void* _set
     ) {
+    ear_vk_bindset* set = _set;
+
     vkDestroyDescriptorSetLayout(_ear_vk_device, set->lay, NULL);
     vkDestroyDescriptorPool(_ear_vk_device, set->pool, NULL);
 
@@ -32,11 +34,13 @@ ear_vk_delete_bindset(
 
 void
 ear_vk_bind_bindset(
-    ear_vk_bindset* set,
+    void* _set,
     uint32_t slot,
     uint32_t offsets[],
     uint32_t offset_amt
     ) {
+    ear_vk_bindset* set = _set;
+
     if (offset_amt != 0) eat_assert(offset_amt == set->dynamics, "offset amt must be amount of offsettable bindings!");
 
     uint32_t offamt = offset_amt > 0? offset_amt : set->dynamics;
