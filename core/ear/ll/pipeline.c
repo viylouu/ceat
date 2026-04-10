@@ -30,10 +30,17 @@ ear_create_pipeline(
     eau_arena* arena
     ) {
     ear_pipeline* pln = malloc(sizeof(ear_pipeline));
-    *pln = (ear_pipeline){
-        .vk = ear_backend->pipeline.create(desc),
+    pln->desc = desc;
 
-        .desc = desc,
+    if (desc.color_fmt_amt == 0 && desc.depth_fmt == 0) {
+        pln->desc.color_fmt_amt = 1;
+        pln->desc.color_fmts = (ear_texture_type[]){ EAR_TEX_COLOR };
+    }
+
+    *pln = (ear_pipeline){
+        .vk = ear_backend->pipeline.create(pln->desc),
+
+        .desc = pln->desc,
 
         .deb_obj = eat_debug_add_obj(
             pln,
