@@ -25,6 +25,7 @@ void object_draw(eau_object* obj) {
 }
 
 void object_stop(eau_object* obj) {
+    (void)obj;
     printf("goodbye world :(\n");
 }
 
@@ -45,8 +46,6 @@ int main(void) {
     while (eat_frame()) {
         eau_try_tick_objects();
         eau_draw_objects();
-
-        printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     eau_stop_objects();

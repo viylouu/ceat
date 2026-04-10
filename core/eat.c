@@ -78,7 +78,6 @@ bool
 eat_frame(
     void
     ) {
-    /*
     if (!first) {
         eau_tick_this_frame = false;
         if (eaw_time - _eau_last_tick > eau_tickrate) {
@@ -89,7 +88,10 @@ eat_frame(
         _ear_set_master_framebuffer(NULL);
         ear_set_default_framebuffer(NULL);
         ear_bind_framebuffer(NULL);
-
+    } first = false;
+        
+    /*
+    if (!first) {
         if (!debug.enabled || !eat_debug_toggled) 
             ear_tex(_eat_screen_color, 0,0, eat_width,eat_height, 0,0, eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
 
