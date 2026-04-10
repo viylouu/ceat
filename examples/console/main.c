@@ -11,22 +11,19 @@ void solver(char* input) {
 
 int main(void) {
     eat_init("console", 1600,900, (eat_init_opts){
-            .console = (eat_console_desc){
-                .enabled = true,
-                .key = EAW_KEY_ENTER,
-                .command_solver = solver,
-                },
+        .console = (eat_console_desc){
+            .enabled = true,
+            .key = EAW_KEY_ENTER,
+            .command_solver = solver,
+            },
         });
 
+    ear_clear_color(NULL, .2f, .4f, .3f, 1);
     while (eat_frame()) {
-        ear_clear_color((float[3]){ .2f, .4f, .3f });
-
         ear_rect(0,0, 64,64, (float[4]){ 1,0,0,1 }, EAU_ALIGN_TOP_LEFT);
-
-        //printf("%.3f FPS\n", 1./eat_delta64);
     }
 
-    eat_stop();
+    eat_exit();
 
     return 0;
 }

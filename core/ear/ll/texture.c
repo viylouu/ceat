@@ -114,25 +114,19 @@ ear_delete_texture(
 void
 ear_resize_texture(
     ear_texture* tex,
+    uint8_t new_pixels[],
     uint32_t width, uint32_t height
     ) {
     tex->width = width;
     tex->height = height;
 
-    /*
-    gl.bindTexture(GL_TEXTURE_2D, tex->id);
+    if (new_pixels == NULL) {
+        if (tex->self_pixels) free(tex->pixels);
+        tex->self_pixels = true;
+        tex->pixels = malloc(width * height * tex->perpix);
+    } else tex->pixels = new_pixels;
 
-    gl.texImage2D(
-        GL_TEXTURE_2D,
-        0,
-        _TYPECONV_texture_type_as_intf(tex->desc.type),
-        width, height,
-        0,
-        _TYPECONV_texture_type_as_f(tex->desc.type),
-        _TYPECONV_texture_type_as_type(tex->desc.type),
-        tex->pixels
-        );
-    */
+    ear_backend->texture.update(tex->vk, tex->pixels, tex->width,tex->height);
 }
 
 

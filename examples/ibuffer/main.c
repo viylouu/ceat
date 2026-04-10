@@ -66,12 +66,11 @@ int main(void) {
             },
         }, NULL);
 
+    ear_clear_color(NULL, .2f, .4f, .3f, 1);
     while (eat_frame()) {
-        ear_clear_color(NULL, .2f, .4f, .3f, 1);
-
         ear_bind_pipeline(pln);
         ear_bind_buffer(vbuf, 0, 0);
-        ear_bind_buffer(ibuf, 0, 0); // slot is unused here
+        ear_bind_buffer(ibuf, 0, 0);
         ear_draw_idx(6, 1);
 
         printf("%.3f FPS\n", 1./eat_delta64);

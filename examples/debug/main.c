@@ -25,6 +25,7 @@ void object_draw(eau_object* obj) {
 }
 
 void object_stop(eau_object* obj) {
+    (void)obj;
     printf("goodbye world :(\n");
 }
 
@@ -46,13 +47,10 @@ int main(void) {
 
     eau_init_objects();
 
+    ear_clear_color(NULL, 0,0,0, 1);
     while (eat_frame()) {
-        //ear_clear_color((float[3]){ .2f, .4f, .3f });
-
         eau_try_tick_objects();
         eau_draw_objects();
-
-        //printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     eau_stop_objects();
@@ -60,8 +58,7 @@ int main(void) {
     eau_delete_object(obj);
     free(obj_data);
 
-    eat_stop();
+    eat_exit();
 
     return 0;
 }
-

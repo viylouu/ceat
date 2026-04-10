@@ -55,9 +55,8 @@ int main(void) {
             },
         }, NULL);
 
+    ear_clear_color(NULL, .2f, .4f, .3f, 1);
     while (eat_frame()) {
-        ear_clear_color(NULL, .2f, .4f, .3f, 1);
-
         ear_bind_pipeline(pln);
         ear_bind_buffer(vbuf, 0, 0);
         ear_draw(3, 1);

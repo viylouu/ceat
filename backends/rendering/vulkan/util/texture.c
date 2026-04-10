@@ -155,7 +155,8 @@ _ear_vk_trans_img_inplace(
 void
 _ear_vk_copy_buf_img(
     VkBuffer buf, VkImage img,
-    uint32_t width, uint32_t height
+    uint32_t width, uint32_t height,
+    bool depth
     ) {
     VkCommandBuffer commbuf = _ear_vk_begin_stcomms();
 
@@ -164,7 +165,8 @@ _ear_vk_copy_buf_img(
         .bufferRowLength   = 0,
         .bufferImageHeight = 0,
 
-        .imageSubresource.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT,
+        .imageSubresource.aspectMask     = depth?
+            VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT,
         .imageSubresource.mipLevel       = 0,
         .imageSubresource.baseArrayLayer = 0,
         .imageSubresource.layerCount     = 1,
@@ -186,6 +188,7 @@ _ear_vk_copy_buf_img(
 void
 _ear_vk_make_imgview(
     VkImage image, VkFormat format,
+    bool depth,
     VkImageView* view
     ) {
     VkImageViewCreateInfo viewinfo = {
@@ -204,7 +207,8 @@ _ear_vk_make_imgview(
         .components.b = VK_COMPONENT_SWIZZLE_IDENTITY,
         .components.a = VK_COMPONENT_SWIZZLE_IDENTITY,
 
-        .subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT,
+        .subresourceRange.aspectMask     = depth?
+            VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT : VK_IMAGE_ASPECT_COLOR_BIT,
         .subresourceRange.baseMipLevel   = 0,
         .subresourceRange.levelCount     = 1,
         .subresourceRange.baseArrayLayer = 0,

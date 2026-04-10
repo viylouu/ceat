@@ -135,6 +135,7 @@ _ear_vk_make_buf_pers(
 
         vkMapMemory(_ear_vk_device, buf->ubuf.memories[i], 0, size, 0, &buf->ubuf.datas[i]);
         uint32_t chunk_bytes = desc.chunk_size * desc.stride;
+        if (chunk_bytes == 0) chunk_bytes = size;
         for (uint32_t j = 0; j < size/chunk_bytes; ++j)
             memcpy((uint8_t*)buf->ubuf.datas[i] + j * chunk_bytes, data, chunk_bytes);
     }
@@ -164,7 +165,10 @@ _ear_vk_update_buf_pers(
     //uint32_t size,
     uint32_t off
     ) {
-    memcpy((uint8_t*)buf->ubuf.datas[_ear_vk_cur_frame] + off*buf->chunk*buf->stride, data, buf->chunk*buf->stride);
+    uint32_t chunk_bytes = buf->chunk * buf->stride;
+    if (chunk_bytes == 0) chunk_bytes = buf->size;
+
+    memcpy((uint8_t*)buf->ubuf.datas[_ear_vk_cur_frame] + off*buf->chunk*buf->stride, data, chunk_bytes);
 }
 void
 _ear_vk_update_buf_stage(

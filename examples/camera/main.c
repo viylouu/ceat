@@ -18,6 +18,7 @@ int main(void) {
             },
         }, NULL);
 
+    ear_clear_color(NULL, .2f, .4f, .3f, 1);
     while (eat_frame()) {
         if (eaw_is_key(EAW_KEY_LEFT)) rot += eat_delta * 2;
         if (eaw_is_key(EAW_KEY_RIGHT)) rot -= eat_delta * 2;
@@ -31,7 +32,6 @@ int main(void) {
         ear_set_camera_position_2d(cam, x,y);
 
         ear_bind_camera(cam, false);
-        ear_clear_color(NULL, .2f, .4f, .3f, 1);
         ear_rect(0,0, 64,64, (float[4]){ 1,0,0,1 }, EAU_ALIGN_MID);
         ear_rect(256,256, 128,128, (float[4]){ 1,0,0,1 }, EAU_ALIGN_MID);
 

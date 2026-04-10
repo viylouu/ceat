@@ -55,7 +55,9 @@ ear_vk_create_texture(
         VK_IMAGE_TILING_OPTIMAL,
         VK_IMAGE_USAGE_TRANSFER_DST_BIT | 
             VK_IMAGE_USAGE_SAMPLED_BIT | 
-            VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+            (desc.type == EAR_TEX_DEPTH?
+                VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT :
+                VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT),
         VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
         &tex->img, &tex->imgmem
         );
@@ -67,7 +69,8 @@ ear_vk_create_texture(
         );
     _ear_vk_copy_buf_img(
         tex->stagbuf, tex->img,
-        width, height
+        width, height,
+        tex->type == EAR_TEX_DEPTH
         );
 
     _ear_vk_trans_img(
@@ -78,6 +81,7 @@ ear_vk_create_texture(
 
     _ear_vk_make_imgview(
         tex->img, tex->format,
+        tex->type == EAR_TEX_DEPTH,
         &tex->imgview
         );
 
@@ -137,7 +141,8 @@ ear_vk_update_texture(
         );
     _ear_vk_copy_buf_img(
         tex->stagbuf, tex->img,
-        width, height
+        width, height,
+        tex->type == EAR_TEX_DEPTH
         );
     _ear_vk_trans_img(
         tex->img, tex->type == EAR_TEX_DEPTH,

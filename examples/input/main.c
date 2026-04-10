@@ -7,9 +7,8 @@ int main(void) {
 
     float x = 0; float y = 0;
 
+    ear_clear_color(NULL, .2f, .4f, .3f, 1);
     while (eat_frame()) {
-        ear_clear_color(NULL, .2f, .4f, .3f, 1);
-
         const float speed = 256;
 
         if (eaw_is_key(EAW_KEY_LEFT)) x -= eat_delta * speed;

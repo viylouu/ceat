@@ -76,9 +76,10 @@ const cflags = [_][]const u8{
     "-std=c23",
     "-Wall",
     "-Wextra",
+    "-Wno-c23-extensions",
     "-Wpedantic",
 
-    //"-g", "-O0", "-fsanitize=address,undefined",
+    "-g", "-O0", //"-fsanitize=address,undefined",
     //"-O3",
 };
 
@@ -88,20 +89,19 @@ const cflags_vulkan = [_][]const u8{
     "-Wextra",
     "-Wpedantic",
 
-    //"-g", "-O0", "-fsanitize=address,undefined",
+    "-g", "-O0", //"-fsanitize=address,undefined",
     //"-O3",
 };
 
 var target: std.Build.ResolvedTarget = undefined;
 var optimize: std.builtin.OptimizeMode = undefined;
 
-fn ex_c(b: *std.Build, lib: *std.Build.Step.Compile, comptime name: []const u8) void {
+fn ex_c(b: *std.Build, lib: *std.Build.Step.Compile, libvk: *std.Build.Step.Compile, comptime name: []const u8) void {
     const ex = b.addExecutable(.{
         .name = "ex_" ++ name,
         .root_module = b.createModule(.{
             .target = target,
             .optimize = optimize,
-            .sanitize_c = .full,
             }),
         });
     //ex.root_module.linkSystemLibrary("asan", .{});
@@ -109,6 +109,7 @@ fn ex_c(b: *std.Build, lib: *std.Build.Step.Compile, comptime name: []const u8) 
 
     ex.root_module.addCSourceFile(.{ .file = b.path("examples/" ++ name ++ "/main.c"), .flags = &cflags });
     ex.root_module.linkLibrary(lib);
+    ex.root_module.linkLibrary(libvk);
 
     ex.root_module.linkSystemLibrary("glfw", .{});
 
@@ -141,6 +142,8 @@ pub fn build(b: *std.Build) void {
     target = b.standardTargetOptions(.{});
     optimize = b.standardOptimizeOption(.{});
 
+    var targs = std.ArrayListUnmanaged(*std.Build.Step.Compile){};
+
     const lib_vk = b.addLibrary(.{
         .linkage = .static,
         .name    = "ceat_vk",
@@ -148,11 +151,13 @@ pub fn build(b: *std.Build) void {
             .target    = target,
             .optimize  = optimize,
             .link_libc = true,
-            .sanitize_c = .full,
             }),
         });
     lib_vk.root_module.addIncludePath(b.path("core"));
     lib_vk.root_module.addCSourceFiles(.{ .files = &csource_vulkan, .flags = &cflags_vulkan });
+
+    b.installArtifact(lib_vk);
+    targs.append(b.allocator, lib_vk) catch @panic("OOM");
 
     const lib = b.addLibrary(.{
         .linkage = .static,
@@ -162,7 +167,6 @@ pub fn build(b: *std.Build) void {
             .target = target,
             .optimize = optimize,
             .link_libc = true,
-            .sanitize_c = .full,
             }),
         });
 
@@ -171,7 +175,6 @@ pub fn build(b: *std.Build) void {
     lib.root_module.addIncludePath(b.path("backends"));
     lib.root_module.addCSourceFiles(.{ .files = &csource, .flags = &cflags });
 
-    var targs = std.ArrayListUnmanaged(*std.Build.Step.Compile){};
     b.installArtifact(lib);
     targs.append(b.allocator, lib) catch @panic("OOM");
 
@@ -192,20 +195,20 @@ pub fn build(b: *std.Build) void {
     glslc(b, shadstep, "examples/ibuffer/",  "shad.vert", "shad_v.spv");
     glslc(b, shadstep, "examples/ibuffer/",  "shad.frag", "shad_f.spv");
 
-    ex_c(b,lib, "window");
-    ex_c(b,lib, "triangle");
-    ex_c(b,lib, "vbuffer");
-    ex_c(b,lib, "ubuffer");
-    ex_c(b,lib, "ibuffer");
-    ex_c(b,lib, "texture");
-    ex_c(b,lib, "framebuffer");
-    ex_c(b,lib, "text");
-    ex_c(b,lib, "input");
-    //ex_c(b,lib, "object");
-    //ex_c(b,lib, "clock");
-    //ex_c(b,lib, "console");
-    //ex_c(b,lib, "audio");
-    ex_c(b,lib, "camera");
-    //ex_c(b,lib, "debug");
-    //ex_c(b,lib, "timer");
+    ex_c(b,lib,lib_vk, "window");
+    ex_c(b,lib,lib_vk, "triangle");
+    ex_c(b,lib,lib_vk, "vbuffer");
+    ex_c(b,lib,lib_vk, "ubuffer");
+    ex_c(b,lib,lib_vk, "ibuffer");
+    ex_c(b,lib,lib_vk, "texture");
+    ex_c(b,lib,lib_vk, "framebuffer");
+    ex_c(b,lib,lib_vk, "text");
+    ex_c(b,lib,lib_vk, "input");
+    ex_c(b,lib,lib_vk, "object");
+    ex_c(b,lib,lib_vk, "clock");
+    ex_c(b,lib,lib_vk, "console");
+    ex_c(b,lib,lib_vk, "audio");
+    ex_c(b,lib,lib_vk, "camera");
+    ex_c(b,lib,lib_vk, "debug");
+    ex_c(b,lib,lib_vk, "timer");
 }

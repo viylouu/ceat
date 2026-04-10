@@ -47,7 +47,7 @@ ear_vk_bind_bindset(
     uint32_t offs[offamt == 0? 1 : offamt];
     if (offamt > 0) {
         uint32_t bind_i = 0;
-        for (uint32_t i = 0; i < offset_amt; ++i) {
+        for (uint32_t i = 0; i < offamt; ++i) {
             while (bind_i < set->desc.binding_amt &&
                    set->desc.bindings[bind_i].type == EAR_BIND_TEXTURE2D) 
                 ++bind_i;

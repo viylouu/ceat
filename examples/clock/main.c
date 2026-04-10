@@ -16,9 +16,8 @@ int main(void) {
     bool paused = true;
     float speed = 1;
 
+    ear_clear_color(NULL, .2f, .4f, .3f, 1);
     while (eat_frame()) {
-        ear_clear_color((float[3]){ .2f, .4f, .3f });
-
         eau_update_clocks();
 
         char buf[64];
@@ -45,15 +44,13 @@ int main(void) {
             speed += 1;
             eau_set_clock_speed(clock, speed);
         }
-
-        printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     eau_delete_clock(clock);
 
     ear_delete_font(font);
 
-    eat_stop();
+    eat_exit();
 
     return 0;
 }

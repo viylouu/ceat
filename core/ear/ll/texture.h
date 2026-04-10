@@ -40,6 +40,7 @@ ear_delete_texture(
 void
 ear_resize_texture(
     ear_texture* texture,
+    uint8_t new_pixels[],
     uint32_t width, uint32_t height
     );
 

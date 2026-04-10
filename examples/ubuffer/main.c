@@ -43,9 +43,8 @@ int main(void) {
         .bindsets    = &set,
         }, NULL);
 
+    ear_clear_color(NULL, .2f, .4f, .3f, 1);
     while (eat_frame()) {
-        ear_clear_color(NULL, .2f, .4f, .3f, 1);
-
         ubo_data.time = eat_time;
         ear_update_buffer(ubo, 0);
 
@@ -53,7 +52,7 @@ int main(void) {
         ear_bind_bindset(set, 0, NULL,0);
         ear_draw(3, 1);
 
-        //printf("%.3f FPS\n", 1./eat_delta64);
+        printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     ear_delete_pipeline(pln);

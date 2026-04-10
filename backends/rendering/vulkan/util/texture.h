@@ -31,11 +31,13 @@ _ear_vk_trans_img_inplace(
 void
 _ear_vk_copy_buf_img(
     VkBuffer buf, VkImage img,
-    uint32_t width, uint32_t height
+    uint32_t width, uint32_t height,
+    bool depth
     );
 void
 _ear_vk_make_imgview(
     VkImage image, VkFormat format,
+    bool depth,
     VkImageView* view
     );
 void
