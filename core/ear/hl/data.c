@@ -27,13 +27,13 @@ ear_rect_rend_create(
     ear_rr.off = 0;
 
     ear_rr.ubo = ear_create_buffer((ear_buffer_desc){
-        .type   = EAR_BUF_UNIFORM_PERSISTENT,
+        .type   = EAR_BUF_UNIFORM,
         .stride = sizeof(ear_rr.ubo_d),
         .chunk_size = 1,
         }, &ear_rr.ubo_d, sizeof(ear_rr.ubo_d) * EAR_HL_RINGBUF_MULT, arena);
 
     ear_rr.ssbo = ear_create_buffer((ear_buffer_desc){
-        .type   = EAR_BUF_STORAGE_PERSISTENT,
+        .type   = EAR_BUF_STORAGE,
         .stride = sizeof(ear_rr.ssbo_d[0]),
         .chunk_size = EAR_HL_BATCH_OBJS,
         }, &ear_rr.ssbo_d, sizeof(ear_rr.ssbo_d) * EAR_HL_RINGBUF_MULT, arena);
@@ -114,13 +114,13 @@ ear_tex_rend_create(
     ear_tr.off = 0;
 
     ear_tr.ubo = ear_create_buffer((ear_buffer_desc){
-        .type   = EAR_BUF_UNIFORM_PERSISTENT,
+        .type   = EAR_BUF_UNIFORM,
         .stride = sizeof(ear_tr.ubo_d),
         .chunk_size = 1,
         }, &ear_tr.ubo_d, sizeof(ear_tr.ubo_d) * EAR_HL_RINGBUF_MULT, arena);
 
     ear_tr.ssbo = ear_create_buffer((ear_buffer_desc){
-        .type   = EAR_BUF_STORAGE_PERSISTENT,
+        .type   = EAR_BUF_STORAGE,
         .stride = sizeof(ear_tr.ssbo_d[0]),
         .chunk_size = EAR_HL_BATCH_OBJS,
         }, &ear_tr.ssbo_d, sizeof(ear_tr.ssbo_d) * EAR_HL_RINGBUF_MULT, arena);

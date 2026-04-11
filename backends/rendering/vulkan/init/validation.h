@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-static bool _ear_vk_validation = false;
+static bool _ear_vk_validation = true;
 
 static const char* _ear_vk_validations[] = {
     "VK_LAYER_KHRONOS_validation",

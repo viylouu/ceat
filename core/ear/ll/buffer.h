@@ -10,10 +10,8 @@ typedef struct ear_buffer ear_buffer;
 typedef struct ear_buffer_desc ear_buffer_desc;
 
 typedef enum ear_buffer_type{
-    EAR_BUF_UNIFORM_STAGING,
-    EAR_BUF_UNIFORM_PERSISTENT,
-    EAR_BUF_STORAGE_STAGING,
-    EAR_BUF_STORAGE_PERSISTENT,
+    EAR_BUF_UNIFORM,
+    EAR_BUF_STORAGE,
     EAR_BUF_VERTEX,
     EAR_BUF_INDEX,
 } ear_buffer_type;

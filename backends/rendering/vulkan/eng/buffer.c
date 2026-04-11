@@ -18,14 +18,18 @@ ear_vk_create_buffer(
     buf->size = size;
     buf->chunk = desc.chunk_size;
 
+    buf->chunk_bytes = buf->chunk * buf->stride;
+    if (buf->chunk_bytes == 0) buf->chunk_bytes = buf->size;
+
+    buf->insts = desc.chunk_size == 0? 1 :
+        size / (desc.chunk_size * desc.stride);
+
     switch (desc.type) {
     case EAR_BUF_VERTEX: 
     case EAR_BUF_INDEX:
-    case EAR_BUF_UNIFORM_STAGING:
-    case EAR_BUF_STORAGE_STAGING:
         _ear_vk_make_buf_stage(buf, desc, data, size); break;
-    case EAR_BUF_UNIFORM_PERSISTENT:
-    case EAR_BUF_STORAGE_PERSISTENT: 
+    case EAR_BUF_UNIFORM:
+    case EAR_BUF_STORAGE: 
         _ear_vk_make_buf_pers(buf, desc, data, size); break;
     default: eat_unreachable();
     }
@@ -41,11 +45,9 @@ ear_vk_delete_buffer(
     switch (buf->type) {
     case EAR_BUF_VERTEX:
     case EAR_BUF_INDEX:
-    case EAR_BUF_STORAGE_STAGING:
-    case EAR_BUF_UNIFORM_STAGING:
         _ear_vk_del_buf_stage(buf); break;
-    case EAR_BUF_STORAGE_PERSISTENT:
-    case EAR_BUF_UNIFORM_PERSISTENT:
+    case EAR_BUF_STORAGE:
+    case EAR_BUF_UNIFORM:
         _ear_vk_del_buf_pers(buf); break;
     default: eat_unreachable();
     }
@@ -78,10 +80,8 @@ ear_vk_bind_buffer(
             VK_INDEX_TYPE_UINT32
             );
         break;
-    case EAR_BUF_UNIFORM_STAGING:
-    case EAR_BUF_UNIFORM_PERSISTENT:
-    case EAR_BUF_STORAGE_STAGING:
-    case EAR_BUF_STORAGE_PERSISTENT:
+    case EAR_BUF_UNIFORM:
+    case EAR_BUF_STORAGE:
         eat_warn("binding buffers dont need to be bound, bind the bindset instead!");
         break;
     default: eat_unreachable();
@@ -98,14 +98,12 @@ ear_vk_update_buffer(
     ear_vk_buffer* buf = _buf;
 
     switch (buf->type) {
-    case EAR_BUF_UNIFORM_PERSISTENT: 
-    case EAR_BUF_STORAGE_PERSISTENT:
+    case EAR_BUF_UNIFORM: 
+    case EAR_BUF_STORAGE:
         _ear_vk_update_buf_pers(buf, data, offset); return;
     case EAR_BUF_VERTEX:
     case EAR_BUF_INDEX:
-    case EAR_BUF_STORAGE_STAGING:
-    case EAR_BUF_UNIFORM_STAGING:
-        _ear_vk_update_buf_stage(buf, data, 0, offset); return;
+        _ear_vk_update_buf_stage(buf, data, offset); return;
     }
 
     eat_unreachable();

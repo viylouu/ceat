@@ -39,6 +39,8 @@ struct ear_vk_buffer{
     uint32_t size;
     uint32_t stride;
     uint32_t chunk;
+    uint32_t insts;
+    uint32_t chunk_bytes;
 
     ear_vk_bindset* cur_set;
 
@@ -46,8 +48,10 @@ struct ear_vk_buffer{
     struct{
         VkBuffer buffer;
         VkDeviceMemory memory;
- 
-        void* data;
+
+        VkBuffer* stagbufs;
+        VkDeviceMemory* stagmems;
+        void** datas;
         } gen;
     struct{
         VkBuffer buffers[EAR_VK_MAX_FRAMES_IN_FLIGHT];

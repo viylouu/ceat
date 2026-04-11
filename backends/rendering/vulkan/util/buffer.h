@@ -65,7 +65,7 @@ void
 _ear_vk_update_buf_stage(
     ear_vk_buffer* buf,
     const void* data,
-    uint32_t size,
+    //uint32_t size,
     uint32_t off
     );
 
