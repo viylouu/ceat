@@ -6,11 +6,16 @@
 #include "../eng/screen.h"
 #include <math.h>
 
+uint32_t last_rp_frame = 0;
+
 void
 _ear_vk_start_render_pass(
     uint32_t index,
     uint32_t frame
     ) {
+    bool clear = last_rp_frame != frame;
+    if (clear) last_rp_frame = frame;
+
     VkRenderingAttachmentInfo attach = {
         .sType = VK_STRUCTURE_TYPE_RENDERING_ATTACHMENT_INFO,
         .pNext = NULL,
@@ -18,7 +23,9 @@ _ear_vk_start_render_pass(
         .imageView   = _ear_vk_swapchain_img_views[index],
         .imageLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
 
-        .loadOp  = VK_ATTACHMENT_LOAD_OP_CLEAR,
+        .loadOp  = clear?
+            VK_ATTACHMENT_LOAD_OP_CLEAR :
+            VK_ATTACHMENT_LOAD_OP_LOAD,
         .storeOp = VK_ATTACHMENT_STORE_OP_STORE,
 
         .clearValue.color = {{

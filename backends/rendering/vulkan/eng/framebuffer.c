@@ -20,6 +20,7 @@ ear_vk_create_framebuffer(
     ) {
     ear_vk_framebuffer* fb = malloc(sizeof(ear_vk_framebuffer));
     fb->desc = desc;
+    fb->frame = _ear_vk_cur_frame + 1;
 
     return fb;
 }
@@ -62,6 +63,9 @@ gtfo:
 
     if (fb == NULL) _ear_vk_start_render_pass(_ear_vk_cur_img_index, _ear_vk_cur_frame);
     else {
+        bool clear = fb->frame != _ear_vk_cur_frame;
+        fb->frame = _ear_vk_cur_frame;
+
         VkRenderingAttachmentInfo depth_atch;
         if (fb->desc.out_depth != NULL) {
             /*_ear_vk_trans_img_inplace(
@@ -77,7 +81,9 @@ gtfo:
                 .imageView   = get_vk(texture, fb->desc.out_depth)->imgview,
                 .imageLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
 
-                .loadOp  = VK_ATTACHMENT_LOAD_OP_CLEAR,
+                .loadOp  = clear?
+                    (fb->desc.clear? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_LOAD) :
+                    VK_ATTACHMENT_LOAD_OP_LOAD,
                 .storeOp = VK_ATTACHMENT_STORE_OP_STORE,
 
                 .clearValue.depthStencil = (VkClearDepthStencilValue){1,0},
@@ -115,7 +121,9 @@ gtfo:
                 .imageView   = get_vk(texture, fb->desc.out_colors[i])->imgview,
                 .imageLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
 
-                .loadOp  = fb->desc.clear? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_LOAD,
+                .loadOp  = clear?
+                    (fb->desc.clear? VK_ATTACHMENT_LOAD_OP_CLEAR : VK_ATTACHMENT_LOAD_OP_LOAD) :
+                    VK_ATTACHMENT_LOAD_OP_LOAD,
                 .storeOp = VK_ATTACHMENT_STORE_OP_STORE,
 
                 .clearValue.color = clearcol,

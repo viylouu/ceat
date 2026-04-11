@@ -28,4 +28,7 @@ struct ear_vk_framebuffer{
     //VkFramebuffer fb;
 
     ear_framebuffer_desc desc;
+
+    // used to do clears only on first bind
+    uint32_t frame;
 };

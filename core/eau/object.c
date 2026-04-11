@@ -177,8 +177,6 @@ eau_draw_objects(
     arr = malloc(sizeof(_eau_object_draw_arr_item));
     uint32_t arr_size = 0;
 
-    //int rendered = 0;
-
     for (eau_object_ll* item = eau_object_ll_first; item != NULL; item = item->next) {
         int layer = item->obj->desc.render_layer;
 
