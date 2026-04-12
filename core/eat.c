@@ -88,28 +88,24 @@ eat_frame(
         _ear_set_master_framebuffer(NULL);
         ear_set_default_framebuffer(NULL);
         ear_bind_framebuffer(NULL);
-    } first = false;
         
-    /*
-    if (!first) {
         if (!debug.enabled || !eat_debug_toggled) 
             ear_tex(_eat_screen_color, 0,0, eat_width,eat_height, 0,0, eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
 
         if (debug.enabled) eat_debug_try_do();    
     } first = false;
-    */
 
-    //int prev_width = eat_width;
-    //int prev_height = eat_height;
+    int prev_width = eat_width;
+    int prev_height = eat_height;
 
     ear_frame();
     eaw_frame();
 
-    //_ear_set_master_framebuffer(_eat_screen_framebuffer);
-    //ear_set_default_framebuffer(NULL);
-    //ear_bind_framebuffer(NULL);
+    _ear_set_master_framebuffer(_eat_screen_framebuffer);
+    ear_set_default_framebuffer(NULL);
+    ear_bind_framebuffer(NULL);
 
-    //if (console.enabled) eat_console_try_do();
+    if (console.enabled) eat_console_try_do();
     
     eat_time = eaw_time;
     eat_delta = eaw_delta;
@@ -118,13 +114,11 @@ eat_frame(
 
     eat_debug_get_screen_size(&eat_width, &eat_height);
 
-    /*
     if (prev_width != eat_width || prev_height != eat_height) {
         ear_resize_texture(_eat_screen_color, NULL, eat_width, eat_height);
         ear_resize_texture(_eat_screen_depth, NULL, eat_width, eat_height);
         ear_resize_framebuffer(_eat_screen_framebuffer, eat_width, eat_height);
     }
-    */
 
     return eaw_is_open();
 }

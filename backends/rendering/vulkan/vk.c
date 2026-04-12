@@ -13,7 +13,7 @@
 #include "init/sync.h"
 #include "sc/swapchain.h"
 #include "sc/render_pass.h"
-#include "util/texture.h"
+#include "util/img.h"
 #include "eng/screen.h"
 #include "eng/pipeline.h"
 #include "eng/texture.h"
@@ -75,9 +75,8 @@ _ear_vk_frame_end(
     ) {
     _ear_vk_end_render_pass(_ear_vk_cur_frame);
 
-    _ear_vk_trans_img_inplace(
-        _ear_vk_swapchain_imgs[_ear_vk_cur_img_index], false,
-        VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+    _ear_vk_trans_img(
+        &_ear_vk_swapchain_imgs[_ear_vk_cur_img_index], _ear_vk_comm_buffers[_ear_vk_cur_frame],
         VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
         );
 
@@ -109,6 +108,8 @@ ear_vk_init(
     _ear_vk_create_command_buffers();
 
     _ear_vk_create_full_swapchain();
+
+    ear_vk_frame();
 }
 void
 ear_vk_exit(
@@ -151,9 +152,8 @@ ear_vk_frame(
     _ear_vk_start_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame]);
     //_ear_vk_start_render_pass(_ear_vk_cur_img_index, _ear_vk_cur_frame);
 
-    _ear_vk_trans_img_inplace(
-        _ear_vk_swapchain_imgs[_ear_vk_cur_img_index], false,
-        VK_IMAGE_LAYOUT_UNDEFINED,
+    _ear_vk_trans_img(
+        &_ear_vk_swapchain_imgs[_ear_vk_cur_img_index], _ear_vk_comm_buffers[_ear_vk_cur_frame],
         VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
         );
 

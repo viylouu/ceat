@@ -7,6 +7,7 @@
 #include "../init/device_log.h"
 #include "../util/pipeline.h"
 #include "../util/texture.h"
+#include "framebuffer.h"
 
 ear_vk_pipeline* _ear_vk_cur_pipeline;
 
@@ -15,6 +16,7 @@ ear_vk_create_pipeline(
     ear_pipeline_desc desc
     ) {
     ear_vk_pipeline* pln = malloc(sizeof(ear_vk_pipeline));
+    pln->depth = desc.depth;
 
     VkShaderModule vertex   = _ear_vk_create_shader_module(
         (const uint32_t*)desc.vertex.source,   desc.vertex.source_size);
@@ -70,7 +72,22 @@ ear_vk_create_pipeline(
         .colorAttachmentCount    = desc.color_fmt_amt,
         .pColorAttachmentFormats = colfmts,
 
-        .depthAttachmentFormat = desc.depth? _ear_vk_convert_tex_fmt(desc.depth_fmt) : VK_FORMAT_UNDEFINED,
+        .depthAttachmentFormat   = VK_FORMAT_D24_UNORM_S8_UINT,
+        .stencilAttachmentFormat = VK_FORMAT_D24_UNORM_S8_UINT,
+        };
+
+    VkPipelineDepthStencilStateCreateInfo dsstate = {
+        .sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO,
+        .pNext = NULL,
+
+        .flags = 0,
+
+        .depthTestEnable = true,
+        .depthWriteEnable = true,
+        .depthCompareOp = VK_COMPARE_OP_LESS,
+
+        .depthBoundsTestEnable = false,
+        .stencilTestEnable = false,
         };
 
     VkGraphicsPipelineCreateInfo createinfo = {
@@ -88,7 +105,7 @@ ear_vk_create_pipeline(
         .pViewportState      = &viewportstate,
         .pRasterizationState = &rasterizer,
         .pMultisampleState   = &multisampling,
-        .pDepthStencilState  = NULL,
+        .pDepthStencilState  = &dsstate,
         .pColorBlendState    = &colorblend,
         .pDynamicState       = &dstate,
 
@@ -103,6 +120,52 @@ ear_vk_create_pipeline(
 
     eat_assert(vkCreateGraphicsPipelines(_ear_vk_device, NULL, 1, &createinfo, NULL, &pln->pipeline) == VK_SUCCESS, 
         "failed to create graphics pipeline!");
+
+    if (!pln->depth) {
+        VkPipelineRenderingCreateInfo renderinfo = {
+            .sType = VK_STRUCTURE_TYPE_PIPELINE_RENDERING_CREATE_INFO,
+            .pNext = NULL,
+
+            .viewMask = 0,
+
+            .colorAttachmentCount    = desc.color_fmt_amt,
+            .pColorAttachmentFormats = colfmts,
+
+            .depthAttachmentFormat   = VK_FORMAT_UNDEFINED,
+            .stencilAttachmentFormat = VK_FORMAT_UNDEFINED,
+            };
+
+        VkGraphicsPipelineCreateInfo createinfo = {
+            .sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO,
+            .pNext = &renderinfo,
+
+            .flags = 0,
+
+            .stageCount = 2,
+            .pStages    = stages,
+
+            .pVertexInputState   = &vertexinputinfo,
+            .pInputAssemblyState = &inputassembly,
+            .pTessellationState  = NULL,
+            .pViewportState      = &viewportstate,
+            .pRasterizationState = &rasterizer,
+            .pMultisampleState   = &multisampling,
+            .pDepthStencilState  = NULL,
+            .pColorBlendState    = &colorblend,
+            .pDynamicState       = &dstate,
+
+            .layout = pln->layout,
+
+            .renderPass = NULL,
+            .subpass    = 0,
+
+            .basePipelineHandle = NULL,
+            .basePipelineIndex  = -1,
+            };
+
+        eat_assert(vkCreateGraphicsPipelines(_ear_vk_device, NULL, 1, &createinfo, NULL, &pln->nodepth) == VK_SUCCESS, 
+            "failed to create graphics pipeline!");
+    }
 
     _ear_vk_delete_shader_module(vertex);
     _ear_vk_delete_shader_module(fragment);
@@ -121,6 +184,8 @@ ear_vk_delete_pipeline(
 
     _ear_vk_device_wait_idle();
 
+    if (!pln->depth)
+        vkDestroyPipeline(_ear_vk_device, pln->nodepth, NULL);
     vkDestroyPipeline(_ear_vk_device, pln->pipeline, NULL);
     vkDestroyPipelineLayout(_ear_vk_device, pln->layout, NULL);
 
@@ -134,7 +199,10 @@ ear_vk_bind_pipeline(
     ) {
     ear_vk_pipeline* pln = _pln;
 
-    vkCmdBindPipeline(_ear_vk_comm_buffers[_ear_vk_cur_frame], VK_PIPELINE_BIND_POINT_GRAPHICS, pln->pipeline);
+    if (_ear_vk_last_fb_depth)
+        vkCmdBindPipeline(_ear_vk_comm_buffers[_ear_vk_cur_frame], VK_PIPELINE_BIND_POINT_GRAPHICS, pln->pipeline);
+    else if (!pln->depth)
+        vkCmdBindPipeline(_ear_vk_comm_buffers[_ear_vk_cur_frame], VK_PIPELINE_BIND_POINT_GRAPHICS, pln->nodepth);
 
     _ear_vk_cur_pipeline = pln;
 }

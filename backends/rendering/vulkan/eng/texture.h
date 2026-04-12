@@ -4,6 +4,7 @@
 #include <vulkan/vulkan_core.h>
 
 #include "ear/ll/texture.h"
+#include "../util/img.h"
 
 typedef struct ear_vk_texture ear_vk_texture;
 
@@ -30,8 +31,7 @@ struct ear_vk_texture{
     VkDeviceMemory stagmem;
     void* data;
 
-    // image layout should be SHADER_READ_ONLY_OPTIMAL between calls
-    VkImage img;
+    _ear_vk_image img;
     VkDeviceMemory imgmem;
     
     VkImageView imgview;
@@ -40,4 +40,7 @@ struct ear_vk_texture{
 
     VkFormat format;
     ear_texture_type type;
+
+    uint32_t width; uint32_t height;
+    bool aniso;
 };

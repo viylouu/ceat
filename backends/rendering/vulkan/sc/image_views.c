@@ -16,7 +16,7 @@ _ear_vk_create_image_views(
 
     for (uint32_t i = 0; i < _ear_vk_swapchain_img_amt; ++i)
         _ear_vk_make_imgview(
-            _ear_vk_swapchain_imgs[i], _ear_vk_swapchain_img_fmt,
+            _ear_vk_swapchain_imgs[i].img, _ear_vk_swapchain_img_fmt,
             false,
             &_ear_vk_swapchain_img_views[i]
             );

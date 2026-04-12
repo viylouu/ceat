@@ -7,6 +7,8 @@
 
 VkCommandBuffer _ear_vk_comm_buffers[EAR_VK_MAX_FRAMES_IN_FLIGHT];
 
+bool _ear_vk_commbuf_rec;
+
 void
 _ear_vk_create_command_buffers(
     void
@@ -41,12 +43,15 @@ _ear_vk_start_command_buffer(
         };
 
     eat_assert(vkBeginCommandBuffer(buffer, &begininfo) == VK_SUCCESS, "failed to start command buffer!");
+
+    _ear_vk_commbuf_rec = true;
 }
 void
 _ear_vk_end_command_buffer(
     VkCommandBuffer buffer
     ) {
     eat_assert(vkEndCommandBuffer(buffer) == VK_SUCCESS, "failed to end command buffer!");
+    _ear_vk_commbuf_rec = false;
 }
 
 void

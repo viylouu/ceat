@@ -1,11 +1,14 @@
 #include "render_pass.h"
 
+#include <stdio.h>
+#include <math.h>
+
 #include "../init/comm_buffer.h"
 #include "swapchain.h"
 #include "image_views.h"
 #include "../eng/screen.h"
-#include <math.h>
 
+bool _ear_vk_in_pass;
 uint32_t last_rp_frame = 0;
 
 void
@@ -56,10 +59,14 @@ _ear_vk_start_render_pass(
         };
 
     vkCmdBeginRendering(_ear_vk_comm_buffers[frame], &renderinfo);
+
+    _ear_vk_in_pass = true;
 }
 void
 _ear_vk_end_render_pass(
     uint32_t frame
     ) {
+    if (!_ear_vk_in_pass) return;
     vkCmdEndRendering(_ear_vk_comm_buffers[frame]);
+    _ear_vk_in_pass = false;
 }

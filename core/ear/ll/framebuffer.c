@@ -56,41 +56,7 @@ ear_create_framebuffer(
         memcpy(fb->desc.out_colors, desc.out_colors, sizeof(ear_texture*) * desc.out_color_amt);
     }
 
-    fb->vk = ear_backend->framebuffer.create(desc);
-
-    /*
-    gl.genFramebuffers(1, &fb->id);
-    gl.bindFramebuffer(GL_FRAMEBUFFER, fb->id);
-
-    uint32_t* dbufs = malloc(sizeof(uint32_t) * fb->desc.out_color_amt);
-    for (int i = 0; i < fb->desc.out_color_amt; ++i) {
-        gl.framebufferTexture2D(
-            GL_FRAMEBUFFER,
-            GL_COLOR_ATTACHMENT0 + i,
-            GL_TEXTURE_2D,
-            fb->desc.out_colors[i]->id,
-            0
-            );
-        dbufs[i] = GL_COLOR_ATTACHMENT0 + i;
-    }
-
-    if (fb->desc.out_color_amt == 0) gl.drawBuffer(GL_NONE);
-    else gl.drawBuffers(fb->desc.out_color_amt, dbufs);
-
-    if (fb->desc.out_depth != NULL)
-        gl.framebufferTexture2D(
-            GL_FRAMEBUFFER,
-            GL_DEPTH_ATTACHMENT,
-            GL_TEXTURE_2D,
-            fb->desc.out_depth->id,
-            0
-            );
-
-    eat_assert(gl.checkFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "incomplete framebuffer!");
-    free(dbufs);
-
-    gl.bindFramebuffer(GL_FRAMEBUFFER, 0);
-    */
+    fb->vk = ear_backend->framebuffer.create(&desc);
 
     if (arena != NULL) eau_add_to_arena(arena, &fb->dest, fb, _ear_arena_framebuffer_delete);
     return fb;
@@ -124,11 +90,6 @@ ear_bind_framebuffer(
 
         ear_backend->misc.viewport(0,0, fb->desc.width,fb->desc.height);
         ear_backend->misc.scissor (0,0, fb->desc.width,fb->desc.height);
-        /*
-        gl.bindFramebuffer(GL_FRAMEBUFFER, fb->id);
-                gl.viewport(0,0, fb->desc.width, fb->desc.height);
-        ear_mask(0,0, fb->desc.width, fb->desc.height);
-        */
     } else if (_ear_default_fb != NULL) {
         ear_bind_framebuffer(_ear_default_fb); 
     } else if (_ear_master_fb != NULL) {
@@ -141,13 +102,6 @@ ear_bind_framebuffer(
 
         ear_backend->misc.viewport(0,0, _eaw_window_width,_eaw_window_height);
         ear_backend->misc.scissor (0,0, _eaw_window_width,_eaw_window_height);
-
-        /*
-        gl.bindFramebuffer(GL_FRAMEBUFFER, 0);
-        
-        gl.viewport(0,0, eaw_window_width,eaw_window_height);
-        ear_mask(0,0, eaw_window_width,eaw_window_height);
-        */
     }
 }
 

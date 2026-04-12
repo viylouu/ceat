@@ -29,6 +29,14 @@ _ear_vk_copy_buf(
     uint32_t dstoff,
     VkDeviceSize size
     );
+void
+_ear_vk_copy_buf_implace(
+    VkBuffer src,
+    uint32_t srcoff,
+    VkBuffer dst,
+    uint32_t dstoff,
+    VkDeviceSize size
+    );
 
 void
 _ear_vk_make_buf_stage(

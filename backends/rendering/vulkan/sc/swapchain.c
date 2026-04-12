@@ -17,7 +17,7 @@ uint32_t _ear_vk_cur_img_index = 0;
 bool _ear_vk_first_frame = true;
 
 VkSwapchainKHR _ear_vk_swapchain;
-VkImage* _ear_vk_swapchain_imgs;
+_ear_vk_image* _ear_vk_swapchain_imgs;
     uint32_t _ear_vk_swapchain_img_amt;
 VkFormat _ear_vk_swapchain_img_fmt;
 VkExtent2D _ear_vk_swapchain_extent;
@@ -154,8 +154,16 @@ _ear_vk_create_swapchain(
         "failed to create swapchain!");
 
     vkGetSwapchainImagesKHR(_ear_vk_device, _ear_vk_swapchain, &_ear_vk_swapchain_img_amt, NULL);
-    _ear_vk_swapchain_imgs = malloc(sizeof(VkImage) * _ear_vk_swapchain_img_amt);
-    vkGetSwapchainImagesKHR(_ear_vk_device, _ear_vk_swapchain, &_ear_vk_swapchain_img_amt, _ear_vk_swapchain_imgs);
+    _ear_vk_swapchain_imgs = malloc(sizeof(_ear_vk_image) * _ear_vk_swapchain_img_amt);
+    VkImage* imgs = malloc(sizeof(VkImage)* _ear_vk_swapchain_img_amt);
+    vkGetSwapchainImagesKHR(_ear_vk_device, _ear_vk_swapchain, &_ear_vk_swapchain_img_amt, imgs);
+    for (uint32_t i = 0; i < _ear_vk_swapchain_img_amt; ++i)
+        _ear_vk_swapchain_imgs[i] = (_ear_vk_image){
+            .img   = imgs[i],
+            .lay   = VK_IMAGE_LAYOUT_UNDEFINED,
+            .depth = false,
+            };
+    free(imgs);
 
     _ear_vk_swapchain_img_fmt = surface_fmt.format;
     _ear_vk_swapchain_extent = extent;

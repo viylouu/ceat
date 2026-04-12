@@ -6,6 +6,7 @@
 #include "../sc/swapchain.h"
 #include "../vk.h"
 #include "commbuf.h"
+#include "../init/comm_buffer.h"
 
 #include <string.h>
 
@@ -87,6 +88,22 @@ _ear_vk_copy_buf(
 
     _ear_vk_end_stcomms(commbuf);
 }
+void
+_ear_vk_copy_buf_implace(
+    VkBuffer src,
+    uint32_t srcoff,
+    VkBuffer dst,
+    uint32_t dstoff,
+    VkDeviceSize size
+    ) {
+    VkBufferCopy copyregion = {
+        .srcOffset = srcoff,
+        .dstOffset = dstoff,
+        .size = size,
+        };
+    vkCmdCopyBuffer(_ear_vk_comm_buffers[_ear_vk_cur_frame], src, dst, 1, &copyregion);
+}
+
 
 void
 _ear_vk_make_buf_stage(

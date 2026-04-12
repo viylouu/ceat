@@ -64,6 +64,7 @@ const csource_vulkan = [_][]const u8{
     "backends/rendering/vulkan/util/texture.c",
     "backends/rendering/vulkan/util/commbuf.c",
     "backends/rendering/vulkan/util/framebuffer.c",
+    "backends/rendering/vulkan/util/img.c",
     "backends/rendering/vulkan/eng/pipeline.c",
     "backends/rendering/vulkan/eng/screen.c",
     "backends/rendering/vulkan/eng/buffer.c",

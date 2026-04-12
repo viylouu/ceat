@@ -67,92 +67,6 @@ _ear_vk_make_img(
     vkBindImageMemory(_ear_vk_device, *img, *mem, 0);
 }
 void
-_ear_vk_trans_img(
-    VkImage img, bool depth,
-    VkImageLayout oldlay,
-    VkImageLayout newlay
-    ) {
-    VkCommandBuffer commbuf = _ear_vk_begin_stcomms();
-
-    VkImageMemoryBarrier barrier = {
-        .sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,
-        .pNext = NULL,
-
-        .oldLayout = oldlay,
-        .newLayout = newlay,
-
-        .srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED,
-        .dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED,
-
-        .image = img,
-
-        .subresourceRange.aspectMask     = depth? VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT : 
-                                                  VK_IMAGE_ASPECT_COLOR_BIT,
-        .subresourceRange.baseMipLevel   = 0,
-        .subresourceRange.levelCount     = 1,
-        .subresourceRange.baseArrayLayer = 0,
-        .subresourceRange.layerCount     = 1,
-
-        .srcAccessMask = _ear_vk_convert_lay_access(oldlay),
-        .dstAccessMask = _ear_vk_convert_lay_access(newlay),
-        };
-
-    vkCmdPipelineBarrier(
-        commbuf,
-        _ear_vk_convert_lay_stage(oldlay),
-        _ear_vk_convert_lay_stage(newlay),
-        0,
-        0, NULL,
-        0, NULL,
-        1, &barrier
-        );
-
-    _ear_vk_end_stcomms(commbuf);
-}
-void
-_ear_vk_trans_img_inplace(
-    VkImage img, bool depth,
-    VkImageLayout oldlay,
-    VkImageLayout newlay
-    ) {
-    //VkCommandBuffer commbuf = _ear_vk_begin_stcomms();
-
-    VkImageMemoryBarrier barrier = {
-        .sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,
-        .pNext = NULL,
-
-        .oldLayout = oldlay,
-        .newLayout = newlay,
-
-        .srcQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED,
-        .dstQueueFamilyIndex = VK_QUEUE_FAMILY_IGNORED,
-
-        .image = img,
-
-        .subresourceRange.aspectMask     = depth? VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT : 
-                                                  VK_IMAGE_ASPECT_COLOR_BIT,
-        .subresourceRange.baseMipLevel   = 0,
-        .subresourceRange.levelCount     = 1,
-        .subresourceRange.baseArrayLayer = 0,
-        .subresourceRange.layerCount     = 1,
-
-        .srcAccessMask = _ear_vk_convert_lay_access(oldlay),
-        .dstAccessMask = _ear_vk_convert_lay_access(newlay),
-        };
-
-    vkCmdPipelineBarrier(
-        _ear_vk_comm_buffers[_ear_vk_cur_frame],
-        _ear_vk_convert_lay_stage(oldlay),
-        _ear_vk_convert_lay_stage(newlay),
-        0,
-        0, NULL,
-        0, NULL,
-        1, &barrier
-        );
-
-    //_ear_vk_end_stcomms(commbuf);
-}
-void
 _ear_vk_copy_buf_img(
     VkBuffer buf, VkImage img,
     uint32_t width, uint32_t height,
@@ -184,6 +98,35 @@ _ear_vk_copy_buf_img(
         );
 
     _ear_vk_end_stcomms(commbuf);
+}
+void
+_ear_vk_copy_buf_img_inplace(
+    VkBuffer buf, VkImage img,
+    uint32_t width, uint32_t height,
+    bool depth
+    ) {
+    VkBufferImageCopy region = {
+        .bufferOffset      = 0,
+        .bufferRowLength   = 0,
+        .bufferImageHeight = 0,
+
+        .imageSubresource.aspectMask     = depth?
+            VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT,
+        .imageSubresource.mipLevel       = 0,
+        .imageSubresource.baseArrayLayer = 0,
+        .imageSubresource.layerCount     = 1,
+
+        .imageOffset = { 0,0,0 },
+        .imageExtent = { width, height, 1 },
+        };
+
+    vkCmdCopyBufferToImage(
+        _ear_vk_comm_buffers[_ear_vk_cur_frame],
+        buf, img,
+        VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+        1,
+        &region
+        );
 }
 void
 _ear_vk_make_imgview(
@@ -256,40 +199,6 @@ _ear_vk_make_sampler(
         "failed to create texture sampler!");
 }
 
-VkAccessFlags
-_ear_vk_convert_lay_access(
-    VkImageLayout lay
-    ) {
-    switch (lay) {
-    case VK_IMAGE_LAYOUT_UNDEFINED:                        return 0;
-    case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:             return VK_ACCESS_TRANSFER_WRITE_BIT;
-    case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:         return VK_ACCESS_SHADER_READ_BIT;
-    case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:         return VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT |
-                                                                  VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
-    case VK_IMAGE_LAYOUT_PRESENT_SRC_KHR:                  return 0;
-    case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL: return VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT |
-                                                                  VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
-    default: eat_unreachable();
-    }
-
-    eat_unreachable();
-}
-VkPipelineStageFlags
-_ear_vk_convert_lay_stage(
-    VkImageLayout lay
-    ) {
-    switch (lay) {
-    case VK_IMAGE_LAYOUT_UNDEFINED:                        return VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
-    case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:             return VK_PIPELINE_STAGE_TRANSFER_BIT;
-    case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:         return VK_PIPELINE_STAGE_ALL_GRAPHICS_BIT;
-    case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:         return VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-    case VK_IMAGE_LAYOUT_PRESENT_SRC_KHR:                  return VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT;
-    case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL: return VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
-    default: eat_unreachable();
-    }
-
-    eat_unreachable();
-}
 VkFormat
 _ear_vk_convert_tex_fmt(
     ear_texture_type type

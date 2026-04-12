@@ -8,10 +8,12 @@
 typedef struct ear_vk_framebuffer ear_vk_framebuffer;
 
 extern bool _ear_vk_is_first_fb;
+extern ear_vk_framebuffer* _ear_vk_last_fb;
+extern bool _ear_vk_last_fb_depth;
 
 void*
 ear_vk_create_framebuffer(
-    ear_framebuffer_desc desc
+    ear_framebuffer_desc* desc
     );
 void
 ear_vk_delete_framebuffer(
@@ -27,7 +29,7 @@ struct ear_vk_framebuffer{
     //VkRenderPass pass;
     //VkFramebuffer fb;
 
-    ear_framebuffer_desc desc;
+    ear_framebuffer_desc* desc;
 
     // used to do clears only on first bind
     uint32_t frame;

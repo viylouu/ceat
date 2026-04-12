@@ -98,7 +98,7 @@ typedef struct eat_backend_rendering_impl{
     } bindset;
     struct{
         void* (*create)(
-            ear_framebuffer_desc desc
+            ear_framebuffer_desc* desc
             );
         void (*delete)(
             void* data

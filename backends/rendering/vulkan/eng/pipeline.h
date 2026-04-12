@@ -26,6 +26,9 @@ ear_vk_bind_pipeline(
 struct ear_vk_pipeline{
     VkPipelineLayout layout;
     VkPipeline pipeline;
+    VkPipeline nodepth;
+
+    bool depth;
 
     VkDescriptorSetLayout* chips;
         uint32_t chip_amt;

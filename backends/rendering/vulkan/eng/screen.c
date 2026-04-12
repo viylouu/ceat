@@ -63,9 +63,9 @@ ear_vk_clear(
         _ear_clear_color[2] = b;
     } else {
         ear_vk_framebuffer* fb = _fb;
-        fb->desc.clear_color[0] = r;
-        fb->desc.clear_color[1] = g;
-        fb->desc.clear_color[2] = b;
-        fb->desc.clear_color[3] = a;
+        fb->desc->clear_color[0] = r;
+        fb->desc->clear_color[1] = g;
+        fb->desc->clear_color[2] = b;
+        fb->desc->clear_color[3] = a;
     }
 }

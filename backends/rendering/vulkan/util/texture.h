@@ -17,19 +17,13 @@ _ear_vk_make_img(
     VkImage* img, VkDeviceMemory* mem
     );
 void
-_ear_vk_trans_img(
-    VkImage img, bool depth,
-    VkImageLayout oldlay,
-    VkImageLayout newlay
-    );
-void
-_ear_vk_trans_img_inplace(
-    VkImage img, bool depth,
-    VkImageLayout oldlay,
-    VkImageLayout newlay
-    );
-void
 _ear_vk_copy_buf_img(
+    VkBuffer buf, VkImage img,
+    uint32_t width, uint32_t height,
+    bool depth
+    );
+void
+_ear_vk_copy_buf_img_inplace(
     VkBuffer buf, VkImage img,
     uint32_t width, uint32_t height,
     bool depth
@@ -46,14 +40,6 @@ _ear_vk_make_sampler(
     VkSampler* sampler
     );
 
-VkAccessFlags
-_ear_vk_convert_lay_access(
-    VkImageLayout lay
-    );
-VkPipelineStageFlags
-_ear_vk_convert_lay_stage(
-    VkImageLayout lay
-    );
 VkFormat
 _ear_vk_convert_tex_fmt(
     ear_texture_type type
