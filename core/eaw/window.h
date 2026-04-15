@@ -25,6 +25,13 @@ eaw_window_frame(
     void
     );
 
+// temp
+// opengl only
+void
+eaw_window_swapbuf(
+    void
+    );
+
 bool
 eaw_window_is_open(
     void

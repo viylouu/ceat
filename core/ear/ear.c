@@ -2,7 +2,7 @@
 //#include "../cutil.h"
 
 #include "hl/data.h"
-//#include "../eaw/window.h"
+#include "../eaw/window.h"
 #include "ll/framebuffer.h"
 #include "rendering/impl.h"
 //#include "ll/vk/eng/screen.h"
@@ -35,6 +35,7 @@ ear_frame(
     ear_flush();
 
     ear_backend->main.frame();
+    eaw_window_swapbuf();
 
     _ear_set_master_framebuffer(NULL);
     ear_set_default_framebuffer(NULL);
