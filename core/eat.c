@@ -100,10 +100,6 @@ eat_frame(
     ear_frame();
     eaw_frame();
 
-    _ear_set_master_framebuffer(NULL);
-    ear_set_default_framebuffer(NULL);
-    ear_bind_framebuffer(NULL);
-
     _ear_set_master_framebuffer(_eat_screen_framebuffer);
     ear_bind_framebuffer(NULL);
 
