@@ -98,7 +98,10 @@ ear_bind_framebuffer(
         ear_backend->framebuffer.bind(NULL);
         _ear_cur_framebuffer = NULL;
 
-        eau_mat4_ortho(&proj, 0, _eaw_window_width, 0, _eaw_window_height, 0,1);
+        //if (vulkan or something)
+        //  eau_mat4_ortho(&proj, 0, _eaw_window_width, 0, _eaw_window_height, 0,1);
+        //else
+            eau_mat4_ortho(&proj, 0, _eaw_window_width, _eaw_window_height, 0, 0,1);
 
         ear_backend->misc.viewport(0,0, _eaw_window_width,_eaw_window_height);
         ear_backend->misc.scissor (0,0, _eaw_window_width,_eaw_window_height);
