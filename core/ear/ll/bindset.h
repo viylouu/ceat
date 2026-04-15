@@ -32,8 +32,7 @@ void
 ear_bind_bindset(
     ear_bindset* set,
     uint32_t slot,
-    uint32_t offsets[],
-    uint32_t offset_amt 
+    uint32_t offsets[]
     );
 
 struct ear_bindset_desc{

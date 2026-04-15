@@ -51,7 +51,7 @@ int main(void) {
         ear_update_buffer(ubo, 0);
 
         ear_bind_pipeline(pln);
-        ear_bind_bindset(set, 0, NULL,0);
+        ear_bind_bindset(set, 0, NULL);
         ear_draw(3, 1);
 
         printf("%.3f FPS\n", 1./eat_delta64);

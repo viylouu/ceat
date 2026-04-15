@@ -91,7 +91,7 @@ ear_rect_rend_flush(
     ear_update_buffer(ear_rr.ssbo, ear_rr.off);
 
     ear_bind_pipeline(ear_rr.pln);
-    ear_bind_bindset(ear_rr.set, 0, (uint32_t[2]){ear_rr.off, ear_rr.off}, 2);
+    ear_bind_bindset(ear_rr.set, 0, (uint32_t[2]){ear_rr.off, ear_rr.off});
 
     ear_draw(6, ear_rr.ssbo_i);
 
@@ -201,8 +201,8 @@ ear_tex_rend_flush(
     eat_assert(ear_tr.cur_tex->hl_bindset != NULL, "texture has no hl bindset!");
 
     ear_bind_pipeline(ear_tr.pln);
-    ear_bind_bindset(ear_tr.set, 0, (uint32_t[2]){ear_tr.off, ear_tr.off}, 2);
-    ear_bind_bindset(ear_tr.cur_tex->hl_bindset, 1, NULL,0);
+    ear_bind_bindset(ear_tr.set, 0, (uint32_t[2]){ear_tr.off, ear_tr.off});
+    ear_bind_bindset(ear_tr.cur_tex->hl_bindset, 1, NULL);
 
     ear_draw(6, ear_tr.ssbo_i);
 

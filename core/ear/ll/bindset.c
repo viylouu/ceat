@@ -68,12 +68,9 @@ void
 ear_bind_bindset(
     ear_bindset* set,
     uint32_t slot,
-    uint32_t offsets[],
-    uint32_t offset_amt
+    uint32_t offsets[]
     ) {
-    if (offset_amt != 0) eat_assert(offset_amt == set->offsettable, "offset amt must be amount of offsettable bindings!");
-
-    uint32_t offamt = offset_amt > 0? offset_amt : set->offsettable;
+    uint32_t offamt = set->offsettable;
     uint32_t offs[offamt == 0? 1 : offamt];
     if (offamt > 0) {
         uint32_t bind_i = 0;
@@ -86,7 +83,7 @@ ear_bind_bindset(
             ear_buffer* buf = set->desc.bindings[bind_i].object; 
             eat_assert(buf != NULL, "binding buffer cannot be null, especially on binding!");
 
-            offs[i] = offset_amt == 0? 0 : (offsets[i] * buf->desc.chunk_size * buf->desc.stride);
+            offs[i] = offsets == NULL? 0 : (offsets[i] * buf->desc.chunk_size * buf->desc.stride);
 
             ++bind_i;
         }
