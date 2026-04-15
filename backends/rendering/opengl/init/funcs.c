@@ -1,5 +1,5 @@
 #include "funcs.h"
-#include "../../../../cutil.h"
+#include "cutil.h"
 
 ear_gl gl;
 
@@ -20,7 +20,7 @@ ear_gl gl;
 #endif
 
 void
-ear_gl_init(
+_ear_gl_get_funcs(
     void
     ) {
 #ifndef _WIN32
@@ -65,8 +65,9 @@ ear_gl_init(
     LOADGL(gl.blendEquationSeparate, "glBlendEquationSeparate");
 
     gl.polygonMode = glPolygonMode;
-    
+
     LOADGL(gl.drawArraysInstanced, "glDrawArraysInstanced");
+    LOADGL(gl.drawElementsInstanced, "glDrawElementsInstanced");
 
     gl.clearColor = glClearColor;
     gl.clear = glClear;
@@ -102,4 +103,6 @@ ear_gl_init(
     gl.drawBuffer = glDrawBuffer;
     LOADGL(gl.drawBuffers, "glDrawBuffers");
     LOADGL(gl.checkFramebufferStatus, "glCheckFramebufferStatus");
+
+    LOADGL(gl.bindBufferRange, "glBindBufferRange");
 }

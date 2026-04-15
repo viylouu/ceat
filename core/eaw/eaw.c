@@ -46,6 +46,7 @@ eaw_frame(
     if (eau_tick_this_frame) eaw_tick_text_input_chars = 0;
 
     glfwPollEvents();
+    glfwSwapBuffers(_eaw_glfw_window);
 
     eaw_input_frame();
     eaw_input_tick();

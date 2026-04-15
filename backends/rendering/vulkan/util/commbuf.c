@@ -1,4 +1,5 @@
 #include "commbuf.h"
+#include "cutil.h"
 
 #include "../init/device_log.h"
 #include "../init/comm_pool.h"
@@ -28,7 +29,8 @@ _ear_vk_begin_stcomms(
 
         .pInheritanceInfo = NULL,
         };
-    vkBeginCommandBuffer(commbuf, &begininfo);
+    eat_assert(vkBeginCommandBuffer(commbuf, &begininfo) == VK_SUCCESS,
+        "failed to start st command buffer!");
 
     return commbuf;
 }
@@ -36,7 +38,8 @@ void
 _ear_vk_end_stcomms(
     VkCommandBuffer commbuf
     ) {
-    vkEndCommandBuffer(commbuf);
+    eat_assert(vkEndCommandBuffer(commbuf) == VK_SUCCESS,
+        "failed to end st command buffer!");
 
     VkSubmitInfo submitinfo = {
         .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,

@@ -1,6 +1,10 @@
 #include "comm_buffer.h"
 #include "cutil.h"
 
+#include "../util/macros.h"
+
+#include "../sc/render_pass.h"
+#include "../sc/swapchain.h"
 #include "comm_pool.h"
 #include "sync.h"
 #include "device_log.h"
@@ -45,6 +49,8 @@ _ear_vk_start_command_buffer(
     eat_assert(vkBeginCommandBuffer(buffer, &begininfo) == VK_SUCCESS, "failed to start command buffer!");
 
     _ear_vk_commbuf_rec = true;
+
+    TEMP_test_pass_cmd();
 }
 void
 _ear_vk_end_command_buffer(
@@ -52,6 +58,8 @@ _ear_vk_end_command_buffer(
     ) {
     eat_assert(vkEndCommandBuffer(buffer) == VK_SUCCESS, "failed to end command buffer!");
     _ear_vk_commbuf_rec = false;
+
+    TEMP_test_pass_cmd();
 }
 
 void

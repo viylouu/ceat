@@ -1,4 +1,7 @@
 #include "render_pass.h"
+#include "cutil.h"
+
+#include "../util/macros.h"
 
 #include <stdio.h>
 #include <math.h>
@@ -61,12 +64,17 @@ _ear_vk_start_render_pass(
     vkCmdBeginRendering(_ear_vk_comm_buffers[frame], &renderinfo);
 
     _ear_vk_in_pass = true;
+
+    TEMP_test_pass_cmd();
 }
 void
 _ear_vk_end_render_pass(
     uint32_t frame
     ) {
     if (!_ear_vk_in_pass) return;
+
     vkCmdEndRendering(_ear_vk_comm_buffers[frame]);
     _ear_vk_in_pass = false;
+
+    TEMP_test_pass_cmd();
 }

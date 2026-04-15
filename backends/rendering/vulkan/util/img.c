@@ -1,6 +1,8 @@
 #include "img.h"
 #include "cutil.h"
 
+#include "../init/comm_buffer.h"
+
 void
 _ear_vk_trans_img(
     _ear_vk_image* img,
@@ -8,6 +10,8 @@ _ear_vk_trans_img(
     VkImageLayout newlay
     ) {
     if (img->lay == newlay) return;
+
+    eat_assert(_ear_vk_commbuf_rec, "command buffer is not recording! cannot trans img!");
 
     VkImageMemoryBarrier barrier = {
         .sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,

@@ -14,11 +14,11 @@ struct InstData {
     mat4 transf;
 };
 
-layout(std430, set = 0, binding = 0) buffer ssbo {
+layout(std430, binding = 0) buffer ssbo {
     InstData insts[];
 };
 
-layout(std140, set = 0, binding = 1) uniform uni {
+layout(std140, binding = 1) uniform uni {
     mat4 proj;
 };
 
@@ -27,8 +27,8 @@ layout(location = 1) out vec4 fSample;
 layout(location = 2) flat out vec4 fCol;
 
 void main() {
-    vec2 vert = verts[gl_VertexIndex];
-    InstData inst = insts[gl_InstanceIndex];
+    vec2 vert = verts[gl_VertexID];
+    InstData inst = insts[gl_InstanceID];
 
     gl_Position = proj * inst.transf * vec4(vert * inst.size + inst.pos, 0,1);
 

@@ -5,7 +5,7 @@
 #include "debug/debug.h"
 
 #include "../backends/rendering/impl.h"
-#include "../backends/rendering/vulkan/vk.h"
+#include "../backends/rendering/opengl/gl.h"
 
 int32_t eat_width;
 int32_t eat_height;
@@ -28,7 +28,7 @@ eat_init(
     eat_init_opts opts
     ) {
     ear_backend = opts.rendering_impl;
-    if (ear_backend == NULL) ear_backend = &ear_vk_impl;
+    if (ear_backend == NULL) ear_backend = &ear_gl_impl;
 
     eaw_init(title, width, height);
     ear_init(title, width, height, opts.vsync);
@@ -88,11 +88,10 @@ eat_frame(
         _ear_set_master_framebuffer(NULL);
         ear_set_default_framebuffer(NULL);
         ear_bind_framebuffer(NULL);
-        
+
         if (!debug.enabled || !eat_debug_toggled) 
             ear_tex(_eat_screen_color, 0,0, eat_width,eat_height, 0,0, eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
-
-        if (debug.enabled) eat_debug_try_do();    
+        else if (debug.enabled) eat_debug_try_do();
     } first = false;
 
     int prev_width = eat_width;
@@ -101,8 +100,11 @@ eat_frame(
     ear_frame();
     eaw_frame();
 
-    _ear_set_master_framebuffer(_eat_screen_framebuffer);
+    _ear_set_master_framebuffer(NULL);
     ear_set_default_framebuffer(NULL);
+    ear_bind_framebuffer(NULL);
+
+    _ear_set_master_framebuffer(_eat_screen_framebuffer);
     ear_bind_framebuffer(NULL);
 
     if (console.enabled) eat_console_try_do();

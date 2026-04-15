@@ -18,10 +18,14 @@ ear_rect_rend_create(
     void
     ) {
     static const char vert[] = {
-        #embed "shaders/rect_v.spv"
+        //#embed "shaders/rect_v.spv"
+        #embed "shaders/rect.vert"
+        ,0
         };
     static const char frag[] = {
-        #embed "shaders/rect_f.spv"
+        //#embed "shaders/rect_f.spv"
+        #embed "shaders/rect.frag"
+        ,0
         };
 
     ear_rr.off = 0;
@@ -105,10 +109,14 @@ ear_tex_rend_create(
     void
     ) {
     static const char vert[] = {
-        #embed "shaders/tex_v.spv"
+        //#embed "shaders/tex_v.spv"
+        #embed "shaders/tex.vert"
+        ,0
         };
     static const char frag[] = {
-        #embed "shaders/tex_f.spv"
+        //#embed "shaders/tex_f.spv"
+        #embed "shaders/tex.frag"
+        ,0
         };
 
     ear_tr.off = 0;

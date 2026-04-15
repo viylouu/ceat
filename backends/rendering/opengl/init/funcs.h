@@ -60,6 +60,7 @@ typedef struct ear_gl{
     GLFUNC(polygonMode, void, GLenum face, GLenum mode);
 
     GLFUNC(drawArraysInstanced, void, GLenum mode, GLint first, GLsizei count, GLsizei instancecount);
+    GLFUNC(drawElementsInstanced, void, GLenum mode, GLsizei count, GLenum type, const void* indices, GLsizei instancecount);
 
     GLFUNC(clearColor, void, GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
     GLFUNC(clear, void, GLbitfield mask);
@@ -95,10 +96,12 @@ typedef struct ear_gl{
     GLFUNC(drawBuffer, void, GLenum mode);
     GLFUNC(drawBuffers, void, GLsizei n, const GLenum* bufs);
     GLFUNC(checkFramebufferStatus, GLenum, GLenum target);
+
+    GLFUNC(bindBufferRange, void, GLenum target, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size);
 } ear_gl;
 extern ear_gl gl;
 
 void
-ear_gl_init(
+_ear_gl_get_funcs(
     void
     );
