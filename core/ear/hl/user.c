@@ -90,8 +90,8 @@ ear_tex(
 
     ear_tr.ssbo_d[ear_tr.ssbo_i] = (typeof(ear_tr.ssbo_d[0])){ 
         rect.x,rect.y,
-        rect.w,rect.h, 
-        col[0],col[1],col[2],col[3], 
+        rect.w,rect.h,
+        col[0],col[1],col[2],col[3],
         (float)sx/tex->width,1-(float)(sh+sy)/tex->height,(float)sw/tex->width,(float)sh/tex->height,
         {0},
         };

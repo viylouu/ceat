@@ -51,6 +51,8 @@ struct ear_bind_desc{
 struct ear_bindset{
     void* vk;
 
+    uint32_t offsettable;
+
     ear_bindset_desc desc;
 
     eau_destructor* dest;

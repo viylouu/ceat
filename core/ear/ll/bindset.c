@@ -1,5 +1,5 @@
 #include "bindset.h"
-//#include "../../cutil.h"
+#include "../../cutil.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -44,6 +44,9 @@ ear_create_bindset(
             ),
         };
 
+    for (uint32_t i = 0; i < desc.binding_amt; ++i)
+        if (desc.bindings[i].type != EAR_BIND_TEXTURE2D) ++set->offsettable;
+
     if (arena != NULL) eau_add_to_arena(arena, &set->dest, set, _ear_arena_bindset_delete);
     return set;
 }
@@ -68,7 +71,28 @@ ear_bind_bindset(
     uint32_t offsets[],
     uint32_t offset_amt
     ) {
-    ear_backend->bindset.bind(set->vk, slot, offsets, offset_amt);
+    if (offset_amt != 0) eat_assert(offset_amt == set->offsettable, "offset amt must be amount of offsettable bindings!");
+
+    uint32_t offamt = offset_amt > 0? offset_amt : set->offsettable;
+    uint32_t offs[offamt == 0? 1 : offamt];
+    if (offamt > 0) {
+        uint32_t bind_i = 0;
+        for (uint32_t i = 0; i < offamt; ++i) {
+            while (bind_i < set->desc.binding_amt &&
+                   set->desc.bindings[bind_i].type == EAR_BIND_TEXTURE2D) 
+                ++bind_i;
+            eat_assert(bind_i < set->desc.binding_amt, "more offsets sent than there are offsettable bindings!");
+
+            ear_buffer* buf = set->desc.bindings[bind_i].object; 
+            eat_assert(buf != NULL, "binding buffer cannot be null, especially on binding!");
+
+            offs[i] = offset_amt == 0? 0 : (offsets[i] * buf->desc.chunk_size * buf->desc.stride);
+
+            ++bind_i;
+        }
+    }
+
+    ear_backend->bindset.bind(set->vk, slot, offs, offamt);
 }
 
 

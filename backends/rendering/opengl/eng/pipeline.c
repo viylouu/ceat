@@ -24,9 +24,8 @@ ear_gl_create_pipeline(
     gl.getShaderIv(vsh, GL_COMPILE_STATUS, &succ);
     if (!succ) {
         printf("vertex shader comp failed!\n");
-        char log[succ+1];
-        gl.getShaderInfoLog(vsh, succ, NULL, log);
-        log[succ] = '\0';
+        char log[1024];
+        gl.getShaderInfoLog(vsh, 1024, NULL, log);
         printf("%s", log);
 
         eat_error("see error above!");
@@ -39,9 +38,8 @@ ear_gl_create_pipeline(
     gl.getShaderIv(fsh, GL_COMPILE_STATUS, &succ);
     if (!succ) {
         printf("fragment shader comp failed!\n");
-        char log[succ+1];
-        gl.getShaderInfoLog(fsh, succ, NULL, log);
-        log[succ] = '\0';
+        char log[1024];
+        gl.getShaderInfoLog(fsh, 1024, NULL, log);
         printf("%s", log);
 
         eat_error("see error above!");
@@ -58,9 +56,8 @@ ear_gl_create_pipeline(
     gl.getProgramIv(pln->id, GL_LINK_STATUS, &succ);
     if (!succ) {
         printf("pipeline comp failed!\n");
-        char log[succ+1];
-        gl.getProgramInfoLog(pln->id, succ, NULL, log);
-        log[succ] = '\0';
+        char log[1024];
+        gl.getProgramInfoLog(pln->id, 1024, NULL, log);
         printf("%s", log);
 
         eat_error("see error above!");

@@ -29,10 +29,12 @@ int main(void) {
     // see command in CMakeLists.txt on ex_triangle
 
     static const char vert[] = {
-        #embed "shad_v.spv"
+        //#embed "shad_v.spv"
+        #embed "shad.vert"
         };
     static const char frag[] = {
-        #embed "shad_f.spv"
+        //#embed "shad_f.spv"
+        #embed "shad.frag"
         };
 
     ear_pipeline* pln = ear_create_pipeline((ear_pipeline_desc){
