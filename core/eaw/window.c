@@ -59,6 +59,8 @@ eaw_window_frame(
     void
     ) {
     glfwGetWindowSize(_eaw_glfw_window, &_eaw_window_width, &_eaw_window_height);
+
+    glfwSwapBuffers(_eaw_glfw_window);
 }
 
 bool
