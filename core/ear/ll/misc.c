@@ -3,7 +3,7 @@
 
 //#include <math.h>
 
-#include "../../eaw/window.h"
+//#include "../../eaw/window.h"
 #include "../hl/user.h"
 #include "framebuffer.h"
 
@@ -41,6 +41,9 @@ ear_mask(
     ) {
     ear_flush();
 
-    if (_ear_cur_framebuffer == NULL) ear_backend->misc.scissor(x,_eaw_window_height - (y+h), w, h);
-    else ear_backend->misc.scissor(x,_ear_cur_framebuffer->desc.height - (y+h), w, h);
+    ear_backend->misc.scissor(x,y,w,h);
+    /*
+    if (_ear_cur_framebuffer == NULL) ear_backend->misc.scissor(x, y, w, h);
+    else ear_backend->misc.scissor(x, y, w, h);
+    */
 }

@@ -72,7 +72,7 @@ ear_create_texture(
             ),
         };
 
-    if (arena != NULL) eau_add_to_arena(arena, &tex->dest, tex, _ear_arena_texture_delete);
+    if (arena != NULL) eau_add_to_arena(arena, &tex->dest, tex, tex->deb_obj, _ear_arena_texture_delete);
     return tex;
 }
 

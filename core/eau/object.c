@@ -61,7 +61,7 @@ eau_create_object(
     eau_object_ll_last = &obj->ll;
     if (eau_object_ll_first == NULL) eau_object_ll_first = &obj->ll;
 
-    if (arena != NULL) eau_add_to_arena(arena, &obj->dest, obj, _eau_arena_object_delete);
+    if (arena != NULL) eau_add_to_arena(arena, &obj->dest, obj, obj->deb_obj, _eau_arena_object_delete);
     return obj;
 }
 

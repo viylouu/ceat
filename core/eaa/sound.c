@@ -80,7 +80,7 @@ eaa_load_sound(
 
     ma_sound_set_looping(&sound->sound, desc.loop);
 
-    if (arena != NULL) eau_add_to_arena(arena, &sound->dest, sound, _eaa_arena_sound_delete);
+    if (arena != NULL) eau_add_to_arena(arena, &sound->dest, sound, sound->deb_obj, _eaa_arena_sound_delete);
     return sound;
 }
 

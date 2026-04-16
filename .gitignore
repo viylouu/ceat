@@ -5,3 +5,4 @@
 *.spv
 /zig-out/
 /.zig-cache
+/cloc.sh

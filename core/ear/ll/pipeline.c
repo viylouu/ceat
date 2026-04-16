@@ -50,7 +50,7 @@ ear_create_pipeline(
             ),
         };
 
-    if (arena != NULL) eau_add_to_arena(arena, &pln->dest, pln, _ear_arena_pipeline_delete);
+    if (arena != NULL) eau_add_to_arena(arena, &pln->dest, pln, pln->deb_obj, _ear_arena_pipeline_delete);
     return pln;
 }
 

@@ -57,7 +57,7 @@ ear_create_framebuffer(
 
     fb->vk = ear_backend->framebuffer.create(&desc);
 
-    if (arena != NULL) eau_add_to_arena(arena, &fb->dest, fb, _ear_arena_framebuffer_delete);
+    if (arena != NULL) eau_add_to_arena(arena, &fb->dest, fb, fb->deb_obj, _ear_arena_framebuffer_delete);
     return fb;
 }
 

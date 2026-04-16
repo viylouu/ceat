@@ -48,7 +48,7 @@ ear_create_camera(
 
     _ear_camera_update(cam);
 
-    if (arena != NULL) eau_add_to_arena(arena, &cam->dest, cam, _ear_arena_camera_delete);
+    if (arena != NULL) eau_add_to_arena(arena, &cam->dest, cam, cam->deb_obj, _ear_arena_camera_delete);
     return cam;
 }
 

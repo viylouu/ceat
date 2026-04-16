@@ -63,7 +63,7 @@ eau_create_timer(
     eau_timer_ll_last = &timer->ll;
     if (eau_timer_ll_first == NULL) eau_timer_ll_first = &timer->ll;
 
-    if (arena != NULL) eau_add_to_arena(arena, &timer->dest, timer, _eau_arena_timer_delete);
+    if (arena != NULL) eau_add_to_arena(arena, &timer->dest, timer, timer->deb_obj, _eau_arena_timer_delete);
     return timer;
 }
 

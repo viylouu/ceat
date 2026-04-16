@@ -60,7 +60,7 @@ eau_create_clock(
     eau_clock_ll_last = &clock->ll;
     if (eau_clock_ll_first == NULL) eau_clock_ll_first = &clock->ll;
 
-    if (arena != NULL) eau_add_to_arena(arena, &clock->dest, clock, _eau_arena_clock_delete);
+    if (arena != NULL) eau_add_to_arena(arena, &clock->dest, clock, clock->deb_obj, _eau_arena_clock_delete);
     return clock;
 }
 

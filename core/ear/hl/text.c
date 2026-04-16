@@ -50,7 +50,7 @@ ear_load_bitmap_mono_font(
             ),
         };
 
-    if (arena != NULL) eau_add_to_arena(arena, &font->dest, font, _ear_arena_font_delete);
+    if (arena != NULL) eau_add_to_arena(arena, &font->dest, font, font->deb_obj, _ear_arena_font_delete);
     return font;
 }
 
@@ -88,7 +88,7 @@ ear_load_truetype_font(
 
     font->lineheight = (ascent - descent + linegap) * scale;
 
-    if (arena != NULL) eau_add_to_arena(arena, &font->dest, font, _ear_arena_font_delete);
+    if (arena != NULL) eau_add_to_arena(arena, &font->dest, font, font->deb_obj, _ear_arena_font_delete);
     return font;
 }
 

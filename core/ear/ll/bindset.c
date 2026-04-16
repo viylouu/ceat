@@ -47,7 +47,7 @@ ear_create_bindset(
     for (uint32_t i = 0; i < desc.binding_amt; ++i)
         if (desc.bindings[i].type != EAR_BIND_TEXTURE2D) ++set->offsettable;
 
-    if (arena != NULL) eau_add_to_arena(arena, &set->dest, set, _ear_arena_bindset_delete);
+    if (arena != NULL) eau_add_to_arena(arena, &set->dest, set, set->deb_obj, _ear_arena_bindset_delete);
     return set;
 }
 void

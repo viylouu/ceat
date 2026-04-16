@@ -6,6 +6,8 @@
 
 #include "../ear/hl/text.h"
 #include "conv.h"
+#include "../ear/hl/user.h"
+#include "../eau/coll.h"
 
 void
 _eau_debug_arena_window(
@@ -52,6 +54,7 @@ eau_add_to_arena(
     eau_arena* arena,
     eau_destructor** user_dest,
     void* data,
+    eat_debug_ll_obj* deb_obj,
     void (*delete)(void*)
     ) {
     *user_dest = malloc(sizeof(eau_destructor));
@@ -60,6 +63,7 @@ eau_add_to_arena(
         .data = data,
         .delete = delete,
         .user_dest = user_dest,
+        .deb_obj = deb_obj,
         };
 
     ++arena->dest_amt;
@@ -85,10 +89,9 @@ _eau_debug_arena_window(
     void* _arena,
     float x, float y, float w, float h,
     eat_debug_theme t,
-    int32_t* sel
+    int32_t* selected
     ) {
     (void)w; (void)h;
-    (void)sel;
 
     eau_arena* arena = _arena;
 
@@ -100,4 +103,31 @@ _eau_debug_arena_window(
     snprintf(buf, sizeof(buf), "items: %d", arena->dest_amt);
     ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
     offy += off;
+
+    for (uint32_t i = 0; i < arena->dest_amt; ++i) {
+        eau_destructor* dest = arena->dests[i];
+        if (dest->user_dest == NULL) continue;
+
+        uint32_t idx = 0;
+        for (eat_debug_ll_obj* it = eat_debug_ll_first; it != NULL; it = it->next) {
+            if (it->data == dest->deb_obj->data) break;
+            ++idx;
+        }
+
+        snprintf(buf, sizeof(buf), "%s %d", dest->deb_obj->type_name, idx);
+
+        float width;
+        ear_text_size(t.font, buf, 14, &width, NULL);
+
+        bool sel = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y+offy, width+8,16, EAU_ALIGN_TOP_LEFT });
+
+        ear_rect(x,y+offy, width+8, 16, sel? debug_theme.sel_but_col : debug_theme.but_col, EAU_ALIGN_TOP_LEFT);
+        ear_rect(x+2,y+2+offy, width+4, 12, sel? debug_theme.but_col : debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);
+
+        if (sel && eaw_is_mouse_pressed(EAW_MOUSE_LEFT)) *selected = idx;
+
+        ear_text(t.font, buf, x + 4, y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
+
+        offy += 18;
+    }
 }
