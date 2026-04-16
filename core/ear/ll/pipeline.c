@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-//#include "../eau/arena.h"
-//#include "text.h"
+#include "eau/arena.h"
+#include "../hl/text.h"
 
 #include "rendering/impl.h"
 
@@ -118,11 +118,10 @@ _ear_debug_pipeline_window(
     eat_debug_theme t,
     int32_t* sel
     ) {
-    (void)_pln;
-    (void)x; (void)y; (void)w; (void)h;
-    (void)t; (void)sel;
+    (void)w; (void)h;
+    (void)sel;
 
-    /*ear_pipeline* pln = _pln;
+    ear_pipeline* pln = _pln;
 
     float offy = 0;
     float off = 16;
@@ -152,14 +151,14 @@ _ear_debug_pipeline_window(
         offy += off;
     }
 
-    if (pln->desc.blend_state.has_state) {
+    if (pln->desc.has_blend_state) {
         ear_text(t.font, "blend state:", x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
         offy += off;
 
         char buf2[64];
 
 #define blend_txt(name, name_act, type) do { \
-    snprintf(buf, sizeof(buf), "- %s: %s", name, _TYPECONV_blend_##type##_to_string(buf2, pln->desc.blend_state.state.name_act)); \
+    snprintf(buf, sizeof(buf), "- %s: %s", name, _TYPECONV_blend_##type##_to_string(buf2, pln->desc.blend_state.name_act)); \
         ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT); \
         offy += off; \
 } while(0)
@@ -204,5 +203,4 @@ _ear_debug_pipeline_window(
             offy += off;
         }
     }
-    */
 }

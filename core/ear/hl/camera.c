@@ -2,9 +2,9 @@
 #include "../../cutil.h"
 
 #include "../../eaw/window.h"
-//#include "../../eau/coll.h"
-//#include "text.h"
-//#include "user.h"
+#include "../../eau/coll.h"
+#include "text.h"
+#include "user.h"
 
 ear_camera* ear_bound_camera = NULL;
 bool ear_bound_camera_ui_mode = false;
@@ -144,11 +144,8 @@ _ear_debug_camera_window(
     eat_debug_theme t,
     int32_t* selected
     ) {
-    (void)_cam;
-    (void)x; (void)y; (void)w; (void)h;
-    (void)t; (void)selected;
+    (void)w; (void)h;
 
-    /*
     ear_camera* cam = _cam;
 
     float offy = 0;
@@ -167,7 +164,7 @@ _ear_debug_camera_window(
     float width;
     ear_text_size(t.font, buf, 14, &width, NULL);
 
-    bool sel = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y+offy, width+8,16 });
+    bool sel = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y+offy, width+8,16, EAU_ALIGN_TOP_LEFT });
 
     ear_rect(x,y+offy, width+8, 16, sel? debug_theme.sel_but_col : debug_theme.but_col, EAU_ALIGN_TOP_LEFT);
     ear_rect(x+2,y+2+offy, width+4, 12, sel? debug_theme.but_col : debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);
@@ -203,5 +200,4 @@ _ear_debug_camera_window(
     case EAR_CAMERA_3D:
         break;
     }
-    */
 }

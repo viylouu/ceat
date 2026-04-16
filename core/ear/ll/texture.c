@@ -6,9 +6,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../../include/stb_image.h"
 
-//#include "text.h"
-//#include "user.h"
-//#include "gl.h"
+#include "../hl/text.h"
+#include "../hl/user.h"
 
 void
 _ear_arena_texture_delete(
@@ -183,11 +182,8 @@ _ear_debug_texture_window(
     eat_debug_theme t,
     int32_t* sel
     ) {
-    (void)_tex;
-    (void)x; (void)y; (void)w; (void)h;
-    (void)t; (void)sel;
+    (void)sel;
 
-    /*
     ear_texture* tex = _tex;
 
     float offy = 0;
@@ -219,13 +215,16 @@ _ear_debug_texture_window(
 
     switch (tex->desc.wrap) {
     case EAR_WRAP_REPEAT: snprintf(buf, sizeof(buf), "wrap: repeat"); break;
-    case EAR_WRAP_CLAMP:  snprintf(buf, sizeof(buf), "wrap: clamp"); break;
+    case EAR_WRAP_CLAMP:  snprintf(buf, sizeof(buf), "wrap: clamp");  break;
+    case EAR_WRAP_MIRROR: snprintf(buf, sizeof(buf), "wrap: mirror"); break;
+    /*
     case EAR_WRAP_COLOR:  snprintf(buf, sizeof(buf), "wrap: color ( rgba(%d, %d, %d, %d) )", 
         (int)(tex->desc.wrap_color[0] * 255), 
         (int)(tex->desc.wrap_color[1] * 255),
         (int)(tex->desc.wrap_color[2] * 255),
         (int)(tex->desc.wrap_color[3] * 255)
         ); break;
+    */
     }
 
     ear_text(t.font, buf, x,y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
@@ -238,5 +237,4 @@ _ear_debug_texture_window(
 
     ear_rect(rect.x, rect.y, rect.w, rect.h, (float[4]){ 0,0,0,1 }, EAU_ALIGN_TOP_LEFT);
     ear_tex(tex, rect.x, rect.y, rect.w, rect.h, 0,0,tex->width,tex->height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
-    */
 }

@@ -19,7 +19,7 @@ _ear_gl_convert_texture_wrap(
     switch (wrap) {
     case EAR_WRAP_REPEAT: return GL_REPEAT;
     case EAR_WRAP_CLAMP:  return GL_CLAMP_TO_EDGE;
-    case EAR_WRAP_COLOR:  return GL_CLAMP_TO_BORDER;
+    //case EAR_WRAP_COLOR:  return GL_CLAMP_TO_BORDER;
     case EAR_WRAP_MIRROR: return GL_MIRRORED_REPEAT;
     }
 
