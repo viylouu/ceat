@@ -1,9 +1,12 @@
 #include "debug.h"
 //#include "../cutil.h"
 
+#include <stdio.h>
+
 #include <stdlib.h>
 
 #include "../eaw/window.h"
+#include "../eat.h"
 
 eat_debug_theme debug_theme;
 
@@ -20,12 +23,12 @@ void
 eat_debug_init(
     void
     ) {
-    /*static const char tex_data[] = {
+    static const char tex_data[] = {
         #embed "verdana.ttf"
-        };*/
+        };
 
     debug_theme = (eat_debug_theme){
-        //.font = ear_load_truetype_font(tex_data, sizeof(tex_data), NULL),
+        .font = ear_load_truetype_font(tex_data, sizeof(tex_data), NULL),
 
         .bg_col      = { .15, .15, .15, 1 },
         .text_col    = { 1,   1,   1,   1 },
@@ -38,14 +41,13 @@ void
 eat_debug_stop(
     void
     ) {
-    //ear_delete_font(debug_theme.font);
+    ear_delete_font(debug_theme.font);
 }
 
 void
 eat_debug_try_do(
     void
     ) {
-    /*
     if (eaw_is_key_pressed(debug.key)) {
         eat_debug_toggled = !eat_debug_toggled;
         selected = -1;
@@ -64,7 +66,7 @@ eat_debug_try_do(
 
     y += 4;
 
-    uint32_t prev_sel = selected;
+    int32_t prev_sel = selected;
     eat_debug_ll_obj* sel_obj;
 
     uint32_t i = 0;
@@ -75,8 +77,8 @@ eat_debug_try_do(
         float w;
         ear_text_size(debug_theme.font, buf, 14, &w,NULL);
 
-        bool highlight = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y, w+8,16 });
-        bool sel = i == selected || highlight;
+        bool highlight = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y, w+8,16, EAU_ALIGN_TOP_LEFT });
+        bool sel = (int32_t)i == selected || highlight;
 
         x += w + 12;
         if (x + 4 > _eaw_window_width) {
@@ -88,7 +90,7 @@ eat_debug_try_do(
         ear_rect(x+2,y+2, w+4, 12, sel? debug_theme.but_col : debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);
 
         if (highlight && eaw_is_mouse_pressed(EAW_MOUSE_LEFT)) selected = i;
-        if (selected == i) sel_obj = it;
+        if (selected == (int32_t)i) sel_obj = it;
 
         x += w + 12;
 
@@ -163,7 +165,6 @@ eat_debug_try_do(
     if (prev_sel == selected && eaw_is_mouse_pressed(EAW_MOUSE_LEFT)) selected = -1;
 
     ear_tex(_eat_screen_color, _eaw_window_width / 2.f, 18, _eaw_window_width / 2.f, _eaw_window_height - 256 - 16 - 4, 0,0,eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
-    */
 }
 
 

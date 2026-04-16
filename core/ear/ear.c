@@ -8,6 +8,8 @@
 //#include "ll/vk/eng/screen.h"
 //#include "ll/vk/sc/swapchain.h"
 
+bool _ear_clear_this_frame;
+
 void
 ear_init(
     const char* title,
@@ -30,8 +32,10 @@ ear_exit(
 
 void
 ear_frame(
-    void
+    bool clear
     ) {
+    _ear_clear_this_frame = clear;
+
     ear_flush();
 
     ear_backend->main.frame();

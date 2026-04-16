@@ -6,6 +6,8 @@
 #include "../util/screen.h"
 #include "pipeline.h"
 
+#include "ear/ear.h"
+
 void
 _ear_gl_clear(
     void
@@ -16,6 +18,8 @@ _ear_gl_clear(
         _ear_gl_cur_fb->b, 
         _ear_gl_cur_fb->a
         );
+
+    if (_ear_gl_cur_fb == NULL && !_ear_clear_this_frame) return;
 
     gl.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

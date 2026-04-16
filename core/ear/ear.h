@@ -15,7 +15,7 @@
 #include "hl/text.h"
 #include "hl/camera.h"
 
-
+extern bool _ear_clear_this_frame;
 
 void
 ear_init(
@@ -31,5 +31,5 @@ ear_exit(
 
 void
 ear_frame(
-    void
+    bool clear
     );

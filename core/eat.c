@@ -95,13 +95,13 @@ eat_frame(
 
         if (!debug.enabled || !eat_debug_toggled) 
             ear_tex(_eat_screen_color, 0,0, eat_width,eat_height, 0,0, eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
-        else if (debug.enabled) eat_debug_try_do();
+        if (debug.enabled) eat_debug_try_do();
     } first = false;
 
     int prev_width = eat_width;
     int prev_height = eat_height;
 
-    ear_frame();
+    ear_frame(true);
     eaw_frame();
 
     _ear_set_master_framebuffer(_eat_screen_framebuffer);
