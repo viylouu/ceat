@@ -45,10 +45,10 @@ namespace eat{
     }
 
     void
-    stop(
+    exit(
         void
         ) {
-        eat_stop();
+        eat_exit();
     }
 
     bool
@@ -184,6 +184,7 @@ namespace eau{
         eau_clear_arena(arena);
     }
 
+    /*
     void
     Arena::add(
         Arena* arena,
@@ -198,6 +199,7 @@ namespace eau{
                 delete_fn
                 );
     }
+    */
 
     Rect
     Rect::topleftify(
@@ -406,17 +408,6 @@ namespace eau{
             .norm = vec3<float>(info.normx, info.normy, info.normz),
             .depth = info.depth,
             };
-    }
-
-    char*
-    load_file(
-        std::string path,
-        size_t* out_size
-        ) {
-        return eau_load_file(
-            path.c_str(),
-            out_size
-            );
     }
 
     Clock::Clock(
@@ -690,10 +681,10 @@ namespace ear{
         ) {
         auto _desc = ear_texture_desc{
             .filter = (ear_texture_filter)desc.filter,
-                .type = (ear_texture_type)desc.type,
-                .wrap = (ear_texture_wrap)desc.wrap,
+            .type   = (ear_texture_type)desc.type,
+            .wrap   = (ear_texture_wrap)desc.wrap,
             };
-        std::copy(desc.wrap_color, desc.wrap_color + 4, _desc.wrap_color);
+        //std::copy(desc.wrap_color, desc.wrap_color + 4, _desc.wrap_color);
 
         texture = ear_create_texture(
             _desc,
@@ -710,10 +701,10 @@ namespace ear{
         ) {
         auto _desc = ear_texture_desc{
             .filter = (ear_texture_filter)desc.filter,
-                .type = (ear_texture_type)desc.type,
-                .wrap = (ear_texture_wrap)desc.wrap,
+            .type   = (ear_texture_type)desc.type,
+            .wrap   = (ear_texture_wrap)desc.wrap,
             };
-        std::copy(desc.wrap_color, desc.wrap_color + 4, _desc.wrap_color);
+        //std::copy(desc.wrap_color, desc.wrap_color + 4, _desc.wrap_color);
 
         texture = ear_load_texture(
             _desc,
@@ -727,18 +718,12 @@ namespace ear{
     }
 
     void
-    Texture::bind(
-        uint32_t slot
-        ) {
-        ear_bind_texture(texture, slot);
-    }
-
-    void
     Texture::resize(
+        uint8_t new_pixs[],
         uint32_t width,
         uint32_t height
         ) {
-        ear_resize_texture(texture, width, height);
+        ear_resize_texture(texture, new_pixs, width, height);
     }
 
     std::array<float,4>
@@ -773,8 +758,7 @@ namespace ear{
         ) {
         buffer = ear_create_buffer(
             ear_buffer_desc{
-                .type = (ear_buffer_type)desc.type,
-                .usage = (ear_buffer_usage)desc.usage,
+                .type   = (ear_buffer_type)desc.type,
                 .stride = desc.stride,
                 },
             data,
@@ -789,16 +773,17 @@ namespace ear{
     
     void
     Buffer::bind(
-        uint32_t slot
+        uint32_t slot,
+        uint32_t offset
         ) {
-        ear_bind_buffer(buffer, slot);
+        ear_bind_buffer(buffer, slot, offset);
     }
 
     void
     Buffer::update(
-        void
+        uint32_t offset
         ) {
-        ear_update_buffer(buffer);
+        ear_update_buffer(buffer, offset);
     }
 
     Framebuffer::Framebuffer(
@@ -887,16 +872,14 @@ namespace ear{
                 .front_face = (ear_front_face)desc.front_face,
 
                 .blend_state = { 
-                    .has_state = desc.blend_state.used, 
-                    .state = ear_blend_state{
-                        .src_color = (ear_blend_factor)desc.blend_state.src_color,
-                        .dst_color = (ear_blend_factor)desc.blend_state.dst_color,
-                        .color_op = (ear_blend_op)desc.blend_state.color_op,
-                        .src_alpha = (ear_blend_factor)desc.blend_state.src_alpha,
-                        .dst_alpha = (ear_blend_factor)desc.blend_state.dst_alpha,
-                        .alpha_op = (ear_blend_op)desc.blend_state.alpha_op,
-                        },
+                    .src_color = (ear_blend_factor)desc.blend_state.src_color,
+                    .dst_color = (ear_blend_factor)desc.blend_state.dst_color,
+                    .color_op = (ear_blend_op)desc.blend_state.color_op,
+                    .src_alpha = (ear_blend_factor)desc.blend_state.src_alpha,
+                    .dst_alpha = (ear_blend_factor)desc.blend_state.dst_alpha,
+                    .alpha_op = (ear_blend_op)desc.blend_state.alpha_op,
                     },
+                .has_blend_state = desc.blend_state.used, 
 
                 .fill_mode = (ear_fill_mode)desc.fill_mode,
                 },
@@ -915,6 +898,7 @@ namespace ear{
         ear_bind_pipeline(pipeline);
     }
 
+    /*
     Texarray::Texarray(
         TexarrayDesc desc,
         eau::Arena* arena
@@ -966,6 +950,7 @@ namespace ear{
         ) {
         ear_update_texarray_layer(texarray, layer);
     }
+    */
 
     Camera::Camera(
         CameraDesc desc,
@@ -1083,19 +1068,26 @@ namespace ear{
         ear_text(font->font, (char*)text.c_str(), pos.x,pos.y, scale, (float[4]){ col, col, col, 1 }, (eau_align)align); }
 
     void
-    clear(
-        std::array<float,3> col
+    clear_color(
+        Framebuffer* fb,
+        std::array<float,4> col
         ) {
-        ear_clear((float[3]){ col[0], col[1], col[2] });
+        ear_clear_color(fb == nullptr? nullptr : fb->framebuffer, col[0], col[1], col[2], col[3]);
     }
 
     void
     draw(
         int32_t vertices,
-        int32_t instances,
-        DrawMode draw_mode
+        int32_t instances
         ) {
-        ear_draw(vertices, instances, (ear_draw_mode)draw_mode);
+        ear_draw(vertices, instances);
+    }
+    void
+    draw_idx(
+        int32_t indices,
+        int32_t instances
+        ) {
+        ear_draw_idx(indices, instances);
     }
 
     void

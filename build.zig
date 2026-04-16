@@ -42,6 +42,16 @@ const csource = [_][]const u8{
 
     "backends/rendering/impl.c",
 };
+const cflags = [_][]const u8{
+    "-std=c23",
+    "-Wall",
+    "-Wextra",
+    "-Wno-c23-extensions",
+    "-Wpedantic",
+
+    "-g", "-O0", //"-fsanitize=address,undefined",
+    //"-O3",
+};
 
 const csource_vulkan = [_][]const u8{
     "backends/rendering/vulkan/vk.c",
@@ -72,6 +82,15 @@ const csource_vulkan = [_][]const u8{
     "backends/rendering/vulkan/eng/texture.c",
     "backends/rendering/vulkan/eng/framebuffer.c",
 };
+const cflags_vulkan = [_][]const u8{
+    "-std=c99",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+
+    "-g", "-O0", //"-fsanitize=address,undefined",
+    //"-O3",
+};
 
 const csource_opengl = [_][]const u8{
     "backends/rendering/opengl/gl.c",
@@ -88,28 +107,6 @@ const csource_opengl = [_][]const u8{
     "backends/rendering/opengl/util/texture.c",
     "backends/rendering/opengl/util/screen.c",
 };
-
-const cflags = [_][]const u8{
-    "-std=c23",
-    "-Wall",
-    "-Wextra",
-    "-Wno-c23-extensions",
-    "-Wpedantic",
-
-    "-g", "-O0", //"-fsanitize=address,undefined",
-    //"-O3",
-};
-
-const cflags_vulkan = [_][]const u8{
-    "-std=c99",
-    "-Wall",
-    "-Wextra",
-    "-Wpedantic",
-
-    "-g", "-O0", //"-fsanitize=address,undefined",
-    //"-O3",
-};
-
 const cflags_opengl = [_][]const u8{
     "-std=c23",
     //"-Wall",
@@ -159,7 +156,16 @@ fn ex_c(b: *std.Build, lib: *std.Build.Step.Compile, libr: *std.Build.Step.Compi
     }
 
     b.installArtifact(ex);
+}
 
+fn ex_odin(b: *std.Build, step: *std.Build.Step, comptime libr: []const u8, comptime name: []const u8) void {
+    const ex = b.addSystemCommand(&[_][]const u8{
+        "odin", "build",
+        "examples/foreign/odin/" ++ name,
+        "-out:zig-out/bin/ex_odin_" ++ name,
+        "-extra-linker-flags:\"-Lzig-out/lib -l" ++ libr ++ "\"",
+        });
+    step.dependOn(&ex.step);
 }
 
 fn glslc(b: *std.Build, step: *std.Build.Step, 
@@ -245,6 +251,8 @@ pub fn build(b: *std.Build) void {
     glslc(b, shadstep, "examples/ibuffer/",  "shad.vert", "shad_v.spv");
     glslc(b, shadstep, "examples/ibuffer/",  "shad.frag", "shad_f.spv");
 
+    const ex_step = b.step("examples", "build examples");
+
     ex_c(b,lib,lib_gl, "window");
     ex_c(b,lib,lib_gl, "triangle");
     ex_c(b,lib,lib_gl, "vbuffer");
@@ -261,4 +269,7 @@ pub fn build(b: *std.Build) void {
     ex_c(b,lib,lib_gl, "camera");
     ex_c(b,lib,lib_gl, "debug");
     ex_c(b,lib,lib_gl, "timer");
+
+    ex_odin(b, ex_step, "ceat_gl", "window");
+    ex_odin(b, ex_step, "ceat_gl", "object");
 }

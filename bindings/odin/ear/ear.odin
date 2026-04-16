@@ -9,11 +9,11 @@ import "../eau"
 
 when ODIN_OS == .Windows {
     foreign import ceat {
-        "../../../build/ceat.lib",
+        "../../../zig-out/lib/ceat.lib",
     }
 } else when ODIN_OS == .Linux {
     foreign import ceat {
-        "../../../build/libceat.a",
+        "../../../zig-out/lib/libceat.a",
     }
 } else {
     // unsupported os!
@@ -434,8 +434,9 @@ foreign ceat {
     @(link_name="ear_apply_texture_changes") _apply_texture_changes :: proc(texture: ^_texture) ---
 
 
-    @(link_name="ear_clear") _clear :: proc(col: ^f32) ---
-    @(link_name="ear_draw") _draw :: proc(vertices: i32, instances: i32, draw_mode: DrawMode) ---
+    @(link_name="ear_clear_color") _clear_color :: proc(fb: ^_framebuffer, r,g,b,a: f32) ---
+    @(link_name="ear_draw") _draw :: proc(vertices: i32, instances: i32) ---
+    @(link_name="ear_draw_idx") _draw_idx :: proc(vertices: i32, instances: i32) ---
     @(link_name="ear_mask") _mask :: proc(x,y,w,h: f32) ---
 
     @(link_name="ear_flush") flush :: proc() ---
@@ -749,8 +750,11 @@ apply_texture_changes :: proc(tex: ^Texture) {
 }
 
 
-draw :: proc(#any_int vertices: i32, #any_int instances: i32 = 1, draw_mode: DrawMode = .Triangles) {
-    _draw(vertices, instances, draw_mode)
+draw :: proc(#any_int vertices: i32, #any_int instances: i32 = 1) {
+    _draw(vertices, instances)
+}
+draw_idx :: proc(#any_int indices: i32, #any_int instances: i32 = 1) {
+    _draw_idx(indices, instances)
 }
 
 mask :: proc{
@@ -761,9 +765,8 @@ mask :: proc{
 mask_vec :: proc(pos: [2]f32, size: [2]f32) { _mask(pos.x,pos.y, size.x,size.y) }
 mask_xy :: proc(x,y,w,h: f32) { _mask(x,y, w,h) }
 
-clear :: proc(col: [3]f32) {
-    col := col
-    _clear(&col[0])
+clear_color :: proc(r,g,b,a: f32, fb: ^Framebuffer = nil) {
+    _clear_color(fb == nil? nil : fb.framebuffer, r,g,b,a)
 }
 
 

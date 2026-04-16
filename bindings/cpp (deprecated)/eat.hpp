@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../eat.h"
+#include "../eat.h"
 
 #include <string>
 #include <vector>
@@ -824,6 +824,7 @@ namespace ear{
 
         void
         resize(
+            uint8_t new_pixs[],
             uint32_t width,
             uint32_t height
             );
@@ -876,12 +877,13 @@ namespace ear{
 
         void
         bind(
-            uint32_t slot
+            uint32_t slot,
+            uint32_t offset
             );
 
         void
         update(
-            void
+            uint32_t offset
             );
     };
 
@@ -1160,8 +1162,9 @@ namespace ear{
     void text(Font* font, std::string text, vec2<float> pos, float scale, float col, eau::Align align = eau::Align::TopLeft);
 
     void
-    clear(
-        std::array<float,3> col
+    clear_color(
+        Framebuffer* fb,
+        std::array<float,4> col
         );
 
     enum class DrawMode{
@@ -1172,8 +1175,12 @@ namespace ear{
     void
     draw(
         int32_t vertices,
-        int32_t instances = 1,
-        DrawMode draw_mode = DrawMode::Triangles
+        int32_t instances = 1
+        );
+    void
+    draw_idx(
+        int32_t indices,
+        int32_t instances = 1
         );
 
     void

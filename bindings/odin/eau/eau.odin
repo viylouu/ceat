@@ -6,11 +6,11 @@ import "../debug"
 
 when ODIN_OS == .Windows {
     foreign import ceat {
-        "../../../build/ceat.lib",
+        "../../../zig-out/lib/ceat.lib",
     }
 } else when ODIN_OS == .Linux {
     foreign import ceat {
-        "../../../build/libceat.a",
+        "../../../zig-out/lib/libceat.a",
     }
 } else {
     // unsupported os!

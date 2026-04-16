@@ -5,13 +5,13 @@ import "../eaw"
 
 when ODIN_OS == .Windows {
     foreign import ceat {
-        "../../../build/ceat.lib",
+        "../../../zig-out/lib/ceat.lib",
         "system:opengl32",
         "system:glfw3",
     }
 } else when ODIN_OS == .Linux {
     foreign import ceat {
-        "../../../build/libceat.a",
+        "../../../zig-out/lib/libceat.a",
         "system:GL",
         "system:GLX",
         "system:EGL",
@@ -39,7 +39,7 @@ foreign ceat {
     @(link_name="eat_delta64") delta64: f64
 
     @(link_name="eat_init") _init :: proc(title: cstring, width,height: i32, opts: _init_opts) ---
-    @(link_name="eat_stop") stop :: proc() ---
+    @(link_name="eat_exit") exit :: proc() ---
     @(link_name="eat_frame") _frame :: proc() -> bool ---
 }
 

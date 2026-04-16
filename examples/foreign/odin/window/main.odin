@@ -12,11 +12,10 @@ main :: proc() {
         1600, 900,
         { vsync = false }
         )
-    defer eat.stop()
+    defer eat.exit()
 
+    ear.clear_color(.2,.4,.3, 1)
     for eat.frame() {
-        ear.clear([3]f32{ .2,.4,.3 })
-
         ear.rect(0,0, 64,64, [3]f32{ 1,0,0 })
 
         fmt.printf("%.3f FPS\n", 1./eat.delta64)

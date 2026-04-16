@@ -35,7 +35,7 @@ main :: proc() {
         1600, 900,
         { vsync = false }
         )
-    defer eat.stop()
+    defer eat.exit()
 
     obj := eau.create_object({}, MyObject{})
     defer obj->delete()

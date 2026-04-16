@@ -16,7 +16,7 @@ int main(void) {
         std::cout << 1./eat::delta64 << " FPS" << std::endl;
     }
 
-    eat::stop();
+    eat::exit();
 
     return 0;
 }

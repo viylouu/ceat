@@ -49,7 +49,7 @@ int main(void) {
 
     delete obj;
 
-    eat::stop();
+    eat::exit();
 
     return 0;
 }
