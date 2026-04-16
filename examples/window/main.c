@@ -9,7 +9,7 @@ int main(void) {
     while (eat_frame()) {
         ear_rect(0,0, 64,64, (float[4]){ 1,0,0,1 }, EAU_ALIGN_TOP_LEFT);
 
-        //printf("%.3f FPS\n", 1./eat_delta64);
+        printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     eat_exit();
