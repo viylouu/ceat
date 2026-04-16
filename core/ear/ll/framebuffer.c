@@ -3,17 +3,16 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "../../eaw/window.h"
-//#include "../../eau/mat4.h"
-//#include "../../eau/coll.h"
+#include "../../eau/coll.h"
 #include "../hl/data.h"
 #include "../hl/user.h"
-//#include "misc.h"
 
 #include "rendering/impl.h"
 
-//#include "text.h"
+#include "../hl/text.h"
 
 ear_framebuffer* _ear_default_fb;
 ear_framebuffer* _ear_master_fb;
@@ -139,11 +138,8 @@ _ear_debug_framebuffer_window(
     eat_debug_theme t,
     int32_t* selected
     ) {
-    (void)_fb;
-    (void)x; (void)y; (void)w; (void)h;
-    (void)t; (void)selected;
+    (void)w; (void)h;
 
-    /*
     ear_framebuffer* fb = _fb;
 
     float offy = 0;
@@ -167,7 +163,7 @@ _ear_debug_framebuffer_window(
         float width;
         ear_text_size(t.font, buf, 14, &width, NULL);
 
-        bool sel = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y+offy, width+8,16 });
+        bool sel = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y+offy, width+8,16, EAU_ALIGN_TOP_LEFT });
 
         ear_rect(x,y+offy, width+8, 16, sel? debug_theme.sel_but_col : debug_theme.but_col, EAU_ALIGN_TOP_LEFT);
         ear_rect(x+2,y+2+offy, width+4, 12, sel? debug_theme.but_col : debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);
@@ -191,7 +187,7 @@ _ear_debug_framebuffer_window(
         float width;
         ear_text_size(t.font, buf, 14, &width, NULL);
 
-        bool sel = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y+offy, width+8,16 });
+        bool sel = eau_point_rect(eaw_mouse_x,eaw_mouse_y, (eau_rect){ x,y+offy, width+8,16, EAU_ALIGN_TOP_LEFT });
 
         ear_rect(x,y+offy, width+8, 16, sel? debug_theme.sel_but_col : debug_theme.but_col, EAU_ALIGN_TOP_LEFT);
         ear_rect(x+2,y+2+offy, width+4, 12, sel? debug_theme.but_col : debug_theme.bg_col, EAU_ALIGN_TOP_LEFT);
@@ -202,5 +198,4 @@ _ear_debug_framebuffer_window(
 
         offy += 18;
     }
-    */
 }

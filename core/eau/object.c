@@ -2,8 +2,9 @@
 //#include "../cutil.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
-//#include "../ear/text.h"
+#include "../ear/hl/text.h"
 
 eau_object_ll* eau_object_ll_first = NULL;
 eau_object_ll* eau_object_ll_last = NULL;
@@ -240,7 +241,6 @@ _eau_debug_object_window(
     (void)x; (void)y; (void)w; (void)h;
     (void)t; (void)sel;
 
-    /*
     eau_object* obj = _obj;
 
     float offy = 0;
@@ -293,5 +293,4 @@ _eau_debug_object_window(
     pos("rot", 2d64, 1);
     pos("rot", 3d, 3);
     pos("rot", 3d64, 3);
-    */
 }

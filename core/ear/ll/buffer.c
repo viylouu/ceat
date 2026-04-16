@@ -4,7 +4,7 @@
 #include "rendering/impl.h"
 
 //#include "../hl/user.h"
-//#include "../hl/text.h"
+#include "../hl/text.h"
 
 void
 _ear_arena_buffer_delete(
@@ -87,11 +87,9 @@ _ear_debug_buffer_window(
     eat_debug_theme t,
     int32_t* sel
     ) {
-    (void)_buffer;
-    (void)x; (void)y; (void)w; (void)h;
-    (void)t; (void)sel;
+    (void)w; (void)h;
+    (void)sel;
 
-    /*
     ear_buffer* buffer = _buffer;
 
     float offy = 0;
@@ -100,17 +98,10 @@ _ear_debug_buffer_window(
     char buf[64];
 
     switch (buffer->desc.type) {
-    case EAR_BUF_VERTEX: snprintf(buf, sizeof(buf), "type: vertex"); break;
+    case EAR_BUF_VERTEX:  snprintf(buf, sizeof(buf), "type: vertex");  break;
     case EAR_BUF_UNIFORM: snprintf(buf, sizeof(buf), "type: uniform"); break;
     case EAR_BUF_STORAGE: snprintf(buf, sizeof(buf), "type: storage"); break;
-    }
-
-    ear_text(t.font, buf, x, y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
-    offy += off;
-
-    switch (buffer->desc.usage) {
-    case EAR_USAGE_DYNAMIC: snprintf(buf, sizeof(buf), "usage: dynamic");
-    case EAR_USAGE_STATIC: snprintf(buf, sizeof(buf), "usage: static");
+    case EAR_BUF_INDEX:   snprintf(buf, sizeof(buf), "type: index");   break;
     }
 
     ear_text(t.font, buf, x, y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
@@ -123,5 +114,4 @@ _ear_debug_buffer_window(
     snprintf(buf, sizeof(buf), "stride: %d", buffer->desc.stride);
     ear_text(t.font, buf, x, y+offy, 14, t.text_col, EAU_ALIGN_TOP_LEFT);
     offy += off;
-    */
 }

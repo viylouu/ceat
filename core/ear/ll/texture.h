@@ -81,7 +81,7 @@ typedef enum ear_texture_wrap{
     EAR_WRAP_REPEAT,
     EAR_WRAP_MIRROR,
     EAR_WRAP_CLAMP,
-    EAR_WRAP_COLOR,
+    //EAR_WRAP_COLOR,
 } ear_texture_wrap;
 
 struct ear_texture_desc{
