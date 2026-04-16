@@ -5,6 +5,7 @@
 extern eat_backend_rendering_impl ear_gl_impl;
 
 extern uint32_t _ear_gl_frame;
+extern int32_t _ear_gl_uni_align;
 
 void
 ear_gl_init(

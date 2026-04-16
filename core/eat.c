@@ -35,21 +35,25 @@ eat_init(
     eaa_init();
 
     _eat_screen_color = ear_create_texture((ear_texture_desc){
-        .type = EAR_TEX_COLOR,
+        .type   = EAR_TEX_COLOR,
         .filter = EAR_FILTER_NEAREST,
-        .wrap = EAR_WRAP_REPEAT,
+        .wrap   = EAR_WRAP_REPEAT,
         }, NULL, width, height, NULL);
     _eat_screen_depth = ear_create_texture((ear_texture_desc){
-        .type = EAR_TEX_DEPTH,
+        .type   = EAR_TEX_DEPTH,
         .filter = EAR_FILTER_NEAREST,
-        .wrap = EAR_WRAP_REPEAT,
+        .wrap   = EAR_WRAP_REPEAT,
         }, NULL, width, height, NULL);
     _eat_screen_framebuffer = ear_create_framebuffer((ear_framebuffer_desc){
         .out_colors = &_eat_screen_color,
             .out_color_amt = 1,
         .out_depth = _eat_screen_depth,
+
         .width = width,
         .height = height,
+
+        .clear = true,
+        .clear_color = { 0,0,0,1 },
         }, NULL);
 
     debug = opts.debug;

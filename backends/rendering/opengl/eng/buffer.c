@@ -4,6 +4,8 @@
 #include "../init/funcs.h" 
 #include "../util/buffer.h"
 #include "ear/ll/buffer.h"
+#include "../gl.h"
+#include "../util/macros.h"
 
 void* _ear_gl_index_offset = 0;
 
@@ -21,6 +23,12 @@ ear_gl_create_buffer(
         desc.chunk_size * desc.stride :
         size;
 
+    if (desc.type == EAR_BUF_UNIFORM) {
+        uint32_t chunks = size / buf->chunk_bytes;
+        buf->chunk_bytes = _alignup(buf->chunk_bytes, _ear_gl_uni_align);
+        buf->size = buf->chunk_bytes * chunks;
+    }
+
     gl.genBuffers(1, &buf->id);
 
     GLenum targ = _ear_gl_convert_buffer_type(desc.type);
@@ -28,12 +36,12 @@ ear_gl_create_buffer(
     gl.bindBuffer(targ, buf->id);
     gl.bufferData(
         targ,
-        size,
+        buf->size,
         NULL,
         GL_DYNAMIC_DRAW
         );
-    
-    for (uint32_t i = 0; i < size/buf->chunk_bytes; ++i) {
+
+    for (uint32_t i = 0; i < buf->size/buf->chunk_bytes; ++i) {
         gl.bufferSubData(
             targ,
             i * buf->chunk_bytes,

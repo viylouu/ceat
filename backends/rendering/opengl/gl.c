@@ -58,6 +58,7 @@ eat_backend_rendering_impl ear_gl_impl = {
     };
 
 uint32_t _ear_gl_frame = 0;
+int32_t _ear_gl_uni_align;
 
 void
 ear_gl_init(
@@ -66,6 +67,8 @@ ear_gl_init(
     bool vsync
     ) {
     _ear_gl_get_funcs();
+
+    gl.getIntegerV(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &_ear_gl_uni_align);
 }
 void
 ear_gl_exit(

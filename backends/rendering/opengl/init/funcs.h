@@ -98,6 +98,8 @@ typedef struct ear_gl{
     GLFUNC(checkFramebufferStatus, GLenum, GLenum target);
 
     GLFUNC(bindBufferRange, void, GLenum target, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size);
+
+    GLFUNC(getIntegerV, void, GLenum pname, GLint* params);
 } ear_gl;
 extern ear_gl gl;
 

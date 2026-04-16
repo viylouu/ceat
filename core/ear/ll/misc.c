@@ -9,6 +9,8 @@
 
 #include "rendering/impl.h"
 
+extern ear_framebuffer* _eat_screen_framebuffer;
+
 void
 ear_clear_color(
     ear_framebuffer* fb,
@@ -16,6 +18,7 @@ ear_clear_color(
     ) {
     if (fb == NULL) fb = _ear_default_fb;
     if (fb == NULL) fb = _ear_master_fb;
+    if (fb == NULL) fb = _eat_screen_framebuffer; // assume user-end call
     ear_backend->misc.clear(fb == NULL? NULL : fb->vk, r,g,b,a);
 }
 

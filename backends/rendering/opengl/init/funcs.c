@@ -105,4 +105,6 @@ _ear_gl_get_funcs(
     LOADGL(gl.checkFramebufferStatus, "glCheckFramebufferStatus");
 
     LOADGL(gl.bindBufferRange, "glBindBufferRange");
+
+    gl.getIntegerV = glGetIntegerv;
 }

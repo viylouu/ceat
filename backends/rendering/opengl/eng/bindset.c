@@ -53,7 +53,7 @@ ear_gl_bind_bindset(
             switch(buf->desc.type) {
             case EAR_BUF_STORAGE:
             case EAR_BUF_UNIFORM:
-                gl.bindBufferRange(_ear_gl_convert_buffer_type(buf->desc.type), bind.binding, gbuf->id, off*gbuf->chunk_bytes, gbuf->chunk_bytes);
+                gl.bindBufferRange(_ear_gl_convert_buffer_type(buf->desc.type), bind.binding, gbuf->id, off * gbuf->chunk_bytes, gbuf->chunk_bytes);
                 break;
             case EAR_BUF_VERTEX:
             case EAR_BUF_INDEX:

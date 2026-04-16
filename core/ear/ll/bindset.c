@@ -83,7 +83,7 @@ ear_bind_bindset(
             ear_buffer* buf = set->desc.bindings[bind_i].object; 
             eat_assert(buf != NULL, "binding buffer cannot be null, especially on binding!");
 
-            offs[i] = offsets == NULL? 0 : (offsets[i] * buf->desc.chunk_size * buf->desc.stride);
+            offs[i] = offsets == NULL? 0 : offsets[i];
 
             ++bind_i;
         }
