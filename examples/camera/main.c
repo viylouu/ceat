@@ -1,9 +1,11 @@
 #include "../../eat.h"
 
+#include "../../backends/rendering/opengl/gl.h"
+
 #include <stdio.h>
 
 int main(void) {
-    eat_init("camera", 1600,900, (eat_init_opts){});
+    eat_init("camera", 1600,900, (eat_init_opts){ .rendering_impl = &ear_gl_impl });
 
     float x = 0; float y = 0;
     float rot = 0;
@@ -18,6 +20,7 @@ int main(void) {
             },
         }, NULL);
 
+    ear_clear_color(NULL, .2f, .4f, .3f, 1);
     while (eat_frame()) {
         if (eaw_is_key(EAW_KEY_LEFT)) rot += eat_delta * 2;
         if (eaw_is_key(EAW_KEY_RIGHT)) rot -= eat_delta * 2;
@@ -31,23 +34,18 @@ int main(void) {
         ear_set_camera_position_2d(cam, x,y);
 
         ear_bind_camera(cam, false);
-
-        ear_clear((float[3]){ .2f, .4f, .3f });
-
         ear_rect(0,0, 64,64, (float[4]){ 1,0,0,1 }, EAU_ALIGN_MID);
-
         ear_rect(256,256, 128,128, (float[4]){ 1,0,0,1 }, EAU_ALIGN_MID);
 
-        //ear_bind_camera(cam, true);
-
-        //ear_rect(0,0, 64,64, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
+        ear_bind_camera(cam, true);
+        ear_rect(0,0, 64,64, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
 
         printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     ear_delete_camera(cam);
 
-    eat_stop();
+    eat_exit();
 
     return 0;
 }

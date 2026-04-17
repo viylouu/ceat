@@ -13,7 +13,7 @@ eaa_engine_init(
 }
 
 void
-eaa_engine_stop(
+eaa_engine_exit(
     void
     ) {
     ma_engine_uninit(&eaa_s.eng);

@@ -1,34 +1,41 @@
 #include "../../eat.h"
 
+#include "../../backends/rendering/opengl/gl.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(void) {
-    eat_init("triangle", 1600,900, (eat_init_opts){});
+    eat_init("triangle", 1600,900, (eat_init_opts){ .rendering_impl = &ear_gl_impl });
 
-    char* vertex = eau_load_file("examples/triangle/shad.vert", NULL);
-    char* fragment = eau_load_file("examples/triangle/shad.frag", NULL);
+    // shaders compiled from source to spirv via glslc
+    // see command in CMakeLists.txt on ex_triangle
+
+    static const char vert[] = {
+        //#embed "shad_v.spv"
+        #embed "shad.vert"
+        };
+    static const char frag[] = {
+        //#embed "shad_f.spv"
+        #embed "shad.frag"
+        };
 
     ear_pipeline* pln = ear_create_pipeline((ear_pipeline_desc){
-            .vertex = (ear_shader_desc){ .source = vertex },
-            .fragment = (ear_shader_desc){ .source = fragment },
+        .vertex   = (ear_shader_desc){ .source = vert, .source_size = sizeof(vert) },
+        .fragment = (ear_shader_desc){ .source = frag, .source_size = sizeof(frag) },
         }, NULL);
 
-    free(vertex);
-    free(fragment);
-
+    ear_clear_color(NULL, .2f, .4f, .3f, 1);
     while (eat_frame()) {
-        ear_clear((float[3]){ .2f, .4f, .3f });
-
         ear_bind_pipeline(pln);
-        ear_draw(3, 1, EAR_MODE_TRIANGLES);
+        ear_draw(3, 1);
 
         printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     ear_delete_pipeline(pln);
 
-    eat_stop();
+    eat_exit();
 
     return 0;
 }

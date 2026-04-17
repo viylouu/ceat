@@ -12,7 +12,7 @@ eaa_init(
     );
 
 void 
-eaa_stop(
+eaa_exit(
     void
     );
 

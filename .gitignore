@@ -2,3 +2,7 @@
 /build/
 /build_win/
 /compile_commands.json
+*.spv
+/zig-out/
+/.zig-cache
+/cloc.sh

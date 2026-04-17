@@ -1,8 +1,10 @@
 #include "timer.h"
-#include "../cutil.h"
+//#include "../cutil.h"
+
+#include <stdlib.h>
 
 #include "../eaw/eaw.h"
-#include "core/eau/object.h"
+#include "object.h"
 
 eau_timer_ll* eau_timer_ll_first;
 eau_timer_ll* eau_timer_ll_last;
@@ -61,7 +63,7 @@ eau_create_timer(
     eau_timer_ll_last = &timer->ll;
     if (eau_timer_ll_first == NULL) eau_timer_ll_first = &timer->ll;
 
-    if (arena != NULL) eau_add_to_arena(arena, &timer->dest, timer, _eau_arena_timer_delete);
+    if (arena != NULL) eau_add_to_arena(arena, &timer->dest, timer, timer->deb_obj, _eau_arena_timer_delete);
     return timer;
 }
 
@@ -174,11 +176,13 @@ eau_update_timers(
 
 void
 _eau_debug_timer_window(
-    void* timer, 
+    void* _timer, 
     float x, float y, float w, float h,
     eat_debug_theme t,
     int32_t* sel
     ) {
-    printf("hi :3");
+    (void)_timer;
+    (void)x; (void)y; (void)w; (void)h;
+    (void)t; (void)sel;
 }
 

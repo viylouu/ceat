@@ -3,27 +3,33 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "pipeline.h"
-#include "buffer.h"
-#include "texture.h"
-#include "user.h"
-#include "framebuffer.h"
-#include "text.h"
-#include "texarray.h"
-#include "camera.h"
-#include "misc.h"
+#include "ll/pipeline.h"
+#include "ll/misc.h"
+#include "ll/buffer.h"
+#include "ll/bindset.h"
+#include "ll/texture.h"
+#include "ll/framebuffer.h"
+//#include "ll/texarray.h"
+
+#include "hl/user.h"
+#include "hl/text.h"
+#include "hl/camera.h"
+
+extern bool _ear_clear_this_frame;
 
 void
 ear_init(
-    void
+    const char* title,
+    int32_t width, int32_t height,
+    bool vsync
     );
 
 void 
-ear_stop(
+ear_exit(
     void
     );
 
 void
 ear_frame(
-    void
+    bool clear
     );

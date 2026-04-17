@@ -1,7 +1,9 @@
 #include "mixer.h"
-#include "../cutil.h"
+//#include "../cutil.h"
 
-#include "engine.h"
+#include <stdlib.h>
+
+//#include "engine.h"
 
 bool _eaa_mixer_changed_this_frame = false;
 
@@ -37,7 +39,7 @@ eaa_create_mixer(
             ),
         };
 
-    if (arena != NULL) eau_add_to_arena(arena, &mixer->dest, mixer, _eaa_arena_mixer_delete);
+    if (arena != NULL) eau_add_to_arena(arena, &mixer->dest, mixer, mixer->deb_obj, _eaa_arena_mixer_delete);
     return mixer;
 }
 
@@ -72,10 +74,12 @@ eaa_set_mixer_pitch(
 
 void
 _eaa_debug_mixer_window(
-    void* mixer,
+    void* _mixer,
     float x, float y, float w, float h,
     eat_debug_theme t,
     int32_t* sel
     ) {
-    
+    (void)_mixer;
+    (void)x; (void)y; (void)w; (void)h;
+    (void)t; (void)sel;
 }

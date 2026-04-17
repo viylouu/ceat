@@ -1,0 +1,39 @@
+#version 450
+
+const vec2 verts[6] = vec2[6](
+    vec2(0,0), vec2(1,0),
+    vec2(1,1), vec2(1,1),
+    vec2(0,1), vec2(0,0)
+    );
+
+struct InstData {
+    vec2 pos;
+    vec2 size;
+    vec4 col;
+    vec4 samp;
+    mat4 transf;
+};
+
+layout(std430, binding = 0) buffer ssbo {
+    InstData insts[];
+};
+
+layout(std140, binding = 1) uniform uni {
+    mat4 proj;
+};
+
+layout(location = 0) out vec2 fUv;
+layout(location = 1) out vec4 fSample;
+layout(location = 2) flat out vec4 fCol;
+
+void main() {
+    vec2 vert = verts[gl_VertexID];
+    InstData inst = insts[gl_InstanceID];
+
+    gl_Position = proj * inst.transf * vec4(vert * inst.size + inst.pos, 0,1);
+
+    fUv = vert;
+    fUv.y = 1-fUv.y;
+    fSample = inst.samp;
+    fCol = inst.col;
+}

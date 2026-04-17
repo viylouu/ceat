@@ -3,26 +3,32 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-extern int32_t eaw_window_width;
-extern int32_t eaw_window_height;
+extern int32_t _eaw_window_width;
+extern int32_t _eaw_window_height;
 
 typedef struct GLFWwindow GLFWwindow;
-extern GLFWwindow* eaw_window;
+extern GLFWwindow* _eaw_glfw_window;
 
 void
 eaw_window_init(
     const char* title,
-    int32_t width, int32_t height,
-    bool vsync
+    int32_t width, int32_t height
     );
 
 void 
-eaw_window_stop(
+eaw_window_exit(
     void
     );
 
 void
 eaw_window_frame(
+    void
+    );
+
+// temp
+// opengl only
+void
+eaw_window_swapbuf(
     void
     );
 

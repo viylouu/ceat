@@ -1,5 +1,7 @@
 #include "../../eat.h"
 
+#include "../../backends/rendering/opengl/gl.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -25,11 +27,13 @@ void object_draw(eau_object* obj) {
 }
 
 void object_stop(eau_object* obj) {
+    (void)obj;
     printf("goodbye world :(\n");
 }
 
 int main(void) {
     eat_init("object", 1600,900, (eat_init_opts){
+        .rendering_impl = &ear_gl_impl,
         .debug = (eat_debug_desc){
             .enabled = true,
             .key = EAW_KEY_F8,
@@ -46,13 +50,10 @@ int main(void) {
 
     eau_init_objects();
 
+    ear_clear_color(NULL, 0,0,0, 1);
     while (eat_frame()) {
-        //ear_clear((float[3]){ .2f, .4f, .3f });
-
         eau_try_tick_objects();
         eau_draw_objects();
-
-        //printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     eau_stop_objects();
@@ -60,8 +61,7 @@ int main(void) {
     eau_delete_object(obj);
     free(obj_data);
 
-    eat_stop();
+    eat_exit();
 
     return 0;
 }
-

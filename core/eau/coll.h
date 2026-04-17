@@ -58,7 +58,6 @@ eau_epa3d(
     );
 
 
-
 struct eau_collision_info{
     float normx; float normy; float normz;
     float depth;

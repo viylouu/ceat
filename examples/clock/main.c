@@ -1,9 +1,11 @@
 #include "../../eat.h"
 
+#include "../../backends/rendering/opengl/gl.h"
+
 #include <stdio.h>
 
 int main(void) {
-    eat_init("clock", 1600,900, (eat_init_opts){});
+    eat_init("clock", 1600,900, (eat_init_opts){ .rendering_impl = &ear_gl_impl });
 
     static const char tex_data[] = {
     #embed "font.png"
@@ -16,9 +18,8 @@ int main(void) {
     bool paused = true;
     float speed = 1;
 
+    ear_clear_color(NULL, .2f, .4f, .3f, 1);
     while (eat_frame()) {
-        ear_clear((float[3]){ .2f, .4f, .3f });
-
         eau_update_clocks();
 
         char buf[64];
@@ -45,15 +46,13 @@ int main(void) {
             speed += 1;
             eau_set_clock_speed(clock, speed);
         }
-
-        printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     eau_delete_clock(clock);
 
     ear_delete_font(font);
 
-    eat_stop();
+    eat_exit();
 
     return 0;
 }

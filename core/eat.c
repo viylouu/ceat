@@ -1,8 +1,11 @@
 #include "../eat.h"
+#include "cutil.h"
 
-#include "core/eaw/window.h"
+//#include "eaw/window.h"
 #include "debug/console.h"
 #include "debug/debug.h"
+
+#include "../backends/rendering/impl.h"
 
 int32_t eat_width;
 int32_t eat_height;
@@ -16,32 +19,41 @@ ear_texture* _eat_screen_color;
 ear_texture* _eat_screen_depth;
 ear_framebuffer* _eat_screen_framebuffer;
 
+bool first = true;
+
 void 
 eat_init(
     const char* title,
     int32_t width, int32_t height,
     eat_init_opts opts
     ) {
-    eaw_init(title, width, height, opts.vsync);
-    ear_init();
+    ear_backend = opts.rendering_impl;
+    eat_assert(opts.rendering_impl != NULL, "must specify a rendering backend! use opengl backend if youre not sure!");
+
+    eaw_init(title, width, height);
+    ear_init(title, width, height, opts.vsync);
     eaa_init();
 
     _eat_screen_color = ear_create_texture((ear_texture_desc){
-        .type = EAR_TEX_COLOR,
+        .type   = EAR_TEX_COLOR,
         .filter = EAR_FILTER_NEAREST,
-        .wrap = EAR_WRAP_REPEAT,
+        .wrap   = EAR_WRAP_REPEAT,
         }, NULL, width, height, NULL);
     _eat_screen_depth = ear_create_texture((ear_texture_desc){
-        .type = EAR_TEX_DEPTH,
+        .type   = EAR_TEX_DEPTH,
         .filter = EAR_FILTER_NEAREST,
-        .wrap = EAR_WRAP_REPEAT,
+        .wrap   = EAR_WRAP_REPEAT,
         }, NULL, width, height, NULL);
     _eat_screen_framebuffer = ear_create_framebuffer((ear_framebuffer_desc){
         .out_colors = &_eat_screen_color,
             .out_color_amt = 1,
         .out_depth = _eat_screen_depth,
+
         .width = width,
         .height = height,
+
+        .clear = true,
+        .clear_color = { 0,0,0,1 },
         }, NULL);
 
     debug = opts.debug;
@@ -51,7 +63,7 @@ eat_init(
 }
 
 void
-eat_stop(
+eat_exit(
     void
     ) {
     if (console.enabled) eat_console_stop();
@@ -61,37 +73,38 @@ eat_stop(
     ear_delete_texture(_eat_screen_depth);
     ear_delete_texture(_eat_screen_color);
 
-    eaa_stop();
-    ear_stop();
-    eaw_stop();
+    eaa_exit();
+    ear_exit();
+    eaw_exit();
 }
 
 bool
 eat_frame(
     void
     ) {
-    eau_tick_this_frame = false;
-    if (eaw_time - _eau_last_tick > eau_tickrate) {
-        _eau_last_tick = eaw_time;
-        eau_tick_this_frame = true;
-    }
+    if (!first) {
+        eau_tick_this_frame = false;
+        if (eaw_time - _eau_last_tick > eau_tickrate) {
+            _eau_last_tick = eaw_time;
+            eau_tick_this_frame = true;
+        }
 
-    _ear_set_master_framebuffer(NULL);
-    ear_set_default_framebuffer(NULL);
-    ear_bind_framebuffer(NULL);
+        _ear_set_master_framebuffer(NULL);
+        ear_set_default_framebuffer(NULL);
+        ear_bind_framebuffer(NULL);
 
-    if (!debug.enabled || !eat_debug_toggled) 
-        ear_tex(_eat_screen_color, 0,0, eat_width,eat_height, 0,0, eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
-
-    if (debug.enabled) eat_debug_try_do();
+        if (!debug.enabled || !eat_debug_toggled) 
+            ear_tex(_eat_screen_color, 0,0, eat_width,eat_height, 0,0, eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
+        if (debug.enabled) eat_debug_try_do();
+    } first = false;
 
     int prev_width = eat_width;
     int prev_height = eat_height;
-    ear_frame();
+
+    ear_frame(true);
     eaw_frame();
 
     _ear_set_master_framebuffer(_eat_screen_framebuffer);
-    ear_set_default_framebuffer(NULL);
     ear_bind_framebuffer(NULL);
 
     if (console.enabled) eat_console_try_do();
@@ -104,8 +117,8 @@ eat_frame(
     eat_debug_get_screen_size(&eat_width, &eat_height);
 
     if (prev_width != eat_width || prev_height != eat_height) {
-        ear_resize_texture(_eat_screen_color, eat_width, eat_height);
-        ear_resize_texture(_eat_screen_depth, eat_width, eat_height);
+        ear_resize_texture(_eat_screen_color, NULL, eat_width, eat_height);
+        ear_resize_texture(_eat_screen_depth, NULL, eat_width, eat_height);
         ear_resize_framebuffer(_eat_screen_framebuffer, eat_width, eat_height);
     }
 

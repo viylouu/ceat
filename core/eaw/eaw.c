@@ -1,21 +1,23 @@
 #include "eaw.h"
 //#include "../cutil.h"
 
+#include "window.h"
+#include "input.h"
 #include "../eau/object.h"
 
 #include <GLFW/glfw3.h>
 
 double eaw_time;
-    double eaw_last_time;
+static double eaw_last_time;
 double eaw_delta;
+
 
 void
 eaw_init(
     const char* title,
-    int32_t width, int32_t height,
-    bool vsync
+    int32_t width, int32_t height
     ) {
-    eaw_window_init(title, width, height, vsync);
+    eaw_window_init(title, width, height);
     eaw_input_init();
 
     eaw_time = glfwGetTime();
@@ -23,10 +25,10 @@ eaw_init(
 }
 
 void
-eaw_stop(
+eaw_exit(
     void
     ) {
-    eaw_window_stop();
+    eaw_window_exit();
 }
 
 void

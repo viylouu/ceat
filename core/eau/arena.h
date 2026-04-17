@@ -9,7 +9,6 @@ typedef struct eau_arena eau_arena;
 
 typedef struct eau_destructor eau_destructor;
 
-
 eau_arena*
 eau_create_arena(
     void
@@ -25,6 +24,7 @@ eau_add_to_arena(
     eau_arena* arena,
     eau_destructor** user_dest,
     void* data,
+    eat_debug_ll_obj* deb_obj,
 #ifdef __cplusplus
     void (*delete_fn)(void* data)
 #else
@@ -41,6 +41,7 @@ eau_clear_arena(
 struct eau_destructor{
     eau_arena* arena;
     void* data;
+    eat_debug_ll_obj* deb_obj;
 #ifdef __cplusplus
     void (*delete_fn)(void*);
 #else

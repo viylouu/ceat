@@ -1,49 +1,57 @@
 #include "window.h"
 #include "../cutil.h"
+#include "rendering/impl.h"
 
 #include <GLFW/glfw3.h>
 
-int32_t eaw_window_width;
-int32_t eaw_window_height;
+int32_t _eaw_window_width;
+int32_t _eaw_window_height;
 
-GLFWwindow* eaw_window;
+GLFWwindow* _eaw_glfw_window;
 
 void
 eaw_window_init(
     const char* title,
-    int32_t width, int32_t height,
-    bool vsync
+    int32_t width, int32_t height
     ) {
     //glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
 
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-
     eat_assert(glfwInit(), "glfw failed to init");
 
-    eaw_window_width  = width;
-    eaw_window_height = height;
+    _eaw_window_width  = width;
+    _eaw_window_height = height;
 
-    eaw_window = glfwCreateWindow(width, height, title, NULL,NULL);
-    eat_assert(eaw_window != NULL, "failed to create window");
+    if (ear_backend->deps.opengl_context) {
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+    } else
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);    
 
-    glfwMakeContextCurrent(eaw_window);
-    glfwSwapInterval(vsync);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+
+    _eaw_glfw_window = glfwCreateWindow(width, height, title, NULL,NULL);
+    eat_assert(_eaw_glfw_window != NULL, "failed to create window");
+    
+    if (ear_backend->deps.opengl_context) {
+        glfwMakeContextCurrent(_eaw_glfw_window);
+        glfwSwapInterval(0);
+    }
 
     // widnows
-    glfwSetWindowSize(eaw_window, width + 1, height);
-    glfwSetWindowSize(eaw_window, width, height);
+    glfwSetWindowSize(_eaw_glfw_window, width + 1, height);
+    glfwSetWindowSize(_eaw_glfw_window, width, height);
+
+    glfwShowWindow(_eaw_glfw_window);
+    glfwPollEvents();
 }
 
 void 
-eaw_window_stop(
+eaw_window_exit(
     void
     ) {
-    glfwDestroyWindow(eaw_window);
+    glfwDestroyWindow(_eaw_glfw_window);
     glfwTerminate();
 }
 
@@ -51,14 +59,20 @@ void
 eaw_window_frame(
     void
     ) {
-    glfwSwapBuffers(eaw_window);
+    glfwGetWindowSize(_eaw_glfw_window, &_eaw_window_width, &_eaw_window_height);
+}
 
-    glfwGetWindowSize(eaw_window, &eaw_window_width, &eaw_window_height);
+void
+eaw_window_swapbuf(
+    void
+    ) {
+    if (ear_backend->deps.opengl_context)
+        glfwSwapBuffers(_eaw_glfw_window);
 }
 
 bool
 eaw_window_is_open(
     void
     ) {
-    return !glfwWindowShouldClose(eaw_window);
+    return !glfwWindowShouldClose(_eaw_glfw_window);
 }

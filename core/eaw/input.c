@@ -120,9 +120,9 @@ eaw_set_mouse_mode(
     cur_mouse_mode = mode;
 
     switch (mode) {
-    case EAW_MOUSE_MODE_NORMAL: glfwSetInputMode(eaw_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); break;
-    case EAW_MOUSE_MODE_HIDDEN: glfwSetInputMode(eaw_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN); break;
-    case EAW_MOUSE_MODE_LOCKED: glfwSetInputMode(eaw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); break;
+    case EAW_MOUSE_MODE_NORMAL: glfwSetInputMode(_eaw_glfw_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL); break;
+    case EAW_MOUSE_MODE_HIDDEN: glfwSetInputMode(_eaw_glfw_window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN); break;
+    case EAW_MOUSE_MODE_LOCKED: glfwSetInputMode(_eaw_glfw_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); break;
     }
 }
 
@@ -133,6 +133,8 @@ _scroll_cb(
     double xoff,
     double yoff
     ) {
+    (void)window;
+
     eaw_mouse_scroll_x = xoff;
     eaw_mouse_scroll_y = yoff;
     eaw_mouse_scroll_x64 = xoff;
@@ -144,6 +146,8 @@ _char_cb(
     GLFWwindow* window,
     unsigned int codepoint
     ) {
+    (void)window;
+
     if (eaw_text_input_chars >= 1024) return; // no clue how the fuck this would happen
 
     eaw_text_input[eaw_text_input_chars] = codepoint;
@@ -159,8 +163,8 @@ void
 eaw_input_init(
     void
     ) {
-    glfwSetScrollCallback(eaw_window, _scroll_cb);
-    glfwSetCharCallback(eaw_window, _char_cb);
+    glfwSetScrollCallback(_eaw_glfw_window, _scroll_cb);
+    glfwSetCharCallback(_eaw_glfw_window, _char_cb);
 }
 
 #define up(upk, upks, upm) do{ \
@@ -210,14 +214,14 @@ eaw_input_frame(
 #define frame_upk(key, glfw) frame_upks(EAW_KEY_##key, GLFW_KEY_##glfw)
 #define frame_upks(key, glfw) do { \
     prev = keys[key]; \
-    keys[key] = glfwGetKey(eaw_window, glfw); \
+    keys[key] = glfwGetKey(_eaw_glfw_window, glfw); \
     if (keys[key] == EAW_STATE_PRESSED && ( prev == EAW_STATE_PRESSED || prev == EAW_STATE_HELD )) keys[key] = EAW_STATE_HELD; \
     if (keys[key] == EAW_STATE_RELEASED && ( prev == EAW_STATE_RELEASED || prev == EAW_STATE_INACTIVE )) keys[key] = EAW_STATE_INACTIVE; \
 } while(0)
 
 #define frame_upm(key, glfw) do { \
     prev = mouses[EAW_MOUSE_##key]; \
-    mouses[EAW_MOUSE_##key] = glfwGetMouseButton(eaw_window, GLFW_MOUSE_BUTTON_##glfw); \
+    mouses[EAW_MOUSE_##key] = glfwGetMouseButton(_eaw_glfw_window, GLFW_MOUSE_BUTTON_##glfw); \
     if (mouses[EAW_MOUSE_##key] == EAW_STATE_PRESSED && ( prev == EAW_STATE_PRESSED || prev == EAW_STATE_HELD )) mouses[EAW_MOUSE_##key] = EAW_STATE_HELD; \
     if (mouses[EAW_MOUSE_##key] == EAW_STATE_RELEASED && ( prev == EAW_STATE_RELEASED || prev == EAW_STATE_INACTIVE )) mouses[EAW_MOUSE_##key] = EAW_STATE_INACTIVE; \
 } while(0)
@@ -226,7 +230,7 @@ eaw_input_frame(
 
     last_mouse_x = eaw_mouse_x64;
     last_mouse_y = eaw_mouse_y64;
-    glfwGetCursorPos(eaw_window, &eaw_mouse_x64, &eaw_mouse_y64);
+    glfwGetCursorPos(_eaw_glfw_window, &eaw_mouse_x64, &eaw_mouse_y64);
     eaw_mouse_x = eaw_mouse_x64;
     eaw_mouse_y = eaw_mouse_y64;
     eaw_mouse_delta_x64 = eaw_mouse_x64 - last_mouse_x;
@@ -244,14 +248,14 @@ eaw_input_tick(
 #define tick_upk(key, glfw) tick_upks(EAW_KEY_##key, GLFW_KEY_##glfw)
 #define tick_upks(key, glfw) do { \
     prev = tick_keys[key]; \
-    tick_keys[key] = glfwGetKey(eaw_window, glfw); \
+    tick_keys[key] = glfwGetKey(_eaw_glfw_window, glfw); \
     if (tick_keys[key] == EAW_STATE_PRESSED && ( prev == EAW_STATE_PRESSED || prev == EAW_STATE_HELD )) tick_keys[key] = EAW_STATE_HELD; \
     if (tick_keys[key] == EAW_STATE_RELEASED && ( prev == EAW_STATE_RELEASED || prev == EAW_STATE_INACTIVE )) tick_keys[key] = EAW_STATE_INACTIVE; \
 } while(0)
 
 #define tick_upm(key, glfw) do { \
     prev = tick_mouses[EAW_MOUSE_##key]; \
-    tick_mouses[EAW_MOUSE_##key] = glfwGetMouseButton(eaw_window, GLFW_MOUSE_BUTTON_##glfw); \
+    tick_mouses[EAW_MOUSE_##key] = glfwGetMouseButton(_eaw_glfw_window, GLFW_MOUSE_BUTTON_##glfw); \
     if (tick_mouses[EAW_MOUSE_##key] == EAW_STATE_PRESSED && ( prev == EAW_STATE_PRESSED || prev == EAW_STATE_HELD )) tick_mouses[EAW_MOUSE_##key] = EAW_STATE_HELD; \
     if (tick_mouses[EAW_MOUSE_##key] == EAW_STATE_RELEASED && ( prev == EAW_STATE_RELEASED || prev == EAW_STATE_INACTIVE )) tick_mouses[EAW_MOUSE_##key] = EAW_STATE_INACTIVE; \
 } while(0)

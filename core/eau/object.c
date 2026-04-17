@@ -1,7 +1,10 @@
 #include "object.h"
-#include "../cutil.h"
+//#include "../cutil.h"
 
-#include "../ear/text.h"
+#include <stdlib.h>
+#include <stdio.h>
+
+#include "../ear/hl/text.h"
 
 eau_object_ll* eau_object_ll_first = NULL;
 eau_object_ll* eau_object_ll_last = NULL;
@@ -58,7 +61,7 @@ eau_create_object(
     eau_object_ll_last = &obj->ll;
     if (eau_object_ll_first == NULL) eau_object_ll_first = &obj->ll;
 
-    if (arena != NULL) eau_add_to_arena(arena, &obj->dest, obj, _eau_arena_object_delete);
+    if (arena != NULL) eau_add_to_arena(arena, &obj->dest, obj, obj->deb_obj, _eau_arena_object_delete);
     return obj;
 }
 
@@ -175,8 +178,6 @@ eau_draw_objects(
     arr = malloc(sizeof(_eau_object_draw_arr_item));
     uint32_t arr_size = 0;
 
-    int rendered = 0;
-
     for (eau_object_ll* item = eau_object_ll_first; item != NULL; item = item->next) {
         int layer = item->obj->desc.render_layer;
 
@@ -236,6 +237,10 @@ _eau_debug_object_window(
     eat_debug_theme t,
     int32_t* sel
     ) {
+    (void)_obj;
+    (void)x; (void)y; (void)w; (void)h;
+    (void)t; (void)sel;
+
     eau_object* obj = _obj;
 
     float offy = 0;

@@ -1,5 +1,5 @@
 #include "eaa.h"
-#include "../cutil.h"
+//#include "../cutil.h"
 
 #define MINIAUDIO_IMPLEMENTATION
 #include "../../include/miniaudio.h"
@@ -14,10 +14,10 @@ eaa_init(
 }
 
 void 
-eaa_stop(
+eaa_exit(
     void
     ) {
-    eaa_engine_stop();
+    eaa_engine_exit();
 }
 
 void

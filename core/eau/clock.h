@@ -13,7 +13,6 @@ typedef struct eau_clock_ll eau_clock_ll;
 extern eau_clock_ll* eau_clock_ll_first;
 extern eau_clock_ll* eau_clock_ll_last;
 
-
 eau_clock*
 eau_create_clock(
     bool fixed,

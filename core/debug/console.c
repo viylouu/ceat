@@ -2,6 +2,7 @@
 
 #include "debug.h"
 #include "../../eat.h"
+#include "../eaw/window.h"
 
 eat_console_desc console;
 
@@ -32,7 +33,7 @@ eat_console_try_do(
     ) {
     if (!eaw_is_key_pressed(console.key)) return;
 
-    ear_frame();
+    ear_frame(false);
     eaw_frame();
 
     char buf[256];
@@ -42,8 +43,8 @@ eat_console_try_do(
     last_tick_time = eaw_time;
 
     while (true) {
-        eat_width = eaw_window_width;
-        eat_height = eaw_window_height;
+        eat_width = _eaw_window_width;
+        eat_height = _eaw_window_height;
 
         ear_rect(0, eat_height/2., eat_width, debug_theme.font->lineheight * 16, debug_theme.bg_col, EAU_ALIGN_MID_LEFT);
 
@@ -79,7 +80,7 @@ eat_console_try_do(
 
         ear_text(debug_theme.font, buf, 4, eat_height/2., 14, debug_theme.text_col, EAU_ALIGN_MID_LEFT);
 
-        ear_frame();
+        ear_frame(false);
         eaw_frame();
 
         if (!eaw_is_open()) return;

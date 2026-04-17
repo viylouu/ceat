@@ -10,12 +10,11 @@ it is the (hopefully) final game engine i will have to make.
 ## building
 to build ceat, you can use cmake.  
 ```bash
-mkdir build
-cmake -B build
-cmake --build build
+zig build shaders # only needed on update / first run
+zig build
 ```
 this will create either a `libceat.a` file or a `ceat.lib` file in the build folder  
-(and also build the examples)
+to build examples, run `zig build examples`.  
 
 ## docs
 if you dont know how to do stuff see the [docs](https://viylouu.github.io/ceat)

@@ -1,9 +1,11 @@
 #include "../../eat.h"
 
+#include "../../backends/rendering/opengl/gl.h"
+
 #include <stdio.h>
 
 int main(void) {
-    eat_init("audio", 1600,900, (eat_init_opts){});
+    eat_init("audio", 1600,900, (eat_init_opts){ .rendering_impl = &ear_gl_impl });
 
     static const uint8_t audio_data[] = {
     #embed "sound.wav"
@@ -16,21 +18,16 @@ int main(void) {
             .mixer = NULL,
         }, audio_data, sizeof(audio_data), NULL);
 
-
+    ear_clear_color(NULL, .2f, .4f, .3f, 1);
     while (eat_frame()) {
-        ear_clear((float[3]){ .2f, .4f, .3f });
-
         ear_rect(0,0, 64,64, (float[4]){ 1,0,0,1 }, EAU_ALIGN_TOP_LEFT);
 
         if (eaw_is_key_pressed(EAW_KEY_SPACE)) eaa_play_sound(sound);
-
-        printf("%.3f FPS\n", 1./eat_delta64);
     }
 
     eaa_delete_sound(sound);
 
-    eat_stop();
+    eat_exit();
 
     return 0;
 }
-

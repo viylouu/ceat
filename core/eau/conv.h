@@ -11,7 +11,6 @@ typedef enum eau_align{
     EAU_ALIGN_BOT_LEFT, EAU_ALIGN_BOT, EAU_ALIGN_BOT_RIGHT,
 } eau_align;
 
-
 eau_rect
 eau_rect_topleftify(
     eau_rect rect
@@ -43,7 +42,6 @@ eau_point_space_convert(
     eau_rect new_space,
     float* outx, float* outy
     );
-
 
 
 struct eau_rect{
