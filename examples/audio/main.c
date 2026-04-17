@@ -1,9 +1,11 @@
 #include "../../eat.h"
 
+#include "../../backends/rendering/opengl/gl.h"
+
 #include <stdio.h>
 
 int main(void) {
-    eat_init("audio", 1600,900, (eat_init_opts){});
+    eat_init("audio", 1600,900, (eat_init_opts){ .rendering_impl = &ear_gl_impl });
 
     static const uint8_t audio_data[] = {
     #embed "sound.wav"

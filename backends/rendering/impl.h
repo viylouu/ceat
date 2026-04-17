@@ -11,6 +11,11 @@
 
 typedef struct eat_backend_rendering_impl{
     struct{
+        bool opengl_context;
+        bool use_spirv; // temp for before i add custom shader lang or glsl compiler
+    } deps;
+
+    struct{
         void (*init)(
             const char* title,
             int32_t width, int32_t height,

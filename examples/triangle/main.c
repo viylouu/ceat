@@ -1,10 +1,12 @@
 #include "../../eat.h"
 
+#include "../../backends/rendering/opengl/gl.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(void) {
-    eat_init("triangle", 1600,900, (eat_init_opts){});
+    eat_init("triangle", 1600,900, (eat_init_opts){ .rendering_impl = &ear_gl_impl });
 
     // shaders compiled from source to spirv via glslc
     // see command in CMakeLists.txt on ex_triangle

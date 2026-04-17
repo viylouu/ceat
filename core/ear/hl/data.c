@@ -5,6 +5,8 @@
 
 #include "../ll/misc.h"
 
+#include "../backends/rendering/impl.h"
+
 mat4 proj;
 mat4 transf;
 
@@ -17,16 +19,25 @@ void
 ear_rect_rend_create(
     void
     ) {
-    static const char vert[] = {
-        //#embed "shaders/rect_v.spv"
+    static const char vert_g[] = {
         #embed "shaders/rect.vert"
         ,0
         };
-    static const char frag[] = {
-        //#embed "shaders/rect_f.spv"
+    static const char frag_g[] = {
         #embed "shaders/rect.frag"
         ,0
         };
+    static const char vert_spv[] = {
+        #embed "shaders/rect_v.spv"
+        };
+    static const char frag_spv[] = {
+        #embed "shaders/rect_f.spv"
+        };
+
+    const char* vert = ear_backend->deps.use_spirv? vert_spv : vert_g;
+        uint32_t vert_size = ear_backend->deps.use_spirv? sizeof(vert_spv) : sizeof(vert_g);
+    const char* frag = ear_backend->deps.use_spirv? frag_spv : frag_g;
+        uint32_t frag_size = ear_backend->deps.use_spirv? sizeof(frag_spv) : sizeof(frag_g);
 
     ear_rr.off = 0;
 
@@ -61,8 +72,8 @@ ear_rect_rend_create(
         }, arena);
 
     ear_rr.pln = ear_create_pipeline((ear_pipeline_desc){
-        .vertex   = (ear_shader_desc){ .source = vert, .source_size = sizeof(vert) },
-        .fragment = (ear_shader_desc){ .source = frag, .source_size = sizeof(frag) },
+        .vertex   = (ear_shader_desc){ .source = vert, .source_size = vert_size },
+        .fragment = (ear_shader_desc){ .source = frag, .source_size = frag_size },
 
         .bindset_amt = 1,
         .bindsets    = &ear_rr.set,
@@ -108,16 +119,25 @@ void
 ear_tex_rend_create(
     void
     ) {
-    static const char vert[] = {
-        //#embed "shaders/tex_v.spv"
+    static const char vert_g[] = {
         #embed "shaders/tex.vert"
         ,0
         };
-    static const char frag[] = {
-        //#embed "shaders/tex_f.spv"
+    static const char frag_g[] = {
         #embed "shaders/tex.frag"
         ,0
         };
+    static const char vert_spv[] = {
+        #embed "shaders/tex_v.spv"
+        };
+    static const char frag_spv[] = {
+        #embed "shaders/tex_f.spv"
+        };
+
+    const char* vert = ear_backend->deps.use_spirv? vert_spv : vert_g;
+        uint32_t vert_size = ear_backend->deps.use_spirv? sizeof(vert_spv) : sizeof(vert_g);
+    const char* frag = ear_backend->deps.use_spirv? frag_spv : frag_g;
+        uint32_t frag_size = ear_backend->deps.use_spirv? sizeof(frag_spv) : sizeof(frag_g);
 
     ear_tr.off = 0;
 
@@ -163,8 +183,8 @@ ear_tex_rend_create(
         }, arena);
 
     ear_tr.pln = ear_create_pipeline((ear_pipeline_desc){
-        .vertex   = (ear_shader_desc){ .source = vert, .source_size = sizeof(vert) },
-        .fragment = (ear_shader_desc){ .source = frag, .source_size = sizeof(frag) },
+        .vertex   = (ear_shader_desc){ .source = vert, .source_size = vert_size },
+        .fragment = (ear_shader_desc){ .source = frag, .source_size = frag_size },
 
         .bindset_amt = 2,
         .bindsets    = (ear_bindset*[]){ 

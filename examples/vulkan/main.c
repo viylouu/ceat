@@ -1,11 +1,11 @@
 #include "../../eat.h"
 
-#include "../../backends/rendering/opengl/gl.h"
+#include "../../backends/rendering/vulkan/vk.h"
 
 #include <stdio.h>
 
 int main(void) {
-    eat_init("window", 1600,900, (eat_init_opts){ .rendering_impl = &ear_gl_impl });
+    eat_init("window", 1600,900, (eat_init_opts){ .rendering_impl = &ear_vk_impl });
 
     ear_clear_color(NULL, .2f, .4f, .3f, 1);
     while (eat_frame()) {

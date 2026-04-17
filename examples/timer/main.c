@@ -1,13 +1,16 @@
 #include "../../eat.h"
 
+#include "../../backends/rendering/opengl/gl.h"
+
 #include <stdio.h>
 
 void onzero(void* data) {
+    (void)data;
     printf(":3\n");
 }
 
 int main(void) {
-    eat_init("timer", 1600,900, (eat_init_opts){});
+    eat_init("timer", 1600,900, (eat_init_opts){ .rendering_impl = &ear_gl_impl });
 
     static const char tex_data[] = {
     #embed "font.png"

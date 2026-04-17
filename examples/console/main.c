@@ -1,5 +1,7 @@
 #include "../../eat.h"
 
+#include "../../backends/rendering/opengl/gl.h"
+
 #include <stdio.h>
 #include <string.h>
 
@@ -10,7 +12,8 @@ void solver(char* input) {
 }
 
 int main(void) {
-    eat_init("console", 1600,900, (eat_init_opts){
+    eat_init("console", 1600,900, (eat_init_opts){ 
+        .rendering_impl = &ear_gl_impl,
         .console = (eat_console_desc){
             .enabled = true,
             .key = EAW_KEY_ENTER,

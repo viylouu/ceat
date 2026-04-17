@@ -1,10 +1,12 @@
 #include "../../eat.h"
 
+#include "../../backends/rendering/opengl/gl.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(void) {
-    eat_init("vertex buffer", 1600,900, (eat_init_opts){});
+    eat_init("vertex buffer", 1600,900, (eat_init_opts){ .rendering_impl = &ear_gl_impl });
 
     float data[(2+3)*3] = {
          0, -.5f, 1,0,0,

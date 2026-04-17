@@ -1,5 +1,7 @@
 #include "../../eat.h"
 
+#include "../../backends/rendering/opengl/gl.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -30,7 +32,7 @@ void object_stop(eau_object* obj) {
 }
 
 int main(void) {
-    eat_init("object", 512,512, (eat_init_opts){});
+    eat_init("object", 512,512, (eat_init_opts){ .rendering_impl = &ear_gl_impl });
 
     my_object* obj_data = malloc(sizeof(my_object));
     eau_object* obj = eau_create_object((eau_object_desc){

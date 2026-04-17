@@ -1,9 +1,11 @@
 #include "../../eat.h"
 
+#include "../../backends/rendering/opengl/gl.h"
+
 #include <stdio.h>
 
 int main(void) {
-    eat_init("clock", 1600,900, (eat_init_opts){});
+    eat_init("clock", 1600,900, (eat_init_opts){ .rendering_impl = &ear_gl_impl });
 
     static const char tex_data[] = {
     #embed "font.png"

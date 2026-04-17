@@ -1,5 +1,7 @@
 #include "../../eat.h"
 
+#include "../../backends/rendering/opengl/gl.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -31,6 +33,7 @@ void object_stop(eau_object* obj) {
 
 int main(void) {
     eat_init("object", 1600,900, (eat_init_opts){
+        .rendering_impl = &ear_gl_impl,
         .debug = (eat_debug_desc){
             .enabled = true,
             .key = EAW_KEY_F8,

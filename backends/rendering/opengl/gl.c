@@ -9,6 +9,11 @@
 #include "eng/buffer.h"
 
 eat_backend_rendering_impl ear_gl_impl = {
+    .deps = {
+        .opengl_context = true,
+        .use_spirv = false,
+        },
+
     .main = {
         .init = ear_gl_init,
         .exit = ear_gl_exit,

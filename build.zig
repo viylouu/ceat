@@ -48,8 +48,8 @@ const cflags = [_][]const u8{
     "-Wno-c23-extensions",
     "-Wpedantic",
 
-    "-g", "-O0", //"-fsanitize=address,undefined",
-    //"-O3",
+    //"-g", "-O0", //"-fsanitize=address,undefined",
+    "-O3",
 };
 
 const csource_vulkan = [_][]const u8{
@@ -87,8 +87,14 @@ const cflags_vulkan = [_][]const u8{
     "-Wextra",
     "-Wpedantic",
 
-    "-g", "-O0", //"-fsanitize=address,undefined",
-    //"-O3",
+    //"-g", "-O0", //"-fsanitize=address,undefined",
+    "-O3",
+};
+const ldeps_vulkan = [_][]const u8{
+    "vulkan",
+};
+const wdeps_vulkan = [_][]const u8{
+    "vulkan1",
 };
 
 const csource_opengl = [_][]const u8{
@@ -112,14 +118,30 @@ const cflags_opengl = [_][]const u8{
     //"-Wextra",
     //"-Wpedantic",
 
-    "-g", "-O0", //"-fsanitize=address,undefined",
-    //"-O3",
+    //"-g", "-O0", //"-fsanitize=address,undefined",
+    "-O3",
+};
+const ldeps_opengl = [_][]const u8{
+    "GL",
+    "GLX",
+    "EGL",
+};
+const wdeps_opengl = [_][]const u8{
+    "opengl32",
 };
 
 var target: std.Build.ResolvedTarget = undefined;
 var optimize: std.builtin.OptimizeMode = undefined;
 
-fn ex_c(b: *std.Build, lib: *std.Build.Step.Compile, libr: *std.Build.Step.Compile, step: *std.Build.Step, comptime name: []const u8) void {
+fn ex_c(
+    b: *std.Build, 
+    lib: *std.Build.Step.Compile, 
+    libr: *std.Build.Step.Compile, 
+        rdeps_linux: []const []const u8, 
+        rdeps_windows: []const []const u8, 
+    step: *std.Build.Step, 
+    comptime name: []const u8
+) void {
     const ex = b.addExecutable(.{
         .name = "ex_" ++ name,
         .root_module = b.createModule(.{
@@ -137,17 +159,11 @@ fn ex_c(b: *std.Build, lib: *std.Build.Step.Compile, libr: *std.Build.Step.Compi
     ex.root_module.linkSystemLibrary("glfw", .{});
 
     if (builtin.os.tag == .linux) {
-        //ex.root_module.linkSystemLibrary("vulkan", .{});
-
-        ex.root_module.linkSystemLibrary("GL", .{});
-        ex.root_module.linkSystemLibrary("GLX", .{});
-        ex.root_module.linkSystemLibrary("EGL", .{});
+        for (rdeps_linux) |dep| { ex.root_module.linkSystemLibrary(dep, .{}); }
 
         ex.root_module.linkSystemLibrary("m", .{});
     } else {
-        //ex.root_module.linkSystemLibrary("vulkan1", .{});
-
-        ex.root_module.linkSystemLibrary("opengl32", .{});
+        for (rdeps_windows) |dep| { ex.root_module.linkSystemLibrary(dep, .{}); }
 
         ex.root_module.linkSystemLibrary("gdi32", .{});
         ex.root_module.linkSystemLibrary("user32", .{});
@@ -158,9 +174,10 @@ fn ex_c(b: *std.Build, lib: *std.Build.Step.Compile, libr: *std.Build.Step.Compi
 }
 
 fn glslc(b: *std.Build, step: *std.Build.Step, 
-         comptime base: []const u8, 
-         comptime in:   []const u8, 
-         comptime out:  []const u8) void {
+    comptime base: []const u8, 
+    comptime in:   []const u8, 
+    comptime out:  []const u8
+) void {
     const glc = b.addSystemCommand(&[_][]const u8{
         "glslc", base ++ in,
         "-o", base ++ out,
@@ -215,7 +232,6 @@ pub fn build(b: *std.Build) void {
             }),
         });
 
-    lib.root_module.linkLibrary(lib_gl);
     lib.root_module.addIncludePath(b.path("core"));
     lib.root_module.addIncludePath(b.path("backends"));
     lib.root_module.addCSourceFiles(.{ .files = &csource, .flags = &cflags });
@@ -226,36 +242,37 @@ pub fn build(b: *std.Build) void {
     _ = zcc.createStep(b, "cdb", targs.toOwnedSlice(b.allocator) catch @panic("OOM"));
 
     const shadstep = b.step("shaders", "compile shaders");
-    glslc(b, shadstep, "core/ear/hl/shaders/", "rect.vert", "rect_v.spv");
-    glslc(b, shadstep, "core/ear/hl/shaders/", "rect.frag", "rect_f.spv");
-    glslc(b, shadstep, "core/ear/hl/shaders/", "tex.vert",  "tex_v.spv");
-    glslc(b, shadstep, "core/ear/hl/shaders/", "tex.frag",  "tex_f.spv");
+    glslc(b, shadstep, "core/ear/hl/shaders/", "rect_vk.vert", "rect_v.spv");
+    glslc(b, shadstep, "core/ear/hl/shaders/", "rect_vk.frag", "rect_f.spv");
+    glslc(b, shadstep, "core/ear/hl/shaders/", "tex_vk.vert",  "tex_v.spv");
+    glslc(b, shadstep, "core/ear/hl/shaders/", "tex_vk.frag",  "tex_f.spv");
 
-    glslc(b, shadstep, "examples/triangle/", "shad.vert", "shad_v.spv");
-    glslc(b, shadstep, "examples/triangle/", "shad.frag", "shad_f.spv");
-    glslc(b, shadstep, "examples/vbuffer/",  "shad.vert", "shad_v.spv");
-    glslc(b, shadstep, "examples/vbuffer/",  "shad.frag", "shad_f.spv");
-    glslc(b, shadstep, "examples/ubuffer/",  "shad.vert", "shad_v.spv");
-    glslc(b, shadstep, "examples/ubuffer/",  "shad.frag", "shad_f.spv");
-    glslc(b, shadstep, "examples/ibuffer/",  "shad.vert", "shad_v.spv");
-    glslc(b, shadstep, "examples/ibuffer/",  "shad.frag", "shad_f.spv");
+    //glslc(b, shadstep, "examples/triangle/", "shad.vert", "shad_v.spv");
+    //glslc(b, shadstep, "examples/triangle/", "shad.frag", "shad_f.spv");
+    //glslc(b, shadstep, "examples/vbuffer/",  "shad.vert", "shad_v.spv");
+    //glslc(b, shadstep, "examples/vbuffer/",  "shad.frag", "shad_f.spv");
+    //glslc(b, shadstep, "examples/ubuffer/",  "shad.vert", "shad_v.spv");
+    //glslc(b, shadstep, "examples/ubuffer/",  "shad.frag", "shad_f.spv");
+    //glslc(b, shadstep, "examples/ibuffer/",  "shad.vert", "shad_v.spv");
+    //glslc(b, shadstep, "examples/ibuffer/",  "shad.frag", "shad_f.spv");
 
     const ex_step = b.step("examples", "build examples");
 
-    ex_c(b,lib,lib_gl, ex_step, "window");
-    ex_c(b,lib,lib_gl, ex_step, "triangle");
-    ex_c(b,lib,lib_gl, ex_step, "vbuffer");
-    ex_c(b,lib,lib_gl, ex_step, "ubuffer");
-    ex_c(b,lib,lib_gl, ex_step, "ibuffer");
-    ex_c(b,lib,lib_gl, ex_step, "texture");
-    ex_c(b,lib,lib_gl, ex_step, "framebuffer");
-    ex_c(b,lib,lib_gl, ex_step, "text");
-    ex_c(b,lib,lib_gl, ex_step, "input");
-    ex_c(b,lib,lib_gl, ex_step, "object");
-    ex_c(b,lib,lib_gl, ex_step, "clock");
-    ex_c(b,lib,lib_gl, ex_step, "console");
-    ex_c(b,lib,lib_gl, ex_step, "audio");
-    ex_c(b,lib,lib_gl, ex_step, "camera");
-    ex_c(b,lib,lib_gl, ex_step, "debug");
-    ex_c(b,lib,lib_gl, ex_step, "timer");
+    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "window");
+    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "triangle");
+    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "vbuffer");
+    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "ubuffer");
+    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "ibuffer");
+    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "texture");
+    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "framebuffer");
+    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "text");
+    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "input");
+    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "object");
+    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "clock");
+    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "console");
+    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "audio");
+    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "camera");
+    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "debug");
+    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "timer");
+    ex_c(b,lib,lib_vk, &ldeps_vulkan, &wdeps_vulkan, ex_step, "vulkan");
 }

@@ -1,11 +1,11 @@
 #include "../eat.h"
+#include "cutil.h"
 
 //#include "eaw/window.h"
 #include "debug/console.h"
 #include "debug/debug.h"
 
 #include "../backends/rendering/impl.h"
-#include "../backends/rendering/opengl/gl.h"
 
 int32_t eat_width;
 int32_t eat_height;
@@ -28,7 +28,7 @@ eat_init(
     eat_init_opts opts
     ) {
     ear_backend = opts.rendering_impl;
-    if (ear_backend == NULL) ear_backend = &ear_gl_impl;
+    eat_assert(opts.rendering_impl != NULL, "must specify a rendering backend! use opengl backend if youre not sure!");
 
     eaw_init(title, width, height);
     ear_init(title, width, height, opts.vsync);

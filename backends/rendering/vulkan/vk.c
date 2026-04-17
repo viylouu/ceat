@@ -19,6 +19,11 @@
 #include "eng/texture.h"
 
 eat_backend_rendering_impl ear_vk_impl = {
+    .deps = {
+        .opengl_context = false,
+        .use_spirv = true,
+        },
+
     .main = {
         .init  = ear_vk_init,
         .exit  = ear_vk_exit,

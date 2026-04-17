@@ -1,10 +1,8 @@
 #include "window.h"
 #include "../cutil.h"
+#include "rendering/impl.h"
 
 #include <GLFW/glfw3.h>
-
-#include <vulkan/vulkan.h>
-#include <vulkan/vulkan_core.h>
 
 int32_t _eaw_window_width;
 int32_t _eaw_window_height;
@@ -23,20 +21,23 @@ eaw_window_init(
     _eaw_window_width  = width;
     _eaw_window_height = height;
 
-    //glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+    if (ear_backend->deps.opengl_context) {
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+    } else
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);    
 
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
     _eaw_glfw_window = glfwCreateWindow(width, height, title, NULL,NULL);
     eat_assert(_eaw_glfw_window != NULL, "failed to create window");
     
-    glfwMakeContextCurrent(_eaw_glfw_window);
-    glfwSwapInterval(0);
+    if (ear_backend->deps.opengl_context) {
+        glfwMakeContextCurrent(_eaw_glfw_window);
+        glfwSwapInterval(0);
+    }
 
     // widnows
     glfwSetWindowSize(_eaw_glfw_window, width + 1, height);
@@ -65,7 +66,8 @@ void
 eaw_window_swapbuf(
     void
     ) {
-    glfwSwapBuffers(_eaw_glfw_window);
+    if (ear_backend->deps.opengl_context)
+        glfwSwapBuffers(_eaw_glfw_window);
 }
 
 bool

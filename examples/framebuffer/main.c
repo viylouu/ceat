@@ -1,9 +1,11 @@
 #include "../../eat.h"
 
+#include "../../backends/rendering/opengl/gl.h"
+
 #include <stdio.h>
 
 int main(void) {
-    eat_init("framebuffer", 1600,900, (eat_init_opts){});
+    eat_init("framebuffer", 1600,900, (eat_init_opts){ .rendering_impl = &ear_gl_impl });
 
     ear_texture* fbtex = ear_create_texture((ear_texture_desc){
         .filter = EAR_FILTER_NEAREST,
