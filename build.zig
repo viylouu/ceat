@@ -120,7 +120,7 @@ const cflags_opengl = [_][]const u8{
 var target: std.Build.ResolvedTarget = undefined;
 var optimize: std.builtin.OptimizeMode = undefined;
 
-fn ex_c(b: *std.Build, lib: *std.Build.Step.Compile, libr: *std.Build.Step.Compile, comptime name: []const u8) void {
+fn ex_c(b: *std.Build, lib: *std.Build.Step.Compile, libr: *std.Build.Step.Compile, step: *std.Build.Step, comptime name: []const u8) void {
     const ex = b.addExecutable(.{
         .name = "ex_" ++ name,
         .root_module = b.createModule(.{
@@ -155,17 +155,7 @@ fn ex_c(b: *std.Build, lib: *std.Build.Step.Compile, libr: *std.Build.Step.Compi
         ex.root_module.linkSystemLibrary("shell32", .{});
     }
 
-    b.installArtifact(ex);
-}
-
-fn ex_odin(b: *std.Build, step: *std.Build.Step, comptime libr: []const u8, comptime name: []const u8) void {
-    const ex = b.addSystemCommand(&[_][]const u8{
-        "odin", "build",
-        "examples/foreign/odin/" ++ name,
-        "-out:zig-out/bin/ex_odin_" ++ name,
-        "-extra-linker-flags:\"-Lzig-out/lib -l" ++ libr ++ "\"",
-        });
-    step.dependOn(&ex.step);
+    step.dependOn(&b.addInstallArtifact(ex, .{}).step);
 }
 
 fn glslc(b: *std.Build, step: *std.Build.Step, 
@@ -253,23 +243,20 @@ pub fn build(b: *std.Build) void {
 
     const ex_step = b.step("examples", "build examples");
 
-    ex_c(b,lib,lib_gl, "window");
-    ex_c(b,lib,lib_gl, "triangle");
-    ex_c(b,lib,lib_gl, "vbuffer");
-    ex_c(b,lib,lib_gl, "ubuffer");
-    ex_c(b,lib,lib_gl, "ibuffer");
-    ex_c(b,lib,lib_gl, "texture");
-    ex_c(b,lib,lib_gl, "framebuffer");
-    ex_c(b,lib,lib_gl, "text");
-    ex_c(b,lib,lib_gl, "input");
-    ex_c(b,lib,lib_gl, "object");
-    ex_c(b,lib,lib_gl, "clock");
-    ex_c(b,lib,lib_gl, "console");
-    ex_c(b,lib,lib_gl, "audio");
-    ex_c(b,lib,lib_gl, "camera");
-    ex_c(b,lib,lib_gl, "debug");
-    ex_c(b,lib,lib_gl, "timer");
-
-    ex_odin(b, ex_step, "ceat_gl", "window");
-    ex_odin(b, ex_step, "ceat_gl", "object");
+    ex_c(b,lib,lib_gl, ex_step, "window");
+    ex_c(b,lib,lib_gl, ex_step, "triangle");
+    ex_c(b,lib,lib_gl, ex_step, "vbuffer");
+    ex_c(b,lib,lib_gl, ex_step, "ubuffer");
+    ex_c(b,lib,lib_gl, ex_step, "ibuffer");
+    ex_c(b,lib,lib_gl, ex_step, "texture");
+    ex_c(b,lib,lib_gl, ex_step, "framebuffer");
+    ex_c(b,lib,lib_gl, ex_step, "text");
+    ex_c(b,lib,lib_gl, ex_step, "input");
+    ex_c(b,lib,lib_gl, ex_step, "object");
+    ex_c(b,lib,lib_gl, ex_step, "clock");
+    ex_c(b,lib,lib_gl, ex_step, "console");
+    ex_c(b,lib,lib_gl, ex_step, "audio");
+    ex_c(b,lib,lib_gl, ex_step, "camera");
+    ex_c(b,lib,lib_gl, ex_step, "debug");
+    ex_c(b,lib,lib_gl, ex_step, "timer");
 }
