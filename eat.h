@@ -1,9 +1,5 @@
 #pragma once
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "backends/rendering/impl.h"
 
 #include "core/eaw/eaw.h"
@@ -53,7 +49,3 @@ bool
 eat_frame(
     void
     );
-
-#ifdef __cplusplus
-}
-#endif
