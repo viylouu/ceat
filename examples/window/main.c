@@ -1,6 +1,7 @@
 #include "../../eat.h"
 
 #include "../../backends/rendering/opengl/gl.h"
+#include "../../backends/windowing/glfw/glfw.h"
 
 #include <stdio.h>
 
@@ -12,13 +13,28 @@ void game_exit(void) {
 }
 
 int main(void) {
-    eat_run((const eat_plugin*[]){
-        &(eat_plugin){ 
-            .name = "goon",
-            .init = game_init,
-            .exit = game_exit,
-            },
-        }, 1);
+    // plugins can be specified in whatever order for the most part
+    // game plugins always init last
+    // backend plugins always init first and update first
+    // plugins depending on other plugins init after the deps
+    // update order is decided by plugin order however
+    eat_run(
+        "window",
+        1600, 900,
+        false,
+
+        (const eat_plugin*[]){
+            &(eat_plugin){ 
+                .name = "goon",
+                .type = EAT_PLUG_GENERIC,
+
+                .init = game_init,
+                .exit = game_exit,
+                },
+            &ear_gl_plugin,
+            &eaw_glfw_plugin,
+            }, 3
+        );
 
     /*
     eat_init("window", 1600,900, (eat_init_opts){ .rendering_impl = &ear_gl_impl });

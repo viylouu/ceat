@@ -1,9 +1,21 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdbool.h>
+
+typedef enum eat_plugin_type{
+    EAT_PLUG_BACKEND_WINDOW,
+    EAT_PLUG_BACKEND_RENDER,
+    EAT_PLUG_GENERIC,
+} eat_plugin_type;
 
 typedef struct eat_plugin{
+    eat_plugin_type type;
     const char* name;
+
+    // only for non-generic plugins
+    // used for selection between plugins of the same type
+    int32_t (*score)(void);
 
     void (*init)(void);
     void (*exit)(void);
@@ -19,6 +31,10 @@ extern float eat_delta;
 
 void
 eat_run(
+    const char* title,
+    uint32_t width, uint32_t height,
+    bool vsync,
+
     const eat_plugin* plugs[],
     uint32_t plug_amt
     );

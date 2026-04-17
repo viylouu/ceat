@@ -39,6 +39,7 @@ const csource = [_][]const u8{
     "core/eaa/sound.c",
     "core/eaa/mixer.c",
 
+    "backends/windowing/impl.c",
     "backends/rendering/impl.c",
 };
 const cflags = [_][]const u8{
@@ -50,6 +51,25 @@ const cflags = [_][]const u8{
 
     //"-g", "-O0", //"-fsanitize=address,undefined",
     //"-O3",
+};
+
+const csource_glfw = [_][]const u8{
+    "backends/windowing/glfw/glfw.c",
+};
+const cflags_glfw = [_][]const u8{
+    "-std=c99",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+
+    //"-g", "-O0", //"-fsanitize=address,undefined",
+    "-O3",
+};
+const ldeps_glfw = [_][]const u8{
+    "glfw",
+};
+const wdeps_glfw = [_][]const u8{
+    "glfw",
 };
 
 const csource_vulkan = [_][]const u8{
@@ -136,6 +156,9 @@ var optimize: std.builtin.OptimizeMode = undefined;
 fn ex_c(
     b: *std.Build, 
     lib: *std.Build.Step.Compile, 
+    libw: *std.Build.Step.Compile, 
+        wdeps_linux: []const []const u8, 
+        wdeps_windows: []const []const u8, 
     libr: *std.Build.Step.Compile, 
         rdeps_linux: []const []const u8, 
         rdeps_windows: []const []const u8, 
@@ -154,20 +177,17 @@ fn ex_c(
 
     ex.root_module.addCSourceFile(.{ .file = b.path("examples/" ++ name ++ "/main.c"), .flags = &cflags });
     ex.root_module.linkLibrary(lib);
+    ex.root_module.linkLibrary(libw);
     ex.root_module.linkLibrary(libr);
 
-    ex.root_module.linkSystemLibrary("glfw", .{});
-
     if (builtin.os.tag == .linux) {
+        for (wdeps_linux) |dep| { ex.root_module.linkSystemLibrary(dep, .{}); }
         for (rdeps_linux) |dep| { ex.root_module.linkSystemLibrary(dep, .{}); }
 
         ex.root_module.linkSystemLibrary("m", .{});
     } else {
+        for (wdeps_windows) |dep| { ex.root_module.linkSystemLibrary(dep, .{}); }
         for (rdeps_windows) |dep| { ex.root_module.linkSystemLibrary(dep, .{}); }
-
-        ex.root_module.linkSystemLibrary("gdi32", .{});
-        ex.root_module.linkSystemLibrary("user32", .{});
-        ex.root_module.linkSystemLibrary("shell32", .{});
     }
 
     step.dependOn(&b.addInstallArtifact(ex, .{}).step);
@@ -190,6 +210,8 @@ pub fn build(b: *std.Build) void {
     optimize = b.standardOptimizeOption(.{});
 
     var targs = std.ArrayListUnmanaged(*std.Build.Step.Compile){};
+
+    // maybe i should make a function for this or something... nah
 
     const lib_vk = b.addLibrary(.{
         .linkage = .static,
@@ -220,6 +242,21 @@ pub fn build(b: *std.Build) void {
 
     b.installArtifact(lib_gl);
     targs.append(b.allocator, lib_gl) catch @panic("OOM");
+
+    const lib_glfw = b.addLibrary(.{
+        .linkage = .static,
+        .name    = "ceat_glfw",
+        .root_module = b.createModule(.{
+            .target    = target,
+            .optimize  = optimize,
+            .link_libc = true,
+            }),
+        });
+    lib_glfw.root_module.addIncludePath(b.path("core"));
+    lib_glfw.root_module.addCSourceFiles(.{ .files = &csource_glfw, .flags = &cflags_glfw });
+
+    b.installArtifact(lib_glfw);
+    targs.append(b.allocator, lib_glfw) catch @panic("OOM");
 
     const lib = b.addLibrary(.{
         .linkage = .static,
@@ -259,7 +296,7 @@ pub fn build(b: *std.Build) void {
 
     const ex_step = b.step("examples", "build examples");
 
-    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "window");
+    ex_c(b,lib, lib_glfw,&ldeps_glfw,&wdeps_glfw, lib_gl,&ldeps_opengl,&wdeps_opengl, ex_step, "window");
     //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "triangle");
     //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "vbuffer");
     //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "ubuffer");

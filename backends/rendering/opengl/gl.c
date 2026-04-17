@@ -8,6 +8,10 @@
 #include "eng/screen.h"
 #include "eng/buffer.h"
 
+int32_t ear_gl_eval_score(void) {
+    return 1; // assume opengl works
+}
+
 eat_backend_rendering_impl ear_gl_impl = {
     .deps = {
         .opengl_context = true,
@@ -15,7 +19,7 @@ eat_backend_rendering_impl ear_gl_impl = {
         },
 
     .main = {
-        .init = ear_gl_init,
+        //.init = ear_gl_init,
         .exit = ear_gl_exit,
         .frame = ear_gl_frame,
         },
@@ -61,15 +65,22 @@ eat_backend_rendering_impl ear_gl_impl = {
         .update = ear_gl_update_buffer,
         },
     };
+eat_plugin ear_gl_plugin = {
+    .type = EAT_PLUG_BACKEND_RENDER,
+    .name = "gl",
+
+    .score = ear_gl_eval_score,
+
+    .init = ear_gl_init,
+    .exit = ear_gl_exit,
+    };
 
 uint32_t _ear_gl_frame = 0;
 int32_t _ear_gl_uni_align;
 
 void
 ear_gl_init(
-    const char* title,
-    int32_t width, int32_t height,
-    bool vsync
+    void
     ) {
     _ear_gl_get_funcs();
 
