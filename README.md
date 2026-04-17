@@ -10,7 +10,7 @@ it is the (hopefully) final game engine i will have to make.
 ## building
 to build ceat, you can use cmake.  
 ```bash
-zig build shaders # only needed on update / first run
+zig build shaders # only needed on shader update, first run, or when using vulkan
 zig build
 ```
 this will create either a `libceat.a` file or a `ceat.lib` file in the build folder  
