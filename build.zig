@@ -20,7 +20,6 @@ const csource = [_][]const u8{
     "core/ear/ll/buffer.c",
     "core/ear/ll/bindset.c",
     "core/ear/ll/framebuffer.c",
-    //"core/ear/ll/texarray.c",
     "core/ear/hl/text.c",
     "core/ear/hl/camera.c",
     "core/ear/hl/data.c",
