@@ -18,6 +18,11 @@ _ear_vk_make_bindset_lay(
     );
 void
 _ear_vk_make_bindset_sets(
+    ear_vk_bindset* set
+    );
+
+void
+_ear_vk_update_bindset_sets(
     ear_vk_bindset* set,
     ear_bindset_desc desc
     );

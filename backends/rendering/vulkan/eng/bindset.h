@@ -18,6 +18,12 @@ ear_vk_delete_bindset(
     );
 
 void
+ear_vk_update_bindset(
+    void* set,
+    ear_bindset_desc desc
+    );
+
+void
 ear_vk_bind_bindset(
     void* set,
     uint32_t slot,

@@ -29,6 +29,12 @@ ear_delete_bindset(
     );
 
 void
+ear_update_bindset(
+    ear_bindset* set,
+    void* new_objects[]
+    );
+
+void
 ear_bind_bindset(
     ear_bindset* set,
     uint32_t slot,

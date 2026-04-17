@@ -103,8 +103,6 @@ struct ear_texture{
     uint32_t width;
     uint32_t height;
 
-    ear_bindset* hl_bindset;
-
     ear_texture_desc desc;
 
     eau_destructor* dest;

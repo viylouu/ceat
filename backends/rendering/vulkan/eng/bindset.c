@@ -8,6 +8,44 @@
 #include "../init/comm_buffer.h"
 #include "../sc/swapchain.h"
 #include "pipeline.h"
+//#include "texture.h"
+
+/*
+static void
+_ear_vk_refresh_texture_bindings_for_frame(
+    ear_vk_bindset* set,
+    uint32_t frame
+    ) {
+    for (uint32_t b = 0; b < set->desc.binding_amt; ++b) {
+        if (set->desc.bindings[b].type != EAR_BIND_TEXTURE2D) continue;
+
+        ear_texture*    tex  = set->desc.bindings[b].object;
+        ear_vk_texture* vtex = tex->vk;
+
+        VkDescriptorImageInfo imageinfo = {
+            .imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+            .imageView   = vtex->imgview,
+            .sampler     = vtex->samp,
+            };
+
+        VkWriteDescriptorSet descwrite = {
+            .sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
+            .pNext = NULL,
+
+            .dstSet          = set->sets[frame],
+            .dstBinding      = set->desc.bindings[b].binding,
+            .dstArrayElement = 0,
+
+            .descriptorType  = _ear_vk_convert_desc_type(set->desc.bindings[b].type),
+            .descriptorCount = 1,
+
+            .pImageInfo = &imageinfo,
+            };
+
+        vkUpdateDescriptorSets(_ear_vk_device, 1, &descwrite, 0, NULL);
+    }
+}
+*/
 
 void*
 ear_vk_create_bindset(
@@ -18,7 +56,9 @@ ear_vk_create_bindset(
 
     _ear_vk_make_bindset_pool(set, desc);
     _ear_vk_make_bindset_lay(set, desc);
-    _ear_vk_make_bindset_sets(set, desc);
+    _ear_vk_make_bindset_sets(set);
+
+    _ear_vk_update_bindset_sets(set, desc);
 
     return set;
 }
@@ -32,6 +72,15 @@ ear_vk_delete_bindset(
     vkDestroyDescriptorPool(_ear_vk_device, set->pool, NULL);
 
     free(set);
+}
+
+void
+ear_vk_update_bindset(
+    void* _set,
+    ear_bindset_desc desc
+    ) {
+    ear_vk_bindset* set = _set;
+    _ear_vk_update_bindset_sets(set, desc);
 }
 
 void

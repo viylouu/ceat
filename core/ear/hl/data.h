@@ -54,6 +54,7 @@ ear_rect_rend_flush(
 typedef struct ear_tex_rend{
     ear_pipeline* pln;
         ear_bindset* set;
+        ear_bindset* tex_set;
     ear_buffer* ubo;
         struct{ mat4 proj; } ubo_d;
     ear_buffer* ssbo;

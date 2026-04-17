@@ -27,6 +27,15 @@ ear_gl_delete_bindset(
 }
 
 void
+ear_gl_update_bindset(
+    void* _set,
+    ear_bindset_desc desc
+    ) {
+    ear_gl_bindset* set = _set;
+    set->desc = desc;
+}
+
+void
 ear_gl_bind_bindset(
     void* _set,
     uint32_t slot,
@@ -41,6 +50,8 @@ ear_gl_bind_bindset(
     uint32_t bind_i = 0;
     for (uint32_t i = 0; i < set->desc.binding_amt; ++i) {
         ear_bind_desc bind = set->desc.bindings[i];
+
+        eat_assert(bind.object != NULL, "bind object cannot be null!");
 
         uint32_t off = 0;
         if (set->desc.bindings[i].type != EAR_BIND_TEXTURE2D) { 

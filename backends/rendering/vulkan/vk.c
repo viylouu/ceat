@@ -56,6 +56,8 @@ eat_backend_rendering_impl ear_vk_impl = {
         .create = ear_vk_create_bindset,
         .delete = ear_vk_delete_bindset,
 
+        .update = ear_vk_update_bindset,
+
         .bind = ear_vk_bind_bindset,
         },
     .framebuffer = {

@@ -95,8 +95,7 @@ _ear_vk_make_bindset_lay(
 }
 void
 _ear_vk_make_bindset_sets(
-    ear_vk_bindset* set,
-    ear_bindset_desc desc
+    ear_vk_bindset* set
     ) {
     VkDescriptorSetLayout chips[EAR_VK_MAX_FRAMES_IN_FLIGHT];
     for (uint32_t i = 0; i < EAR_VK_MAX_FRAMES_IN_FLIGHT; ++i)
@@ -114,7 +113,13 @@ _ear_vk_make_bindset_sets(
 
     eat_assert(vkAllocateDescriptorSets(_ear_vk_device, &allocinfo, set->sets) == VK_SUCCESS,
         "failed to create descriptor sets!");
+}
 
+void
+_ear_vk_update_bindset_sets(
+    ear_vk_bindset* set,
+    ear_bindset_desc desc
+    ) {
     for (uint32_t b = 0; b < desc.binding_amt; ++b)
         for (uint32_t i = 0; i < EAR_VK_MAX_FRAMES_IN_FLIGHT; ++i) {
             bool is_buffer = desc.bindings[b].type != EAR_BIND_TEXTURE2D;

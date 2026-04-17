@@ -63,21 +63,8 @@ ear_tex(
     if (ear_tr.ssbo_i == sizeof(ear_tr.ssbo_d)/sizeof(ear_tr.ssbo_d[0])) ear_tex_rend_flush();
     if (last_used != EAR_INT_LU_TEX) ear_flush();
     last_used = EAR_INT_LU_TEX;
-    if (ear_tr.cur_tex != tex) {
-        ear_tex_rend_flush();
-
-        ear_tr.cur_tex = tex;
-        if (tex->hl_bindset == NULL)
-            tex->hl_bindset = ear_create_bindset((ear_bindset_desc){
-                .binding_amt = 1,
-                .bindings    = &(ear_bind_desc){
-                    .object  = tex,
-                    .type    = EAR_BIND_TEXTURE2D,
-                    .binding = 0,
-                    .stage   = EAR_STAGE_FRAGMENT,
-                    },
-                }, *_ear_data_arena);
-    }
+    if (ear_tr.cur_tex != tex) ear_tex_rend_flush();
+    ear_tr.cur_tex = tex;
 
     eau_rect rect = (eau_rect){ x,y,w,h, align };
     rect = eau_rect_topleftify(rect);

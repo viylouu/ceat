@@ -50,6 +50,8 @@ eat_backend_rendering_impl ear_gl_impl = {
         .create = ear_gl_create_bindset,
         .delete = ear_gl_delete_bindset,
 
+        .update = ear_gl_update_bindset,
+
         .bind = ear_gl_bind_bindset,
         },
     .buffer = {

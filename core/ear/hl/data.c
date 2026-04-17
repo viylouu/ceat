@@ -1,5 +1,5 @@
 #include "data.h"
-#include "../../cutil.h"
+//#include "../../cutil.h"
 
 #include "../../eau/arena.h"
 
@@ -172,7 +172,7 @@ ear_tex_rend_create(
         }, arena);
 
     ear_texture* temp = ear_create_texture((ear_texture_desc){}, NULL,16,16, NULL);
-    ear_bindset* tbind = ear_create_bindset((ear_bindset_desc){
+    ear_tr.tex_set = ear_create_bindset((ear_bindset_desc){
         .binding_amt = 1,
         .bindings    = &(ear_bind_desc){
             .object  = temp,
@@ -189,7 +189,7 @@ ear_tex_rend_create(
         .bindset_amt = 2,
         .bindsets    = (ear_bindset*[]){ 
             ear_tr.set,
-            tbind,
+            ear_tr.tex_set,
             },
 
         .has_blend_state = true,
@@ -203,7 +203,6 @@ ear_tex_rend_create(
         .color_fmts    = (ear_texture_type[]){ EAR_TEX_COLOR },
         }, arena);
 
-    ear_delete_bindset(tbind);
     ear_delete_texture(temp);
 }
 
@@ -212,17 +211,18 @@ ear_tex_rend_flush(
     void
     ) {
     if (ear_tr.ssbo_i == 0) return;
+    if (ear_tr.cur_tex == NULL) return;
 
     eau_mat4_copy(proj, &ear_tr.ubo_d.proj);
 
     ear_update_buffer(ear_tr.ubo, ear_tr.off);
     ear_update_buffer(ear_tr.ssbo, ear_tr.off);
 
-    eat_assert(ear_tr.cur_tex->hl_bindset != NULL, "texture has no hl bindset!");
+    ear_update_bindset(ear_tr.tex_set, (void*[]){ ear_tr.cur_tex });
 
     ear_bind_pipeline(ear_tr.pln);
     ear_bind_bindset(ear_tr.set, 0, (uint32_t[2]){ear_tr.off, ear_tr.off});
-    ear_bind_bindset(ear_tr.cur_tex->hl_bindset, 1, NULL);
+    ear_bind_bindset(ear_tr.tex_set, 1, NULL);
 
     ear_draw(6, ear_tr.ssbo_i);
 

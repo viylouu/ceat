@@ -48,8 +48,8 @@ const cflags = [_][]const u8{
     "-Wno-c23-extensions",
     "-Wpedantic",
 
-    //"-g", "-O0", //"-fsanitize=address,undefined",
-    "-O3",
+    "-g", "-O0", //"-fsanitize=address,undefined",
+    //"-O3",
 };
 
 const csource_vulkan = [_][]const u8{
@@ -118,8 +118,8 @@ const cflags_opengl = [_][]const u8{
     //"-Wextra",
     //"-Wpedantic",
 
-    //"-g", "-O0", //"-fsanitize=address,undefined",
-    "-O3",
+    "-g", "-O0", //"-fsanitize=address,undefined",
+    //"-O3",
 };
 const ldeps_opengl = [_][]const u8{
     "GL",

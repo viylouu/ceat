@@ -94,6 +94,11 @@ typedef struct eat_backend_rendering_impl{
             void* data
             );
 
+        void (*update)(
+            void* data,
+            ear_bindset_desc desc
+            );
+
         void (*bind)(
             void* data,
             uint32_t slot,

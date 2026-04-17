@@ -55,7 +55,7 @@ ear_create_framebuffer(
         memcpy(fb->desc.out_colors, desc.out_colors, sizeof(ear_texture*) * desc.out_color_amt);
     }
 
-    fb->vk = ear_backend->framebuffer.create(&desc);
+    fb->vk = ear_backend->framebuffer.create(&fb->desc);
 
     if (arena != NULL) eau_add_to_arena(arena, &fb->dest, fb, fb->deb_obj, _ear_arena_framebuffer_delete);
     return fb;

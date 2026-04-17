@@ -65,6 +65,17 @@ ear_delete_bindset(
 }
 
 void
+ear_update_bindset(
+    ear_bindset* set,
+    void* new_objects[]
+    ) {
+    for (uint32_t i = 0; i < set->desc.binding_amt; ++i)
+        set->desc.bindings[i].object = new_objects[i];
+
+    ear_backend->bindset.update(set->vk, set->desc);
+}
+
+void
 ear_bind_bindset(
     ear_bindset* set,
     uint32_t slot,

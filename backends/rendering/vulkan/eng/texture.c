@@ -10,7 +10,7 @@
 #include "../sc/swapchain.h"
 #include "framebuffer.h"
 #include "../init/comm_buffer.h"
-#include "../init/sync.h"
+//#include "../init/sync.h"
 
 void*
 ear_vk_create_texture(
@@ -71,7 +71,7 @@ ear_vk_create_texture(
     tex->img.lay = VK_IMAGE_LAYOUT_UNDEFINED;
 
     bool reset = _ear_vk_in_pass;
-    if (reset) _ear_vk_end_render_pass(_ear_vk_cur_img_index);
+    if (reset) _ear_vk_end_render_pass(_ear_vk_cur_frame);
 
     _ear_vk_trans_img(
         &tex->img, _ear_vk_comm_buffers[_ear_vk_cur_frame],
@@ -118,10 +118,10 @@ _ear_vk_cleanup_texture(
         _ear_vk_end_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame]);
         _ear_vk_submit_command_buffer(&_ear_vk_comm_buffers[_ear_vk_cur_frame], _ear_vk_cur_img_index, _ear_vk_cur_frame);
 
-        _ear_vk_device_wait_idle();
-        _ear_vk_wait_for_fences(_ear_vk_cur_frame);
-        _ear_vk_reset_fences(_ear_vk_cur_frame);
+        //_ear_vk_wait_for_fences(_ear_vk_cur_frame);
+        //_ear_vk_reset_fences(_ear_vk_cur_frame);
     }
+    _ear_vk_device_wait_idle();
 
     vkDestroySampler(_ear_vk_device, tex->samp, NULL);
     vkDestroyImageView(_ear_vk_device, tex->imgview, NULL);
@@ -134,6 +134,10 @@ _ear_vk_cleanup_texture(
 
     if (restart_comm) {
         _ear_vk_start_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame]);
+        _ear_vk_trans_img(
+            &_ear_vk_swapchain_imgs[_ear_vk_cur_img_index], _ear_vk_comm_buffers[_ear_vk_cur_frame],
+            VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+            );
         ear_vk_bind_framebuffer(_ear_vk_last_fb);
     }
 }
@@ -194,6 +198,8 @@ ear_vk_update_texture(
             VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT,
             &tex->img.img, &tex->imgmem
             );
+        tex->img.depth = tex->type == EAR_TEX_DEPTH;
+        tex->img.lay = VK_IMAGE_LAYOUT_UNDEFINED;
 
         _ear_vk_trans_img(
             &tex->img, _ear_vk_comm_buffers[_ear_vk_cur_frame],
