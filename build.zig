@@ -49,7 +49,7 @@ const cflags = [_][]const u8{
     "-Wpedantic",
 
     //"-g", "-O0", //"-fsanitize=address,undefined",
-    "-O3",
+    //"-O3",
 };
 
 const csource_vulkan = [_][]const u8{
@@ -225,13 +225,14 @@ pub fn build(b: *std.Build) void {
         .linkage = .static,
         .name = "ceat",
         .root_module = b.createModule(.{
-            //.root_source_file = b.path("core/root.zig"),
+            .root_source_file = b.path("eat.zig"),
             .target = target,
             .optimize = optimize,
             .link_libc = true,
             }),
         });
 
+    lib.root_module.addIncludePath(b.path(""));
     lib.root_module.addIncludePath(b.path("core"));
     lib.root_module.addIncludePath(b.path("backends"));
     lib.root_module.addCSourceFiles(.{ .files = &csource, .flags = &cflags });
@@ -259,20 +260,20 @@ pub fn build(b: *std.Build) void {
     const ex_step = b.step("examples", "build examples");
 
     ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "window");
-    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "triangle");
-    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "vbuffer");
-    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "ubuffer");
-    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "ibuffer");
-    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "texture");
-    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "framebuffer");
-    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "text");
-    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "input");
-    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "object");
-    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "clock");
-    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "console");
-    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "audio");
-    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "camera");
-    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "debug");
-    ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "timer");
-    ex_c(b,lib,lib_vk, &ldeps_vulkan, &wdeps_vulkan, ex_step, "vulkan");
+    //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "triangle");
+    //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "vbuffer");
+    //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "ubuffer");
+    //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "ibuffer");
+    //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "texture");
+    //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "framebuffer");
+    //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "text");
+    //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "input");
+    //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "object");
+    //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "clock");
+    //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "console");
+    //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "audio");
+    //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "camera");
+    //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "debug");
+    //ex_c(b,lib,lib_gl, &ldeps_opengl, &wdeps_opengl, ex_step, "timer");
+    //ex_c(b,lib,lib_vk, &ldeps_vulkan, &wdeps_vulkan, ex_step, "vulkan");
 }

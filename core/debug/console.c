@@ -3,6 +3,8 @@
 #include "debug.h"
 #include "../../eat.h"
 #include "../eaw/window.h"
+#include "../ear/ear.h"
+#include "../eaw/eaw.h"
 
 eat_console_desc console;
 

@@ -4,7 +4,23 @@
 
 #include <stdio.h>
 
+void game_init(void) {
+
+}
+void game_exit(void) {
+
+}
+
 int main(void) {
+    eat_run((const eat_plugin*[]){
+        &(eat_plugin){ 
+            .name = "goon",
+            .init = game_init,
+            .exit = game_exit,
+            },
+        }, 1);
+
+    /*
     eat_init("window", 1600,900, (eat_init_opts){ .rendering_impl = &ear_gl_impl });
 
     ear_clear_color(NULL, .2f, .4f, .3f, 1);
@@ -15,6 +31,7 @@ int main(void) {
     }
 
     eat_exit();
+    */
 
     return 0;
 }

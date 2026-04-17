@@ -1,5 +1,32 @@
 #pragma once
 
+#include <stdint.h>
+
+typedef struct eat_plugin{
+    const char* name;
+
+    void (*init)(void);
+    void (*exit)(void);
+} eat_plugin;
+
+extern int32_t eat_width;
+extern int32_t eat_height;
+
+extern float eat_time;
+extern float eat_delta;
+    extern double eat_time64;
+    extern double eat_delta64;
+
+void
+eat_run(
+    const eat_plugin* plugs[],
+    uint32_t plug_amt
+    );
+
+/*
+
+#pragma once
+
 #include "backends/rendering/impl.h"
 
 #include "core/eaw/eaw.h"
@@ -12,14 +39,6 @@
 
 #include <stdint.h>
 #include <stdbool.h>
-
-extern int32_t eat_width;
-extern int32_t eat_height;
-
-extern float eat_time;
-extern float eat_delta;
-    extern double eat_time64;
-    extern double eat_delta64;
 
 extern ear_texture* _eat_screen_color;
 extern ear_texture* _eat_screen_depth;
@@ -49,3 +68,5 @@ bool
 eat_frame(
     void
     );
+
+*/

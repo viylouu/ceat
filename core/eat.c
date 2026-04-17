@@ -1,9 +1,13 @@
 #include "../eat.h"
 #include "cutil.h"
 
-//#include "eaw/window.h"
-#include "debug/console.h"
+#include "eaw/eaw.h"
+#include "ear/ear.h"
+#include "eau/object.h"
+#include "eaa/eaa.h"
+
 #include "debug/debug.h"
+#include "debug/console.h"
 
 #include "../backends/rendering/impl.h"
 
@@ -20,6 +24,14 @@ ear_texture* _eat_screen_depth;
 ear_framebuffer* _eat_screen_framebuffer;
 
 bool first = true;
+
+typedef struct eat_init_opts {
+    bool vsync;
+    eat_console_desc console;
+    eat_debug_desc debug;
+
+    eat_backend_rendering_impl* rendering_impl;
+} eat_init_opts;
 
 void 
 eat_init(

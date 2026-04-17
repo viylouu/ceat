@@ -6,7 +6,11 @@
 #include <stdlib.h>
 
 #include "../eaw/window.h"
-#include "../eat.h"
+#include "../eau/coll.h"
+#include "../ear/hl/user.h"
+#include "../ear/hl/text.h"
+#include "../ear/ll/misc.h"
+//#include "../eat.h"
 
 eat_debug_theme debug_theme;
 
@@ -122,7 +126,7 @@ eat_debug_try_do(
     }
 
     if (selected == -1) {
-        ear_tex(_eat_screen_color, 0,16, _eaw_window_width, _eaw_window_height - 256 - 16, 0,0,eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
+        //ear_tex(_eat_screen_color, 0,16, _eaw_window_width, _eaw_window_height - 256 - 16, 0,0,eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
         return;
     }
 
@@ -164,7 +168,7 @@ eat_debug_try_do(
 
     if (prev_sel == selected && eaw_is_mouse_pressed(EAW_MOUSE_LEFT)) selected = -1;
 
-    ear_tex(_eat_screen_color, _eaw_window_width / 2.f, 18, _eaw_window_width / 2.f, _eaw_window_height - 256 - 16 - 4, 0,0,eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
+    //ear_tex(_eat_screen_color, _eaw_window_width / 2.f, 18, _eaw_window_width / 2.f, _eaw_window_height - 256 - 16 - 4, 0,0,eat_width,-eat_height, (float[4]){ 1,1,1,1 }, EAU_ALIGN_TOP_LEFT);
 }
 
 
