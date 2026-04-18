@@ -116,10 +116,6 @@ _ear_vk_cleanup_texture(
     if (restart_comm) {
         _ear_vk_end_render_pass(_ear_vk_cur_frame);
         _ear_vk_end_command_buffer(_ear_vk_comm_buffers[_ear_vk_cur_frame]);
-        _ear_vk_submit_command_buffer(&_ear_vk_comm_buffers[_ear_vk_cur_frame], _ear_vk_cur_img_index, _ear_vk_cur_frame);
-
-        //_ear_vk_wait_for_fences(_ear_vk_cur_frame);
-        //_ear_vk_reset_fences(_ear_vk_cur_frame);
     }
     _ear_vk_device_wait_idle();
 
@@ -158,6 +154,10 @@ ear_vk_update_texture(
     uint32_t width, uint32_t height
     ) {
     ear_vk_texture* tex = _tex;
+
+    bool resume_pass = _ear_vk_in_pass;
+    if (resume_pass)
+        _ear_vk_end_render_pass(_ear_vk_cur_frame);
 
     uint32_t perpix;
     switch (tex->type) {
@@ -252,5 +252,8 @@ ear_vk_update_texture(
                 VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL : 
                 VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
             );
+
+        if (resume_pass)
+            ear_vk_bind_framebuffer(_ear_vk_last_fb);
     }
 }
